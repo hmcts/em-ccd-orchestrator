@@ -114,27 +114,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: liquibase-groovy-dsl-2.0.1.jar
-   ]]></notes>
-        <gav regex="true">^org\.liquibase:liquibase-groovy-dsl:.*$</gav>
-        <cve>CVE-1999-1338</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: liquibase-groovy-dsl-2.0.1.jar
-   ]]></notes>
-        <gav regex="true">^org\.liquibase:liquibase-groovy-dsl:.*$</gav>
-        <cve>CVE-2005-0036</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: liquibase-groovy-dsl-2.0.1.jar
-   ]]></notes>
-        <gav regex="true">^org\.liquibase:liquibase-groovy-dsl:.*$</gav>
-        <cve>CVE-2005-0861</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: groovy-sql-2.4.15.jar
    ]]></notes>
         <gav regex="true">^org\.codehaus\.groovy:groovy-sql:.*$</gav>
@@ -147,28 +126,6 @@
         <gav regex="true">^org\.codehaus\.groovy:groovy-sql:.*$</gav>
         <cve>CVE-2016-6497</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.2.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
-        <cpe>cpe:/a:postgresql:postgresql</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.2.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
-        <cpe>cpe:/a:postgresql:postgresql_jdbc_driver</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: h2-1.4.197.jar
-   ]]></notes>
-        <gav regex="true">com.h2database:h2:1.4.197</gav>
-        <cpe>cpe:/a:h2database:h2:1.4.197</cpe>
-    </suppress>
-
     <suppress>
         <notes><![CDATA[
    file name: cucumber-jvm-deps-1.0.5.jar/META-INF/maven/com.thoughtworks.xstream/xstream/pom.xml

@@ -15,7 +15,6 @@ plugins {
     id "net.ltgt.apt-idea" version "0.18"
     id "net.ltgt.apt" version "0.18"
     id 'jacoco'
-    id 'org.liquibase.gradle' version '2.0.1'
    // id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.0.11"
     id "com.github.lkishalmi.gatling" version "3.0.1"
 }
@@ -38,44 +37,6 @@ dependencyManagement {
 if (!project.hasProperty('runList')) {
     project.ext.runList = 'main'
 }
-
-//loading properties file.
-Properties liquibaseProps = new Properties()
-liquibaseProps.load(new FileInputStream("$projectDir/src/main/resources/liquibase.properties"))
-
-project.ext.diffChangelogFile = 'src/main/resources/db/changelog/' + new Date().format('yyyyMMddHHmmss') + '_changelog.xml'
-
-liquibase {
-    activities {
-        main {
-            driver liquibaseProps.getProperty('driver')
-            url project.hasProperty("dburl") ? "jdbc:postgresql://$dburl" : liquibaseProps.getProperty('url')
-            username project.hasProperty("flyway.user") ? "${rootProject.properties['flyway.user']}" : liquibaseProps.getProperty('username')
-            password project.hasProperty("flyway.password") ? "${rootProject.properties['flyway.password']}" : liquibaseProps.getProperty('password')
-            changeLogFile liquibaseProps.getProperty('changeLogFile')
-            referenceUrl liquibaseProps.getProperty('referenceUrl')
-            defaultSchemaName ''
-            logLevel 'debug'
-            classpath 'src/main/resources/'
-        }
-        diffLog {
-            driver liquibaseProps.getProperty('driver')
-            url project.hasProperty("dburl") ? "jdbc:postgresql://$dburl" : liquibaseProps.getProperty('url')
-            username project.hasProperty("flyway.user") ? "${rootProject.properties['flyway.user']}" : liquibaseProps.getProperty('username')
-            password project.hasProperty("flyway.password") ? "${rootProject.properties['flyway.password']}" : liquibaseProps.getProperty('password')
-            changeLogFile liquibaseProps.getProperty('changeLogFile')
-            referenceUrl liquibaseProps.getProperty('referenceUrl')
-            defaultSchemaName ''
-            logLevel 'debug'
-            classpath 'src/main/resources/'
-        }
-    }
-
-    runList = project.ext.runList
-}
-
-liquibaseDiff.dependsOn compileJava
-liquibaseDiffChangeLog.dependsOn compileJava
 
 group 'uk.gov.hmcts.reform.em.orchestrator'
 version '0.0.1'
@@ -110,11 +71,9 @@ dependencyCheck {
 }
 
 def versions = [
-        postgresql         : '42.2.2',
         springBoot         : '2.1.2.RELEASE',
         springfoxSwagger   : '2.7.0',
-        h2                 : '1.4.197',
-        liquibase          : '3.6.2',
+        h2                 : '1.4.197', // TODO: Can I delete this?
         jackson            : '2.9.8'
 ]
 
@@ -124,7 +83,7 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${versions.jackson}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:${versions.jackson}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.jackson}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${versions.jackson}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${versions.jackson}" // TODO: Can I delete this? How does hibernate interact with jackson?
     compile "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
     compile "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner:${versions.jackson}"
@@ -135,47 +94,30 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile( 'org.apache.httpcomponents:httpclient:4.5.5')
-    compile "org.liquibase:liquibase-core"
-    liquibaseRuntime "org.liquibase:liquibase-core"
-    liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibase_hibernate5_version}"
-    liquibaseRuntime sourceSets.main.compileClasspath
-    liquibaseRuntime sourceSets.main.output
-    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
-    liquibaseRuntime "org.postgresql:postgresql"
-    compile("org.postgresql:postgresql:${versions.postgresql}")
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '2.1.1'
     compile group: 'commons-validator', name: 'commons-validator', version: '1.6'
     compile "javax.transaction:javax.transaction-api"
     compile "org.ehcache:ehcache"
-    compile "org.hibernate:hibernate-core"
     compile "com.zaxxer:HikariCP"
-    compile "org.hibernate:hibernate-jcache"
-    compile "org.hibernate:hibernate-entitymanager"
-    compile "org.hibernate:hibernate-envers"
-    compile "org.hibernate.validator:hibernate-validator"
     compile "org.apache.tika:tika-core:1.20"
     compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.1'
     compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '1.0.1'
     
     compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-    compile "org.hibernate.validator:hibernate-validator"
     compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
     compile "org.springframework.boot:spring-boot-starter-security"
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
-    annotationProcessor "org.hibernate:hibernate-jpamodelgen"
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
     testCompile 'com.github.gmazzo:okhttp-mock:1.0.4'
     testCompile 'io.rest-assured:rest-assured:3.2.0'
     testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
-    liquibaseRuntime "com.h2database:h2"
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '3.0.1'
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '3.0.1'
     compile "pl.touk:throwing-function:1.3"
@@ -294,8 +236,6 @@ task smoke(type: Test) {
 
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
-
-task migratePostgresDatabase(dependsOn: 'liquibaseUpdate')
 
 dependencyCheck {
     suppressionFile = 'dependency-check-suppressions.xml'

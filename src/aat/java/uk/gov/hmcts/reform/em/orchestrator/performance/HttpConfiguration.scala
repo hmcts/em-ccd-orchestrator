@@ -1,8 +1,8 @@
-package uk.gov.hmcts.reform.em.stitching.performance
+package uk.gov.hmcts.reform.em.orchestrator.performance
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import uk.gov.hmcts.reform.em.stitching.testutil.{Env, TestUtil}
+import uk.gov.hmcts.reform.em.orchestrator.testutil.{Env, TestUtil}
 
 trait HttpConfiguration {
 

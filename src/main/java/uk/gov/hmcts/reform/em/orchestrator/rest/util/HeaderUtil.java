@@ -11,7 +11,7 @@ public final class HeaderUtil {
 
     private static final Logger log = LoggerFactory.getLogger(HeaderUtil.class);
 
-    private static final String APPLICATION_NAME = "rpa-em-stitching-api";
+    private static final String APPLICATION_NAME = "rpa-em-ccd-orchestrator";
 
     private HeaderUtil() {
     }

@@ -1,45 +1,11 @@
 spring:
   application:
     name: EM CCD Orchestrator
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
-    database: postgresql
-    show-sql: ${SHOW_SQL:false}
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    properties:
-      hibernate:
-        id:
-          new_generator_mappings: false
-        temp:
-          use_jdbc_metadata_defaults: false
-  liquibase:
-    enabled: ${ENABLE_LIQUIBASE:false}
-    change-log: classpath:/db/db.changelog-master.xml
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5431/emstitch}
-    username: ${SPRING_DATASOURCE_USERNAME:emstitch}
-    password: ${SPRING_DATASOURCE_PASSWORD:emstitch}
-    tomcat:
-      max-active: ${MAX_ACTIVE_DB_CONNECTIONS:50} # Maximum number of active connections that can be allocated from this pool at the same time.
-      max-idle: ${MAX_IDLE_DB_CONNECTIONS:25}
-      max-wait: ${MAX_WAIT_DB_CONNECTIONS:10000} # Number of ms to wait before throwing an exception if no connection is available.
-      test-on-borrow: ${TEST_ON_BORROW_DB_CONNECTION:true}
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      auto-commit: false
   batch:
     job:
       enabled: false
       jobCronExpression: ${JOB_CRON_EXPRESSION:"* * * * * *"}
     initialize-schema: never
-
-docmosis:
-  accessKey: ${DOCMOSIS_ACCESS_KEY:SOMETHING}
-  convert.endpoint: ${DOCMOSIS_ENDPOINT:https://docmosis-development.platform.hmcts.net/rs/convert}
 
 base-urls:
   idam-url: ${IDAM_API_URL:http://localhost:4501}
@@ -59,8 +25,6 @@ management:
          - health
          - info
   health:
-    db:
-      enabled: true
     disk:
       enabled: true
       threshold: ${HEALTH_DISK_THRESHOLD:262144000}
@@ -121,4 +85,4 @@ idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-    microservice: em_npa_app
+    microservice: em_ccd_orchestrator # TODO: Do we need to get this new microservice whitelisted? Should we change stitching-api to em_stitch?
