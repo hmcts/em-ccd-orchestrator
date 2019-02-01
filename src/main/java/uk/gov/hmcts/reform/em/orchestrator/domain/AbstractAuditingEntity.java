@@ -19,7 +19,7 @@ import java.time.Instant;
  * last modified by date.
  */
 @MappedSuperclass
-@Audited
+@Audited // TODO: Can I delete this? It's a hibernate tag that indicates that the class should be audited, but with no DB, it won't be audited.
 @EntityListeners({AuditingEntityListener.class, EntityAuditEventListener.class})
 public abstract class AbstractAuditingEntity implements Serializable {
 

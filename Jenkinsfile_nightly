@@ -34,7 +34,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withNightlyPipeline(type, product, component) {
     enableSlackNotifications(channel)
-    enableDbMigration()
+    enableDbMigration()  // TODO: Do we need this line?
     loadVaultSecrets(secrets)
 
     after('checkout') {

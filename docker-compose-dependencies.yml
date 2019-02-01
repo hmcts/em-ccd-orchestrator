@@ -105,6 +105,22 @@ services:
     ports:
       - 4501:8080
 
+  idam-database:
+    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
+
+  smtp-server:
+    image: mailhog/mailhog
+
+  rpa-em-stitching-api:
+    image: docker.artifactory.reform.hmcts.net/auth/rpa-em-stitching-api:latest
+    command: --wait-for-database 60
+    environment:
+    # TODO: Add env variables
+    depends_on:
+      - emstitch-db
+    ports:
+    # TODO: Add ports
+
   emstitch-db:
     image: postgres
     restart: always
@@ -114,9 +130,3 @@ services:
       - POSTGRES_PASSWORD=emstitch
     ports:
       - 5431:5432
-
-  idam-database:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
-
-  smtp-server:
-    image: mailhog/mailhog

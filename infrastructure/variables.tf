@@ -1,5 +1,6 @@
 variable "product" {
   type = "string"
+  default = "em"
 }
 
 variable "shared_product_name" {
@@ -72,13 +73,10 @@ variable "em_stitching_api_url" {
   default = "em-stitching"
 }
 
-variable "postgresql_user" {
-  default = "annotation"
+variable "em_ccd_orchestrator_url" {
+  default = "em-ccd-orchestrator"
 }
 
-variable "database_name" {
-  default = "emstitch"
-}
 ////////////////////////////////////////////////
 // Logging
 ////////////////////////////////////////////////

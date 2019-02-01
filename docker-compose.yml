@@ -7,9 +7,6 @@ services:
 #    image: hmcts/rpa-em-ccd-orchestrator:latest
     environment:
       - SERVER_PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://rpa-native-pdf-annotator-db:5432/rpanativepdfannotatorapp
-      - SPRING_DATASOURCE_USERNAME=rpanativepdfannotatorapp
-      - SPRING_DATASOURCE_PASSWORD=rpanativepdfannotatorapp
       - IDAM_USER_BASE_URI=http://idam-api:8080
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
       - APPINSIGHTS_INSTRUMENTATIONKEY=test_app
@@ -21,19 +18,5 @@ services:
       - REFORM_SERVICE_NAME=rpa-em-ccd-orchestrator
       - REFORM_TEAM=em-ccd-orchestrator
       - REFORM_ENVIRONMENT=docker
-    links:
-     - rpa-native-pdf-annotator-db
-    depends_on:
-     - rpa-native-pdf-annotator-db
     ports:
     - $SERVER_PORT:8080
-
-  rpa-native-pdf-annotator-db:
-    image: postgres
-    environment:
-     - POSTGRES_USER=rpanativepdfannotatorapp
-     - POSTGRES_PASSWORD=rpanativepdfannotatorapp
-     - POSTGRES_DB=rpanativepdfannotatorapp
-    ports:
-     - 5433:5432
-

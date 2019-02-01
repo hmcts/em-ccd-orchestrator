@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.stitching.performance
+package uk.gov.hmcts.reform.em.orchestrator.performance
 
 import io.gatling.http.Predef.{http, status}
 
@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import org.json.JSONObject
 import scala.concurrent.duration._
-import uk.gov.hmcts.reform.em.stitching.testutil.Env
+import uk.gov.hmcts.reform.em.orchestrator.testutil.Env
 
 class NpaLoad extends Simulation with HttpConfiguration {
 //

@@ -28,7 +28,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(10000);
-        executor.setThreadNamePrefix("StitchingApp-Executor-");
+        executor.setThreadNamePrefix("OrchestratorApp-Executor-");
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
 

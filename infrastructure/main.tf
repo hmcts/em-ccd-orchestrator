@@ -24,28 +24,13 @@ module "app" {
   asp_name = "${var.shared_product_name}-${var.env}"
 
   app_settings = {
-    POSTGRES_HOST = "${module.db.host_name}"
-    POSTGRES_PORT = "${module.db.postgresql_listen_port}"
-    POSTGRES_DATABASE = "${module.db.postgresql_database}"
-    POSTGRES_USER = "${module.db.user_name}"
-    POSTGRES_PASSWORD = "${module.db.postgresql_password}"
-    MAX_ACTIVE_DB_CONNECTIONS = 70
-
     # JAVA_OPTS = "${var.java_opts}"
     # SERVER_PORT = "8080"
-
-    # db
-    SPRING_DATASOURCE_URL = "jdbc:postgresql://${module.db.host_name}:${module.db.postgresql_listen_port}/${module.db.postgresql_database}?ssl=true"
-    SPRING_DATASOURCE_USERNAME = "${module.db.user_name}"
-    SPRING_DATASOURCE_PASSWORD = "${module.db.postgresql_password}"
-
-    ENABLE_DB_MIGRATE="false"
 
     # idam
     IDAM_API_BASE_URI = "${var.idam_api_url}"
     S2S_BASE_URI = "http://${var.s2s_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
     S2S_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
-    DOCMOSIS_ACCESS_KEY = "${data.azurerm_key_vault_secret.docmosis_access_key.value}"
 
     #DM STORE
     DM_STORE_APP_URL = "http://${var.dm_store_app_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
@@ -84,31 +69,14 @@ module "app" {
   }
 }
 
-module "db" {
-  source = "git@github.com:hmcts/moj-module-postgres?ref=master"
-  product = "${local.app_full_name}-postgres-db"
-  location = "${var.location}"
-  env = "${var.env}"
-  postgresql_user = "${var.postgresql_user}"
-  database_name = "${var.database_name}"
-  sku_name = "GP_Gen5_2"
-  sku_tier = "GeneralPurpose"
-  storage_mb = "51200"
-  common_tags  = "${var.common_tags}"
-}
-
 provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
+// TODO: Should name be changed, and does it need to be whitelisted? should it be changed for stitching app?
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-em-npa-app"
   vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
-}
-
-data "azurerm_key_vault_secret" "docmosis_access_key" {
-  name      = "docmosis-access-key"
-  vault_uri = "https://rpa-${local.local_env}.vault.azure.net/"
 }
 
 data "azurerm_key_vault" "shared_key_vault" {
@@ -134,34 +102,4 @@ module "local_key_vault" {
   object_id = "${var.jenkins_AAD_objectId}"
   resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-USER" {
-  name = "${local.app_full_name}-POSTGRES-USER"
-  value = "${module.db.user_name}"
-  vault_uri = "${module.local_key_vault.key_vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
-  name = "${local.app_full_name}-POSTGRES-PASS"
-  value = "${module.db.postgresql_password}"
-  vault_uri = "${module.local_key_vault.key_vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
-  name = "${local.app_full_name}-POSTGRES-HOST"
-  value = "${module.db.host_name}"
-  vault_uri = "${module.local_key_vault.key_vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
-  name = "${local.app_full_name}-POSTGRES-PORT"
-  value = "${module.db.postgresql_listen_port}"
-  vault_uri = "${module.local_key_vault.key_vault_uri}"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
-  name = "${local.app_full_name}-POSTGRES-DATABASE"
-  value = "${module.db.postgresql_database}"
-  vault_uri = "${module.local_key_vault.key_vault_uri}"
 }
