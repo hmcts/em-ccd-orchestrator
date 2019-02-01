@@ -1,0 +1,122 @@
+---
+version: '2.1'
+
+services:
+  service-auth-provider-app:
+    image: hmcts/service-auth-provider-app:latest
+    environment:
+      - jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      - microserviceKeys_em_gw=AAAAAAAAAAAAAAAA
+      - microserviceKeys_em_npa_app=AAAAAAAAAAAAAAAA
+#      logging env vars
+#      - ROOT_APPENDER=JSON_CONSOLE
+      - JSON_CONSOLE_PRETTY_PRINT=false
+      - REFORM_SERVICE_TYPE=java
+      - REFORM_SERVICE_NAME=service-auth-provider-app
+      - REFORM_TEAM=rpe
+      - REFORM_ENVIRONMENT=docker
+#      healthcheck env vars
+      - PACKAGES_ENVIRONMENT=docker
+      - PACKAGES_PROJECT=rpe
+      - PACKAGES_NAME=service-auth-provider-app
+      - PACKAGES_VERSION=unkown
+      - TESTING_SUPPORT_ENABLED=true
+    ports:
+      - 4502:8489
+
+  dm-store:
+    image: hmcts/dm-store:latest
+    command: --wait-for-database 30
+    environment:
+      - SERVER_PORT=8080
+      - IDAM_SUPERUSER_EMAIL
+      - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
+      - GOV_NOTIFY_API_KEY
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5432/evidence
+      - SPRING_DATASOURCE_USERNAME=evidence
+      - SPRING_DATASOURCE_PASSWORD=evidence
+      - SPRING_PROFILES_ACTIVE=dev
+      - IDAM_TESTING_SUPPORT_ENABLED=true
+      - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
+      - IDAM_S2S_BASE_URI=http://service-auth-provider-app:8489
+      - S2S_NAMES_WHITELIST=em_npa_app,sscs,divorce,ccd,em_gw,ccd_gw
+      - http_proxy=
+      - https_proxy=
+      - no_proxy=
+#      logging env vars
+      - ROOT_APPENDER=JSON_CONSOLE
+      - JSON_CONSOLE_PRETTY_PRINT=false
+      - REFORM_SERVICE_TYPE=java
+      - REFORM_SERVICE_NAME=dm-store
+      - REFORM_TEAM=evidence
+      - REFORM_ENVIRONMENT=docker
+#      healthcheck env vars
+      - PACKAGES_ENVIRONMENT=docker
+      - PACKAGES_PROJECT=evidence
+      - PACKAGES_NAME=dm-store
+      - PACKAGES_VERSION=unkown
+#      debug mode
+      - JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+    links:
+      - dm-store-db
+      - service-auth-provider-app
+    depends_on:
+      - dm-store-db
+      - service-auth-provider-app
+    ports:
+     - 4603:8080
+
+  dm-store-db:
+    image: hmcts/dm-store-db:latest
+
+  idam-api:
+    image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
+    command: --wait-for-database 60
+    environment:
+      - IDAM_SUPERUSER_EMAIL
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
+      - SPRING_PROFILES_ACTIVE=test
+      - IDAM_TESTING_SUPPORT_ENABLED=true
+      - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
+      - IDAM_AUTHENTICATION_WEB_HOST=https://idam-authentication-web:8000
+      - IDAM_REGISTRATION_WEB_HOST=https://idam-registration-web:8000
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_REGISTRATION_WEB=QM5RQQ53LZFOSIXJ
+      - http_proxy
+      - https_proxy
+      - no_proxy
+#      logging env vars
+      - ROOT_APPENDER=JSON_CONSOLE
+      - JSON_CONSOLE_PRETTY_PRINT=false
+      - REFORM_SERVICE_TYPE=java
+      - REFORM_SERVICE_NAME=idam-api
+      - REFORM_TEAM=cc
+      - REFORM_ENVIRONMENT=docker
+#      healthcheck env vars
+      - PACKAGES_ENVIRONMENT=docker
+      - PACKAGES_PROJECT=idam
+      - PACKAGES_NAME=idam
+      - PACKAGES_VERSION=unkown
+    links:
+      - smtp-server
+      - idam-database
+    depends_on:
+      - idam-database
+      - smtp-server
+    ports:
+      - 4501:8080
+
+  emstitch-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=emstitch
+      - POSTGRES_USER=emstitch
+      - POSTGRES_PASSWORD=emstitch
+    ports:
+      - 5431:5432
+
+  idam-database:
+    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
+
+  smtp-server:
+    image: mailhog/mailhog

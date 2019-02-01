@@ -1,0 +1,305 @@
+buildscript {
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
+    }
+}
+
+plugins {
+    id 'application'
+    id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
+    id 'org.owasp.dependencycheck' version '3.1.2'
+    id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'org.sonarqube' version '2.6.2'
+    id "net.ltgt.apt-eclipse" version "0.18"
+    id "net.ltgt.apt-idea" version "0.18"
+    id "net.ltgt.apt" version "0.18"
+    id 'jacoco'
+    id 'org.liquibase.gradle' version '2.0.1'
+   // id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.0.11"
+    id "com.github.lkishalmi.gatling" version "3.0.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'idea'
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-openfeign:2.0.2.BUILD-SNAPSHOT'
+    }
+}
+
+if (!project.hasProperty('runList')) {
+    project.ext.runList = 'main'
+}
+
+//loading properties file.
+Properties liquibaseProps = new Properties()
+liquibaseProps.load(new FileInputStream("$projectDir/src/main/resources/liquibase.properties"))
+
+project.ext.diffChangelogFile = 'src/main/resources/db/changelog/' + new Date().format('yyyyMMddHHmmss') + '_changelog.xml'
+
+liquibase {
+    activities {
+        main {
+            driver liquibaseProps.getProperty('driver')
+            url project.hasProperty("dburl") ? "jdbc:postgresql://$dburl" : liquibaseProps.getProperty('url')
+            username project.hasProperty("flyway.user") ? "${rootProject.properties['flyway.user']}" : liquibaseProps.getProperty('username')
+            password project.hasProperty("flyway.password") ? "${rootProject.properties['flyway.password']}" : liquibaseProps.getProperty('password')
+            changeLogFile liquibaseProps.getProperty('changeLogFile')
+            referenceUrl liquibaseProps.getProperty('referenceUrl')
+            defaultSchemaName ''
+            logLevel 'debug'
+            classpath 'src/main/resources/'
+        }
+        diffLog {
+            driver liquibaseProps.getProperty('driver')
+            url project.hasProperty("dburl") ? "jdbc:postgresql://$dburl" : liquibaseProps.getProperty('url')
+            username project.hasProperty("flyway.user") ? "${rootProject.properties['flyway.user']}" : liquibaseProps.getProperty('username')
+            password project.hasProperty("flyway.password") ? "${rootProject.properties['flyway.password']}" : liquibaseProps.getProperty('password')
+            changeLogFile liquibaseProps.getProperty('changeLogFile')
+            referenceUrl liquibaseProps.getProperty('referenceUrl')
+            defaultSchemaName ''
+            logLevel 'debug'
+            classpath 'src/main/resources/'
+        }
+    }
+
+    runList = project.ext.runList
+}
+
+liquibaseDiff.dependsOn compileJava
+liquibaseDiffChangeLog.dependsOn compileJava
+
+group 'uk.gov.hmcts.reform.em.stitching'
+version '0.0.1'
+sourceCompatibility = 1.8
+mainClassName = 'uk.gov.hmcts.reform.em.stitching.Application'
+
+configurations {
+    aatCompile.extendsFrom(testCompile)
+    aatRuntime.extendsFrom(testRuntime)
+}
+
+repositories {
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    jcenter()
+    mavenLocal()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+dependencyCheck {
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'false' ? 11 : 0
+    suppressionFile = 'dependency-check-suppressions.xml'
+    analyzers {
+        // Disable scanning of .NET related binaries
+        assemblyEnabled = false
+    }
+}
+
+def versions = [
+        postgresql         : '42.2.2',
+        springBoot         : '2.1.2.RELEASE',
+        springfoxSwagger   : '2.7.0',
+        h2                 : '1.4.197',
+        liquibase          : '3.6.2',
+        jackson            : '2.9.8'
+]
+
+dependencies {
+    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
+    compile 'com.squareup.okhttp3:okhttp:3.11.0'
+    compile("org.springframework.boot:spring-boot-starter-batch")
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${versions.jackson}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:${versions.jackson}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.jackson}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${versions.jackson}"
+    compile "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
+    compile "com.fasterxml.jackson.module:jackson-module-afterburner:${versions.jackson}"
+    compile "org.zalando:problem-spring-web:0.24.0-RC.0"
+    compile("io.springfox:springfox-swagger2:${versions.springfoxSwagger}")
+    compile("io.springfox:springfox-swagger-ui:${versions.springfoxSwagger}")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile( 'org.apache.httpcomponents:httpclient:4.5.5')
+    compile "org.liquibase:liquibase-core"
+    liquibaseRuntime "org.liquibase:liquibase-core"
+    liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibase_hibernate5_version}"
+    liquibaseRuntime sourceSets.main.compileClasspath
+    liquibaseRuntime sourceSets.main.output
+    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
+    liquibaseRuntime "org.postgresql:postgresql"
+    compile("org.postgresql:postgresql:${versions.postgresql}")
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '2.1.1'
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.6'
+    compile "javax.transaction:javax.transaction-api"
+    compile "org.ehcache:ehcache"
+    compile "org.hibernate:hibernate-core"
+    compile "com.zaxxer:HikariCP"
+    compile "org.hibernate:hibernate-jcache"
+    compile "org.hibernate:hibernate-entitymanager"
+    compile "org.hibernate:hibernate-envers"
+    compile "org.hibernate.validator:hibernate-validator"
+    compile "org.apache.tika:tika-core:1.20"
+    compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.1'
+    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '1.0.1'
+    
+    compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    compile "org.hibernate.validator:hibernate-validator"
+    compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
+    compile "org.springframework.boot:spring-boot-starter-security"
+
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+    annotationProcessor "org.hibernate:hibernate-jpamodelgen"
+    annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    testCompile 'com.github.gmazzo:okhttp-mock:1.0.4'
+    testCompile 'io.rest-assured:rest-assured:3.2.0'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+    liquibaseRuntime "com.h2database:h2"
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '3.0.1'
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '3.0.1'
+    compile "pl.touk:throwing-function:1.3"
+}
+
+bootJar {
+    baseName 'rpa-em-stitching-api'
+    archiveName = "$baseName"+".jar"
+    destinationDir = file("$rootDir/build/libs")
+    manifest {
+        attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
+    }
+}
+
+def coverageExclusionList = [
+    '**uk/gov/hmcts/reform/em/stitching/Application*',
+    '**uk/gov/hmcts/reform/em/stitching/appinsights/*',
+    '**uk/gov/hmcts/reform/em/stitching/config/*',
+    '**uk/gov/hmcts/reform/em/stitching/config/logging/*',
+    '**uk/gov/hmcts/reform/em/stitching/domain/*',
+    '**uk/gov/hmcts/reform/em/stitching/service/dto/external/annotation/*',
+]
+
+//(jacocoTestReport | jacocoTestCoverageVerification)
+jacoco {
+    toolVersion = '0.7.9' // jacocoMavenPluginVersion
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    executionData(test)
+
+    reports {
+        xml.enabled = true
+        csv.enabled = true
+    }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: coverageExclusionList)
+        })
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "${rootProject.name}"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.exclusions", coverageExclusionList.join(", ")
+    }
+}
+
+sourceSets {
+    aat {
+        scala {
+            srcDirs = ['src/aat/java']
+        }
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir('src/aat/java')
+        }
+        resources {
+            srcDir('src/aat/resources')
+        }
+        compileClasspath += configurations.gatling
+    }
+}
+
+configurations {
+    gatling
+}
+
+gatling {
+    logLevel = "INFO"
+}
+
+task gatlingRunAAT(type: JavaExec) {
+    group = 'gatling'
+    description = 'Run gatling tests'
+    new File("${buildDir}/reports/tests/performance").mkdirs()
+    classpath = sourceSets.aat.runtimeClasspath + configurations.gatling
+    main = "io.gatling.app.Gatling"
+    args = ['-s', 'uk.gov.hmcts.reform.em.stitching.performance.NpaLoad',
+            '-rf', "${buildDir}/reports/tests/performance"
+    ]
+}
+
+task gatlingRunSmoke(type: JavaExec) {
+    group = 'gatling'
+    description = 'Run gatling tests'
+    new File("${buildDir}/reports/tests/performance").mkdirs()
+    classpath = sourceSets.aat.runtimeClasspath + configurations.gatling
+    main = "io.gatling.app.Gatling"
+    args = ['-s', 'uk.gov.hmcts.reform.em.stitching.performance.NpaSmoke',
+            '-rf', "${buildDir}/reports/tests/performance"
+    ]
+}
+
+task functional(type: Test) {
+    group = 'Delivery pipeline'
+    description = 'Executes functional tests'
+    setTestClassesDirs(sourceSets.aat.output.classesDirs)
+    setClasspath(sourceSets.aat.runtimeClasspath)
+    include "uk/gov/hmcts/reform/em/stitching/functional/**"
+
+    environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+}
+
+task smoke(type: Test) {
+    group = 'Delivery pipeline'
+    description = 'Executes non-destructive smoke tests'
+    setTestClassesDirs(sourceSets.aat.output.classesDirs)
+    setClasspath(sourceSets.aat.runtimeClasspath)
+    include "uk/gov/hmcts/reform/em/stitching/smoke/**"
+
+    environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+}
+
+task migratePostgresDatabase(dependsOn: 'liquibaseUpdate')
+
+dependencyCheck {
+    suppressionFile = 'dependency-check-suppressions.xml'
+}
+
+compileJava.dependsOn processResources
