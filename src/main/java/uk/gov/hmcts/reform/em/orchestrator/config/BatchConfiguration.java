@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.em.orchestrator.pdf.PDFMerger;
 import uk.gov.hmcts.reform.em.orchestrator.domain.DocumentTask;
 import uk.gov.hmcts.reform.em.orchestrator.service.DmStoreDownloader;
 import uk.gov.hmcts.reform.em.orchestrator.service.DmStoreUploader;
-import uk.gov.hmcts.reform.em.orchestrator.service.DocumentConversionService;
 import uk.gov.hmcts.reform.em.orchestrator.service.impl.DocumentTaskProcessingException;
 
 import javax.persistence.EntityManagerFactory;
