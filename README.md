@@ -1,8 +1,8 @@
-# Evidence Management Stitching App
+# Evidence Management CCD Orchestrator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Stitching API is a backend service to merge Word/PDF documents.
+CCD Orchestrator is a backend service that facilitates interactions between CCD, the EM Stitching service, and a calling service.
 
 # Setup
 
@@ -10,7 +10,6 @@ Stitching API is a backend service to merge Word/PDF documents.
 docker-compose -f docker-compose-dependencies.yml pull
 docker-compose -f docker-compose-dependencies.yml up
 gradle migratePostgresDatabase
-DOCMOSIS_ACCESS_KEY=xxx gradle bootRun
 ```
 
 ### Tech
@@ -29,13 +28,13 @@ It uses:
 ## Quickstart
 ```bash
 #Cloning repo and running though docker
-git clone https://github.com/hmcts/rpa-em-stitching-api.git
-cd rpa-em-stitching-api/
+git clone https://github.com/hmcts/rpa-em-ccd-orchestrator.git
+cd rpa-em-ccd-orchestrator/
 ./buildrundm-docker.sh
 ```
 
 ```bash
-#Run this script to aquire IDAM credentials required for DM API.
+#Run this script to acquire IDAM credentials required for DM API.
 ./idam.sh
 ```
 
@@ -49,7 +48,7 @@ To view our REST API go to {HOST}:{PORT}/swagger-ui.html
 
 ### API Endpoints
 A list of our endpoints can be found here
-> https://hmcts.github.io/reform-api-docs/swagger.html?url=https://hmcts.github.io/reform-api-docs/specs/rpa-em-stitching-api.json
+> https://hmcts.github.io/reform-api-docs/swagger.html?url=https://hmcts.github.io/reform-api-docs/specs/rpa-em-ccd-orchestrator.json
 
 
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: EM Stitching API
+    name: EM CCD Orchestrator
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     database: postgresql
@@ -84,7 +84,7 @@ management:
 info:
   app:
     environment: ${PACKAGES_ENVIRONMENT:local}
-    project: ${PACKAGES_PROJECT:em-stitching}
+    project: ${PACKAGES_PROJECT:em-ccd-orchestrator}
     name: ${PACKAGES_NAME:cor}
 #    version: ${PACKAGES_VERSION:unknown}
 
@@ -111,8 +111,8 @@ app-insights:
   request-component: on
   telemetry-component: on
 
-em-rpa-stitching-api:
-  base-url: ${EM_STITCHING_API_URL:http://localhost:4623}
+em-rpa-ccd-orchestrator:
+  base-url: ${EM_CCD_ORCHESTRATOR_URL:http://localhost:4623}
 
 dm-store-app:
   base-url: ${DM_STORE_APP_URL:http://localhost:4603}

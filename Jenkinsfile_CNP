@@ -3,8 +3,8 @@
 properties([
     [
         $class: 'GithubProjectProperty',
-        displayName: 'Evidence Stitching API',
-        projectUrlStr: 'https://github.com/hmcts/rpa-em-stitching-api'
+        displayName: 'Evidence Management CCD Orchestrator',
+        projectUrlStr: 'https://github.com/hmcts/rpa-em-ccd-orchestrator'
     ],
     pipelineTriggers([
         [$class: 'GitHubPushTrigger']
@@ -15,7 +15,7 @@ properties([
 
 def type = "java"
 def product = "em"
-def component = "stitching"
+def component = "ccd-orchestrator"
 
 def channel = '#rpa-pipeline'
 

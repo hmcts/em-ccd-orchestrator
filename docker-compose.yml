@@ -1,10 +1,10 @@
 version: '2.1'
 
 services:
-  rpa-em-stitching-api:
+  rpa-em-ccd-orchestrator:
     build:
       context: .
-#    image: hmcts/rpa-em-stitching-api:latest
+#    image: hmcts/rpa-em-ccd-orchestrator:latest
     environment:
       - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://rpa-native-pdf-annotator-db:5432/rpanativepdfannotatorapp
@@ -18,8 +18,8 @@ services:
       - JSON_CONSOLE_PRETTY_PRINT=false
       - ROOT_LOGGING_LEVEL
       - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=rpa-em-stitching-api
-      - REFORM_TEAM=em-stitching
+      - REFORM_SERVICE_NAME=rpa-em-ccd-orchestrator
+      - REFORM_TEAM=em-ccd-orchestrator
       - REFORM_ENVIRONMENT=docker
     links:
      - rpa-native-pdf-annotator-db

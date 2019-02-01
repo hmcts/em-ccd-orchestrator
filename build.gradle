@@ -77,10 +77,10 @@ liquibase {
 liquibaseDiff.dependsOn compileJava
 liquibaseDiffChangeLog.dependsOn compileJava
 
-group 'uk.gov.hmcts.reform.em.stitching'
+group 'uk.gov.hmcts.reform.em.orchestrator'
 version '0.0.1'
 sourceCompatibility = 1.8
-mainClassName = 'uk.gov.hmcts.reform.em.stitching.Application'
+mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 
 configurations {
     aatCompile.extendsFrom(testCompile)
@@ -119,7 +119,6 @@ def versions = [
 ]
 
 dependencies {
-    compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.13'
     compile 'com.squareup.okhttp3:okhttp:3.11.0'
     compile("org.springframework.boot:spring-boot-starter-batch")
     compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${versions.jackson}"
@@ -183,7 +182,7 @@ dependencies {
 }
 
 bootJar {
-    baseName 'rpa-em-stitching-api'
+    baseName 'rpa-em-ccd-orchestrator'
     archiveName = "$baseName"+".jar"
     destinationDir = file("$rootDir/build/libs")
     manifest {
@@ -192,12 +191,12 @@ bootJar {
 }
 
 def coverageExclusionList = [
-    '**uk/gov/hmcts/reform/em/stitching/Application*',
-    '**uk/gov/hmcts/reform/em/stitching/appinsights/*',
-    '**uk/gov/hmcts/reform/em/stitching/config/*',
-    '**uk/gov/hmcts/reform/em/stitching/config/logging/*',
-    '**uk/gov/hmcts/reform/em/stitching/domain/*',
-    '**uk/gov/hmcts/reform/em/stitching/service/dto/external/annotation/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/Application*',
+    '**uk/gov/hmcts/reform/em/orchestrator/appinsights/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/config/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/config/logging/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/service/dto/external/annotation/*',
 ]
 
 //(jacocoTestReport | jacocoTestCoverageVerification)
@@ -260,7 +259,7 @@ task gatlingRunAAT(type: JavaExec) {
     new File("${buildDir}/reports/tests/performance").mkdirs()
     classpath = sourceSets.aat.runtimeClasspath + configurations.gatling
     main = "io.gatling.app.Gatling"
-    args = ['-s', 'uk.gov.hmcts.reform.em.stitching.performance.NpaLoad',
+    args = ['-s', 'uk.gov.hmcts.reform.em.orchestrator.performance.NpaLoad',
             '-rf', "${buildDir}/reports/tests/performance"
     ]
 }
@@ -271,7 +270,7 @@ task gatlingRunSmoke(type: JavaExec) {
     new File("${buildDir}/reports/tests/performance").mkdirs()
     classpath = sourceSets.aat.runtimeClasspath + configurations.gatling
     main = "io.gatling.app.Gatling"
-    args = ['-s', 'uk.gov.hmcts.reform.em.stitching.performance.NpaSmoke',
+    args = ['-s', 'uk.gov.hmcts.reform.em.orchestrator.performance.NpaSmoke',
             '-rf', "${buildDir}/reports/tests/performance"
     ]
 }
@@ -281,7 +280,7 @@ task functional(type: Test) {
     description = 'Executes functional tests'
     setTestClassesDirs(sourceSets.aat.output.classesDirs)
     setClasspath(sourceSets.aat.runtimeClasspath)
-    include "uk/gov/hmcts/reform/em/stitching/functional/**"
+    include "uk/gov/hmcts/reform/em/orchestrator/functional/**"
 
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
@@ -291,7 +290,7 @@ task smoke(type: Test) {
     description = 'Executes non-destructive smoke tests'
     setTestClassesDirs(sourceSets.aat.output.classesDirs)
     setClasspath(sourceSets.aat.runtimeClasspath)
-    include "uk/gov/hmcts/reform/em/stitching/smoke/**"
+    include "uk/gov/hmcts/reform/em/orchestrator/smoke/**"
 
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
