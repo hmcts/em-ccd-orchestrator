@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.callback;
+package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCallbackHandlerService;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.impl.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
+
 
 @Controller
 public class CcdCallbackController {
@@ -21,6 +22,7 @@ public class CcdCallbackController {
     private CcdCallbackHandlerService ccdCallbackHandlerService;
 
     private CcdBundleStitchingService ccdBundleStitchingService;
+
 
     public CcdCallbackController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdBundleStitchingService ccdBundleStitchingService) {
         this.ccdCallbackHandlerService = ccdCallbackHandlerService;

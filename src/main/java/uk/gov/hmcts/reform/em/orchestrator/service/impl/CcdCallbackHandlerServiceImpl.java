@@ -1,12 +1,12 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.callback.impl;
+package uk.gov.hmcts.reform.em.orchestrator.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCallbackHandlerService;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCaseUpdater;
+import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
 @Service
 @Transactional

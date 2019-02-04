@@ -6,6 +6,7 @@ services:
     image: hmcts/service-auth-provider-app:latest
     environment:
       - jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+#      - Add key for any microservice that will be used: orchestrator, stitching api, doc store
       - microserviceKeys_em_gw=AAAAAAAAAAAAAAAA
       - microserviceKeys_em_npa_app=AAAAAAAAAAAAAAAA
 #      logging env vars
@@ -67,14 +68,19 @@ services:
     image: mailhog/mailhog
 
   rpa-em-stitching-api:
-    image: docker.artifactory.reform.hmcts.net/auth/rpa-em-stitching-api:latest
+    image: hmcts/rpa-em-stitching-api:latest
     command: --wait-for-database 60
     environment:
-    # TODO: Add env variables
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://emstitch-db:5432/emstitch
+      - SPRING_DATASOURCE_USERNAME=emstitch
+      - SPRING_DATASOURCE_PASSWORD=emstitch
+      - S2S_BASE_URI=http://service-auth-provider-app:8489
+      - IDAM_API_BASE_URI=http://idam-api:8080
+      - ENABLE_LIQUIBASE=true
     depends_on:
       - emstitch-db
     ports:
-    # TODO: Add ports
+      - 4630:8080
 
   emstitch-db:
     image: postgres

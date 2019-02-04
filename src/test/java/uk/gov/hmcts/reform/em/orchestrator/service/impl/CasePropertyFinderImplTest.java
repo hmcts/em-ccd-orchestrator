@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.callback.impl;
+package uk.gov.hmcts.reform.em.orchestrator.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

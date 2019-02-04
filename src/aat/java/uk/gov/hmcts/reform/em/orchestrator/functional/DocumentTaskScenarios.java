@@ -7,7 +7,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;

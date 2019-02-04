@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.callback.impl;
+package uk.gov.hmcts.reform.em.orchestrator.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.callback.CcdCaseUpdater;
+import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
 import java.util.Optional;
 
