@@ -15,16 +15,16 @@ import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 
 
 @Controller
-public class CcdCallbackController {
+public class CcdStitchBundleCallbackController {
 
-    private final Logger log = LoggerFactory.getLogger(CcdCallbackController.class);
+    private final Logger log = LoggerFactory.getLogger(CcdStitchBundleCallbackController.class);
 
     private CcdCallbackHandlerService ccdCallbackHandlerService;
 
     private CcdBundleStitchingService ccdBundleStitchingService;
 
 
-    public CcdCallbackController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdBundleStitchingService ccdBundleStitchingService) {
+    public CcdStitchBundleCallbackController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdBundleStitchingService ccdBundleStitchingService) {
         this.ccdCallbackHandlerService = ccdCallbackHandlerService;
         this.ccdBundleStitchingService = ccdBundleStitchingService;
     }

@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
-import org.springframework.data.annotation.ReadOnlyProperty;
-
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -13,10 +11,8 @@ public abstract class AbstractAuditingDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ReadOnlyProperty
     private String createdBy;
 
-    @ReadOnlyProperty
     private Instant createdDate = Instant.now();
 
     private String lastModifiedBy;

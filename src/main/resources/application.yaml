@@ -25,15 +25,10 @@ management:
          - health
          - info
   health:
-    disk:
-      enabled: true
-      threshold: ${HEALTH_DISK_THRESHOLD:262144000}
-    status:
-     order:
-       - FATAL
-       - DOWN
-       - UNKNOWN
-       - UP
+    db:
+      enabled: false
+    diskspace:
+      enabled: false
   info:
      build:
        enabled: true # Whether to enable build info.
