@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
