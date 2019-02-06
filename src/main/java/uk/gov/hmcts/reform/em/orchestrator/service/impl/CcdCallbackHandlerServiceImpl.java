@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
 @Service
-@Transactional
 public class CcdCallbackHandlerServiceImpl implements CcdCallbackHandlerService {
 
     private CasePropertyFinder casePropertyFinder;
