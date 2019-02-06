@@ -7,8 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
-import uk.gov.hmcts.reform.auth.checker.core.user.UserResolver;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.DocumentTaskDTO;
@@ -23,14 +21,10 @@ public class StitchingService {
     private static final int MAX_RETRIES = 10;
     private static final int SLEEP_TIME = 500;
     private final OkHttpClient http;
-    private final AuthTokenGenerator tokenGenerator;
-    private final UserResolver userResolver;
     private final String documentTaskEndpoint;
 
-    public StitchingService(OkHttpClient http, AuthTokenGenerator tokenGenerator, UserResolver userResolver, String documentTaskEndpoint) {
+    public StitchingService(OkHttpClient http, String documentTaskEndpoint) {
         this.http = http;
-        this.tokenGenerator = tokenGenerator;
-        this.userResolver = userResolver;
         this.documentTaskEndpoint = documentTaskEndpoint;
     }
 
@@ -44,9 +38,8 @@ public class StitchingService {
         documentTask.setJwt(jwt);
 
         try {
-            final String userId = getUserId(jwt);
-            final int taskId = post(documentTask, userId);
-            final String response = poll(taskId, userId);
+           final int taskId = post(documentTask, jwt);
+            final String response = poll(taskId, jwt);
 
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
@@ -60,12 +53,10 @@ public class StitchingService {
         }
     }
 
-    private int post(DocumentTaskDTO documentTask, String userId) throws IOException {
+    private int post(DocumentTaskDTO documentTask, String jwt) throws IOException {
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), getJson(documentTask));
         final Request request = new Request.Builder()
-            .addHeader("user-id", userId)
-            .addHeader("user-roles", "caseworker")
-            .addHeader("ServiceAuthorization", tokenGenerator.generate())
+            .addHeader("Authorization", jwt)
             .url(documentTaskEndpoint)
             .method("POST", body)
             .build();
@@ -79,12 +70,6 @@ public class StitchingService {
         }
     }
 
-    private String getUserId(String jwt) {
-        final User user = userResolver.getTokenDetails(jwt);
-
-        return user.getPrincipal();
-    }
-
     private String getJson(Object object) throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -93,11 +78,9 @@ public class StitchingService {
         return mapper.writeValueAsString(object);
     }
 
-    private String poll(int taskId, String userId) throws IOException, InterruptedException {
+    private String poll(int taskId, String jwt) throws IOException, InterruptedException {
         final Request request = new Request.Builder()
-            .addHeader("user-id", userId)
-            .addHeader("user-roles", "caseworker")
-            .addHeader("ServiceAuthorization", tokenGenerator.generate())
+            .addHeader("Authorization", jwt)
             .url(documentTaskEndpoint + "/" + taskId)
             .get()
             .build();

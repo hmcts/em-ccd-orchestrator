@@ -72,7 +72,7 @@ services:
     image: hmcts.azurecr.io/hmcts/em-stitching:latest
     command: --wait-for-database 60
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://emstitch-db:5431/emstitch
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://emstitch-db:5432/emstitch
       - SPRING_DATASOURCE_USERNAME=emstitch
       - SPRING_DATASOURCE_PASSWORD=emstitch
       - S2S_BASE_URI=http://service-auth-provider-app:8489
@@ -94,8 +94,6 @@ services:
       - POSTGRES_DB=emstitch
       - POSTGRES_USER=emstitch
       - POSTGRES_PASSWORD=emstitch
-    ports:
-      - 5431:5432
 
   dm-store:
     image: hmcts/dm-store:latest
