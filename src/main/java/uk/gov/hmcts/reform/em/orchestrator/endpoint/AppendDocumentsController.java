@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
-import uk.gov.hmcts.reform.em.orchestrator.service.addCaseBundleService;
+import uk.gov.hmcts.reform.em.orchestrator.service.AddCaseBundleService;
 
 import java.util.Optional;
 
@@ -21,10 +21,10 @@ public class AppendDocumentsController {
 
     private final Logger log = LoggerFactory.getLogger(AppendDocumentsController.class);
 
-    private addCaseBundleService bundleCreationService;
+    private AddCaseBundleService bundleCreationService;
     private CcdCallbackHandlerService ccdCallbackHandlerService;
 
-    public AppendDocumentsController(CcdCallbackHandlerService ccdCallbackHandlerService, addCaseBundleService bundleCreationService) {
+    public AppendDocumentsController(CcdCallbackHandlerService ccdCallbackHandlerService, AddCaseBundleService bundleCreationService) {
         this.bundleCreationService = bundleCreationService;
         this.ccdCallbackHandlerService = ccdCallbackHandlerService;
     }
