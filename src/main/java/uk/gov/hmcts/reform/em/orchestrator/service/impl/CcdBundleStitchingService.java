@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.touk.throwing.ThrowingFunction;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
 import java.util.List;
 import java.util.Spliterator;
@@ -16,37 +18,40 @@ import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 @Service
 @Transactional
 public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final StitchingService stitchingService;
 
-//    public CcdBundleStitchingService(DocumentTaskItemProcessor documentTaskItemProcessor, BundleMapper bundleMapper) {
-//        this.documentTaskItemProcessor = documentTaskItemProcessor;
-//        this.bundleMapper = bundleMapper;
-//    }
+    public CcdBundleStitchingService(StitchingService stitchingService) {
+        this.stitchingService = stitchingService;
+    }
 
     @Override
     public void updateCase(JsonNode bundleData, String jwt) {
+        ArrayNode bundles = castJsonDataToJsonArray(bundleData);
 
-//        ArrayNode bundles = castJsonDataToJsonArray(bundleData);
-//
-//        List<JsonNode> newBundles = StreamSupport
-//                .stream(Spliterators.spliteratorUnknownSize(bundles.iterator(), Spliterator.ORDERED),false)
-//                .parallel()
-//                .map(ThrowingFunction.unchecked(this::bundleJsonToBundleDto))
-//                .map(bundleMapper::toEntity)
-//                .map(bundle -> new DocumentTask(bundle, jwt))
-//                .map(documentTaskItemProcessor::process)
-//                .map(DocumentTask::getBundle)
-//                .map(bundleMapper::toDto)
-//                .map( bundleDto -> mapper.convertValue(bundleDto, JsonNode.class))
-//                .collect(Collectors.toList());
-//
-//        bundles.removeAll();
-//        bundles.addAll(newBundles);
+        List<JsonNode> newBundles = StreamSupport
+                .stream(Spliterators.spliteratorUnknownSize(bundles.iterator(), Spliterator.ORDERED),false)
+                .parallel()
+                .map(unchecked(this::bundleJsonToBundleDto))
+                .map(unchecked(bundle -> this.stitchBundle(bundle, jwt)))
+                .map(bundleDto -> mapper.convertValue(bundleDto, JsonNode.class))
+                .collect(Collectors.toList());
 
+        bundles.removeAll();
+        bundles.addAll(newBundles);
+    }
+
+    private BundleDTO stitchBundle(BundleDTO bundle, String jwt) throws StitchingServiceException, InterruptedException {
+        String stitchedDocId = stitchingService.stitch(bundle, jwt);
+        bundle.setStitchedDocId(stitchedDocId);
+
+        return bundle;
     }
 
     private BundleDTO bundleJsonToBundleDto(JsonNode jsonNode) throws JsonProcessingException {
