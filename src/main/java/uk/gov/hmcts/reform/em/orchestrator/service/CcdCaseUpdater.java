@@ -4,6 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public interface CcdCaseUpdater {
 
-    void updateCase(JsonNode bundleData, String jwt);
+    void updateCase(JsonNode caseData, JsonNode propertyData, String jwt);
 
 }

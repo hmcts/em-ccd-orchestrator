@@ -18,15 +18,22 @@ public class CcdCallbackHandlerServiceImpl implements CcdCallbackHandlerService 
         this.casePropertyFinder = casePropertyFinder;
     }
 
+
+    // TODO FIX THIS
     @Override
     public JsonNode handleCddCallback(final CcdCallbackDto ccdCallbackDto, final CcdCaseUpdater ccdCaseUpdater) {
-        return casePropertyFinder
-            .findCaseProperty(ccdCallbackDto.getCaseData(), ccdCallbackDto.getPropertyName())
-                .map( foundPropertyValue -> {
-                    ccdCaseUpdater.updateCase(foundPropertyValue, ccdCallbackDto.getJwt());
-                    return ccdCallbackDto.getCaseData();
-                })
-                .orElse(ccdCallbackDto.getCaseData());
+        return ccdCallbackDto.getPropertyName().map( propertyName -> {
+            casePropertyFinder
+                    .findCaseProperty(ccdCallbackDto.getCaseData(), propertyName)
+                    .map(foundPropertyValue -> {
+                        ccdCaseUpdater.updateCase(ccdCallbackDto.getCaseData(), foundPropertyValue, ccdCallbackDto.getJwt());
+                        return ccdCallbackDto.getCaseData();
+                    })
+                    .orElse(ccdCallbackDto.getCaseData());
+        }).orElse(() -> {
+                ccdCaseUpdater.updateCase(ccdCallbackDto.getCaseData(), null, ccdCallbackDto.getJwt());
+                return ccdCallbackDto.getCaseData()
+        });
 
     }
 }

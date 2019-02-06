@@ -28,7 +28,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 //    }
 
     @Override
-    public void updateCase(JsonNode bundleData, String jwt) {
+    public void updateCase(JsonNode caseData, JsonNode bundleData, String jwt) {
 
 //        ArrayNode bundles = castJsonDataToJsonArray(bundleData);
 //

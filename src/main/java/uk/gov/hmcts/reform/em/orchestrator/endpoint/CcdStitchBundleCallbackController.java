@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingServic
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 
+import java.util.Optional;
+
 
 @Controller
 public class CcdStitchBundleCallbackController {
@@ -44,7 +46,7 @@ public class CcdStitchBundleCallbackController {
 
         cmd.setJwt(authorisationHeader);
 
-        cmd.setPropertyName("caseBundles");
+        cmd.setPropertyName(Optional.of("caseBundles"));
 
         ccdCallbackHandlerService.handleCddCallback(cmd, ccdBundleStitchingService);
 

@@ -2,9 +2,11 @@ package uk.gov.hmcts.reform.em.orchestrator.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Optional;
+
 public class CcdCallbackDto {
 
-    private String propertyName;
+    private Optional<String> propertyName;
 
     private JsonNode caseData;
 
@@ -26,11 +28,11 @@ public class CcdCallbackDto {
         this.jwt = jwt;
     }
 
-    public String getPropertyName() {
+    public Optional<String> getPropertyName() {
         return propertyName;
     }
 
-    public void setPropertyName(String propertyName) {
+    public void setPropertyName(Optional<String> propertyName) {
         this.propertyName = propertyName;
     }
 }
