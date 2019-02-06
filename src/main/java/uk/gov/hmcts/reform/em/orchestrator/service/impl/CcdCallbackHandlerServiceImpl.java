@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 

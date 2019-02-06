@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingService;
-import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 
 

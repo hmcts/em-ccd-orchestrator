@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service;
+package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

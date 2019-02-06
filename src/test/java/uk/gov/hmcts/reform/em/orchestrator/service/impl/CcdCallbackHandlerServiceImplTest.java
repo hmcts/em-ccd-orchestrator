@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
 import java.util.Optional;

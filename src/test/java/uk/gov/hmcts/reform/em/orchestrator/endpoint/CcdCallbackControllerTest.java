@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
-import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingService;
 
