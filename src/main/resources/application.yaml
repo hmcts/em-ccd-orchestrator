@@ -12,7 +12,7 @@ base-urls:
   idam-user: ${IDAM_API_USER:test@test.com}
   idam-user-role: ${IDAM_API_USER_ROLE:caseworker}
   idam-s2s: ${S2S_URL:http://localhost:4502}
-  s2s-name: ${S2S_SERVICE_NAME:em_gw}
+  s2s-name: ${S2S_SERVICE_NAME:em_ccd_orchestrator}
   s2s-token: ${S2S_TOKEN:AAAAAAAAAAAAAAAA}
   test-url: ${TEST_URL:http://localhost:8080}
 
