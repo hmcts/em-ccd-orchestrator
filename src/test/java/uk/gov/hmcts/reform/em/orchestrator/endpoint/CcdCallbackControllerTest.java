@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserResolver;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingService;
 
@@ -64,16 +64,16 @@ public class CcdCallbackControllerTest {
 
         this.mockMvc
                 .perform(post("/api/stitch-cdd-bundles")
-                        .content("[]")
+                        .content("{ \"case_details\": { \"case_data\": { \"caseBundles\": [] } } }")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
                         .header("ServiceAuthorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("[]")));
+                .andExpect(content().string(containsString("{\"case_details\":{\"case_data\":{\"caseBundles\":[]}}}")));
 
         Mockito
                 .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCddCallback(Mockito.any(CcdCallbackDto.class), Mockito.any(CcdBundleStitchingService.class));
+                .handleCddCallback(Mockito.any(CcdCallbackDTO.class), Mockito.any(CcdBundleStitchingService.class));
     }
 
 }

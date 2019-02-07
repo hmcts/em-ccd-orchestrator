@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import uk.gov.hmcts.reform.em.orchestrator.service.impl.CcdBundleStitchingService;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 
 
@@ -33,22 +34,21 @@ public class CcdStitchBundleCallbackController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JsonNode> stitchCcdBundles(
-            @RequestBody JsonNode caseData,
+            @RequestBody JsonNode caseJson,
             @RequestHeader(value="Authorization", required=false) String authorisationHeader)   {
 
-        CcdCallbackDto cmd = new CcdCallbackDto();
+        JsonNode caseData = caseJson.path("case_details").path("case_data");
 
-        cmd.setCaseData(caseData);
+        log.debug("CCD callback request received {}", caseData);
 
-        log.debug("CCD callback request received {}", cmd.getCaseData());
+        CcdCallbackDTO ccdCallback = new CcdCallbackDTO();
+        ccdCallback.setCaseData(caseData);
+        ccdCallback.setJwt(authorisationHeader);
+        ccdCallback.setPropertyName("caseBundles");
 
-        cmd.setJwt(authorisationHeader);
+        ccdCallbackHandlerService.handleCddCallback(ccdCallback, ccdBundleStitchingService);
 
-        cmd.setPropertyName("caseBundles");
-
-        ccdCallbackHandlerService.handleCddCallback(cmd, ccdBundleStitchingService);
-
-        return ResponseEntity.ok(cmd.getCaseData());
+        return ResponseEntity.ok(caseJson);
     }
 
 }

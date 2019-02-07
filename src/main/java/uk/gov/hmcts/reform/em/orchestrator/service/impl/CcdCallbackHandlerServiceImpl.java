@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCallbackHandlerService;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
@@ -19,7 +19,7 @@ public class CcdCallbackHandlerServiceImpl implements CcdCallbackHandlerService 
     }
 
     @Override
-    public JsonNode handleCddCallback(final CcdCallbackDto ccdCallbackDto, final CcdCaseUpdater ccdCaseUpdater) {
+    public JsonNode handleCddCallback(final CcdCallbackDTO ccdCallbackDto, final CcdCaseUpdater ccdCaseUpdater) {
         return casePropertyFinder
             .findCaseProperty(ccdCallbackDto.getCaseData(), ccdCallbackDto.getPropertyName())
                 .map( foundPropertyValue -> {

@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class CcdCallbackDto {
+public class CcdCallbackDTO {
 
     private String propertyName;
 

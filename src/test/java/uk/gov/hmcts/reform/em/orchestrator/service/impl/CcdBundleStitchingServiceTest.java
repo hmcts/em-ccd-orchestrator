@@ -34,10 +34,10 @@ public class CcdBundleStitchingServiceTest {
 
     @Test
     public void testUpdateCase() throws IOException {
-        JsonNode node = objectMapper.readTree("[{ }]");
+        JsonNode node = objectMapper.readTree("[{ \"value\": {} }]");
         ccdBundleStitchingService.updateCase(node, "jwt");
 
-        String stitchedDocId = node.get(0).get("stitchedDocId").textValue();
+        String stitchedDocId = node.get(0).path("value").path("stitchedDocId").textValue();
         Assert.assertEquals("AAAAA", stitchedDocId);
     }
 
