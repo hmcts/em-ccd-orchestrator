@@ -27,7 +27,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
     @Override
     public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return exampleCaseVerifier.verify(ccdCallbackDto.getCaseData());
+        return exampleCaseVerifier.verify(ccdCallbackDto.getCcdPaylod());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
                 .findCaseProperty(ArrayNode.class)
                 .orElseGet(() -> {
                     ArrayNode arrayNode = objectMapper.createArrayNode();
-                    ((ObjectNode)ccdCallbackDto.getCaseData().findValue("case_data")).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                    ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
                     return arrayNode;
                 });
 
@@ -45,7 +45,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
         bundles.add(newBundle);
 
-        return ccdCallbackDto.getCaseData().findValue("case_data");
+        return ccdCallbackDto.getCaseData();
 
     }
 

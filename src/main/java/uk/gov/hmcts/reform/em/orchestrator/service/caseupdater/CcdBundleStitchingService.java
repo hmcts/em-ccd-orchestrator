@@ -58,7 +58,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             maybeBundles.get().addAll(newBundles);
         }
 
-        return ccdCallbackDto.getCaseData().findValue("case_data");
+        return ccdCallbackDto.getCaseData();
     }
     private CcdValue<BundleDTO> stitchBundle(CcdValue<BundleDTO> bundle, String jwt) throws StitchingServiceException, InterruptedException {
         String stitchedDocId = stitchingService.stitch(bundle.getValue(), jwt);
