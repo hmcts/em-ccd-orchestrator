@@ -46,21 +46,21 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolderName(), stitchingBundleDTO.getFolders().get(0).getFolderName());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getDescription(), stitchingBundleDTO.getFolders().get(0).getDescription());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentURI(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentId(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getDocumentId());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getSortIndex());
 
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getFolderName(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getFolderName());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDescription(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDescription());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentURI(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentId(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getDocumentId());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getSortIndex());
 
         assertEquals(bundleDTO.getFolders().get(1).getValue().getFolderName(), stitchingBundleDTO.getFolders().get(1).getFolderName());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getDescription(), stitchingBundleDTO.getFolders().get(1).getDescription());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(1).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getDocumentURI(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getDocumentId(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getDocumentId());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getSortIndex());
 
@@ -77,8 +77,8 @@ public class StitchingDTOMapperTest {
 
     private BundleDocumentDTO getDocument(int index) {
         BundleDocumentDTO documentDTO = new BundleDocumentDTO();
-        documentDTO.setDocTitle(String.format("document %s title", index));
-        documentDTO.setDocumentURI(String.format("/document/%s", index));
+        documentDTO.setName(String.format("document %s title", index));
+        documentDTO.setDocumentUri(String.format("/document/%s", index));
         documentDTO.setSortIndex(index);
 
         return documentDTO;

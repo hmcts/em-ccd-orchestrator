@@ -45,7 +45,7 @@ public class StitchingDTOMapper {
     private StitchingBundleDocumentDTO getDocument(CcdValue<BundleDocumentDTO> documentDto) {
         StitchingBundleDocumentDTO document = new StitchingBundleDocumentDTO();
         document.setDocumentId(documentDto.getValue().getDocumentId());
-        document.setDocumentURI(documentDto.getValue().getDocumentURI());
+        document.setDocumentURI(documentDto.getValue().getDocumentUri());
         document.setSortIndex(documentDto.getValue().getSortIndex());
 
         return document;

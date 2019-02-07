@@ -40,7 +40,7 @@ public class StitchingService {
         documentTask.setJwt(jwt);
 
         try {
-           final int taskId = post(documentTask, jwt);
+            final int taskId = post(documentTask, jwt);
             final String response = poll(taskId, jwt);
 
 
@@ -69,7 +69,7 @@ public class StitchingService {
         if (response.isSuccessful()) {
             return JsonPath.read(response.body().string(), "$.id");
         } else {
-            throw new IOException("Unable to stitching task");
+            throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
 

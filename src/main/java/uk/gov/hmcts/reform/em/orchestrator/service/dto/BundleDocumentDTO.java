@@ -11,9 +11,9 @@ public class BundleDocumentDTO implements Serializable {
     private Long id;
 
     private String documentId;
-    private String docTitle;
-    private String docDescription;
-    private String documentURI;
+    private String name;
+    private String description;
+    private String documentUri;
     private Instant dateAddedToCase;
     private boolean isIncludedInBundle;
     private String creatorRole;
@@ -36,28 +36,28 @@ public class BundleDocumentDTO implements Serializable {
         this.documentId = documentId;
     }
 
-    public String getDocTitle() {
-        return docTitle;
+    public String getName() {
+        return name;
     }
 
-    public void setDocTitle(String docTitle) {
-        this.docTitle = docTitle;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDocDescription() {
-        return docDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDocDescription(String docDescription) {
-        this.docDescription = docDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getDocumentURI() {
-        return documentURI;
+    public String getDocumentUri() {
+        return documentUri;
     }
 
-    public void setDocumentURI(String documentURI) {
-        this.documentURI = documentURI;
+    public void setDocumentUri(String documentUri) {
+        this.documentUri = documentUri;
     }
 
     public Instant getDateAddedToCase() {
