@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class StitchingService {
 
-    private static final int MAX_RETRIES = 10;
+    private static final int MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
@@ -45,7 +45,6 @@ public class StitchingService {
         try {
             final int taskId = post(documentTask, jwt);
             final String response = poll(taskId, jwt);
-
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
                 return JsonPath.read(response, "$.bundle.stitchedDocumentURI");

@@ -79,7 +79,8 @@ services:
       - IDAM_API_BASE_URI=http://idam-api:8080
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
-      - DM_STORE_APP_URL=http://dm-store:4603
+      - DM_STORE_APP_URL=http://dm-store:8080
+      - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
     depends_on:
       - emstitch-db
       - dm-store
