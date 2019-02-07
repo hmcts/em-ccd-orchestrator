@@ -38,7 +38,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     @Override
     public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return true;
+        return false;
     }
 
     @Override

@@ -5,9 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackHandlerService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -16,12 +16,12 @@ import java.io.IOException;
 @Controller
 public class CcdStitchBundleCallbackController {
 
-    private CcdCallbackHandlerService ccdCallbackHandlerService;
-    private CcdCallbackDtoCreator ccdCallbackDtoCreator;
+    private final CcdCallbackDtoCreator ccdCallbackDtoCreator;
+    private final CcdBundleStitchingService ccdBundleStitchingService;
 
-    public CcdStitchBundleCallbackController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdCallbackDtoCreator ccdCallbackDtoCreator) {
-        this.ccdCallbackHandlerService = ccdCallbackHandlerService;
+    public CcdStitchBundleCallbackController(CcdCallbackDtoCreator ccdCallbackDtoCreator, CcdBundleStitchingService ccdBundleStitchingService) {
         this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
+        this.ccdBundleStitchingService = ccdBundleStitchingService;
     }
 
     @PostMapping(value = "/api/stitch-cdd-bundles",
@@ -29,7 +29,7 @@ public class CcdStitchBundleCallbackController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JsonNode> stitchCcdBundles(HttpServletRequest request) throws IOException {
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        return ResponseEntity.ok(ccdCallbackHandlerService.handleCddCallback(ccdCallbackDto));
+        return ResponseEntity.ok(ccdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
 }

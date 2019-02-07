@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackHandlerService;
@@ -30,13 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CcdStitchBundleCallbackTest {
+public class CcdStitchBundleCallbackControllerTest {
 
     @MockBean
     private CcdCallbackDtoCreator ccdCallbackDtoCreator;
 
     @MockBean
-    private CcdCallbackHandlerService ccdCallbackHandlerService;
+    private CcdBundleStitchingService ccdBundleStitchingService;
 
     @MockBean
     private ServiceRequestAuthorizer serviceRequestAuthorizer;
@@ -71,8 +72,8 @@ public class CcdStitchBundleCallbackTest {
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCddCallback(Mockito.any(CcdCallbackDto.class));
+                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
 }

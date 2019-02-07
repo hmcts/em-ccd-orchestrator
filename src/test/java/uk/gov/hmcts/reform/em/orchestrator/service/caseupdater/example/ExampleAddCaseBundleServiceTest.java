@@ -48,12 +48,4 @@ public class ExampleAddCaseBundleServiceTest {
         Mockito.verify(exampleBundlePopulator, Mockito.times(1)).populateNewBundle(Mockito.any(JsonNode.class));
     }
 
-    @Test(expected = PropertyNotFoundException.class)
-    public void updateCasePropertyNotFound() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
-        ccdCallbackDto.setPropertyName(Optional.of("caseBundlesx"));
-        exampleAddCaseBundleService.updateCase(ccdCallbackDto);
-    }
 }

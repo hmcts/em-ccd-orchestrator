@@ -1,12 +1,14 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.example;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.JsonNodesVerifier;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.PropertyNotFoundException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+
 
 @Service
 public class ExampleAddCaseBundleService implements CcdCaseUpdater {
@@ -15,9 +17,12 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
     private final JsonNodesVerifier exampleCaseVerifier;
 
-    public ExampleAddCaseBundleService(ExampleBundlePopulator exampleBundlePopulator, JsonNodesVerifier exampleCaseVerifier) {
+    private final ObjectMapper objectMapper;
+
+    public ExampleAddCaseBundleService(ExampleBundlePopulator exampleBundlePopulator, JsonNodesVerifier exampleCaseVerifier, ObjectMapper objectMapper) {
         this.exampleBundlePopulator = exampleBundlePopulator;
         this.exampleCaseVerifier = exampleCaseVerifier;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -28,15 +33,22 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
-        return ccdCallbackDto
+        ArrayNode bundles = ccdCallbackDto
                 .findCaseProperty(ArrayNode.class)
-                .map( bundleArray -> {
-                    JsonNode newBundle = exampleBundlePopulator.populateNewBundle(ccdCallbackDto.getCaseData());
-                    bundleArray.add(newBundle);
-                    return ccdCallbackDto.getCaseData();
-                })
-                .orElseThrow(() -> new PropertyNotFoundException(ccdCallbackDto.getPropertyName().get()));
+                .orElseGet(() -> {
+                    ArrayNode arrayNode = objectMapper.createArrayNode();
+                    ((ObjectNode)ccdCallbackDto.getCaseData().findValue("case_data")).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                    return arrayNode;
+                });
+
+        JsonNode newBundle = exampleBundlePopulator.populateNewBundle(ccdCallbackDto.getCaseData());
+
+        bundles.add(newBundle);
+
+        return ccdCallbackDto.getCaseData();
 
     }
+
+
 
 }
