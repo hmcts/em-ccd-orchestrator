@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service;
+package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 /**
  * The TaskState enumeration.

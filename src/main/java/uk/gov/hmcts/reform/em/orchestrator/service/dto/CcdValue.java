@@ -2,8 +2,10 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CcdValue<T> {
+public class CcdValue<T> implements Serializable {
     private T value;
 
     public T getValue() {

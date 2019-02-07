@@ -1,14 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
-import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.DocumentTaskDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.io.IOException;
 
@@ -19,10 +18,13 @@ public class StitchingService {
 
     private static final int MAX_RETRIES = 10;
     private static final int SLEEP_TIME = 500;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
 
-    public StitchingService(OkHttpClient http, String documentTaskEndpoint) {
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint) {
+        this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
     }
@@ -31,7 +33,8 @@ public class StitchingService {
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public String stitch(BundleDTO bundle, String jwt) throws StitchingServiceException, InterruptedException {
+    public String stitch(BundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
+        final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
         documentTask.setJwt(jwt);
@@ -53,7 +56,8 @@ public class StitchingService {
     }
 
     private int post(DocumentTaskDTO documentTask, String jwt) throws IOException {
-        final RequestBody body = RequestBody.create(MediaType.get("application/json"), getJson(documentTask));
+        final String json = jsonMapper.writeValueAsString(documentTask);
+        final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
             .url(documentTaskEndpoint)
@@ -67,14 +71,6 @@ public class StitchingService {
         } else {
             throw new IOException("Unable to stitching task");
         }
-    }
-
-    private String getJson(Object object) throws JsonProcessingException {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        return mapper.writeValueAsString(object);
     }
 
     private String poll(int taskId, String jwt) throws IOException, InterruptedException {

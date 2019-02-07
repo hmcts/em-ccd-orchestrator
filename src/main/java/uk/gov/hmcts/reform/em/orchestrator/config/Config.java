@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 @Configuration
 public class Config {
@@ -21,6 +22,6 @@ public class Config {
 
     @Bean
     public StitchingService getStitchingService() {
-        return new StitchingService(http, stitchingBaseUrl + stitchingResource);
+        return new StitchingService(new StitchingDTOMapper(), http, stitchingBaseUrl + stitchingResource);
     }
 }

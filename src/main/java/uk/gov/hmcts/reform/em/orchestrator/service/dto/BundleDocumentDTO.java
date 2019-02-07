@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 import java.io.Serializable;
 import java.time.Instant;
 
-public class BundleDocumentDTO extends AbstractAuditingDTO implements Serializable {
+public class BundleDocumentDTO implements Serializable {
 
     private Long id;
 

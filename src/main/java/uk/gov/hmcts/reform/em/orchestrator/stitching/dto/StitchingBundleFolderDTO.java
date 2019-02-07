@@ -1,28 +1,15 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.dto;
+package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BundleFolderDTO implements Serializable {
-
-    @JsonIgnore
-    private Long id;
+public class StitchingBundleFolderDTO {
 
     private String description;
     private String folderName;
-    private List<CcdValue<BundleDocumentDTO>> documents = new ArrayList<>();
-    private List<CcdValue<BundleFolderDTO>> folders = new ArrayList<>();
+    private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
+    private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private int sortIndex;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
@@ -40,19 +27,19 @@ public class BundleFolderDTO implements Serializable {
         this.folderName = folderName;
     }
 
-    public List<CcdValue<BundleDocumentDTO>> getDocuments() {
+    public List<StitchingBundleDocumentDTO> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<CcdValue<BundleDocumentDTO>> documents) {
+    public void setDocuments(List<StitchingBundleDocumentDTO> documents) {
         this.documents = documents;
     }
 
-    public List<CcdValue<BundleFolderDTO>> getFolders() {
+    public List<StitchingBundleFolderDTO> getFolders() {
         return folders;
     }
 
-    public void setFolders(List<CcdValue<BundleFolderDTO>> folders) {
+    public void setFolders(List<StitchingBundleFolderDTO> folders) {
         this.folders = folders;
     }
 
@@ -63,5 +50,5 @@ public class BundleFolderDTO implements Serializable {
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
     }
-}
 
+}

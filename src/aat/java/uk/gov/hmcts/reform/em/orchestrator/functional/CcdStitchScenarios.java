@@ -17,17 +17,18 @@ import java.util.List;
 
 public class CcdStitchScenarios {
 
-    TestUtil testUtil = new TestUtil();
+    private final TestUtil testUtil = new TestUtil();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testPostBundleStitch() throws IOException {
         BundleDTO bundle = testUtil.getTestBundle();
-        List<BundleDTO> bundles = new ArrayList<>();
-        bundles.add(bundle);
+        String json = mapper.writeValueAsString(bundle);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } }", json);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(convertObjectToJsonBytes(bundles))
+                .body(wrappedJson)
                 .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
@@ -38,33 +39,16 @@ public class CcdStitchScenarios {
     @Test
     public void testPostBundleStitchWithWordDoc() throws IOException {
         BundleDTO bundle = testUtil.getTestBundleWithWordDoc();
+        String json = mapper.writeValueAsString(bundle);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } }", json);
 
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(convertObjectToJsonBytes(bundle))
+            .body(wrappedJson)
             .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertNotNull( response.getBody().jsonPath().getString("stitchedDocId"));
-    }
-
-
-    /**
-     * Convert an object to JSON byte array.
-     *
-     * @param object
-     *            the object to convert
-     * @return the JSON byte array
-     * @throws IOException
-     */
-    public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
-        JavaTimeModule module = new JavaTimeModule();
-        mapper.registerModule(module);
-
-        return mapper.writeValueAsBytes(object);
+        Assert.assertNotNull(response.getBody().jsonPath().getString("$[0].stitchedDocId"));
     }
 
 }
