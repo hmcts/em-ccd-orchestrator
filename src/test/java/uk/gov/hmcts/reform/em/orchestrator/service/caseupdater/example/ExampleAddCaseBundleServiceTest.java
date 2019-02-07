@@ -32,7 +32,7 @@ public class ExampleAddCaseBundleServiceTest {
     public void handles() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
+        ccdCallbackDto.setCcdPaylod(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         exampleAddCaseBundleService.handles(ccdCallbackDto);
         Mockito.verify(exampleCaseVerifier, Mockito.times(1)).verify(Mockito.any(JsonNode.class));
