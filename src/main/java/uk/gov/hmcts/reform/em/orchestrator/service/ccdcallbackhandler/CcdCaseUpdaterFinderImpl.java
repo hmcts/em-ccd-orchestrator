@@ -6,7 +6,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdaterFin
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CcdCaseUpdaterFinderImpl implements CcdCaseUpdaterFinder {
@@ -19,10 +18,9 @@ public class CcdCaseUpdaterFinderImpl implements CcdCaseUpdaterFinder {
 
     @Override
     public Optional<CcdCaseUpdater> find(CcdCallbackDto ccdCallbackDto) {
-        List<CcdCaseUpdater> handlingUpdaters = ccdCaseUpdaterList
+        return ccdCaseUpdaterList
                 .stream()
                 .filter(ccdCaseUpdater -> ccdCaseUpdater.handles(ccdCallbackDto))
-                .collect(Collectors.toList());
-        return handlingUpdaters.size() >= 0 ? Optional.of(handlingUpdaters.get(0)) : Optional.ofNullable(null);
+                .findFirst();
     }
 }
