@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.CasePropertyFinder;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdCallbackDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class CcdCallbackHandlerServiceImplTest {
 
     @Test
     public void testHandleSubPropertyFound() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        CcdCallbackDTO ccdCallbackDto = new CcdCallbackDTO();
         ccdCallbackDto.setCaseData(objectMapper.readTree("[]"));
         ccdCallbackDto.setJwt("jwt");
         ccdCallbackDto.setPropertyName("bundles");
@@ -48,7 +48,7 @@ public class CcdCallbackHandlerServiceImplTest {
 
     @Test
     public void testHandleSubPropertyNotFound() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        CcdCallbackDTO ccdCallbackDto = new CcdCallbackDTO();
         ccdCallbackDto.setCaseData(objectMapper.readTree("[]"));
         ccdCallbackDto.setJwt("jwt");
         ccdCallbackDto.setPropertyName("bundles");

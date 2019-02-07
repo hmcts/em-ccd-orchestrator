@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -9,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.touk.throwing.ThrowingFunction;
 import uk.gov.hmcts.reform.em.orchestrator.service.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -25,6 +28,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final JavaType type = mapper.getTypeFactory().constructParametricType(CcdValue.class, BundleDTO.class);
     private final StitchingService stitchingService;
 
     public CcdBundleStitchingService(StitchingService stitchingService) {
@@ -47,15 +51,15 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         bundles.addAll(newBundles);
     }
 
-    private BundleDTO stitchBundle(BundleDTO bundle, String jwt) throws StitchingServiceException, InterruptedException {
-        String stitchedDocId = stitchingService.stitch(bundle, jwt);
-        bundle.setStitchedDocId(stitchedDocId);
+    private CcdValue<BundleDTO> stitchBundle(CcdValue<BundleDTO> bundle, String jwt) throws StitchingServiceException, InterruptedException {
+        String stitchedDocId = stitchingService.stitch(bundle.getValue(), jwt);
+        bundle.getValue().setStitchedDocId(stitchedDocId);
 
         return bundle;
     }
 
-    private BundleDTO bundleJsonToBundleDto(JsonNode jsonNode) throws JsonProcessingException {
-        return mapper.treeToValue(jsonNode, BundleDTO.class);
+    private CcdValue<BundleDTO> bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
+        return mapper.readValue(mapper.treeAsTokens(jsonNode), type);
     }
 
     private ArrayNode castJsonDataToJsonArray(JsonNode bundleData) {
