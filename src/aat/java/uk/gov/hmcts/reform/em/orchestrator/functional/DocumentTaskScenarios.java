@@ -7,13 +7,13 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.DocumentTaskDTO;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DocumentTaskScenarios {
 
@@ -22,14 +22,17 @@ public class DocumentTaskScenarios {
     @Test
     public void testPostBundleStitch() throws IOException {
         BundleDTO bundle = testUtil.getTestBundle();
+        List<BundleDTO> bundles = new ArrayList<>();
+        bundles.add(bundle);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(convertObjectToJsonBytes(bundle))
-                .request("POST", Env.getTestUrl() + "/api/stitched-bundle");
+                .body(convertObjectToJsonBytes(bundles))
+                .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertNotNull( response.getBody().jsonPath().getString("stitchedDocId"));
+        String body = response.getBody().prettyPrint();
+        Assert.assertNotNull(response.getBody().jsonPath().getString("$[0].stitchedDocId"));
     }
 
     @Test
@@ -39,26 +42,10 @@ public class DocumentTaskScenarios {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(convertObjectToJsonBytes(bundle))
-            .request("POST", Env.getTestUrl() + "/api/stitched-bundle");
+            .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertNotNull( response.getBody().jsonPath().getString("stitchedDocId"));
-    }
-
-    @Test
-    public void testPostDocumentTask() throws IOException {
-        BundleDTO bundle = testUtil.getTestBundle();
-        DocumentTaskDTO documentTask = new DocumentTaskDTO();
-
-        documentTask.setBundle(bundle);
-
-        Response response = testUtil.authRequest()
-                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(convertObjectToJsonBytes(documentTask))
-                .request("POST", Env.getTestUrl() + "/api/document-tasks");
-
-        Assert.assertEquals(201, response.getStatusCode());
-        Assert.assertEquals( response.getBody().jsonPath().getString("taskState"), TaskState.NEW.toString());
     }
 
 

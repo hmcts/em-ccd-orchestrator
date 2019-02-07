@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,7 +25,7 @@ public class ExampleBundlePopulator {
         BundleDocumentDTO bundleDocumentDTO = new BundleDocumentDTO();
         bundleDocumentDTO.setDocTitle(caseData.at("/case_details/case_data/caseDocument1Name").asText());
         bundleDocumentDTO.setDocumentURI(caseData.at("/case_details/case_data/caseDocument1").asText());
-        newBundle.setDocuments(Stream.of(bundleDocumentDTO).collect(Collectors.toList()));
+        newBundle.setDocuments(Stream.of(new CcdValue<BundleDocumentDTO>(bundleDocumentDTO)).collect(Collectors.toList()));
         return objectMapper.valueToTree(newBundle);
     }
 

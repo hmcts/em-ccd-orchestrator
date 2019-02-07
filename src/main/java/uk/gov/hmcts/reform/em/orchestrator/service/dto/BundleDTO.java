@@ -1,12 +1,16 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BundleDTO extends AbstractAuditingDTO implements Serializable {
+
     @JsonIgnore
     private Long id;
 
@@ -23,8 +27,8 @@ public class BundleDTO extends AbstractAuditingDTO implements Serializable {
     private Instant dateLocked;
     private String lockedBy;
     private String comments;
-    private List<BundleFolderDTO> folders = new ArrayList<>();
-    private List<BundleDocumentDTO> documents = new ArrayList<>();
+    private List<CcdValue<BundleFolderDTO>> folders = new ArrayList<>();
+    private List<CcdValue<BundleDocumentDTO>> documents = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -122,19 +126,19 @@ public class BundleDTO extends AbstractAuditingDTO implements Serializable {
         this.comments = comments;
     }
 
-    public List<BundleFolderDTO> getFolders() {
+    public List<CcdValue<BundleFolderDTO>> getFolders() {
         return folders;
     }
 
-    public void setFolders(List<BundleFolderDTO> folders) {
+    public void setFolders(List<CcdValue<BundleFolderDTO>> folders) {
         this.folders = folders;
     }
 
-    public List<BundleDocumentDTO> getDocuments() {
+    public List<CcdValue<BundleDocumentDTO>> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<BundleDocumentDTO> documents) {
+    public void setDocuments(List<CcdValue<BundleDocumentDTO>> documents) {
         this.documents = documents;
     }
 
