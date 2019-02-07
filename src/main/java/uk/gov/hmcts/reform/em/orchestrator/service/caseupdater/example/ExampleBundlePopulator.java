@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service;
+package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.example;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,24 +10,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class BundlePopulator {
+public class ExampleBundlePopulator {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public JsonNode populateNewBundle(JsonNode caseData) {
-
-        BundleDTO newBundle = new BundleDTO();
-        newBundle.setBundleTitle("New Bundle");
-
-        BundleDocumentDTO bundleDocumentDTO = new BundleDocumentDTO();
-        bundleDocumentDTO.setDocTitle(caseData.at("caseDocument1Name").asText());
-        bundleDocumentDTO.setDocumentURI(caseData.at("caseDocument1").asText());
-
-        newBundle.setDocuments(Stream.of(bundleDocumentDTO).collect(Collectors.toList()));
-
-
-        return mapper.valueToTree(newBundle);
+    public ExampleBundlePopulator(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
+    public JsonNode populateNewBundle(JsonNode caseData) {
+        BundleDTO newBundle = new BundleDTO();
+        newBundle.setBundleTitle("New Bundle");
+        BundleDocumentDTO bundleDocumentDTO = new BundleDocumentDTO();
+        bundleDocumentDTO.setDocTitle(caseData.at("/case_details/case_data/caseDocument1Name").asText());
+        bundleDocumentDTO.setDocumentURI(caseData.at("/case_details/case_data/caseDocument1").asText());
+        newBundle.setDocuments(Stream.of(bundleDocumentDTO).collect(Collectors.toList()));
+        return objectMapper.valueToTree(newBundle);
+    }
 
 }

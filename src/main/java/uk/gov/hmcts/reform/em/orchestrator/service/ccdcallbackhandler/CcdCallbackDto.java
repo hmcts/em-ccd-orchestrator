@@ -1,12 +1,13 @@
-package uk.gov.hmcts.reform.em.orchestrator.service;
+package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import pl.touk.throwing.ThrowingFunction;
 
 import java.util.Optional;
 
 public class CcdCallbackDto {
 
-    private Optional<String> propertyName;
+    private Optional<String> propertyName = Optional.empty();
 
     private JsonNode caseData;
 
@@ -35,4 +36,13 @@ public class CcdCallbackDto {
     public void setPropertyName(Optional<String> propertyName) {
         this.propertyName = propertyName;
     }
+
+    public Optional<JsonNode> findCaseProperty() {
+        return propertyName.map(caseData::findValue);
+    }
+
+    public <T> Optional<T> findCaseProperty(Class<T> jsonSubclass) {
+        return findCaseProperty().map(ThrowingFunction.unchecked(jsonSubclass::cast));
+    }
+
 }

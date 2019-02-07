@@ -12,24 +12,24 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-
 @Controller
-public class CcdStitchBundleCallbackController {
+public class NewBundleController {
 
     private CcdCallbackHandlerService ccdCallbackHandlerService;
     private CcdCallbackDtoCreator ccdCallbackDtoCreator;
 
-    public CcdStitchBundleCallbackController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdCallbackDtoCreator ccdCallbackDtoCreator) {
+    public NewBundleController(CcdCallbackHandlerService ccdCallbackHandlerService, CcdCallbackDtoCreator ccdCallbackDtoCreator) {
         this.ccdCallbackHandlerService = ccdCallbackHandlerService;
         this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
     }
 
-    @PostMapping(value = "/api/stitch-cdd-bundles",
+    @PostMapping(value = "/api/new-bundle",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JsonNode> stitchCcdBundles(HttpServletRequest request) throws IOException {
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        return ResponseEntity.ok(ccdCallbackHandlerService.handleCddCallback(ccdCallbackDto));
+    public ResponseEntity<JsonNode> exampleServicePrepareNewBundle(HttpServletRequest request) throws IOException {
+        CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
+        JsonNode jsonNode = ccdCallbackHandlerService.handleCddCallback(dto);
+        return ResponseEntity.ok(jsonNode);
     }
 
 }
