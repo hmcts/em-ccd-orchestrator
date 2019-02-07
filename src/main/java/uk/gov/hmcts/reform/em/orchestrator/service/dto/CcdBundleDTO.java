@@ -7,7 +7,7 @@ public class CcdBundleDTO {
     private Long id;
     private String title;
     private String description;
-    private boolean eligibleForStitching;
+    private String eligibleForStitching;
     private String stitchStatus;
     private String stitchedDocumentURI;
     private List<CcdValue<CcdBundleDocumentDTO>> documents;
@@ -36,11 +36,11 @@ public class CcdBundleDTO {
         this.description = description;
     }
 
-    public boolean isEligibleForStitching() {
+    public String isEligibleForStitching() {
         return eligibleForStitching;
     }
 
-    public void setEligibleForStitching(boolean eligibleForStitching) {
+    public void setEligibleForStitching(String eligibleForStitching) {
         this.eligibleForStitching = eligibleForStitching;
     }
 

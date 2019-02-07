@@ -45,7 +45,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
         bundles.add(newBundle);
 
-        return ccdCallbackDto.getCaseData();
+        return ccdCallbackDto.getCaseData().findValue("case_data");
 
     }
 

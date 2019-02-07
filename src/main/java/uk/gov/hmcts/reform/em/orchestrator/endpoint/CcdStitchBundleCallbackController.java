@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -27,9 +28,9 @@ public class CcdStitchBundleCallbackController {
     @PostMapping(value = "/api/stitch-cdd-bundles",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JsonNode> stitchCcdBundles(HttpServletRequest request) throws IOException {
+    public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) throws IOException {
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        return ResponseEntity.ok(ccdBundleStitchingService.updateCase(ccdCallbackDto));
+        return ResponseEntity.ok(new CcdCallbackResponseDto(ccdBundleStitchingService.updateCase(ccdCallbackDto)));
     }
 
 }
