@@ -26,4 +26,20 @@ public class CcdCallbackResponseDto {
     public void setData(JsonNode data) {
         this.data = data;
     }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
+
+    public List<String> getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(List<String> warnings) {
+        this.warnings = warnings;
+    }
 }
