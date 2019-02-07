@@ -1,9 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.Instant;
 
-public class BundleDocumentDTO extends AbstractAuditingDTO implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class BundleDocumentDTO implements Serializable {
 
     private Long id;
 

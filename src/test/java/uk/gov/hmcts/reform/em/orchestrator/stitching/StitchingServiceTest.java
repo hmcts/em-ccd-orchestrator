@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,6 +83,7 @@ public class StitchingServiceTest {
 
     public StitchingService getStitchingService(OkHttpClient http) {
         return new StitchingService(
+            new StitchingDTOMapper(),
             http,
             stitchingBaseUrl + stitchingResource
         );

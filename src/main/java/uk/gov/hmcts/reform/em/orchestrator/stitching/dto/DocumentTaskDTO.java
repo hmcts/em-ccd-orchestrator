@@ -1,7 +1,7 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.dto;
+package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -10,12 +10,12 @@ import java.util.Objects;
 /**
  * A DTO for the DocumentTask entity.
  */
-public class DocumentTaskDTO extends AbstractAuditingDTO implements Serializable {
+public class DocumentTaskDTO implements Serializable {
 
     private Long id;
 
     @NotNull
-    private BundleDTO bundle;
+    private StitchingBundleDTO  bundle;
 
     private TaskState taskState;
 
@@ -32,11 +32,11 @@ public class DocumentTaskDTO extends AbstractAuditingDTO implements Serializable
         this.id = id;
     }
 
-    public BundleDTO getBundle() {
+    public StitchingBundleDTO getBundle() {
         return bundle;
     }
 
-    public void setBundle(BundleDTO bundle) {
+    public void setBundle(StitchingBundleDTO bundle) {
         this.bundle = bundle;
     }
 

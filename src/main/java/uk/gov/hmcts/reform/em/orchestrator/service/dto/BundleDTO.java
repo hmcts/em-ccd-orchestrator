@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BundleDTO extends AbstractAuditingDTO implements Serializable {
+public class BundleDTO implements Serializable {
 
     @JsonIgnore
     private Long id;
 
-    @JsonIgnore
-    private DocumentTaskDTO documentTask;
     private String bundleTitle;
     private int version;
     private String description;
@@ -142,12 +140,5 @@ public class BundleDTO extends AbstractAuditingDTO implements Serializable {
         this.documents = documents;
     }
 
-    public DocumentTaskDTO getDocumentTask() {
-        return documentTask;
-    }
-
-    public void setDocumentTask(DocumentTaskDTO documentTask) {
-        this.documentTask = documentTask;
-    }
 }
 
