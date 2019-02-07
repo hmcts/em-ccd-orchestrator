@@ -33,7 +33,6 @@ public class CcdCallbackHandlerServiceImplTest {
         JsonNode jsonNode = Mockito.mock(JsonNode.class);
         Mockito.when(ccdCaseUpdaterFinder.find(Mockito.any(CcdCallbackDto.class))).thenReturn(Optional.of(ccdCaseUpdater));
         Mockito.when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class))).thenReturn(jsonNode);
-        Mockito.when(ccdCaseUpdater.handles(Mockito.any(CcdCallbackDto.class))).thenReturn(true);
         ccdCallbackHandlerService.handleCddCallback(new CcdCallbackDto());
         Mockito.verify(ccdCaseUpdater, Mockito.times(1)).updateCase(Mockito.any(CcdCallbackDto.class));
     }
