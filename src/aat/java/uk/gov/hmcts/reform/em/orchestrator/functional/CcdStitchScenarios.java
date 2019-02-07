@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,8 +30,10 @@ public class CcdStitchScenarios {
                 .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("Bundle title", response.getBody().jsonPath().getString("data.caseBundles[0].value.bundleTitle"));
-        Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.stitchedDocumentURI"));
+        response.getBody().prettyPrint();
+        JsonPath path = response.getBody().jsonPath();
+        Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.bundleTitle"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocumentURI"));
     }
 
     @Test

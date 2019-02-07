@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
@@ -22,11 +23,13 @@ public class StitchingService {
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
+    private final AuthTokenGenerator authTokenGenerator;
 
-    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint) {
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator) {
         this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
+        this.authTokenGenerator = authTokenGenerator;
     }
 
     /**
@@ -60,6 +63,7 @@ public class StitchingService {
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
+            .addHeader("ServiceAuthorization", authTokenGenerator.generate())
             .url(documentTaskEndpoint)
             .method("POST", body)
             .build();
@@ -76,7 +80,8 @@ public class StitchingService {
     private String poll(int taskId, String jwt) throws IOException, InterruptedException {
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
-            .url(documentTaskEndpoint + "/" + taskId)
+            .addHeader("ServiceAuthorization", authTokenGenerator.generate())
+            .url(documentTaskEndpoint + taskId)
             .get()
             .build();
 

@@ -84,4 +84,4 @@ idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-    microservice: em-ccd-orchestrator
+    microservice: em_ccd_orchestrator

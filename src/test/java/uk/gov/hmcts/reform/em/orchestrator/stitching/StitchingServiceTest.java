@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
@@ -85,7 +86,8 @@ public class StitchingServiceTest {
         return new StitchingService(
             new StitchingDTOMapper(),
             http,
-            stitchingBaseUrl + stitchingResource
+            stitchingBaseUrl + stitchingResource,
+            () -> "ServiceAuthorizationToken"
         );
     }
 
