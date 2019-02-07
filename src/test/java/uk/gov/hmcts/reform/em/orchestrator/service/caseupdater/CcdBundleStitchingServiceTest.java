@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.impl;
+package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,12 +6,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -29,22 +33,21 @@ public class CcdBundleStitchingServiceTest {
     public void setup() throws StitchingServiceException, InterruptedException {
         MockitoAnnotations.initMocks(this);
         BDDMockito.given(stitchingService.stitch(any(), any())).willReturn("AAAAA");
-        ccdBundleStitchingService = new CcdBundleStitchingService(stitchingService);
+        ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService);
     }
 
     @Test
     public void testUpdateCase() throws IOException {
-        JsonNode node = objectMapper.readTree("[{ \"value\": {} }]");
-        ccdBundleStitchingService.updateCase(node, "jwt");
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode node = objectMapper.readTree("{\"cb\": [{ \"value\": {} }]}");
+        ccdCallbackDto.setPropertyName(Optional.of("cb"));
+        ccdCallbackDto.setCaseData(node);
+        ccdCallbackDto.setJwt("jwt");
+        ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
-        String stitchedDocId = node.get(0).path("value").path("stitchedDocId").textValue();
+        String stitchedDocId = node.get("cb").get(0).path("value").path("stitchedDocId").textValue();
         Assert.assertEquals("AAAAA", stitchedDocId);
     }
 
-    @Test(expected = IncorrectCcdCaseBundlesException.class)
-    public void testUpdateCaseNodeNotArray() throws Exception {
-        JsonNode node = objectMapper.readTree("{}");
-        ccdBundleStitchingService.updateCase(node, "jwt");
-    }
 
 }

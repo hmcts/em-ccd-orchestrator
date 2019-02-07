@@ -49,7 +49,7 @@ info:
 
 authorization:
   case-worker-roles: ${CASE_WORKER_ROLES:caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce}
-  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp}
+  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data}
 
 auth:
   idam:
@@ -84,4 +84,4 @@ idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-    microservice: em_ccd_orchestrator # TODO: Do we need to get this new microservice whitelisted? Should we change stitching-api to em_stitch?
+    microservice: em-ccd-orchestrator

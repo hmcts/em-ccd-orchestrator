@@ -13,4 +13,10 @@ public class CcdValue<T> {
     public void setValue(T value) {
         this.value = value;
     }
+
+    public CcdValue(T t) {
+        setValue(t);
+    }
+
+    public CcdValue(){}
 }

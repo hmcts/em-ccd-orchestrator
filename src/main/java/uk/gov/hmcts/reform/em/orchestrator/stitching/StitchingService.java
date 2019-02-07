@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
-import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.DocumentTaskDTO;

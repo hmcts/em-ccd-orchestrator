@@ -73,9 +73,8 @@ provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
-// TODO: Should name be changed, and does it need to be whitelisted? should it be changed for stitching app?
 data "azurerm_key_vault_secret" "s2s_key" {
-  name      = "microservicekey-em-npa-app"
+  name      = "microservicekey-em-ccd-orchestrator"
   vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
 }
 
