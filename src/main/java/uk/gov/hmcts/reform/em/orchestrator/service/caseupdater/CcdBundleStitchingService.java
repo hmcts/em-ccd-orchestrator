@@ -6,12 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import java.io.IOException;
 import java.util.List;
