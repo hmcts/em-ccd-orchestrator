@@ -42,7 +42,7 @@ public class StitchingService {
 
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
-                return JsonPath.read(response, "$.bundle.stitchedDocId");
+                return JsonPath.read(response, "$.bundle.stitchedDocumentURI");
             } else {
                 throw new StitchingServiceException("Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
             }

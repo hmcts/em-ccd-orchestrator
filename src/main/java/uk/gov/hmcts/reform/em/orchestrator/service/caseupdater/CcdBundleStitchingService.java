@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.em.orchestrator.service.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -60,9 +61,15 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
         return ccdCallbackDto.getCaseData();
     }
-    private CcdValue<BundleDTO> stitchBundle(CcdValue<BundleDTO> bundle, String jwt) throws StitchingServiceException, InterruptedException {
-        String stitchedDocId = stitchingService.stitch(bundle.getValue(), jwt);
-        bundle.getValue().setStitchedDocId(stitchedDocId);
+    private CcdValue<BundleDTO> stitchBundle(CcdValue<BundleDTO> bundle, String jwt) throws InterruptedException {
+        try {
+            String stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
+            bundle.getValue().setStitchedDocumentURI(stitchedDocumentURI);
+            bundle.getValue().setStitchStatus(TaskState.DONE.toString());
+        }
+        catch (StitchingServiceException e) {
+            bundle.getValue().setStitchStatus(TaskState.FAILED.toString());
+        }
 
         return bundle;
     }

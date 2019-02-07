@@ -45,8 +45,8 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
-        String stitchedDocId = node.get("cb").get(0).path("value").path("stitchedDocId").textValue();
-        Assert.assertEquals("AAAAA", stitchedDocId);
+        String stitchedDocumentURI = node.get("cb").get(0).path("value").path("stitchedDocumentURI").textValue();
+        Assert.assertEquals("AAAAA", stitchedDocumentURI);
     }
 
 

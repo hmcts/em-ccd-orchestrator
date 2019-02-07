@@ -28,12 +28,12 @@ public class StitchingServiceTest {
     @Test
     public void stitchSuccessful() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocId: 'AAAAAA' } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocumentURI: 'AAAAAA' } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -45,12 +45,12 @@ public class StitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void stitchFailure() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'FAILED', failureDescription: 'Docmosis failure', bundle: { stitchedDocId: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'FAILED', failureDescription: 'Docmosis failure', bundle: { stitchedDocumentURI: null } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -60,20 +60,20 @@ public class StitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void stitchTimeout() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocId: null } }");
-        responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocId: 'AAAAAA' } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocumentURI: 'AAAAAA' } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
