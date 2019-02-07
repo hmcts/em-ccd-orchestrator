@@ -78,6 +78,8 @@ services:
       - S2S_BASE_URI=http://service-auth-provider-app:8489
       - IDAM_API_BASE_URI=http://idam-api:8080
       - ENABLE_LIQUIBASE=true
+      - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
+      - DM_STORE_APP_URL=http://dm-store:4603
     depends_on:
       - emstitch-db
       - dm-store
