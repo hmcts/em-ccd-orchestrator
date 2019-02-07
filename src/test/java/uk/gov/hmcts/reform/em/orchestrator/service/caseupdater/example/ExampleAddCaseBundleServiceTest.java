@@ -32,7 +32,7 @@ public class ExampleAddCaseBundleServiceTest {
     public void handles() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
+        ccdCallbackDto.setCcdPaylod(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         exampleAddCaseBundleService.handles(ccdCallbackDto);
         Mockito.verify(exampleCaseVerifier, Mockito.times(1)).verify(Mockito.any(JsonNode.class));
@@ -48,12 +48,4 @@ public class ExampleAddCaseBundleServiceTest {
         Mockito.verify(exampleBundlePopulator, Mockito.times(1)).populateNewBundle(Mockito.any(JsonNode.class));
     }
 
-    @Test(expected = PropertyNotFoundException.class)
-    public void updateCasePropertyNotFound() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
-        ccdCallbackDto.setPropertyName(Optional.of("caseBundlesx"));
-        exampleAddCaseBundleService.updateCase(ccdCallbackDto);
-    }
 }

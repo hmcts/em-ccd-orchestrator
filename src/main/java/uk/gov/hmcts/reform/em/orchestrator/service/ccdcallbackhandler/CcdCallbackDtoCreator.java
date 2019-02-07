@@ -19,7 +19,8 @@ public class CcdCallbackDtoCreator {
     public CcdCallbackDto createDto(HttpServletRequest request) throws IOException {
         CcdCallbackDto dto = new CcdCallbackDto();
         dto.setJwt(request.getHeader("Authorization"));
-        dto.setCaseData(objectMapper.readTree(request.getReader()));
+        dto.setCcdPaylod(objectMapper.readTree(request.getReader()));
+        dto.setCaseData(dto.getCcdPaylod().findValue("case_data"));
         return dto;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackHandlerService;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -26,10 +27,10 @@ public class NewBundleController {
     @PostMapping(value = "/api/new-bundle",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JsonNode> exampleServicePrepareNewBundle(HttpServletRequest request) throws IOException {
+    public ResponseEntity<CcdCallbackResponseDto> exampleServicePrepareNewBundle(HttpServletRequest request) throws IOException {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         JsonNode jsonNode = ccdCallbackHandlerService.handleCddCallback(dto);
-        return ResponseEntity.ok(jsonNode);
+        return ResponseEntity.ok(new CcdCallbackResponseDto(jsonNode));
     }
 
 }

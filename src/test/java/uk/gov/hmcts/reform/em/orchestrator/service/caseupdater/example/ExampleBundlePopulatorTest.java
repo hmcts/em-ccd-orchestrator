@@ -15,8 +15,8 @@ public class ExampleBundlePopulatorTest {
     @Test
     public void populateNewBundle() throws Exception {
         JsonNode jsonNode = exampleBundlePopulator
-                .populateNewBundle(objectMapper.readTree("{\"case_details\": {\"case_data\":{\"caseDocument1Name\":\"x\"}}}"));
-        assertEquals("New Bundle", jsonNode.at("/bundleTitle").asText());
-        assertEquals("x", jsonNode.at("/documents").get(0).at("/value/docTitle").asText());
+                .populateNewBundle(objectMapper.readTree("{\"caseDocument1Name\":\"x\"}"));
+        assertEquals("New Bundle", jsonNode.at("/value/title").asText());
+        assertEquals("x", jsonNode.at("/value/documents").get(0).at("/value/name").asText());
     }
 }

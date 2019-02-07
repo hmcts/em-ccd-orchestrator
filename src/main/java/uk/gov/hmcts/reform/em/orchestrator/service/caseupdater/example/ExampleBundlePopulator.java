@@ -3,10 +3,11 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.example;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,13 +21,23 @@ public class ExampleBundlePopulator {
     }
 
     public JsonNode populateNewBundle(JsonNode caseData) {
-        BundleDTO newBundle = new BundleDTO();
-        newBundle.setBundleTitle("New Bundle");
-        BundleDocumentDTO bundleDocumentDTO = new BundleDocumentDTO();
-        bundleDocumentDTO.setDocTitle(caseData.at("/case_details/case_data/caseDocument1Name").asText());
-        bundleDocumentDTO.setDocumentURI(caseData.at("/case_details/case_data/caseDocument1").asText());
-        newBundle.setDocuments(Stream.of(new CcdValue<BundleDocumentDTO>(bundleDocumentDTO)).collect(Collectors.toList()));
-        return objectMapper.valueToTree(newBundle);
+        CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
+        ccdBundleDTO.setTitle("New Bundle");
+        List documents = Stream
+                .of(
+                        new CcdValue(
+                                new CcdBundleDocumentDTO(
+                                        caseData.at("/caseDocument1Name").asText(),
+                                        null,
+                                        0,
+                                        caseData.at("/caseDocument1/document_binary_url").asText()
+                                )
+                        )
+                )
+                .collect(Collectors.toList());
+
+        ccdBundleDTO .setDocuments( documents );
+        return objectMapper.valueToTree(new CcdValue<>(ccdBundleDTO));
     }
 
 }
