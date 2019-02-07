@@ -1,11 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class StitchingBundleDTO {
 
     private String bundleTitle;

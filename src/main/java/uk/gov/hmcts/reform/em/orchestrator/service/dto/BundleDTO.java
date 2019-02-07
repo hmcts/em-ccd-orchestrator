@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 
 import java.io.Serializable;
 import java.time.Instant;
