@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentTaskScenarios {
+public class CcdStitchScenarios {
 
     TestUtil testUtil = new TestUtil();
 

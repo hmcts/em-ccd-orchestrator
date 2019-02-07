@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -21,18 +22,6 @@ public class TestUtil {
 
     private String s2sToken;
     private String idamToken;
-
-    public File getDocumentBinary(String documentId) throws Exception {
-        Response response = s2sAuthRequest()
-            .header("user-roles", "caseworker")
-            .request("GET", Env.getDmApiUrl() + "/documents/" + documentId + "/binary");
-
-        Path tempPath = Paths.get(System.getProperty("java.io.tmpdir") + "/" + documentId + "-test.pdf");
-
-        Files.copy(response.getBody().asInputStream(), tempPath, StandardCopyOption.REPLACE_EXISTING);
-
-        return tempPath.toFile();
-    }
 
     public String uploadDocument(String pdfName) {
         String newDocUrl = s2sAuthRequest()
@@ -61,10 +50,6 @@ public class TestUtil {
         return RestAssured
             .given()
             .header("ServiceAuthorization", "Bearer " + getS2sToken());
-    }
-
-    public String getIdamToken() {
-        return getIdamToken("test@test.com");
     }
 
     public String getIdamToken(String username) {
@@ -138,7 +123,7 @@ public class TestUtil {
     public BundleDTO getTestBundle() {
         BundleDTO bundle = new BundleDTO();
         bundle.setDescription("Test bundle");
-        List<BundleDocumentDTO> docs = new ArrayList<>();
+        List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
@@ -146,20 +131,20 @@ public class TestUtil {
         return bundle;
     }
 
-    public BundleDocumentDTO getTestBundleDocument(String documentUrl) {
+    public CcdValue<BundleDocumentDTO> getTestBundleDocument(String documentUrl) {
         String documentId = documentUrl.substring(documentUrl.lastIndexOf("/") + 1);
         BundleDocumentDTO document = new BundleDocumentDTO();
 
         document.setDocumentId(documentId);
         document.setDocumentURI(documentUrl);
 
-        return document;
+        return new CcdValue<>(document);
     }
 
     public BundleDTO getTestBundleWithWordDoc() {
         BundleDTO bundle = new BundleDTO();
         bundle.setDescription("Test bundle");
-        List<BundleDocumentDTO> docs = new ArrayList<>();
+        List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadWordDocument("wordDocument.doc")));
         docs.add(getTestBundleDocument(uploadDocX("wordDocument2.docx")));
         bundle.setDocuments(docs);
