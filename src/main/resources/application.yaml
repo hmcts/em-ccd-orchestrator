@@ -80,4 +80,4 @@ idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-    microservice: em_ccd_orchestrator # TODO: Do we need to get this new microservice whitelisted? Should we change stitching-api to em_stitch?
+    microservice: em-ccd-orchestrator
