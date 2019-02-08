@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

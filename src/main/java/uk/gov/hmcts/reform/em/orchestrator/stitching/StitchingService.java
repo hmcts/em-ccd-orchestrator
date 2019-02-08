@@ -6,7 +6,7 @@ import okhttp3.*;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
@@ -36,7 +36,7 @@ public class StitchingService {
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public String stitch(BundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
+    public String stitch(CcdBundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);

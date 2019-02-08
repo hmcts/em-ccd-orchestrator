@@ -7,9 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        String docId = service.stitch(new BundleDTO(), "token");
+        String docId = service.stitch(new CcdBundleDTO(), "token");
 
         Assert.assertEquals(docId, "AAAAAA");
     }
@@ -56,7 +55,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new BundleDTO(), "token");
+        service.stitch(new CcdBundleDTO(), "token");
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -71,7 +70,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new BundleDTO(), "token");
+        service.stitch(new CcdBundleDTO(), "token");
     }
 
     public StitchingService getStitchingService(OkHttpClient http) {

@@ -7,6 +7,10 @@ public class CcdBundleDocumentDTO {
     private Integer sortIndex;
     private String documentUri;
 
+    public CcdBundleDocumentDTO() {
+
+    }
+
     public CcdBundleDocumentDTO(String name, String description, Integer sortIndex, String documentUri) {
         this.name = name;
         this.description = description;

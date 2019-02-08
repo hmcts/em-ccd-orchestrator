@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
@@ -37,7 +37,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     public CcdBundleStitchingService(ObjectMapper objectMapper, StitchingService stitchingService) {
         this.objectMapper = objectMapper;
         this.stitchingService = stitchingService;
-        type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, BundleDTO.class);
+        type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
         return ccdCallbackDto.getCaseData();
     }
-    private CcdValue<BundleDTO> stitchBundle(CcdValue<BundleDTO> bundle, String jwt) throws InterruptedException {
+    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) throws InterruptedException {
         try {
             String stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
             bundle.getValue().setStitchedDocumentURI(stitchedDocumentURI);
@@ -78,7 +78,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         return bundle;
     }
 
-    private CcdValue<BundleDTO> bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
+    private CcdValue<CcdBundleDTO> bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
         return objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
     }
 }

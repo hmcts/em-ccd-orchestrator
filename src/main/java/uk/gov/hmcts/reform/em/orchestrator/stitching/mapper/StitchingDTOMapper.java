@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleFolderDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+// import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocumentDTO;
@@ -13,40 +13,44 @@ import java.util.stream.Collectors;
 
 public class StitchingDTOMapper {
 
-    public StitchingBundleDTO toStitchingDTO(BundleDTO bundleDTO) {
+    public StitchingBundleDTO toStitchingDTO(CcdBundleDTO bundleDTO) {
         StitchingBundleDTO bundle = new StitchingBundleDTO();
-        bundle.setBundleTitle(bundleDTO.getBundleTitle());
+        bundle.setBundleTitle(bundleDTO.getTitle());
         bundle.setDescription(bundleDTO.getDescription());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
-        bundle.setFolders(getFolders(bundleDTO.getFolders()));
+//        bundle.setFolders(getFolders(bundleDTO.getFolders()));
 
         return bundle;
     }
 
-    private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<BundleFolderDTO>> folders) {
-        return folders.stream().map(this::getFolder).collect(Collectors.toList());
-    }
+//    private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
+//        return folders.stream().map(this::getFolder).collect(Collectors.toList());
+//    }
+//
+//    private StitchingBundleFolderDTO getFolder(CcdValue<CcdBundleFolderDTO> folderDto) {
+//        StitchingBundleFolderDTO folder = new StitchingBundleFolderDTO();
+//        folder.setDescription(folderDto.getValue().getDescription());
+//        folder.setFolderName(folderDto.getValue().getFolderName());
+//        folder.setSortIndex(folderDto.getValue().getSortIndex());
+//        folder.setDocuments(getDocuments(folderDto.getValue().getDocuments()));
+//        folder.setFolders(getFolders(folderDto.getValue().getFolders()));
+//
+//        return folder;
+//    }
 
-    private StitchingBundleFolderDTO getFolder(CcdValue<BundleFolderDTO> folderDto) {
-        StitchingBundleFolderDTO folder = new StitchingBundleFolderDTO();
-        folder.setDescription(folderDto.getValue().getDescription());
-        folder.setFolderName(folderDto.getValue().getFolderName());
-        folder.setSortIndex(folderDto.getValue().getSortIndex());
-        folder.setDocuments(getDocuments(folderDto.getValue().getDocuments()));
-        folder.setFolders(getFolders(folderDto.getValue().getFolders()));
-
-        return folder;
-    }
-
-    private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<BundleDocumentDTO>> documents) {
+    private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> documents) {
         return documents.stream().map(this::getDocument).collect(Collectors.toList());
     }
 
-    private StitchingBundleDocumentDTO getDocument(CcdValue<BundleDocumentDTO> documentDto) {
+    private StitchingBundleDocumentDTO getDocument(CcdValue<CcdBundleDocumentDTO> documentDto) {
+        String uri = documentDto.getValue().getDocumentUri();
+
         StitchingBundleDocumentDTO document = new StitchingBundleDocumentDTO();
-        document.setDocumentId(documentDto.getValue().getDocumentId());
-        document.setDocumentURI(documentDto.getValue().getDocumentUri());
+        document.setDocTitle(documentDto.getValue().getName());
+        document.setDocDescription(documentDto.getValue().getDescription());
         document.setSortIndex(documentDto.getValue().getSortIndex());
+        document.setDocumentURI(uri);
+        document.setDocumentId(uri.substring(uri.lastIndexOf("/") + 1));
 
         return document;
     }
