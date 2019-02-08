@@ -4,6 +4,8 @@ public class StitchingBundleDocumentDTO {
 
     private String documentId;
     private String documentURI;
+    private String docTitle;
+    private String docDescription;
     private int sortIndex;
 
     public String getDocumentId() {
@@ -28,5 +30,21 @@ public class StitchingBundleDocumentDTO {
 
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
+    }
+
+    public String getDocTitle() {
+        return docTitle;
+    }
+
+    public void setDocTitle(String docTitle) {
+        this.docTitle = docTitle;
+    }
+
+    public String getDocDescription() {
+        return docDescription;
+    }
+
+    public void setDocDescription(String docDescription) {
+        this.docDescription = docDescription;
     }
 }

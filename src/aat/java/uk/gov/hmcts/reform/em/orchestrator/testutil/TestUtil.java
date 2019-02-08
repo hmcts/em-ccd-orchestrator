@@ -6,8 +6,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.ArrayList;
@@ -115,34 +115,28 @@ public class TestUtil {
         return s2sToken;
     }
 
-    public BundleDTO getTestBundle() {
-        BundleDTO bundle = new BundleDTO();
-        bundle.setBundleTitle("Bundle title");
+    public CcdBundleDTO getTestBundle() {
+        CcdBundleDTO bundle = new CcdBundleDTO();
+        bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
-        List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
-        docs.add(getTestBundleDocument(uploadDocument()));
+        List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
 
         return bundle;
     }
 
-    public CcdValue<BundleDocumentDTO> getTestBundleDocument(String documentUrl) {
-        String documentId = documentUrl.substring(documentUrl.lastIndexOf("/") + 1);
-        BundleDocumentDTO document = new BundleDocumentDTO();
-
-        document.setDocumentId(documentId);
-        document.setDocumentUri(documentUrl);
+    public CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
+        CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document", "description", 1, documentUrl);
 
         return new CcdValue<>(document);
     }
 
-    public BundleDTO getTestBundleWithWordDoc() {
-        BundleDTO bundle = new BundleDTO();
-        bundle.setBundleTitle("Bundle title");
+    public CcdBundleDTO getTestBundleWithWordDoc() {
+        CcdBundleDTO bundle = new CcdBundleDTO();
+        bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
-        List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
-        docs.add(getTestBundleDocument(uploadWordDocument("wordDocument.doc")));
+        List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocX("wordDocument2.docx")));
         bundle.setDocuments(docs);
 

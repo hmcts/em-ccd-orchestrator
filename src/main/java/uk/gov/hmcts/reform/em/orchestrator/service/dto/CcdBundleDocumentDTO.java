@@ -1,13 +1,20 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDocumentDTO {
 
     private String name;
     private String description;
-    private Integer sortIndex;
+    private int sortIndex;
     private String documentUri;
 
-    public CcdBundleDocumentDTO(String name, String description, Integer sortIndex, String documentUri) {
+    public CcdBundleDocumentDTO() {
+
+    }
+
+    public CcdBundleDocumentDTO(String name, String description, int sortIndex, String documentUri) {
         this.name = name;
         this.description = description;
         this.sortIndex = sortIndex;
@@ -30,11 +37,11 @@ public class CcdBundleDocumentDTO {
         this.description = description;
     }
 
-    public Integer getSortIndex() {
+    public int getSortIndex() {
         return sortIndex;
     }
 
-    public void setSortIndex(Integer sortIndex) {
+    public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
     }
 

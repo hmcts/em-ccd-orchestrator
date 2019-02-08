@@ -6,7 +6,7 @@ import okhttp3.*;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
@@ -17,26 +17,32 @@ import java.io.IOException;
  */
 public class StitchingService {
 
-    private static final int MAX_RETRIES = 200;
+    private static final int DEFAULT_MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
     private final AuthTokenGenerator authTokenGenerator;
+    private final int maxRetries;
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator) {
+        this(dtoMapper, http, documentTaskEndpoint, authTokenGenerator, DEFAULT_MAX_RETRIES);
+    }
+
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator, int maxRetries) {
         this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
         this.authTokenGenerator = authTokenGenerator;
+        this.maxRetries = maxRetries;
     }
 
     /**
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public String stitch(BundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
+    public String stitch(CcdBundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
@@ -84,7 +90,7 @@ public class StitchingService {
             .get()
             .build();
 
-        for (int i = 0; i < MAX_RETRIES; i++) {
+        for (int i = 0; i < maxRetries; i++) {
             final Response response = http.newCall(request).execute();
             final String responseBody = response.body().string();
             final String taskState = JsonPath.read(responseBody, "$.taskState");

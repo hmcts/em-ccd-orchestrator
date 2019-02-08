@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
@@ -20,7 +20,7 @@ public class CcdStitchScenarios {
 
     @Test
     public void testPostBundleStitch() throws IOException {
-        BundleDTO bundle = testUtil.getTestBundle();
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
@@ -31,13 +31,13 @@ public class CcdStitchScenarios {
 
         Assert.assertEquals(200, response.getStatusCode());
         JsonPath path = response.getBody().jsonPath();
-        Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.bundleTitle"));
+        Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocumentURI"));
     }
 
     @Test
     public void testPostBundleStitchWithWordDoc() throws IOException {
-        BundleDTO bundle = testUtil.getTestBundleWithWordDoc();
+        CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
@@ -47,7 +47,7 @@ public class CcdStitchScenarios {
             .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
         Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("Bundle title", response.getBody().jsonPath().getString("data.caseBundles[0].value.bundleTitle"));
+        Assert.assertEquals("Bundle title", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
         Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.stitchedDocumentURI"));
     }
 
