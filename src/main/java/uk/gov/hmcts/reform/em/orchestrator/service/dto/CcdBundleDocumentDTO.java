@@ -8,17 +8,17 @@ public class CcdBundleDocumentDTO {
     private String name;
     private String description;
     private int sortIndex;
-    private String documentUri;
+    private CcdDocument sourceDocument;
 
     public CcdBundleDocumentDTO() {
 
     }
 
-    public CcdBundleDocumentDTO(String name, String description, int sortIndex, String documentUri) {
+    public CcdBundleDocumentDTO(String name, String description, int sortIndex, CcdDocument sourceDocument) {
         this.name = name;
         this.description = description;
         this.sortIndex = sortIndex;
-        this.documentUri = documentUri;
+        this.sourceDocument = sourceDocument;
     }
 
     public String getName() {
@@ -45,11 +45,11 @@ public class CcdBundleDocumentDTO {
         this.sortIndex = sortIndex;
     }
 
-    public String getDocumentUri() {
-        return documentUri;
+    public CcdDocument getSourceDocument() {
+        return sourceDocument;
     }
 
-    public void setDocumentUri(String documentUri) {
-        this.documentUri = documentUri;
+    public void setSourceDocument(CcdDocument sourceDocument) {
+        this.sourceDocument = sourceDocument;
     }
 }

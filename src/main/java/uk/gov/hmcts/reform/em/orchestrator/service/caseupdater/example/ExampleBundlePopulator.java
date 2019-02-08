@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.List;
@@ -30,7 +31,12 @@ public class ExampleBundlePopulator {
                                         caseData.at("/caseDocument1Name").asText(),
                                         null,
                                         0,
-                                        caseData.at("/caseDocument1/document_binary_url").asText()
+                                        new CcdDocument(
+                                            caseData.at("/caseDocument1/document_url").asText(),
+                                            caseData.at("/caseDocument1/document_filename").asText(),
+                                            caseData.at("/caseDocument1/document_binary_url").asText()
+                                        )
+
                                 )
                         )
                 )

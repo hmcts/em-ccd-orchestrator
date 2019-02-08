@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -42,7 +43,7 @@ public class StitchingService {
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public String stitch(CcdBundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
@@ -53,7 +54,10 @@ public class StitchingService {
             final String response = poll(taskId, jwt);
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
-                return JsonPath.read(response, "$.bundle.stitchedDocumentURI");
+                return new CcdDocument(
+                        JsonPath.read(response, "$.bundle.stitchedDocumentURI"),
+                        "stitched.pdf",
+                        JsonPath.read(response, "$.bundle.stitchedDocumentURI")+"/binary") ;
             } else {
                 throw new StitchingServiceException("Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
             }

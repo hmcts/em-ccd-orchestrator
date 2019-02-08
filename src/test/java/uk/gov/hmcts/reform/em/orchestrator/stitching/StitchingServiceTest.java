@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        String docId = service.stitch(new CcdBundleDTO(), "token");
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
         Assert.assertEquals(docId, "AAAAAA");
     }

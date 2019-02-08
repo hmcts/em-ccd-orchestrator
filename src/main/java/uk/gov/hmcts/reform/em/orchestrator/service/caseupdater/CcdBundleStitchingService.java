@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
@@ -66,8 +67,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     }
     private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) throws InterruptedException {
         try {
-            String stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
-            bundle.getValue().setStitchedDocumentURI(stitchedDocumentURI);
+            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
+            bundle.getValue().setStitchedDocument(stitchedDocumentURI);
             bundle.getValue().setStitchStatus(TaskState.DONE.toString());
         }
         catch (StitchingServiceException e) {
