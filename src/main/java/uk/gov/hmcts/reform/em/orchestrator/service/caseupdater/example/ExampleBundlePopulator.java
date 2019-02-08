@@ -38,6 +38,19 @@ public class ExampleBundlePopulator {
                                         )
 
                                 )
+                        ),
+                        new CcdValue(
+                                new CcdBundleDocumentDTO(
+                                        caseData.at("/caseDocument2Name").asText(),
+                                        null,
+                                        0,
+                                        new CcdDocument(
+                                                caseData.at("/caseDocument2/document_url").asText(),
+                                                caseData.at("/caseDocument2/document_filename").asText(),
+                                                caseData.at("/caseDocument2/document_binary_url").asText()
+                                        )
+
+                                )
                         )
                 )
                 .collect(Collectors.toList());
