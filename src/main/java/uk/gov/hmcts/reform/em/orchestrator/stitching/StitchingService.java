@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
@@ -16,17 +17,19 @@ import java.io.IOException;
  */
 public class StitchingService {
 
-    private static final int MAX_RETRIES = 10;
+    private static final int MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
+    private final AuthTokenGenerator authTokenGenerator;
 
-    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint) {
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator) {
         this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
+        this.authTokenGenerator = authTokenGenerator;
     }
 
     /**
@@ -40,9 +43,8 @@ public class StitchingService {
         documentTask.setJwt(jwt);
 
         try {
-           final int taskId = post(documentTask, jwt);
+            final int taskId = post(documentTask, jwt);
             final String response = poll(taskId, jwt);
-
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
                 return JsonPath.read(response, "$.bundle.stitchedDocumentURI");
@@ -60,6 +62,7 @@ public class StitchingService {
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
+            .addHeader("ServiceAuthorization", authTokenGenerator.generate())
             .url(documentTaskEndpoint)
             .method("POST", body)
             .build();
@@ -69,14 +72,15 @@ public class StitchingService {
         if (response.isSuccessful()) {
             return JsonPath.read(response.body().string(), "$.id");
         } else {
-            throw new IOException("Unable to stitching task");
+            throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
 
     private String poll(int taskId, String jwt) throws IOException, InterruptedException {
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
-            .url(documentTaskEndpoint + "/" + taskId)
+            .addHeader("ServiceAuthorization", authTokenGenerator.generate())
+            .url(documentTaskEndpoint + taskId)
             .get()
             .build();
 

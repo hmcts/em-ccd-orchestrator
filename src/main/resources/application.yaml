@@ -77,11 +77,11 @@ dm-store-app:
   base-url: ${DM_STORE_APP_URL:http://localhost:4603}
 
 em-rpa-stitching-api:
-  base-url: ${EM_RPA_STITCHING_API:http://localhost:5111}
-  resource: '/document-tasks/'
+  base-url: ${EM_RPA_STITCHING_API:http://localhost:4630}
+  resource: '/api/document-tasks/'
 
 idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-    microservice: em-ccd-orchestrator
+    microservice: em_ccd_orchestrator

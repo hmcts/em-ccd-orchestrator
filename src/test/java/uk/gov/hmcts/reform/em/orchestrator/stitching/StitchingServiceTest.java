@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
@@ -61,19 +62,11 @@ public class StitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void stitchTimeout() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+
+        for (int i = 0; i < 250; i++) {
+            responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        }
+
         responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocumentURI: 'AAAAAA' } }");
 
         OkHttpClient http = getMockHttp(responses);
@@ -85,7 +78,8 @@ public class StitchingServiceTest {
         return new StitchingService(
             new StitchingDTOMapper(),
             http,
-            stitchingBaseUrl + stitchingResource
+            stitchingBaseUrl + stitchingResource,
+            () -> "ServiceAuthorizationToken"
         );
     }
 

@@ -10,11 +10,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.BundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,6 +117,7 @@ public class TestUtil {
 
     public BundleDTO getTestBundle() {
         BundleDTO bundle = new BundleDTO();
+        bundle.setBundleTitle("Bundle title");
         bundle.setDescription("Test bundle");
         List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
@@ -136,13 +132,14 @@ public class TestUtil {
         BundleDocumentDTO document = new BundleDocumentDTO();
 
         document.setDocumentId(documentId);
-        document.setDocumentURI(documentUrl);
+        document.setDocumentUri(documentUrl);
 
         return new CcdValue<>(document);
     }
 
     public BundleDTO getTestBundleWithWordDoc() {
         BundleDTO bundle = new BundleDTO();
+        bundle.setBundleTitle("Bundle title");
         bundle.setDescription("Test bundle");
         List<CcdValue<BundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadWordDocument("wordDocument.doc")));

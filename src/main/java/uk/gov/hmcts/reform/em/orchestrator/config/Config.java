@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
@@ -14,6 +15,9 @@ public class Config {
     @Autowired
     private OkHttpClient http;
 
+    @Autowired
+    private AuthTokenGenerator authTokenGenerator;
+
     @Value("${em-rpa-stitching-api.base-url}")
     private String stitchingBaseUrl;
 
@@ -22,6 +26,11 @@ public class Config {
 
     @Bean
     public StitchingService getStitchingService() {
-        return new StitchingService(new StitchingDTOMapper(), http, stitchingBaseUrl + stitchingResource);
+        return new StitchingService(
+            new StitchingDTOMapper(),
+            http,
+            stitchingBaseUrl + stitchingResource,
+            authTokenGenerator
+        );
     }
 }

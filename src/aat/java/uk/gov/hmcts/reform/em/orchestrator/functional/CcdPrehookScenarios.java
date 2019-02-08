@@ -23,7 +23,6 @@ public class CcdPrehookScenarios {
             .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
         Assert.assertEquals(200, response.getStatusCode());
-        // String body = response.getBody().prettyPrint();
-        Assert.assertNotNull(response.getBody().jsonPath().getString("$case_data.case_details.caseBundles[0]"));
+        Assert.assertEquals("New Bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
     }
 }

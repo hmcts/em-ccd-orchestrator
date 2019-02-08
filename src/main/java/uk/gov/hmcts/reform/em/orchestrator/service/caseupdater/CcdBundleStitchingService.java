@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -27,6 +29,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Transactional
 public class CcdBundleStitchingService implements CcdCaseUpdater {
 
+    private final Logger log = LoggerFactory.getLogger(CcdBundleStitchingService.class);
     private final ObjectMapper objectMapper;
     private final JavaType type;
     private final StitchingService stitchingService;
@@ -68,6 +71,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             bundle.getValue().setStitchStatus(TaskState.DONE.toString());
         }
         catch (StitchingServiceException e) {
+            log.error("Unable to stitch document", e);
             bundle.getValue().setStitchStatus(TaskState.FAILED.toString());
         }
 
