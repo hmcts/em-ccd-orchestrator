@@ -38,17 +38,17 @@ public class StitchingDTOMapper {
         return folder;
     }
 
-    private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> documents) {
-        return documents.stream().map(this::getDocument).collect(Collectors.toList());
+    private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> bundleDocument) {
+        return bundleDocument.stream().map(this::getDocument).collect(Collectors.toList());
     }
 
-    private StitchingBundleDocumentDTO getDocument(CcdValue<CcdBundleDocumentDTO> documentDto) {
-        String uri = documentDto.getValue().getDocumentUri();
+    private StitchingBundleDocumentDTO getDocument(CcdValue<CcdBundleDocumentDTO> bundleDocument) {
+        String uri = bundleDocument.getValue().getSourceDocument().getUrl();
 
         StitchingBundleDocumentDTO document = new StitchingBundleDocumentDTO();
-        document.setDocTitle(documentDto.getValue().getName());
-        document.setDocDescription(documentDto.getValue().getDescription());
-        document.setSortIndex(documentDto.getValue().getSortIndex());
+        document.setDocTitle(bundleDocument.getValue().getName());
+        document.setDocDescription(bundleDocument.getValue().getDescription());
+        document.setSortIndex(bundleDocument.getValue().getSortIndex());
         document.setDocumentURI(uri);
         document.setDocumentId(uri.substring(uri.lastIndexOf("/") + 1));
 

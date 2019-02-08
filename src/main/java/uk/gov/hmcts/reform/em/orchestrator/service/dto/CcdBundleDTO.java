@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ public class CcdBundleDTO {
     private String description;
     private String eligibleForStitching;
     private String stitchStatus;
-    private String stitchedDocumentURI;
+    private CcdDocument stitchedDocument;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new ArrayList<>();
+    @JsonIgnore
     private List<CcdValue<CcdBundleFolderDTO>> folders = new ArrayList<>();
 
     public Long getId() {
@@ -57,12 +59,12 @@ public class CcdBundleDTO {
         this.stitchStatus = stitchStatus;
     }
 
-    public String getStitchedDocumentURI() {
-        return stitchedDocumentURI;
+    public CcdDocument getStitchedDocument() {
+        return stitchedDocument;
     }
 
-    public void setStitchedDocumentURI(String stitchedDocumentURI) {
-        this.stitchedDocumentURI = stitchedDocumentURI;
+    public void setStitchedDocument(CcdDocument stitchedDocument) {
+        this.stitchedDocument = stitchedDocument;
     }
 
     public List<CcdValue<CcdBundleDocumentDTO>> getDocuments() {
