@@ -15,6 +15,7 @@ public class CcdBundleDTO {
     private String stitchStatus;
     private String stitchedDocumentURI;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new ArrayList<>();
+    private List<CcdValue<CcdBundleFolderDTO>> folders = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -70,5 +71,13 @@ public class CcdBundleDTO {
 
     public void setDocuments(List<CcdValue<CcdBundleDocumentDTO>> documents) {
         this.documents = documents;
+    }
+
+    public List<CcdValue<CcdBundleFolderDTO>> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
+        this.folders = folders;
     }
 }

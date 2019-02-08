@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 // import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocumentDTO;
@@ -18,25 +19,24 @@ public class StitchingDTOMapper {
         bundle.setBundleTitle(bundleDTO.getTitle());
         bundle.setDescription(bundleDTO.getDescription());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
-//        bundle.setFolders(getFolders(bundleDTO.getFolders()));
+        bundle.setFolders(getFolders(bundleDTO.getFolders()));
 
         return bundle;
     }
 
-//    private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
-//        return folders.stream().map(this::getFolder).collect(Collectors.toList());
-//    }
-//
-//    private StitchingBundleFolderDTO getFolder(CcdValue<CcdBundleFolderDTO> folderDto) {
-//        StitchingBundleFolderDTO folder = new StitchingBundleFolderDTO();
-//        folder.setDescription(folderDto.getValue().getDescription());
-//        folder.setFolderName(folderDto.getValue().getFolderName());
-//        folder.setSortIndex(folderDto.getValue().getSortIndex());
-//        folder.setDocuments(getDocuments(folderDto.getValue().getDocuments()));
-//        folder.setFolders(getFolders(folderDto.getValue().getFolders()));
-//
-//        return folder;
-//    }
+    private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
+        return folders.stream().map(this::getFolder).collect(Collectors.toList());
+    }
+
+    private StitchingBundleFolderDTO getFolder(CcdValue<CcdBundleFolderDTO> folderDto) {
+        StitchingBundleFolderDTO folder = new StitchingBundleFolderDTO();
+        folder.setFolderName(folderDto.getValue().getName());
+        folder.setSortIndex(folderDto.getValue().getSortIndex());
+        folder.setDocuments(getDocuments(folderDto.getValue().getDocuments()));
+        folder.setFolders(getFolders(folderDto.getValue().getFolders()));
+
+        return folder;
+    }
 
     private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> documents) {
         return documents.stream().map(this::getDocument).collect(Collectors.toList());

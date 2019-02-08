@@ -33,7 +33,6 @@ public class StitchingServiceTest {
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocumentURI: 'AAAAAA' } }");
 
         OkHttpClient http = getMockHttp(responses);
@@ -50,7 +49,6 @@ public class StitchingServiceTest {
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
-        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         responses.add("{ id: 1, taskState: 'FAILED', failureDescription: 'Docmosis failure', bundle: { stitchedDocumentURI: null } }");
 
         OkHttpClient http = getMockHttp(responses);
@@ -62,7 +60,7 @@ public class StitchingServiceTest {
     public void stitchTimeout() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
 
-        for (int i = 0; i < 250; i++) {
+        for (int i = 0; i < 10; i++) {
             responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
         }
 
@@ -78,7 +76,8 @@ public class StitchingServiceTest {
             new StitchingDTOMapper(),
             http,
             stitchingBaseUrl + stitchingResource,
-            () -> "ServiceAuthorizationToken"
+            () -> "ServiceAuthorizationToken",
+            5
         );
     }
 

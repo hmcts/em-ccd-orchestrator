@@ -17,19 +17,25 @@ import java.io.IOException;
  */
 public class StitchingService {
 
-    private static final int MAX_RETRIES = 200;
+    private static final int DEFAULT_MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
     private final AuthTokenGenerator authTokenGenerator;
+    private final int maxRetries;
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator) {
+        this(dtoMapper, http, documentTaskEndpoint, authTokenGenerator, DEFAULT_MAX_RETRIES);
+    }
+
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator, int maxRetries) {
         this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
         this.authTokenGenerator = authTokenGenerator;
+        this.maxRetries = maxRetries;
     }
 
     /**
@@ -84,7 +90,7 @@ public class StitchingService {
             .get()
             .build();
 
-        for (int i = 0; i < MAX_RETRIES; i++) {
+        for (int i = 0; i < maxRetries; i++) {
             final Response response = http.newCall(request).execute();
             final String responseBody = response.body().string();
             final String taskState = JsonPath.read(responseBody, "$.taskState");
