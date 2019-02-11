@@ -71,4 +71,5 @@ public class NewBundleControllerTest {
                 .verify(ccdCallbackHandlerService, Mockito.times(1))
                 .handleCddCallback(Mockito.any(CcdCallbackDto.class));
     }
+
 }

@@ -29,7 +29,13 @@ public class CcdStitchBundleCallbackController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) throws IOException {
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        return ResponseEntity.ok(new CcdCallbackResponseDto(ccdBundleStitchingService.updateCase(ccdCallbackDto)));
+        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(ccdCallbackDto.getCaseData());
+        try {
+            ccdCallbackResponseDto.setData(ccdBundleStitchingService.updateCase(ccdCallbackDto));
+        } catch (Exception e) {
+            ccdCallbackResponseDto.getErrors().add(e.getMessage());
+        }
+        return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
 }
