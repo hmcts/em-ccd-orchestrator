@@ -41,7 +41,7 @@ public class CcdBundleStitchingServiceTest {
     @Test
     public void testUpdateCase() throws IOException {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\": [{ \"value\": {} }]}");
+        JsonNode node = objectMapper.readTree("{\"cb\": [{ \"value\": {\"eligibleForStitching\":\"yes\"} }]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
