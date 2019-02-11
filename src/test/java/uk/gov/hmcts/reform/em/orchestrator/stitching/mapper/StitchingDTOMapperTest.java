@@ -1,13 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StitchingDTOMapperTest {
 
@@ -44,23 +41,23 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getTitle(), stitchingBundleDTO.getBundleTitle());
         assertEquals(bundleDTO.getDescription(), stitchingBundleDTO.getDescription());
 
-        assertEquals(bundleDTO.getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(), stitchingBundleDTO.getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getDocuments().get(0).getValue().getName(), stitchingBundleDTO.getDocuments().get(0).getDocTitle());
         assertEquals(bundleDTO.getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getDocuments().get(0).getSortIndex());
 
         assertEquals(bundleDTO.getFolders().get(0).getValue().getName(), stitchingBundleDTO.getFolders().get(0).getFolderName());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getSourceDocument().getUrl(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getDocuments().get(0).getSortIndex());
 
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getName(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getFolderName());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getSourceDocument().getUrl(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(0).getValue().getFolders().get(0).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(0).getFolders().get(0).getDocuments().get(0).getSortIndex());
 
         assertEquals(bundleDTO.getFolders().get(1).getValue().getName(), stitchingBundleDTO.getFolders().get(1).getFolderName());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(1).getSortIndex());
-        assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getDocumentUri(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getDocumentURI());
+        assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getSourceDocument().getUrl(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getDocumentURI());
         assertEquals(bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getSortIndex(), stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getSortIndex());
 
     }
@@ -78,7 +75,8 @@ public class StitchingDTOMapperTest {
             String.format("document %s title", index),
             String.format("document %s description", index),
             index,
-            String.format("/document/%s", index)
+            new CcdDocument(String.format("/document/%s", index), "xxx", String.format("/document/%s/binary", index))
+
         );
 
         return documentDTO;

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class TestUtil {
     }
 
     public CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
-        CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document", "description", 1, documentUrl);
+        CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document", "description", 1, new CcdDocument(documentUrl, "fn", documentUrl + "/binary"));
 
         return new CcdValue<>(document);
     }

@@ -40,7 +40,7 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
-        Assert.assertEquals(docId, "AAAAAA");
+        Assert.assertEquals(docId.getUrl(), "AAAAAA");
     }
 
     @Test(expected = StitchingServiceException.class)

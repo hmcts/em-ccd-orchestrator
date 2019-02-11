@@ -32,7 +32,7 @@ public class CcdStitchScenarios {
         Assert.assertEquals(200, response.getStatusCode());
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocumentURI"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CcdStitchScenarios {
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
-        Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.stitchedDocumentURI"));
+        Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
 }

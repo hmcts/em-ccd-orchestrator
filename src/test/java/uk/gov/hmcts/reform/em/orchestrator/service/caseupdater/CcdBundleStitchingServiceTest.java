@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
@@ -32,7 +33,8 @@ public class CcdBundleStitchingServiceTest {
     @Before
     public void setup() throws StitchingServiceException, InterruptedException {
         MockitoAnnotations.initMocks(this);
-        BDDMockito.given(stitchingService.stitch(any(), any())).willReturn("AAAAA");
+        CcdDocument ccdDocument = new CcdDocument("", "", "");
+        BDDMockito.given(stitchingService.stitch(any(), any())).willReturn(ccdDocument);
         ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService);
     }
 
@@ -45,8 +47,8 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
-        String stitchedDocumentURI = node.get("cb").get(0).path("value").path("stitchedDocumentURI").textValue();
-        Assert.assertEquals("AAAAA", stitchedDocumentURI);
+        String stitchedDocumentURI = node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue();
+        Assert.assertEquals("", stitchedDocumentURI);
     }
 
 
