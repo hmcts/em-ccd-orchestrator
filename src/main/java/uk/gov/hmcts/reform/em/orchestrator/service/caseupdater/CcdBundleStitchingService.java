@@ -55,7 +55,10 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleDto))
-                    .map(unchecked(bundle -> this.stitchBundle(bundle, ccdCallbackDto.getJwt())))
+                    .map(unchecked(bundle ->
+                        bundle.getValue().getEligibleForStitchingAsBoolean()
+                                ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle
+                    ))
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -70,10 +73,12 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
             bundle.getValue().setStitchStatus(TaskState.DONE.toString());
+            bundle.getValue().setEligibleForStitchingAsBoolean(false);
         }
         catch (StitchingServiceException e) {
             log.error("Unable to stitch document", e);
             bundle.getValue().setStitchStatus(TaskState.FAILED.toString());
+            bundle.getValue().setEligibleForStitchingAsBoolean(false);
         }
 
         return bundle;

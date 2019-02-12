@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,9 +15,9 @@ public class CcdBundleDTO {
     private String eligibleForStitching;
     private String stitchStatus;
     private CcdDocument stitchedDocument;
-    private List<CcdValue<CcdBundleDocumentDTO>> documents = new ArrayList<>();
+    private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     @JsonIgnore
-    private List<CcdValue<CcdBundleFolderDTO>> folders = new ArrayList<>();
+    private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
 
     public Long getId() {
         return id;
@@ -49,6 +49,20 @@ public class CcdBundleDTO {
 
     public void setEligibleForStitching(String eligibleForStitching) {
         this.eligibleForStitching = eligibleForStitching;
+    }
+
+    public String getEligibleForStitching() {
+        return eligibleForStitching;
+    }
+
+    @JsonIgnore
+    public boolean getEligibleForStitchingAsBoolean() {
+        return eligibleForStitching != null && eligibleForStitching.equalsIgnoreCase("yes");
+    }
+
+    @JsonIgnore
+    public void setEligibleForStitchingAsBoolean(boolean eligibleForStitching) {
+        this.eligibleForStitching = eligibleForStitching ? "yes" : "no";
     }
 
     public String getStitchStatus() {
