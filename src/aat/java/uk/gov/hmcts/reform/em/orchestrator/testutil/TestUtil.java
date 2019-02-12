@@ -120,6 +120,7 @@ public class TestUtil {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
+        bundle.setEligibleForStitchingAsBoolean(true);
         List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
@@ -137,6 +138,7 @@ public class TestUtil {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
+        bundle.setEligibleForStitchingAsBoolean(true);
         List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocX("wordDocument2.docx")));
         bundle.setDocuments(docs);
