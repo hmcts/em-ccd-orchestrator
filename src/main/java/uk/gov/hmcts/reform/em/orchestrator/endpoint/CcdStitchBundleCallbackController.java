@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 
 @Controller
@@ -27,7 +26,7 @@ public class CcdStitchBundleCallbackController {
     @PostMapping(value = "/api/stitch-cdd-bundles",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) throws IOException {
+    public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(ccdCallbackDto.getCaseData());
         try {
