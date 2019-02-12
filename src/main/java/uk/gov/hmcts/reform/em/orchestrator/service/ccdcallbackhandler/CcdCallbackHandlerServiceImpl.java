@@ -20,7 +20,7 @@ public class CcdCallbackHandlerServiceImpl implements CcdCallbackHandlerService 
         return ccdCaseUpdaterFinder
             .find(ccdCallbackDto)
             .map(ccdCaseUpdater -> ccdCaseUpdater.updateCase(ccdCallbackDto))
-            .orElseThrow(() -> { return new CaseUpdaterDoesNotExistException("CaseUpdater does not exists for this case type"); });
+            .orElseThrow(() -> new CaseUpdaterDoesNotExistException("CaseUpdater does not exists for this case type"));
     }
 
 }

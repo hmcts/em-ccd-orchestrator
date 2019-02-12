@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,23 @@ public class CcdCallbackDtoCreator {
         this.objectMapper = objectMapper;
     }
 
-    public CcdCallbackDto createDto(HttpServletRequest request) throws IOException {
+    public CcdCallbackDto createDto(HttpServletRequest request) {
         CcdCallbackDto dto = new CcdCallbackDto();
         dto.setJwt(request.getHeader("Authorization"));
-        dto.setCcdPaylod(objectMapper.readTree(request.getReader()));
+        try {
+            JsonNode payload = objectMapper.readTree(request.getReader());
+            if (payload == null) {
+                throw new CantReadCcdPayloadException("Payload from CCD is empty");
+            }
+            dto.setCcdPaylod(payload);
+        } catch (IOException e) {
+            throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
+        }
         dto.setCaseData(dto.getCcdPaylod().findValue("case_data"));
         return dto;
     }
 
-    public CcdCallbackDto createDto(HttpServletRequest request, String propertyName) throws IOException {
+    public CcdCallbackDto createDto(HttpServletRequest request, String propertyName) {
         CcdCallbackDto dto = createDto(request);
         dto.setPropertyName(Optional.ofNullable(propertyName));
         return dto;
