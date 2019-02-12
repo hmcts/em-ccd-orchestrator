@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Controller
 public class NewBundleController {
@@ -27,10 +25,15 @@ public class NewBundleController {
     @PostMapping(value = "/api/new-bundle",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CcdCallbackResponseDto> exampleServicePrepareNewBundle(HttpServletRequest request) throws IOException {
+    public ResponseEntity<CcdCallbackResponseDto> exampleServicePrepareNewBundle(HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        JsonNode jsonNode = ccdCallbackHandlerService.handleCddCallback(dto);
-        return ResponseEntity.ok(new CcdCallbackResponseDto(jsonNode));
+        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
+        try {
+            ccdCallbackResponseDto.setData(ccdCallbackHandlerService.handleCddCallback(dto));
+        } catch (Exception e) {
+            ccdCallbackResponseDto.getErrors().add(e.getMessage());
+        }
+        return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
 }

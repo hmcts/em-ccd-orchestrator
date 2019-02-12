@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
@@ -47,6 +48,39 @@ public class CcdCallbackDtoCreatorTest {
         Assert.assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
 
         Assert.assertEquals(Optional.of("myProd"), ccdCallbackDto.getPropertyName());
+    }
+
+    @Test(expected = CantReadCcdPayloadException.class)
+    public void createDtoWithException() throws Exception {
+
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader()).thenThrow(new IOException("xxx"));
+
+        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
+    }
+
+    @Test(expected = CantReadCcdPayloadException.class)
+    public void createDtoWithEmptyMessage() throws Exception {
+
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader()).thenReturn(new BufferedReader(new StringReader("")));
+
+        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
+    }
+
+    @Test(expected = CantReadCcdPayloadException.class)
+    public void createDtoWithNull() throws Exception {
+
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader()).thenReturn(null);
+
+        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
     }
 
 }

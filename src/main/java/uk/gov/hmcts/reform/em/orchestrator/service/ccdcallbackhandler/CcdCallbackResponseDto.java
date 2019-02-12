@@ -1,26 +1,31 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.commons.collections.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CcdCallbackResponseDto {
 
+    private JsonNode copyOfCcdData;
+
     public CcdCallbackResponseDto() {
     }
 
-    public CcdCallbackResponseDto(JsonNode data) {
-        setData(data);
+    public CcdCallbackResponseDto(JsonNode caseData) {
+        this.copyOfCcdData = caseData != null ? caseData.deepCopy() : null;
+        setData(caseData);
     }
 
     private JsonNode data;
 
-    private List<String> errors;
+    private List<String> errors = new ArrayList<>();
 
-    private List<String> warnings;
+    private List<String> warnings = new ArrayList<>();
 
     public JsonNode getData() {
-        return data;
+        return CollectionUtils.isNotEmpty(getErrors()) ?  copyOfCcdData : data;
     }
 
     public void setData(JsonNode data) {
