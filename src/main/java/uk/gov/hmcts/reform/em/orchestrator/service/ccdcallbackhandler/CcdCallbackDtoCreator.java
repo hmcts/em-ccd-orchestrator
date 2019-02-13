@@ -25,11 +25,11 @@ public class CcdCallbackDtoCreator {
             if (payload == null) {
                 throw new CantReadCcdPayloadException("Payload from CCD is empty");
             }
-            dto.setCcdPaylod(payload);
+            dto.setCcdPayload(payload);
         } catch (IOException e) {
             throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
         }
-        dto.setCaseData(dto.getCcdPaylod().findValue("case_data"));
+        dto.setCaseData(dto.getCcdPayload().findValue("case_data"));
         return dto;
     }
 

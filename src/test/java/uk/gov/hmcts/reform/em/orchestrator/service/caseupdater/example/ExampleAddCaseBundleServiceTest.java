@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.JsonNodesVerifier;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.PropertyNotFoundException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class ExampleAddCaseBundleServiceTest {
     public void handles() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCcdPaylod(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
+        ccdCallbackDto.setCcdPayload(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         exampleAddCaseBundleService.handles(ccdCallbackDto);
         Mockito.verify(exampleCaseVerifier, Mockito.times(1)).verify(Mockito.any(JsonNode.class));

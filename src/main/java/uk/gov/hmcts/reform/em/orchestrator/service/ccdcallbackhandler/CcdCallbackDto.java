@@ -9,7 +9,7 @@ public class CcdCallbackDto {
 
     private Optional<String> propertyName = Optional.empty();
 
-    private JsonNode ccdPaylod;
+    private JsonNode ccdPayload;
 
     private JsonNode caseData;
 
@@ -47,11 +47,11 @@ public class CcdCallbackDto {
         return findCaseProperty().map(ThrowingFunction.unchecked(jsonSubclass::cast));
     }
 
-    public JsonNode getCcdPaylod() {
-        return ccdPaylod;
+    public JsonNode getCcdPayload() {
+        return ccdPayload;
     }
 
-    public void setCcdPaylod(JsonNode ccdPaylod) {
-        this.ccdPaylod = ccdPaylod;
+    public void setCcdPayload(JsonNode ccdPayload) {
+        this.ccdPayload = ccdPayload;
     }
 }
