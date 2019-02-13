@@ -77,7 +77,7 @@ dm-store-app:
   base-url: ${DM_STORE_APP_URL:http://localhost:4603}
 
 em-rpa-stitching-api:
-  base-url: ${EM_RPA_STITCHING_API:http://localhost:4630}
+  base-url: ${EM_STITCHING_API_URL:http://localhost:4630}
   resource: '/api/document-tasks/'
 
 idam:
