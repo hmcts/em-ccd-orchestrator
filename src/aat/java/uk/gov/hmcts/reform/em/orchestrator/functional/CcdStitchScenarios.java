@@ -29,6 +29,7 @@ public class CcdStitchScenarios {
                 .body(wrappedJson)
                 .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
+        System.out.println(response.getBody().print());
         Assert.assertEquals(200, response.getStatusCode());
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
@@ -46,6 +47,7 @@ public class CcdStitchScenarios {
             .body(wrappedJson)
             .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
 
+        System.out.println(response.getBody().print());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
         Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.stitchedDocument.document_url"));
