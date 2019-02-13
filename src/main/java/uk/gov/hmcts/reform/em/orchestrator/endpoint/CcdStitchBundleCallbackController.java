@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class CcdStitchBundleCallbackController {
+
+    private final Logger log = LoggerFactory.getLogger(CcdStitchBundleCallbackController.class);
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator;
     private final CcdBundleStitchingService ccdBundleStitchingService;
@@ -32,6 +36,7 @@ public class CcdStitchBundleCallbackController {
         try {
             ccdCallbackResponseDto.setData(ccdBundleStitchingService.updateCase(ccdCallbackDto));
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
         return ResponseEntity.ok(ccdCallbackResponseDto);

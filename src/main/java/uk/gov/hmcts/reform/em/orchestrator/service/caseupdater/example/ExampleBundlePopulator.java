@@ -23,25 +23,28 @@ public class ExampleBundlePopulator {
         ccdBundleDTO.setTitle("New Bundle");
 
         ArrayNode caseDocuments = (ArrayNode) caseData.findValue("caseDocuments");
-        ccdBundleDTO.setEligibleForStitchingAsBoolean(true);
 
-        for (int i = 0; i<caseDocuments.size(); i++) {
-            JsonNode caseDocument = caseDocuments.get(i);
-            ccdBundleDTO.getDocuments().add(
-                new CcdValue(
-                    new CcdBundleDocumentDTO(
-                        caseDocument.at("/value/name").asText(),
-                        null,
-                        i,
-                        new CcdDocument(
-                                caseDocument.at("/value/document/document_url").asText(),
-                                caseDocument.at("/value/document/document_filename").asText(),
-                                caseDocument.at("/value/document/document_binary_url").asText()
+        if (caseDocuments != null) {
+            ccdBundleDTO.setEligibleForStitchingAsBoolean(true);
+
+            for (int i = 0; i < caseDocuments.size(); i++) {
+                JsonNode caseDocument = caseDocuments.get(i);
+                ccdBundleDTO.getDocuments().add(
+                        new CcdValue(
+                                new CcdBundleDocumentDTO(
+                                        caseDocument.at("/value/name").asText(),
+                                        null,
+                                        i,
+                                        new CcdDocument(
+                                                caseDocument.at("/value/document/document_url").asText(),
+                                                caseDocument.at("/value/document/document_filename").asText(),
+                                                caseDocument.at("/value/document/document_binary_url").asText()
+                                        )
+
+                                )
                         )
-
-                    )
-                )
-            );
+                );
+            }
         }
 
         return objectMapper.valueToTree(new CcdValue<>(ccdBundleDTO));
