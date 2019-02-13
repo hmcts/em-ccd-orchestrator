@@ -27,7 +27,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
     @Override
     public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return exampleCaseVerifier.verify(ccdCallbackDto.getCcdPaylod());
+        return exampleCaseVerifier.verify(ccdCallbackDto.getCcdPayload());
     }
 
     @Override

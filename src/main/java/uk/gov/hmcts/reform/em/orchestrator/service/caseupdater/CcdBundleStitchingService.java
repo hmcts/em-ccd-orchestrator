@@ -67,7 +67,6 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) throws InterruptedException {
         CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
         bundle.getValue().setStitchedDocument(stitchedDocumentURI);
-        bundle.getValue().setStitchStatus(TaskState.DONE.toString());
         bundle.getValue().setEligibleForStitchingAsBoolean(false);
         return bundle;
     }
