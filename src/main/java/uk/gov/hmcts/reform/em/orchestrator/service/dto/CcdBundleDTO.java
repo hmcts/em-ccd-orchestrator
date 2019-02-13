@@ -13,7 +13,6 @@ public class CcdBundleDTO {
     private String title;
     private String description;
     private String eligibleForStitching;
-    private String stitchStatus;
     private CcdDocument stitchedDocument;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     @JsonIgnore
@@ -63,14 +62,6 @@ public class CcdBundleDTO {
     @JsonIgnore
     public void setEligibleForStitchingAsBoolean(boolean eligibleForStitching) {
         this.eligibleForStitching = eligibleForStitching ? "yes" : "no";
-    }
-
-    public String getStitchStatus() {
-        return stitchStatus;
-    }
-
-    public void setStitchStatus(String stitchStatus) {
-        this.stitchStatus = stitchStatus;
     }
 
     public CcdDocument getStitchedDocument() {
