@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import okhttp3.*;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class StitchingService {
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws StitchingServiceException, InterruptedException {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
@@ -62,7 +62,7 @@ public class StitchingService {
                 throw new StitchingServiceException("Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
             }
         }
-        catch (IOException e) {
+        catch (IOException | InterruptedException e) {
             throw new StitchingServiceException("Unable to stitch bundle", e);
         }
     }

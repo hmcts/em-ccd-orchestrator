@@ -18,8 +18,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +33,7 @@ public class CcdBundleStitchingServiceTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
-    public void setup() throws StitchingServiceException, InterruptedException {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         CcdDocument ccdDocument = new CcdDocument("", "", "");
         BDDMockito.given(stitchingService.stitch(any(), any())).willReturn(ccdDocument);
@@ -59,5 +57,19 @@ public class CcdBundleStitchingServiceTest {
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
     }
 
+    @Test(expected = StitchingServiceException.class)
+    public void testUpdateCaseStitchingException() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        ccdCallbackDto.setPropertyName(Optional.of("cb"));
+        ccdCallbackDto.setCaseData(node);
+        ccdCallbackDto.setJwt("jwt");
+
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new StitchingServiceException("x"));
+
+        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+
+
+    }
 
 }
