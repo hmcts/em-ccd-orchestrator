@@ -63,7 +63,7 @@ public class StitchingService {
             }
         }
         catch (IOException e) {
-            throw new StitchingServiceException(String.format("Unable to stitch bundle: %s", e.getMessage()), e);
+            throw new StitchingServiceException(String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint,e.getMessage()), e);
         }
     }
 
