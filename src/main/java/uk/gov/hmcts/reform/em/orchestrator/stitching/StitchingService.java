@@ -43,7 +43,7 @@ public class StitchingService {
      * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
@@ -62,7 +62,7 @@ public class StitchingService {
                 throw new StitchingServiceException("Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
             }
         }
-        catch (IOException | InterruptedException e) {
+        catch (IOException e) {
             throw new StitchingServiceException("Unable to stitch bundle", e);
         }
     }
