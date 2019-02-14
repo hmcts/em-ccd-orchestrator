@@ -86,11 +86,11 @@ public class DocumentTaskDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "DocumentTaskDTO{" +
-            "id=" + getId() +
-            ", bundle='" + getBundle() + "'" +
-            ", taskState='" + getTaskState() + "'" +
-            ", failureDescription='" + getFailureDescription() + "'" +
-            "}";
+        return "DocumentTaskDTO{"
+                + "id=" + getId()
+                + ", bundle='" + getBundle() + "'"
+                + ", taskState='" + getTaskState() + "'"
+                + ", failureDescription='" + getFailureDescription() + "'"
+                + "}";
     }
 }

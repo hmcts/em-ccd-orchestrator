@@ -15,6 +15,8 @@ plugins {
     id "net.ltgt.apt-idea" version "0.18"
     id "net.ltgt.apt" version "0.18"
     id 'jacoco'
+    id 'checkstyle'
+    id 'pmd'
    // id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.0.11"
     id "com.github.lkishalmi.gatling" version "3.0.1"
 }
@@ -47,6 +49,24 @@ configurations {
     aatCompile.extendsFrom(testCompile)
     aatRuntime.extendsFrom(testRuntime)
 }
+
+checkstyle {
+    maxWarnings = 10
+    toolVersion = '8.12'
+    // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
+    configDir = new File(rootDir, 'config/checkstyle')
+}
+
+pmd {
+    toolVersion = "5.8.1"
+    ignoreFailures = true
+    sourceSets = [sourceSets.main, sourceSets.test]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+checkstyleMain.shouldRunAfter(compileJava)
+test.shouldRunAfter(checkstyleTest)
 
 repositories {
     maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
@@ -180,6 +200,9 @@ sourceSets {
             srcDir('src/aat/resources')
         }
         compileClasspath += configurations.gatling
+    }
+    test {
+        java.srcDir 'src/test/java'
     }
 }
 

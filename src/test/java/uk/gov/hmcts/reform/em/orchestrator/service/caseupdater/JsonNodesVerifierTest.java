@@ -13,7 +13,7 @@ public class JsonNodesVerifierTest {
     }
 
     @Test
-    public void verifyOK() throws Exception{
+    public void verifyOK() throws Exception {
         JsonNodesVerifier jsonNodesVerifier = new JsonNodesVerifier("/x", "y");
         jsonNodesVerifier.verify(objectMapper.readTree("{\"x\":\"y\"}"));
     }

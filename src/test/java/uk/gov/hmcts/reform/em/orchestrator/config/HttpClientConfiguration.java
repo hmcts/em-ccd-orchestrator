@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class HttpClientConfiguration {
 
     @Bean
-    public OkHttpClient okHttpClient(){
+    public OkHttpClient okHttpClient() {
         MockInterceptor mockInterceptor = new MockInterceptor();
         return new OkHttpClient.Builder().addInterceptor(mockInterceptor).build();
     }

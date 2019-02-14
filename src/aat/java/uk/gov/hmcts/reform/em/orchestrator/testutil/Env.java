@@ -6,6 +6,9 @@ import java.util.Properties;
 
 public class Env {
 
+    private Env() {
+    }
+
     static Properties defaults = new Properties();
 
     static {
@@ -21,7 +24,9 @@ public class Env {
         defaults.setProperty("DM_STORE_APP_URL", "http://localhost:4603");
     }
 
-    public static String getUseProxy() { return require("PROXY"); }
+    public static String getUseProxy() {
+        return require("PROXY");
+    }
 
     public static String getTestUrl() {
         return require("TEST_URL");
@@ -31,7 +36,7 @@ public class Env {
         return require("IDAM_API_URL");
     }
 
-    public static String getS2SURL() {
+    public static String getS22Url() {
         return require("S2S_URL");
     }
 

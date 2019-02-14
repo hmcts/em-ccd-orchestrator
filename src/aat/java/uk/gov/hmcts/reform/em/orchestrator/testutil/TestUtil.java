@@ -108,7 +108,7 @@ public class TestUtil {
                 .given()
                 .header("Content-Type", "application/json")
                 .body(jsonObject.toString())
-                .post(Env.getS2SURL() + "/lease");
+                    .post(Env.getS22Url() + "/lease");
             s2sToken = response.getBody().asString();
             s2sToken = response.getBody().print();
         }
@@ -129,8 +129,9 @@ public class TestUtil {
     }
 
     public CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
-        CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document", "description", 1, new CcdDocument(documentUrl, "fn", documentUrl + "/binary"));
-
+        CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document",
+                "description", 1, new CcdDocument(documentUrl, "fn",
+                documentUrl + "/binary"));
         return new CcdValue<>(document);
     }
 
@@ -149,7 +150,8 @@ public class TestUtil {
     public String uploadWordDocument(String docName) {
         String newDocUrl = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
-            .multiPart("files", "test.doc", ClassLoader.getSystemResourceAsStream(docName), "application/msword")
+                .multiPart("files", "test.doc", ClassLoader.getSystemResourceAsStream(docName),
+                        "application/msword")
             .multiPart("classification", "PUBLIC")
             .request("POST", Env.getDmApiUrl() + "/documents")
             .getBody()
@@ -162,7 +164,8 @@ public class TestUtil {
     public String uploadDocX(String docName) {
         String newDocUrl = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
-            .multiPart("files", "test.docx", ClassLoader.getSystemResourceAsStream(docName), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                .multiPart("files", "test.docx", ClassLoader.getSystemResourceAsStream(docName),
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
             .multiPart("classification", "PUBLIC")
             .request("POST", Env.getDmApiUrl() + "/documents")
             .getBody()

@@ -27,11 +27,13 @@ public class StitchingService {
     private final AuthTokenGenerator authTokenGenerator;
     private final int maxRetries;
 
-    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator) {
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
+                            AuthTokenGenerator authTokenGenerator) {
         this(dtoMapper, http, documentTaskEndpoint, authTokenGenerator, DEFAULT_MAX_RETRIES);
     }
 
-    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint, AuthTokenGenerator authTokenGenerator, int maxRetries) {
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
+                            AuthTokenGenerator authTokenGenerator, int maxRetries) {
         this.dtoMapper = dtoMapper;
         this.http = http;
         this.documentTaskEndpoint = documentTaskEndpoint;
@@ -40,7 +42,8 @@ public class StitchingService {
     }
 
     /**
-     * This method creates a document task in the stitching API and polls until it is complete. If the document was succesfully
+     * This method creates a document task in the stitching API and polls until it is complete.
+     * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
     public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
@@ -57,13 +60,14 @@ public class StitchingService {
                 return new CcdDocument(
                         JsonPath.read(response, "$.bundle.stitchedDocumentURI"),
                         "stitched.pdf",
-                        JsonPath.read(response, "$.bundle.stitchedDocumentURI")+"/binary") ;
+                        JsonPath.read(response, "$.bundle.stitchedDocumentURI") + "/binary");
             } else {
-                throw new StitchingServiceException("Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
+                throw new StitchingServiceException(
+                        "Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
             }
-        }
-        catch (IOException e) {
-            throw new StitchingServiceException(String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint,e.getMessage()), e);
+        } catch (IOException e) {
+            throw new StitchingServiceException(
+                    String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
         }
     }
 

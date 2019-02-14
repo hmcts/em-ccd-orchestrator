@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,6 +63,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
         return ccdCallbackDto.getCaseData();
     }
+
     private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) throws InterruptedException {
         CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
         bundle.getValue().setStitchedDocument(stitchedDocumentURI);

@@ -21,6 +21,6 @@ public class SecurityUtilsTest {
         Mockito.when(authentication.getPrincipal()).thenReturn(userDetails);
         Mockito.when(userDetails.getUsername()).thenReturn("aabb");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        Assert.assertEquals("aabb",  SecurityUtils.getCurrentUserLogin().get());
+        Assert.assertEquals("aabb", SecurityUtils.getCurrentUserLogin().get());
     }
 }
