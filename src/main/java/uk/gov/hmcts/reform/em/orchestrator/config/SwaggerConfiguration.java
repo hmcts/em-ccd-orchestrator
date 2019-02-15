@@ -33,8 +33,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("EM Native PDF Annotator App")
-                .description("API to burn annotations onto a PDF")
+                .title("EM CCD Orchestrator")
+                .description("Orchestrates callbacks from CCD relating to management and stitching of bundles")
                 .version(apiVersion)
                 .build();
     }
