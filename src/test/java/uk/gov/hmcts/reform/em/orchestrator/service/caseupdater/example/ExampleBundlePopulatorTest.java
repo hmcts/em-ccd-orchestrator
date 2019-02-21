@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.example;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.exampleservice.ExampleBundlePopulator;
 
 import static org.junit.Assert.assertEquals;
 
