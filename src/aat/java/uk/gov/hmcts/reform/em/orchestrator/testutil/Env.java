@@ -19,7 +19,7 @@ public class Env {
         defaults.setProperty("S2S_URL", "http://localhost:4502");
         defaults.setProperty("IDAM_API_USER_ROLE", "caseworker");
         defaults.setProperty("IDAM_API_USER", "test@test.com");
-        defaults.setProperty("IDAM_API_URL", "http://localhost:4501");
+        defaults.setProperty("IDAM_API_URL", "http://betadevaccidamapplb.reform.hmcts.net");
         defaults.setProperty("EM_STITCHING_API_URL", "http://localhost:4623");
         defaults.setProperty("DM_STORE_APP_URL", "http://localhost:4603");
     }
