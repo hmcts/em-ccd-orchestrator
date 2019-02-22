@@ -29,7 +29,7 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return newDocUrl.replaceAll(Env.getDmApiUrl(), "http://dm-store:8080");
     }
 
     public String uploadDocument() {
@@ -158,7 +158,7 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return newDocUrl.replaceAll(Env.getDmApiUrl(), "http://dm-store:8080");
     }
 
     public String uploadDocX(String docName) {
@@ -172,7 +172,7 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return newDocUrl.replaceAll(Env.getDmApiUrl(), "http://dm-store:8080");
     }
 }
 
