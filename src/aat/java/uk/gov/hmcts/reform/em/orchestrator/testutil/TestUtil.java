@@ -29,7 +29,9 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
+        return Env.getDmApiUrl().equals("http://localhost:4603")
+            ? url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl())
+            : url;
     }
 
     public String uploadDocument() {
@@ -158,7 +160,9 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
+        return Env.getDmApiUrl().equals("http://localhost:4603")
+            ? url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl())
+            : url;
     }
 
     public String uploadDocX(String docName) {
@@ -172,7 +176,9 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
+        return Env.getDmApiUrl().equals("http://localhost:4603")
+            ? url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl())
+            : url;
     }
 }
 
