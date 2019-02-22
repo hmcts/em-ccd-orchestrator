@@ -20,7 +20,7 @@ public class TestUtil {
     private String idamToken;
 
     public String uploadDocument(String pdfName) {
-        String newDocUrl = s2sAuthRequest()
+        String url = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
             .multiPart("files", "test.pdf", ClassLoader.getSystemResourceAsStream(pdfName), "application/pdf")
             .multiPart("classification", "PUBLIC")
@@ -29,7 +29,7 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
     }
 
     public String uploadDocument() {
@@ -148,7 +148,7 @@ public class TestUtil {
     }
 
     public String uploadWordDocument(String docName) {
-        String newDocUrl = s2sAuthRequest()
+        String url = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("files", "test.doc", ClassLoader.getSystemResourceAsStream(docName),
                         "application/msword")
@@ -158,11 +158,11 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
     }
 
     public String uploadDocX(String docName) {
-        String newDocUrl = s2sAuthRequest()
+        String url = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("files", "test.docx", ClassLoader.getSystemResourceAsStream(docName),
                         "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -172,7 +172,7 @@ public class TestUtil {
             .jsonPath()
             .get("_embedded.documents[0]._links.self.href");
 
-        return newDocUrl;
+        return url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl());
     }
 }
 

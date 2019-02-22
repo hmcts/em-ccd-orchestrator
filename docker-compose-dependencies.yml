@@ -26,45 +26,6 @@ services:
     ports:
       - 4502:8489
 
-  idam-api:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
-    command: --wait-for-database 60
-    environment:
-      - IDAM_SUPERUSER_EMAIL
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
-      - SPRING_PROFILES_ACTIVE=test
-      - IDAM_TESTING_SUPPORT_ENABLED=true
-      - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
-      - IDAM_AUTHENTICATION_WEB_HOST=https://idam-authentication-web:8000
-      - IDAM_REGISTRATION_WEB_HOST=https://idam-registration-web:8000
-      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_REGISTRATION_WEB=QM5RQQ53LZFOSIXJ
-      - http_proxy
-      - https_proxy
-      - no_proxy
-#      logging env vars
-      - ROOT_APPENDER=JSON_CONSOLE
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=idam-api
-      - REFORM_TEAM=cc
-      - REFORM_ENVIRONMENT=docker
-#      healthcheck env vars
-      - PACKAGES_ENVIRONMENT=docker
-      - PACKAGES_PROJECT=idam
-      - PACKAGES_NAME=idam
-      - PACKAGES_VERSION=unkown
-    links:
-      - smtp-server
-      - idam-database
-    depends_on:
-      - idam-database
-      - smtp-server
-    ports:
-      - 4501:8080
-
-  idam-database:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
-
   smtp-server:
     image: mailhog/mailhog
 
@@ -76,7 +37,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=emstitch
       - SPRING_DATASOURCE_PASSWORD=emstitch
       - S2S_BASE_URI=http://service-auth-provider-app:8489
-      - IDAM_API_BASE_URI=http://idam-api:8080
+      - IDAM_API_BASE_URI=http://betadevaccidamapplb.reform.hmcts.net
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080

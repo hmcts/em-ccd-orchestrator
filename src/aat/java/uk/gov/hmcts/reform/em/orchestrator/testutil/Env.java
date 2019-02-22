@@ -19,9 +19,9 @@ public class Env {
         defaults.setProperty("S2S_URL", "http://localhost:4502");
         defaults.setProperty("IDAM_API_USER_ROLE", "caseworker");
         defaults.setProperty("IDAM_API_USER", "test@test.com");
-        defaults.setProperty("IDAM_API_URL", "http://localhost:4501");
-        defaults.setProperty("EM_STITCHING_API_URL", "http://localhost:4623");
+        defaults.setProperty("IDAM_API_URL", "http://betadevaccidamapplb.reform.hmcts.net");
         defaults.setProperty("DM_STORE_APP_URL", "http://localhost:4603");
+        defaults.setProperty("DOCKER_DM_STORE_APP_URL", "http://dm-store:8080");
     }
 
     public static String getUseProxy() {
@@ -48,12 +48,12 @@ public class Env {
         return require("S2S_SERVICE_NAME");
     }
 
-    public static String getStitchingApiUrl() {
-        return require("EM_STITCHING_API_URL");
-    }
-
     public static String getDmApiUrl() {
         return require("DM_STORE_APP_URL");
+    }
+
+    public static String getDockerDmApiUrl() {
+        return require("DOCKER_DM_STORE_APP_URL");
     }
 
     public static String require(String name) {
