@@ -278,4 +278,11 @@
         <gav regex="true">.*</gav>
         <cve>CVE-2018-1000873</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-batch-2.0.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.boot:spring-boot-starter-batch:.*$</gav>
+        <cve>CVE-2019-3774</cve>
+    </suppress>
 </suppressions>
