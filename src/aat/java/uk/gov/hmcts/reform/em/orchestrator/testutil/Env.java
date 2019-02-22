@@ -20,7 +20,7 @@ public class Env {
         defaults.setProperty("IDAM_API_USER_ROLE", "caseworker");
         defaults.setProperty("IDAM_API_USER", "test@test.com");
         defaults.setProperty("IDAM_API_URL", "http://betadevaccidamapplb.reform.hmcts.net");
-        defaults.setProperty("DM_STORE_APP_URL", "http://localhost:4603");
+        defaults.setProperty("DM_STORE_APP_URL", "http://dm-store:8080");
     }
 
     public static String getUseProxy() {

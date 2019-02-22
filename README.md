@@ -12,7 +12,7 @@ CCD Orchestrator is a backend service that facilitates interactions between CCD,
 az login
 az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 docker-compose -f docker-compose-dependencies.yml pull
-docker-compose -f docker-compose-dependencies.yml up
+DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up
 ```
 
 ### Tech
