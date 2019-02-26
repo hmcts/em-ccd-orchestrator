@@ -8,11 +8,6 @@ output "vaultName" {
   value = "${module.local_key_vault.key_vault_name}"
 }
 
-// used for grabbing shared secrets (shown in the jenkins file)
-output "vaultUri" {
-  value = "${data.azurerm_key_vault.shared_key_vault.vault_uri}"
-}
-
 output "idam_api_url" {
   value = "${var.idam_api_url}"
 }

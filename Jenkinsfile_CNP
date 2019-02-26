@@ -16,11 +16,12 @@ properties([
 def type = "java"
 def product = "em"
 def component = "ccd-orchestrator"
-
 def channel = '#rpa-pipeline'
 
-List<LinkedHashMap<String, Object>> secrets = [
-    secret('em-s2s-token', 'S2S_TOKEN')
+def secrets = [
+        's2s-${env}': [
+                secret('microservicekey-em-gw', 'FUNCTIONAL_TEST_CLIENT_S2S_TOKEN')
+        ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -32,7 +33,13 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     ]
 }
 
+def vaultOverrides = [
+        'preview' : 'aat',
+        'spreview': 'saat'
+]
+
 withPipeline(type , product, component) {
+    overrideVaultEnvironments(vaultOverrides)
     enableSlackNotifications(channel)
     enableDockerBuild()
     loadVaultSecrets(secrets)
