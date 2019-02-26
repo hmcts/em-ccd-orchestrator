@@ -14,7 +14,7 @@ public class Env {
     static {
         defaults.setProperty("PROXY", "false");
         defaults.setProperty("TEST_URL", "http://localhost:8080");
-        defaults.setProperty("S2S_TOKEN", "AAAAAAAAAAAAAAAA");
+        defaults.setProperty("FUNCTIONAL_TEST_CLIENT_S2S_TOKEN", "AAAAAAAAAAAAAAAA");
         defaults.setProperty("S2S_SERVICE_NAME", "em_gw");
         defaults.setProperty("S2S_URL", "http://localhost:4502");
         defaults.setProperty("IDAM_API_USER_ROLE", "caseworker");
@@ -41,7 +41,7 @@ public class Env {
     }
 
     public static String getS2SToken() {
-        return require("S2S_TOKEN");
+        return require("FUNCTIONAL_TEST_CLIENT_S2S_TOKEN");
     }
 
     public static String getS2SServiceName() {
