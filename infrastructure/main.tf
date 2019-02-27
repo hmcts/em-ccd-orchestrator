@@ -21,7 +21,7 @@ module "app" {
   https_only="false"
   common_tags  = "${var.common_tags}"
   asp_rg = "${var.shared_product_name}-${var.env}"
-  asp_name = "${var.shared_product_name}-${var.env}"
+  asp_name = "${var.shared_product_name}-bundling-${var.env}"
 
   app_settings = {
     # JAVA_OPTS = "${var.java_opts}"
