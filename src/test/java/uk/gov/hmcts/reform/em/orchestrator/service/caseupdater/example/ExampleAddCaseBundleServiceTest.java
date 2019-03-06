@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.em.orchestrator.exampleservice.ExampleAddCaseBundleService;
+import uk.gov.hmcts.reform.em.orchestrator.exampleservice.ExampleBundlePopulator;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.JsonNodesVerifier;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 
@@ -22,7 +24,7 @@ public class ExampleAddCaseBundleServiceTest {
     @Mock
     JsonNodesVerifier exampleCaseVerifier;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
     ExampleAddCaseBundleService exampleAddCaseBundleService;
@@ -31,7 +33,11 @@ public class ExampleAddCaseBundleServiceTest {
     public void handles() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setJwt("x");
-        ccdCallbackDto.setCcdPayload(objectMapper.readTree("{\"caseBundles\": [{\"x\":\"y\"}]}"));
+
+        ccdCallbackDto.setCcdPayload(objectMapper.readTree(
+                "{\"caseBundles\": [{\"x\":\"y\"}], " +
+                        "\"case_details\": {\"jurisdiction\":\"PUBLICLAW\", " +
+                        "\"case_type_id\":\"CCD_BUNDLE_MVP_TYPE\"}}"));
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         exampleAddCaseBundleService.handles(ccdCallbackDto);
         Mockito.verify(exampleCaseVerifier, Mockito.times(1)).verify(Mockito.any(JsonNode.class));

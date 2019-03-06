@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.example;
+package uk.gov.hmcts.reform.em.orchestrator.exampleservice;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,10 +9,10 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.JsonNodesVerifier;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 
-
 @Service
 public class ExampleAddCaseBundleService implements CcdCaseUpdater {
 
+    // Link to your service's bundlePopulator
     private final ExampleBundlePopulator exampleBundlePopulator;
 
     private final JsonNodesVerifier exampleCaseVerifier;
@@ -20,9 +20,12 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
     private final ObjectMapper objectMapper;
 
     public ExampleAddCaseBundleService(ExampleBundlePopulator exampleBundlePopulator, JsonNodesVerifier exampleCaseVerifier, ObjectMapper objectMapper) {
-        this.exampleBundlePopulator = exampleBundlePopulator;
         this.exampleCaseVerifier = exampleCaseVerifier;
         this.objectMapper = objectMapper;
+
+        // Change this to your service's bundlePopulator
+        this.exampleBundlePopulator = exampleBundlePopulator;
+
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ExampleAddCaseBundleService implements CcdCaseUpdater {
                     return arrayNode;
                 });
 
+        // Change this to your service's bundlePopulator
         JsonNode newBundle = exampleBundlePopulator.populateNewBundle(ccdCallbackDto.getCaseData());
 
         bundles.add(newBundle);
