@@ -18,8 +18,8 @@ public class ExampleBundlePopulator {
         this.objectMapper = objectMapper;
     }
 
-//    The following code navigates through the case JSON to find a document's name and URL.
-//    Customise the following code to align with your CCD definition
+    //    The following code navigates through the case JSON to find a document's name and URL.
+    //    Customise the following code to align with your CCD definition
     public JsonNode populateNewBundle(JsonNode caseData) {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         ccdBundleDTO.setTitle("New Bundle");
