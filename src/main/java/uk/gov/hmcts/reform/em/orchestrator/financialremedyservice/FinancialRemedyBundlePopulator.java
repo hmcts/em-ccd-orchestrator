@@ -28,25 +28,25 @@ public class FinancialRemedyBundlePopulator {
 
         JsonNode additionalDocuments = caseData.findValue("uploadAdditionalDocument");
 
-        addDocumentToBundle(ccdBundleDTO, scanned4AFormDocument, "scanned4AFormDocument", 0);
-        addDocumentToBundle(ccdBundleDTO, scanned4BFormDocument, "scanned4BFormDocument", 1);
-        addDocumentToBundle(ccdBundleDTO, miniFormADocument, "miniFormADocument", 2);
+        addDocumentToBundle(ccdBundleDTO, scanned4AFormDocument, "scanned4AFormDocument");
+        addDocumentToBundle(ccdBundleDTO, scanned4BFormDocument, "scanned4BFormDocument");
+        addDocumentToBundle(ccdBundleDTO, miniFormADocument, "miniFormADocument");
 
         if (additionalDocuments != null) {
             ccdBundleDTO.setEligibleForStitchingAsBoolean(true);
-
+            int currentIndex = ccdBundleDTO.getDocuments().size();
             for (int i = 0; i < additionalDocuments.size(); i++) {
-                JsonNode caseDocument = additionalDocuments.get(i);
+                JsonNode additionalDocument = additionalDocuments.get(i);
                 ccdBundleDTO.getDocuments().add(
                         new CcdValue(
                                 new CcdBundleDocumentDTO(
                                         "additionalDocument" + i,
                                         null,
-                                        i + 3,
+                                        i + currentIndex,
                                         new CcdDocument(
-                                                caseDocument.at("/value/additionalDocuments/document_url").asText(),
-                                                caseDocument.at("/value/additionalDocuments/document_filename").asText(),
-                                                caseDocument.at("/value/additionalDocuments/document_binary_url").asText()
+                                                additionalDocument.at("/value/additionalDocuments/document_url").asText(),
+                                                additionalDocument.at("/value/additionalDocuments/document_filename").asText(),
+                                                additionalDocument.at("/value/additionalDocuments/document_binary_url").asText()
                                         )
 
                                 )
@@ -57,13 +57,14 @@ public class FinancialRemedyBundlePopulator {
         return objectMapper.valueToTree(new CcdValue<>(ccdBundleDTO));
     }
 
-    private static void addDocumentToBundle(CcdBundleDTO ccdBundleDTO, JsonNode jsonNode, String name, int index) {
+    private static void addDocumentToBundle(CcdBundleDTO ccdBundleDTO, JsonNode jsonNode, String name) {
         if (jsonNode != null) {
+            int currentIndex = ccdBundleDTO.getDocuments().size();
             ccdBundleDTO.setEligibleForStitchingAsBoolean(true);
             ccdBundleDTO.getDocuments().add(new CcdValue(
-                    new CcdBundleDocumentDTO("scanned4AFormDocument",
+                    new CcdBundleDocumentDTO(name,
                             null,
-                            index,
+                            currentIndex,
                             new CcdDocument(
                                     jsonNode.at("/document_url").asText(),
                                     jsonNode.at("/document_filename").asText(),
