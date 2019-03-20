@@ -8,16 +8,16 @@ output "vaultName" {
   value = "${module.local_key_vault.key_vault_name}"
 }
 
-output "idam_api_url" {
-  value = "${var.idam_api_url}"
+output "idam_api_base_uri" {
+  value = "${var.idam_api_base_uri}"
 }
 
-output "s2s_url" {
+output "s2s_base_uri" {
   value = "http://${var.s2s_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 }
 
-output "enable_idam_health_check" {
-  value = "${var.enable_idam_healthcheck}"
+output "idam_webshow_whitelist" {
+  value = "https://em-show-aat.service.core-compute-aat.internal/oauth2/callback"
 }
 
 output "enable_idam_healthcheck" {

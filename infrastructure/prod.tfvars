@@ -1,2 +1,2 @@
-idam_api_url = "https://prod-idamapi.reform.hmcts.net:3511"
+idam_api_base_uri = "https://prod-idamapi.reform.hmcts.net:3511"
 
