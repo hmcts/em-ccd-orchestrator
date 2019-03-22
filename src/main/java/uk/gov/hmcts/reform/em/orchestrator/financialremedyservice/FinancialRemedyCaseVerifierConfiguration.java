@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.financialremedyservice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.JsonNodesVerifier;
@@ -14,11 +16,18 @@ public class FinancialRemedyCaseVerifierConfiguration {
     private static final String JURISDICTION = "DIVORCE";
     private static final String CASE_TYPE_ID = "FinancialRemedyContested";
 
-    @Bean
-    static JsonNodesVerifier exampleCaseVerifier() {
-        return new JsonNodesVerifier(
-                "/case_details/jurisdiction", JURISDICTION,
-                "/case_details/case_type_id", CASE_TYPE_ID);
-    }
+    @Autowired
+    private ObjectMapper mapper;
 
+    @Bean
+    public FinancialRemedyAddCaseBundleService financialRemedyAddCaseBundleService() {
+        return new FinancialRemedyAddCaseBundleService(
+            new FinancialRemedyBundlePopulator(mapper),
+            new JsonNodesVerifier(
+                "/case_details/jurisdiction", JURISDICTION,
+                "/case_details/case_type_id", CASE_TYPE_ID
+            ),
+            mapper
+        );
+    }
 }

@@ -1,10 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
-import com.warrenstrange.googleauth.GoogleAuthenticator;
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
