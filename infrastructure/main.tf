@@ -1,3 +1,6 @@
+provider "azurerm" {
+  version = "1.23.0"
+}
 locals {
   app_full_name = "${var.product}-${var.component}"
   ase_name = "core-compute-${var.env}"
