@@ -16,11 +16,13 @@ properties([
 def type = "java"
 def product = "em"
 def component = "ccd-orchestrator"
-def channel = '#rpa-pipeline'
 
 def secrets = [
         's2s-${env}': [
                 secret('microservicekey-em-gw', 'FUNCTIONAL_TEST_CLIENT_S2S_TOKEN')
+        ],
+        'rpa-${env}': [
+                secret('show-oauth2-token', 'FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET')
         ]
 ]
 
@@ -40,24 +42,6 @@ def vaultOverrides = [
 
 withPipeline(type , product, component) {
     overrideVaultEnvironments(vaultOverrides)
-    enableSlackNotifications(channel)
     enableDockerBuild()
     loadVaultSecrets(secrets)
-
-    after('checkout') {
-        echo '${product}-${component} out'
-        sh '''
-mkdir -p application/src/main/resources/META-INF
-echo "allprojects { task printVersionInit { doLast { println project.version } } }" > init.gradle
-
-tee application/src/main/resources/META-INF/build-info.properties <<EOF 2>/dev/null
-build.version=$(./gradlew -q printVersion)
-build.number=${BUILD_NUMBER}
-build.commit=$(git rev-parse HEAD)
-build.date=$(date)
-EOF
-
-'''
-    }
-
 }

@@ -7,15 +7,6 @@ spring:
       jobCronExpression: ${JOB_CRON_EXPRESSION:"* * * * * *"}
     initialize-schema: never
 
-base-urls:
-  idam-url: ${IDAM_API_URL:http://betadevaccidamapplb.reform.hmcts.net}
-  idam-user: ${IDAM_API_USER:test@test.com}
-  idam-user-role: ${IDAM_API_USER_ROLE:caseworker}
-  idam-s2s: ${S2S_URL:http://localhost:4502}
-  s2s-name: ${S2S_SERVICE_NAME:em_ccd_orchestrator}
-  s2s-token: ${S2S_TOKEN:AAAAAAAAAAAAAAAA}
-  test-url: ${TEST_URL:http://localhost:8080}
-
 management:
   endpoints:
     web:
@@ -54,7 +45,7 @@ authorization:
 auth:
   idam:
     client:
-      baseUrl: ${IDAM_API_BASE_URI:http://betadevaccidamapplb.reform.hmcts.net}
+      baseUrl: ${IDAM_API_BASE_URI:http://localhost:4501}
   provider:
     service:
       client:

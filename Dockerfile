@@ -1,12 +1,7 @@
-FROM hmcts/cnp-java-base:openjdk-8u191-jre-alpine3.9-2.0
-MAINTAINER "HMCTS Team <https://github.com/hmcts>"
-LABEL maintainer = "HMCTS Team <https://github.com/hmcts>"
+FROM hmcts/cnp-java-base:openjdk-8u191-jre-alpine3.9-2.0.1
 
-WORKDIR /opt/app
-COPY build/libs/rpa-em-ccd-orchestrator.jar .
+COPY build/libs/rpa-em-ccd-orchestrator.jar /opt/app/
 
-HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy="" curl --silent --fail http://localhost:8080/health
+CMD ["rpa-em-ccd-orchestrator.jar"]
 
-EXPOSE 8080 5005
-
-ENTRYPOINT exec java ${JAVA_OPTS} -jar "/opt/app/rpa-em-ccd-orchestrator.jar"
+EXPOSE 8080
