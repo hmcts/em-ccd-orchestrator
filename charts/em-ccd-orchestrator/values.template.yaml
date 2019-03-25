@@ -40,3 +40,7 @@ ccd-orchestrator:
     ENABLE_IDAM_HEALTH_CHECK: false
     ENABLE_S2S_HEALTH_CHECK: false
     SERVER_PORT: 8080
+
+    IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
+    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
