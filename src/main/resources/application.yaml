@@ -8,6 +8,9 @@ spring:
     initialize-schema: never
 
 management:
+  endpoint:
+    health:
+      show-details: "always"
   endpoints:
     web:
       base-path: '/'

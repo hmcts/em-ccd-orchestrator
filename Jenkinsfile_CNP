@@ -35,6 +35,12 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     ]
 }
 
+env.IDAM_API_BASE_URI = 'https://preprod-idamapi.reform.hmcts.net:3511'
+env.S2S_BASE_URI = 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal'
+env.IDAM_WEBSHOW_WHITELIST = 'https://em-show-aat.service.core-compute-aat.internal/oauth2/callback'
+env.EM_ANNO_APP_URL = 'http://em-anno-aat.service.core-compute-aat.internal'
+env.EM_STITCHING_API_URL = 'http://em-stitching-aat.service.core-compute-aat.internal'
+
 def vaultOverrides = [
         'preview' : 'aat',
         'spreview': 'saat'
@@ -44,4 +50,5 @@ withPipeline(type , product, component) {
     overrideVaultEnvironments(vaultOverrides)
     enableDockerBuild()
     loadVaultSecrets(secrets)
+    installCharts()
 }
