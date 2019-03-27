@@ -5,7 +5,7 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   ase_name = "core-compute-${var.env}"
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-  shared_vault_name = "em-ccdorc-${local.local_env}"
+  shared_vault_name = "${var.shared_product_name}-${local.local_env}"
 }
 # "${local.ase_name}"
 # "${local.app_full_name}"
@@ -94,4 +94,5 @@ module "local_key_vault" {
   resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${var.common_tags}"
+  name = "em-ccdorc-${var.env}"
 }
