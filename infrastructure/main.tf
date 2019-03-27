@@ -5,7 +5,7 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   ase_name = "core-compute-${var.env}"
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-  shared_vault_name = "em-ccd-orc-${local.local_env}"
+  shared_vault_name = "em-ccdorc-${local.local_env}"
 }
 # "${local.ase_name}"
 # "${local.app_full_name}"
