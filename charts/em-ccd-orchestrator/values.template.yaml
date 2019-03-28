@@ -20,11 +20,11 @@ ccd-orchestrator:
       secrets:
         - microservicekey-em-ccd-orchestrator
   environment:
-    REFORM_SERVICE_NAME: em-npa
+    REFORM_SERVICE_NAME: em-ccd-orchestrator
     REFORM_TEAM: evidence
     REFORM_SERVICE_TYPE: java
     REFORM_ENVIRONMENT: preview
-    PACKAGES_NAME: em-npa
+    PACKAGES_NAME: em-ccd-orchestrator
     PACKAGES_PROJECT: evidence
     PACKAGES_ENVIRONMENT: preview
     JSON_CONSOLE_PRETTY_PRINT: false
@@ -44,4 +44,4 @@ ccd-orchestrator:
     IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
     S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
-    DM_STITCHING_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
+    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
