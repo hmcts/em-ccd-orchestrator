@@ -1,0 +1,47 @@
+ccd-orchestrator:
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+  applicationPort: 8080
+  readinessDelay: 20
+  readinessTimeout: 20
+  readinessFailureThreshold: 7
+  readinessPeriod: 15
+  livenessDelay: 20
+  livenessTimeout: 20
+  livenessPeriod: 15
+  livenessFailureThreshold: 7
+  keyVaults:
+    rpa:
+      resourceGroup: rpa
+      secrets:
+        - AppInsightsInstrumentationKey
+    s2s:
+      resourceGroup: rpe-service-auth-provider
+      secrets:
+        - microservicekey-em-ccd-orchestrator
+  environment:
+    REFORM_SERVICE_NAME: em-ccd-orchestrator
+    REFORM_TEAM: evidence
+    REFORM_SERVICE_TYPE: java
+    REFORM_ENVIRONMENT: preview
+    PACKAGES_NAME: em-ccd-orchestrator
+    PACKAGES_PROJECT: evidence
+    PACKAGES_ENVIRONMENT: preview
+    JSON_CONSOLE_PRETTY_PRINT: false
+    LOG_OUTPUT: single
+    ROOT_LOGGING_LEVEL: INFO
+    LOG_LEVEL_SPRING_WEB: INFO
+    LOG_LEVEL_DM: INFO
+    SHOW_SQL: true
+    ENDPOINTS_HEALTH_SENSITIVE: false
+    ENDPOINTS_INFO_SENSITIVE: false
+    S2S_NAMES_WHITELIST: em_api,em_gw,em_ccd_orchestrator, em_stitching,ccd_gw,ccd_data,sscs,divorce_document_upload,divorce_document_generator,probate_backend,jui_webapp,pui_webapp
+    CASE_WORKER_ROLES: caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce
+    ENABLE_IDAM_HEALTH_CHECK: false
+    ENABLE_S2S_HEALTH_CHECK: false
+    SERVER_PORT: 8080
+
+    IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
+    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
+    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
