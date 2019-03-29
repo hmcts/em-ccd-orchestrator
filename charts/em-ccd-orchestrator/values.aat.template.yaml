@@ -1,4 +1,4 @@
-npa-app:
+ccd-orchestrator:
   environment:
     IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
     S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
