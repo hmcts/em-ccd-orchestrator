@@ -1,15 +1,16 @@
 ccd-orchestrator:
-  image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_FQDN}
   applicationPort: 8080
-  readinessDelay: 20
-  readinessTimeout: 20
-  readinessFailureThreshold: 7
+  image: hmcts.azurecr.io/hmcts/em-ccd-orchestrator:latest
+  readinessDelay: 40
+  readinessTimeout: 5
   readinessPeriod: 15
-  livenessDelay: 20
-  livenessTimeout: 20
+  readinessFailureThreshold: 10
+  livenessDelay: 40
+  livenessTimeout: 5
   livenessPeriod: 15
-  livenessFailureThreshold: 7
+  livenessFailureThreshold: 10
+  # TODO use real liveness path
+  livenessPath: '/health'
   keyVaults:
     rpa:
       resourceGroup: rpa
@@ -20,6 +21,12 @@ ccd-orchestrator:
       secrets:
         - microservicekey-em-ccd-orchestrator
   environment:
+    # Regardless of environment, point towards AAT instances. Overwrite in product charts etc.
+    IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
+    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
+    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
+
     REFORM_SERVICE_NAME: em-ccd-orchestrator
     REFORM_TEAM: evidence
     REFORM_SERVICE_TYPE: java
@@ -40,7 +47,3 @@ ccd-orchestrator:
     ENABLE_IDAM_HEALTH_CHECK: false
     ENABLE_S2S_HEALTH_CHECK: false
     SERVER_PORT: 8080
-    IDAM_API_BASE_URI: https://preprod-idamapi.reform.hmcts.net:3511
-    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
-    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
