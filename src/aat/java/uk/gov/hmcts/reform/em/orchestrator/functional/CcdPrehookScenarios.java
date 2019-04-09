@@ -17,12 +17,17 @@ public class CcdPrehookScenarios {
 
     @Test
     public void testPostBundleStitch() throws IOException {
+        System.out.println("JJJ - CCDPrehookScenarios - testPostBundleStitch - request body");
+        System.out.println(jsonFile);
+
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(jsonFile)
             .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        System.out.println(response.getBody().print());
+
+        System.out.println("JJJ - CCDPrehookScenarios - testPostBundleStitch - response body");
+        System.out.println(response.getBody().jsonPath().prettyPrint());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("New Bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
     }
