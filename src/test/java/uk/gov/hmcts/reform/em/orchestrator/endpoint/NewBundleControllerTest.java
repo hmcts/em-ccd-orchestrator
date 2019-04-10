@@ -75,7 +75,7 @@ public class NewBundleControllerTest {
 
         Mockito
                 .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCddCallback(Mockito.any(CcdCallbackDto.class));
+                .handleCcdCallback(Mockito.any(CcdCallbackDto.class));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class NewBundleControllerTest {
                 .thenReturn(new CcdCallbackDto());
 
         Mockito
-                .when(ccdCallbackHandlerService.handleCddCallback(Mockito.any(CcdCallbackDto.class)))
+                .when(ccdCallbackHandlerService.handleCcdCallback(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("test message"));
 
         this.mockMvc
@@ -108,7 +108,7 @@ public class NewBundleControllerTest {
 
         Mockito
                 .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCddCallback(Mockito.any(CcdCallbackDto.class));
+                .handleCcdCallback(Mockito.any(CcdCallbackDto.class));
     }
 
 

@@ -16,7 +16,7 @@ public class CcdCallbackHandlerServiceImpl implements CcdCallbackHandlerService 
     }
 
     @Override
-    public JsonNode handleCddCallback(CcdCallbackDto ccdCallbackDto) {
+    public JsonNode handleCcdCallback(CcdCallbackDto ccdCallbackDto) {
         return ccdCaseUpdaterFinder
             .find(ccdCallbackDto)
             .map(ccdCaseUpdater -> ccdCaseUpdater.updateCase(ccdCallbackDto))
