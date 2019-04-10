@@ -64,7 +64,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .thenReturn(new CcdCallbackDto());
 
         this.mockMvc
-                .perform(post("/api/stitch-cdd-bundles")
+                .perform(post("/api/stitch-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
@@ -96,7 +96,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .thenThrow(new RuntimeException("test message"));
 
         this.mockMvc
-                .perform(post("/api/stitch-cdd-bundles")
+                .perform(post("/api/stitch-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")

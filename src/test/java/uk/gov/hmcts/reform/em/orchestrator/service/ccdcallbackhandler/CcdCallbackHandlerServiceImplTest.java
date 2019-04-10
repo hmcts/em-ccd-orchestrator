@@ -22,18 +22,18 @@ public class CcdCallbackHandlerServiceImplTest {
     CcdCallbackHandlerServiceImpl ccdCallbackHandlerService;
 
     @Test(expected = CaseUpdaterDoesNotExistException.class)
-    public void handleCddCallback() {
+    public void handleCcdCallback() {
         Mockito.when(ccdCaseUpdaterFinder.find(Mockito.any(CcdCallbackDto.class))).thenReturn(Optional.empty());
-        ccdCallbackHandlerService.handleCddCallback(new CcdCallbackDto());
+        ccdCallbackHandlerService.handleCcdCallback(new CcdCallbackDto());
     }
 
     @Test
-    public void handleCddCallbackHandlerFound() {
+    public void handleCcdCallbackHandlerFound() {
         CcdCaseUpdater ccdCaseUpdater = Mockito.mock(CcdCaseUpdater.class);
         JsonNode jsonNode = Mockito.mock(JsonNode.class);
         Mockito.when(ccdCaseUpdaterFinder.find(Mockito.any(CcdCallbackDto.class))).thenReturn(Optional.of(ccdCaseUpdater));
         Mockito.when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class))).thenReturn(jsonNode);
-        ccdCallbackHandlerService.handleCddCallback(new CcdCallbackDto());
+        ccdCallbackHandlerService.handleCcdCallback(new CcdCallbackDto());
         Mockito.verify(ccdCaseUpdater, Mockito.times(1)).updateCase(Mockito.any(CcdCallbackDto.class));
     }
 }

@@ -33,7 +33,7 @@ public class NewBundleController {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
-            ccdCallbackResponseDto.setData(ccdCallbackHandlerService.handleCddCallback(dto));
+            ccdCallbackResponseDto.setData(ccdCallbackHandlerService.handleCcdCallback(dto));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().add(e.getMessage());

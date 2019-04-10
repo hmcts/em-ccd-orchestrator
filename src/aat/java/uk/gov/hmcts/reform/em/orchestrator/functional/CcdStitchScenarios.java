@@ -29,7 +29,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         System.out.println("JJJ - testPostBundleStitch - response body");
@@ -50,7 +50,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-cdd-bundles");
+            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         System.out.println("JJJ - testPostBundleStitchWithWordDoc - response body");

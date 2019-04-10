@@ -27,7 +27,7 @@ public class CcdStitchBundleCallbackController {
         this.ccdBundleStitchingService = ccdBundleStitchingService;
     }
 
-    @PostMapping(value = "/api/stitch-cdd-bundles",
+    @PostMapping(value = "/api/stitch-ccd-bundles",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {

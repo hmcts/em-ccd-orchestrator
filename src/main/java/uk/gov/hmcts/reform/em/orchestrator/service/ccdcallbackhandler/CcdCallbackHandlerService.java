@@ -4,6 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public interface CcdCallbackHandlerService {
 
-    JsonNode handleCddCallback(CcdCallbackDto caseData);
+    JsonNode handleCcdCallback(CcdCallbackDto caseData);
 
 }
