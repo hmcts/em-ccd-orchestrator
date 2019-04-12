@@ -9,8 +9,6 @@ ccd-orchestrator:
   livenessTimeout: 5
   livenessPeriod: 15
   livenessFailureThreshold: 10
-  # TODO use real liveness path
-  livenessPath: '/health'
   keyVaults:
     rpa:
       resourceGroup: rpa
