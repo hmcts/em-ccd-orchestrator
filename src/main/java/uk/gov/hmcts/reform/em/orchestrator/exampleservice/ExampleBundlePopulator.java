@@ -23,7 +23,7 @@ public class ExampleBundlePopulator {
     public JsonNode populateNewBundle(JsonNode caseData) {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         ccdBundleDTO.setTitle("New Bundle");
-        ccdBundleDTO.setFileName("a-stitched-document.pdf");
+        ccdBundleDTO.setFileName("exampleservice-bundle.pdf");
         ccdBundleDTO.setHasCoversheets(true);
         ccdBundleDTO.setHasTableOfContents(true);
 
@@ -41,9 +41,9 @@ public class ExampleBundlePopulator {
                             null,
                             i,
                             new CcdDocument(
-                                    caseDocument.at("/value/document/document_url").asText(),
-                                    caseDocument.at("/value/document/document_filename").asText(),
-                                    caseDocument.at("/value/document/document_binary_url").asText()
+                                caseDocument.at("/value/document/document_url").asText(),
+                                caseDocument.at("/value/document/document_filename").asText(),
+                                caseDocument.at("/value/document/document_binary_url").asText()
                             )
                         )
                     )
