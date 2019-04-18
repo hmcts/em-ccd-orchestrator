@@ -155,7 +155,7 @@ def coverageExclusionList = [
     '**uk/gov/hmcts/reform/em/orchestrator/config/*',
     '**uk/gov/hmcts/reform/em/orchestrator/config/logging/*',
     '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/service/dto/external/annotation/*',
+    '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
 ]
 
 //(jacocoTestReport | jacocoTestCoverageVerification)
