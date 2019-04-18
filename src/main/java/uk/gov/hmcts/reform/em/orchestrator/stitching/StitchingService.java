@@ -1,7 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 import okhttp3.*;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -55,15 +58,21 @@ public class StitchingService {
         try {
             final int taskId = post(documentTask, jwt);
             final String response = poll(taskId, jwt);
+            final DocumentContext json = JsonPath
+                .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
+                .parse(response);
 
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
+                final String fileName = json.read("$.bundle.fileName");
+
                 return new CcdDocument(
-                        JsonPath.read(response, "$.bundle.stitchedDocumentURI"),
-                        "stitched.pdf",
-                        JsonPath.read(response, "$.bundle.stitchedDocumentURI") + "/binary");
+                    json.read("$.bundle.stitchedDocumentURI"),
+                    fileName != null ? fileName : "stitched.pdf",
+                    json.read("$.bundle.stitchedDocumentURI") + "/binary"
+                );
             } else {
                 throw new StitchingServiceException(
-                        "Stitching failed: " + JsonPath.read(response, "$.failureDescription"));
+                        "Stitching failed: " + json.read("$.failureDescription"));
             }
         } catch (IOException e) {
             throw new StitchingServiceException(

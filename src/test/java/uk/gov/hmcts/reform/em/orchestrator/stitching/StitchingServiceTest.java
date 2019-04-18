@@ -41,6 +41,24 @@ public class StitchingServiceTest {
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
         Assert.assertEquals(docId.getUrl(), "AAAAAA");
+        Assert.assertEquals(docId.getFileName(), "stitched.pdf");
+    }
+
+    @Test
+    public void stitchSuccessfulWithFileName() throws StitchingServiceException, InterruptedException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'NEW', bundle: { stitchedDocumentURI: null } }");
+        responses.add("{ id: 1, taskState: 'DONE', bundle: { stitchedDocumentURI: 'AAAAAA', fileName: 'a.pdf' } }");
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
+
+        Assert.assertEquals(docId.getUrl(), "AAAAAA");
+        Assert.assertEquals(docId.getFileName(), "a.pdf");
     }
 
     @Test(expected = StitchingServiceException.class)

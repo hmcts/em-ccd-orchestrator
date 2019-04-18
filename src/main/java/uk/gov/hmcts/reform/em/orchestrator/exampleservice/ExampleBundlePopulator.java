@@ -23,6 +23,9 @@ public class ExampleBundlePopulator {
     public JsonNode populateNewBundle(JsonNode caseData) {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         ccdBundleDTO.setTitle("New Bundle");
+        ccdBundleDTO.setFileName("exampleservice-bundle.pdf");
+        ccdBundleDTO.setHasCoversheets(true);
+        ccdBundleDTO.setHasTableOfContents(true);
 
         ArrayNode caseDocuments = (ArrayNode) caseData.findValue("caseDocuments");
 
@@ -32,19 +35,18 @@ public class ExampleBundlePopulator {
             for (int i = 0; i < caseDocuments.size(); i++) {
                 JsonNode caseDocument = caseDocuments.get(i);
                 ccdBundleDTO.getDocuments().add(
-                        new CcdValue(
-                                new CcdBundleDocumentDTO(
-                                        caseDocument.at("/value/name").asText(),
-                                        null,
-                                        i,
-                                        new CcdDocument(
-                                                caseDocument.at("/value/document/document_url").asText(),
-                                                caseDocument.at("/value/document/document_filename").asText(),
-                                                caseDocument.at("/value/document/document_binary_url").asText()
-                                        )
-
-                                )
+                    new CcdValue(
+                        new CcdBundleDocumentDTO(
+                            caseDocument.at("/value/name").asText(),
+                            null,
+                            i,
+                            new CcdDocument(
+                                caseDocument.at("/value/document/document_url").asText(),
+                                caseDocument.at("/value/document/document_filename").asText(),
+                                caseDocument.at("/value/document/document_binary_url").asText()
+                            )
                         )
+                    )
                 );
             }
         }

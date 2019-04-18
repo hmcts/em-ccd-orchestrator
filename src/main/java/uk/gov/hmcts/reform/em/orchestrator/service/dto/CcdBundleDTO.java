@@ -17,6 +17,9 @@ public class CcdBundleDTO {
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     @JsonIgnore
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
+    private String fileName;
+    private boolean hasTableOfContents = true;
+    private boolean hasCoversheets = true;
 
     public Long getId() {
         return id;
@@ -86,5 +89,29 @@ public class CcdBundleDTO {
 
     public void setFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
         this.folders = folders;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public boolean hasTableOfContents() {
+        return hasTableOfContents;
+    }
+
+    public void setHasTableOfContents(boolean hasTableOfContents) {
+        this.hasTableOfContents = hasTableOfContents;
+    }
+
+    public boolean hasCoversheets() {
+        return hasCoversheets;
+    }
+
+    public void setHasCoversheets(boolean hasCoversheets) {
+        this.hasCoversheets = hasCoversheets;
     }
 }

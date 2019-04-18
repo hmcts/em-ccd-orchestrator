@@ -18,6 +18,9 @@ public class StitchingDTOMapper {
         StitchingBundleDTO bundle = new StitchingBundleDTO();
         bundle.setBundleTitle(bundleDTO.getTitle());
         bundle.setDescription(bundleDTO.getDescription());
+        bundle.setFileName(bundleDTO.getFileName());
+        bundle.setHasTableOfContents(bundleDTO.hasTableOfContents());
+        bundle.setHasCoversheets(bundleDTO.hasCoversheets());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
 

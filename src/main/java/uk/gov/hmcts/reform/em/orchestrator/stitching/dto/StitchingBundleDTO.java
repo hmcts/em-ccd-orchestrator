@@ -9,6 +9,9 @@ public class StitchingBundleDTO {
     private String description;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
+    private String fileName;
+    private boolean hasTableOfContents = true;
+    private boolean hasCoversheets = true;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -42,5 +45,28 @@ public class StitchingBundleDTO {
         this.documents = documents;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public boolean hasTableOfContents() {
+        return hasTableOfContents;
+    }
+
+    public void setHasTableOfContents(boolean hasTableOfContents) {
+        this.hasTableOfContents = hasTableOfContents;
+    }
+
+    public boolean hasCoversheets() {
+        return hasCoversheets;
+    }
+
+    public void setHasCoversheets(boolean hasCoversheets) {
+        this.hasCoversheets = hasCoversheets;
+    }
 }
 

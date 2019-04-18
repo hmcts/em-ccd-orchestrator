@@ -31,6 +31,9 @@ public class StitchingDTOMapperTest {
         CcdBundleDTO bundleDTO = new CcdBundleDTO();
         bundleDTO.setTitle("title");
         bundleDTO.setDescription("description");
+        bundleDTO.setFileName("a-file.pdf");
+        bundleDTO.setHasCoversheets(false);
+        bundleDTO.setHasTableOfContents(true);
         bundleDTO.getDocuments().add(new CcdValue<>(document1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder3DTO));
@@ -40,6 +43,9 @@ public class StitchingDTOMapperTest {
 
         assertEquals(bundleDTO.getTitle(), stitchingBundleDTO.getBundleTitle());
         assertEquals(bundleDTO.getDescription(), stitchingBundleDTO.getDescription());
+        assertEquals(bundleDTO.getFileName(), stitchingBundleDTO.getFileName());
+        assertEquals(bundleDTO.hasCoversheets(), stitchingBundleDTO.hasCoversheets());
+        assertEquals(bundleDTO.hasTableOfContents(), stitchingBundleDTO.hasTableOfContents());
 
         assertEquals(
                 bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(),
