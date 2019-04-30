@@ -68,7 +68,7 @@ public class StitchingService {
                 return new CcdDocument(
                     json.read("$.bundle.stitchedDocumentURI"),
                     fileName != null ? fileName : "stitched.pdf",
-                    json.read("$.bundle.stitchedDocumentURI") + "/binary"
+                    uriWithBinaryEnding(json.read("$.bundle.stitchedDocumentURI"))
                 );
             } else {
                 throw new StitchingServiceException(
@@ -78,6 +78,10 @@ public class StitchingService {
             throw new StitchingServiceException(
                     String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
         }
+    }
+
+    private static String uriWithBinaryEnding(String s) {
+        return s.endsWith("/binary") ? s : s + "/binary";
     }
 
     private int post(DocumentTaskDTO documentTask, String jwt) throws IOException {

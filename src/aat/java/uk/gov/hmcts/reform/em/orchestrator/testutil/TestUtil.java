@@ -81,8 +81,12 @@ public class TestUtil {
     public CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document",
                 "description", 1, new CcdDocument(documentUrl, "fn",
-                documentUrl + "/binary"));
+                uriWithBinarySuffix(documentUrl)));
         return new CcdValue<>(document);
+    }
+
+    public static String uriWithBinarySuffix(String s) {
+        return s.endsWith("/binary") ? s : s + "/binary";
     }
 
     public CcdBundleDTO getTestBundleWithWordDoc() {
