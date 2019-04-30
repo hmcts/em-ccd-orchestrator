@@ -1,10 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 // import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleFolderDTO;
@@ -19,8 +16,8 @@ public class StitchingDTOMapper {
         bundle.setBundleTitle(bundleDTO.getTitle());
         bundle.setDescription(bundleDTO.getDescription());
         bundle.setFileName(bundleDTO.getFileName());
-        bundle.setHasTableOfContents(bundleDTO.hasTableOfContents());
-        bundle.setHasCoversheets(bundleDTO.hasCoversheets());
+        bundle.setHasTableOfContents(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes);
+        bundle.setHasCoversheets(bundleDTO.getHasCoversheets() == CcdBoolean.Yes);
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
 

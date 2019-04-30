@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
 @Service
 public class ExampleBundlePopulator {
@@ -24,8 +21,8 @@ public class ExampleBundlePopulator {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         ccdBundleDTO.setTitle("New Bundle");
         ccdBundleDTO.setFileName("exampleservice-bundle.pdf");
-        ccdBundleDTO.setHasCoversheets(true);
-        ccdBundleDTO.setHasTableOfContents(true);
+        ccdBundleDTO.setHasCoversheets(CcdBoolean.Yes);
+        ccdBundleDTO.setHasTableOfContents(CcdBoolean.Yes);
 
         ArrayNode caseDocuments = (ArrayNode) caseData.findValue("caseDocuments");
 

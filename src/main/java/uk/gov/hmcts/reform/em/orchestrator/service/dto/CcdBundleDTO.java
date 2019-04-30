@@ -18,8 +18,8 @@ public class CcdBundleDTO {
     @JsonIgnore
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
     private String fileName;
-    private boolean hasTableOfContents = true;
-    private boolean hasCoversheets = true;
+    private CcdBoolean hasTableOfContents = CcdBoolean.Yes;
+    private CcdBoolean hasCoversheets = CcdBoolean.Yes;
 
     public Long getId() {
         return id;
@@ -99,19 +99,19 @@ public class CcdBundleDTO {
         this.fileName = fileName;
     }
 
-    public boolean hasTableOfContents() {
+    public CcdBoolean getHasTableOfContents() {
         return hasTableOfContents;
     }
 
-    public void setHasTableOfContents(boolean hasTableOfContents) {
+    public void setHasTableOfContents(CcdBoolean hasTableOfContents) {
         this.hasTableOfContents = hasTableOfContents;
     }
 
-    public boolean hasCoversheets() {
+    public CcdBoolean getHasCoversheets() {
         return hasCoversheets;
     }
 
-    public void setHasCoversheets(boolean hasCoversheets) {
+    public void setHasCoversheets(CcdBoolean hasCoversheets) {
         this.hasCoversheets = hasCoversheets;
     }
 }
