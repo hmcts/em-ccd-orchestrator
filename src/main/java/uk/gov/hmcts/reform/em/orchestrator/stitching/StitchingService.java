@@ -68,7 +68,7 @@ public class StitchingService {
                 return new CcdDocument(
                     json.read("$.bundle.stitchedDocumentURI"),
                     fileName != null ? fileName : "stitched.pdf",
-                    uriWithBinaryEnding(json.read("$.bundle.stitchedDocumentURI"))
+                    uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI"))
                 );
             } else {
                 throw new StitchingServiceException(
@@ -80,7 +80,7 @@ public class StitchingService {
         }
     }
 
-    private static String uriWithBinaryEnding(String s) {
+    private static String uriWithBinarySuffix(String s) {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 

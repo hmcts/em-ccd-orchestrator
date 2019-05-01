@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -89,6 +90,37 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         service.stitch(new CcdBundleDTO(), "token");
     }
+
+    @Test
+    public void doesAppendBinary() throws Exception {
+        List<String> responses = new ArrayList<>();
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+
+        String testString = "testString";
+
+        Method binarySuffixAdder = StitchingService.class.getDeclaredMethod("uriWithBinarySuffix", String.class);
+        binarySuffixAdder.setAccessible(true);
+        String processedString = (String) binarySuffixAdder.invoke(service, testString);
+
+        Assert.assertEquals("testString/binary", processedString);
+    }
+
+    @Test
+    public void doesNotAppendBinary() throws Exception {
+        List<String> responses = new ArrayList<>();
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+
+        String testString = "testString/binary";
+
+        Method binarySuffixAdder = StitchingService.class.getDeclaredMethod("uriWithBinarySuffix", String.class);
+        binarySuffixAdder.setAccessible(true);
+        String processedString = (String) binarySuffixAdder.invoke(service, testString);
+
+        Assert.assertEquals("testString/binary", processedString);
+}
+
 
     public StitchingService getStitchingService(OkHttpClient http) {
         return new StitchingService(
