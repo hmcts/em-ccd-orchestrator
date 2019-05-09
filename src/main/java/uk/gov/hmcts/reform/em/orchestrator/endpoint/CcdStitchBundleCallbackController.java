@@ -31,7 +31,11 @@ public class CcdStitchBundleCallbackController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
+        System.out.println("JJJ - request body is");
+        System.out.println(request.toString());
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
+        System.out.println("JJJ - ccd Callback DTO");
+        System.out.println(ccdCallbackDto);
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(ccdCallbackDto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdBundleStitchingService.updateCase(ccdCallbackDto));
@@ -39,6 +43,8 @@ public class CcdStitchBundleCallbackController {
             log.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
+        System.out.println("JJJ - ccd Callback response DTO");
+        System.out.println(ccdCallbackResponseDto);
         return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
