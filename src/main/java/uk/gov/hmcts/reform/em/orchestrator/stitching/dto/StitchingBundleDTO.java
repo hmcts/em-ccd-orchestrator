@@ -10,8 +10,8 @@ public class StitchingBundleDTO {
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
-    private boolean hasTableOfContents = true;
-    private boolean hasCoversheets = true;
+    private boolean hasTableOfContents;
+    private boolean hasCoversheets;
 
     public String getBundleTitle() {
         return bundleTitle;
