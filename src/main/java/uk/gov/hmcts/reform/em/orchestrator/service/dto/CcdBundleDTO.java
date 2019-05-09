@@ -18,8 +18,8 @@ public class CcdBundleDTO {
     @JsonIgnore
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
     private String fileName;
-    private CcdBoolean hasTableOfContents = CcdBoolean.Yes;
-    private CcdBoolean hasCoversheets = CcdBoolean.Yes;
+    private CcdBoolean hasTableOfContents;
+    private CcdBoolean hasCoversheets;
 
     public Long getId() {
         return id;
