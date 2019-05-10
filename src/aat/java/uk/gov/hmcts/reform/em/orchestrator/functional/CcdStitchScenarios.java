@@ -89,7 +89,7 @@ public class CcdStitchScenarios {
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertEquals("No", path.getString("data.caseBundles[0].value.getHasCoversheets"));
+        Assert.assertEquals("No", path.getString("data.caseBundles[0].value.hasCoversheets"));
         Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 }
