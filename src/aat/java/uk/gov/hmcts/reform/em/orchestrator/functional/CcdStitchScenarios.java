@@ -23,6 +23,8 @@ public class CcdStitchScenarios {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        System.out.println("JJJ - wrappedJson");
+        System.out.println(wrappedJson);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
