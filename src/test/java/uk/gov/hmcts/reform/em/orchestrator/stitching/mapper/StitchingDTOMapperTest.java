@@ -44,8 +44,8 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getTitle(), stitchingBundleDTO.getBundleTitle());
         assertEquals(bundleDTO.getDescription(), stitchingBundleDTO.getDescription());
         assertEquals(bundleDTO.getFileName(), stitchingBundleDTO.getFileName());
-        assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.hasCoversheets());
-        assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes, stitchingBundleDTO.hasTableOfContents());
+        assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasCoversheets());
+        assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes, stitchingBundleDTO.getHasTableOfContents());
 
         assertEquals(
                 bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(),

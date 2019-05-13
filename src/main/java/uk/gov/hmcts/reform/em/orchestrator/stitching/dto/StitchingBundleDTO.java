@@ -53,7 +53,7 @@ public class StitchingBundleDTO {
         this.fileName = fileName;
     }
 
-    public boolean hasTableOfContents() {
+    public boolean getHasTableOfContents() {
         return hasTableOfContents;
     }
 
@@ -61,7 +61,7 @@ public class StitchingBundleDTO {
         this.hasTableOfContents = hasTableOfContents;
     }
 
-    public boolean hasCoversheets() {
+    public boolean getHasCoversheets() {
         return hasCoversheets;
     }
 
