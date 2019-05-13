@@ -24,11 +24,18 @@ public class CcdStitchScenarios {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        System.out.println("JJJ inputJson");
+        System.out.println(wrappedJson);
+        System.out.println("JJJ end of inputJson");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
                 .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+
+        System.out.println("JJJ outputJson");
+        System.out.println(response.getBody());
+        System.out.println("JJJ end of outputJson");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
