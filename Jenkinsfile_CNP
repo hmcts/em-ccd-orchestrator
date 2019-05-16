@@ -51,4 +51,8 @@ withPipeline(type , product, component) {
     enableDockerBuild()
     loadVaultSecrets(secrets)
     installCharts()
+
+    before('buildinfra:prod') {
+        sh "rm -rf infrastructure/"
+    }
 }
