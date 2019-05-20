@@ -26,8 +26,6 @@ public class CcdPrehookScenarios {
             .body(jsonFile)
             .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        System.out.println("JJJ prehook -> testPostBundleStitch");
-        System.out.println(response.getBody().jsonPath().prettyPrint());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("New Bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
     }
@@ -56,8 +54,6 @@ public class CcdPrehookScenarios {
             .body(request)
             .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
-        System.out.println("JJJ prehook -> testEndToEnd");
-        System.out.println(response.getBody().jsonPath().prettyPrint());
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));

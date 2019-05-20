@@ -31,8 +31,6 @@ public class CcdStitchScenarios {
                 .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        System.out.println("JJJ stitch -> testPostBundleStitch");
-        System.out.println(path.prettyPrint());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
@@ -49,8 +47,6 @@ public class CcdStitchScenarios {
             .body(wrappedJson)
             .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
-        System.out.println("JJJ stitch -> testPostBundleStitchWithWordDoc");
-        System.out.println(response.getBody().jsonPath().prettyPrint());
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
@@ -71,8 +67,6 @@ public class CcdStitchScenarios {
             .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        System.out.println("JJJ stitch -> testSpecificFilename");
-        System.out.println(path.prettyPrint());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("my-file-name.pdf", path.getString("data.caseBundles[0].value.fileName"));
@@ -93,8 +87,6 @@ public class CcdStitchScenarios {
             .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        System.out.println("JJJ stitch -> testWithoutCoversheets");
-        System.out.println(path.prettyPrint());
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("No", path.getString("data.caseBundles[0].value.hasCoversheets"));
