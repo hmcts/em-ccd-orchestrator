@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleCloningService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 
@@ -32,13 +32,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CcdStitchBundleCallbackControllerTest {
+public class CcdCloneBundleControllerTest {
 
     @MockBean
     private CcdCallbackDtoCreator ccdCallbackDtoCreator;
 
     @MockBean
-    private CcdBundleStitchingService ccdBundleStitchingService;
+    private CcdBundleCloningService ccdBundleCloningService;
 
     @MockBean
     private ServiceRequestAuthorizer serviceRequestAuthorizer;
@@ -68,7 +68,7 @@ public class CcdStitchBundleCallbackControllerTest {
     public void shouldCallCcdCallbackHandlerService() throws Exception {
 
         this.mockMvc
-                .perform(post("/api/stitch-ccd-bundles")
+                .perform(post("/api/clone-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
@@ -76,7 +76,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .verify(ccdBundleCloningService, Mockito.times(1))
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
@@ -84,11 +84,11 @@ public class CcdStitchBundleCallbackControllerTest {
     public void shouldCallCcdCallbackHandlerServiceUpdateException() throws Exception {
 
         Mockito
-                .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .when(ccdBundleCloningService.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("test message"));
 
         this.mockMvc
-                .perform(post("/api/stitch-ccd-bundles")
+                .perform(post("/api/clone-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
@@ -98,8 +98,9 @@ public class CcdStitchBundleCallbackControllerTest {
                 .andExpect(jsonPath("$.errors[0]", Matchers.is("test message")));
 
         Mockito
-                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .verify(ccdBundleCloningService, Mockito.times(1))
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
+
 
 }

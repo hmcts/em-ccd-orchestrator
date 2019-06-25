@@ -13,6 +13,7 @@ public class CcdBundleDTO {
     private String title;
     private String description;
     private String eligibleForStitching;
+    private String eligibleForCloning;
     private CcdDocument stitchedDocument;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     @JsonIgnore
@@ -65,6 +66,24 @@ public class CcdBundleDTO {
     @JsonIgnore
     public void setEligibleForStitchingAsBoolean(boolean eligibleForStitching) {
         this.eligibleForStitching = eligibleForStitching ? "yes" : "no";
+    }
+
+    public void setEligibleForCloning(String eligibleForCloning) {
+        this.eligibleForCloning = eligibleForCloning;
+    }
+
+    public String getEligibleForCloning() {
+        return eligibleForCloning;
+    }
+
+    @JsonIgnore
+    public boolean getEligibleForCloningAsBoolean() {
+        return eligibleForCloning != null && eligibleForCloning.equalsIgnoreCase("yes");
+    }
+
+    @JsonIgnore
+    public void setEligibleForCloningAsBoolean(boolean eligibleForCloning) {
+        this.eligibleForCloning = eligibleForCloning ? "yes" : "no";
     }
 
     public CcdDocument getStitchedDocument() {
