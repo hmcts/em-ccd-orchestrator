@@ -47,6 +47,9 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
                     CcdBundleDTO amendedBundle = this.setCloningToFalse(originalBundle);
                     JsonNode amendedJson = this.bundleDtoToBundleJson(amendedBundle);
                     newBundlesList.add(amendedJson);
+                    // TODO Add 2nd time without cloning?
+                    // TODO Find out what this ID thing is (Go into CCD, send payload to orchestrator)
+                    // TODO Try using "implements Cloneable" in ccdBundleDTO
 
                     if (isEligibleForCloning) {
                         CcdBundleDTO clonedBundle = this.cloneBundle(amendedBundle);
