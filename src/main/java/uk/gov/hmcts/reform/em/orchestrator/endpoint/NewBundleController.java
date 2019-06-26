@@ -39,7 +39,7 @@ public class NewBundleController {
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
         System.out.println("JJJ - newBundle callbackResponseDto is ");
-        System.out.println(ccdCallbackResponseDto);
+        System.out.println(ccdCallbackResponseDto.getData().toString());
         return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
