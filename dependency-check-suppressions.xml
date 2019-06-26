@@ -315,4 +315,9 @@
         <gav regex="true">.*</gav>
         <cve>CVE-2019-12086</cve>
     </suppress>
+    <suppress>
+        <notes>Using latest version, no fix yet</notes>
+        <gav regex="true">.*</gav>
+        <cve>CVE-2019-0221</cve>
+    </suppress>
 </suppressions>
