@@ -41,6 +41,8 @@ public class CcdStitchBundleCallbackController {
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
 
+        System.out.println("JJJ - stitchBundle callbackResponseDto is ");
+        System.out.println(ccdCallbackResponseDto);
         return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
