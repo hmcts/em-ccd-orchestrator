@@ -60,7 +60,7 @@ public class CcdCloneScenarios {
         String jsonBundle1 = mapper.writeValueAsString(new CcdValue<>(bundle1));
         String jsonBundle2 = mapper.writeValueAsString(new CcdValue<>(bundle1));
         String jsonBundles = "{ " + jsonBundle1 + " }, { " + jsonBundle2 + " }";
-        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", jsonBundles);
         log.info("wrapped Json is " + wrappedJson);
 
         Response response = testUtil.authRequest()
