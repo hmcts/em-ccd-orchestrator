@@ -34,7 +34,7 @@ public class CcdBundleCloningServiceTest {
 
     private final JavaType type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
 
-    private CcdBundleDTO getIthBundleDto (ArrayNode bundlesJson, int i) throws Exception {
+    private CcdBundleDTO getIthBundleDto(ArrayNode bundlesJson, int i) throws Exception {
         JsonNode ithBundleJson = bundlesJson.get(i);
         CcdValue<CcdBundleDTO> ccdValue = objectMapper.readValue(objectMapper.treeAsTokens(ithBundleJson), type);
         return ccdValue.getValue();
