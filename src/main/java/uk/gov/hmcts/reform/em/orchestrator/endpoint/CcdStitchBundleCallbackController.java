@@ -41,17 +41,6 @@ public class CcdStitchBundleCallbackController {
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
 
-        log.info("JJJ - stitchBundle incoming request is ");
-        try {
-            log.info("JJJ - incoming case data is ");
-            log.info(ccdCallbackDto.getCaseData().toString());
-            log.info("JJJ - incoming ccd payload is ");
-            log.info(ccdCallbackDto.getCcdPayload().toString());
-        } catch (NullPointerException e) {
-            log.error("JJJ - nullpointer exception");
-        }
-        log.info("JJJ - response data is ");
-        log.info(ccdCallbackResponseDto.getData().toString());
         return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
