@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,50 +34,41 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
-        List<JsonNode> newBundlesList = new ArrayList<>();
+        List<JsonNode> updatedBundlesList = new ArrayList<>();
 
         if (maybeBundles.isPresent()) {
+
             for (int i = 0; i < maybeBundles.get().size(); i++) {
                 try {
                     JsonNode originalJson = maybeBundles.get().get(i);
 
-                    CcdBundleDTO originalBundle = this.bundleJsonToBundleDto(originalJson);
+                    CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
                     boolean isEligibleForCloning = originalBundle.getEligibleForCloningAsBoolean();
-                    CcdBundleDTO amendedBundle = this.setCloningToFalse(originalBundle);
-                    JsonNode amendedJson = this.bundleDtoToBundleJson(amendedBundle);
-                    newBundlesList.add(amendedJson);
-                    // TODO Add 2nd time without cloning?
-                    // TODO Find out what this ID thing is (Go into CCD, send payload to orchestrator)
-                    // TODO Try using "implements Cloneable" in ccdBundleDTO
+                    if (isEligibleForCloning) {
+                        originalBundle.setEligibleForCloningAsBoolean(false);
+                    }
+                    JsonNode processedOriginalJson = bundleDtoToBundleJson(originalBundle);
+                    updatedBundlesList.add(processedOriginalJson);
 
                     if (isEligibleForCloning) {
-                        CcdBundleDTO clonedBundle = this.cloneBundle(amendedBundle);
-                        newBundlesList.add(this.bundleDtoToBundleJson(clonedBundle));
+                        JsonNode initialClonedJson = processedOriginalJson.deepCopy();
+
+                        CcdBundleDTO unprocessedClonedBundle = bundleJsonToBundleDto(initialClonedJson);
+                        unprocessedClonedBundle.setTitle(originalBundle.getTitle() + " - CLONED");
+                        unprocessedClonedBundle.setFileName(originalBundle.getFileName() + " - CLONED");
+                        JsonNode inProgressClonedJson = bundleDtoToBundleJson(unprocessedClonedBundle);
+
+                        updatedBundlesList.add(inProgressClonedJson);
                     }
                 } catch (IOException e) {
                     return ccdCallbackDto.getCaseData();
                 }
             }
             maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(newBundlesList);
+            maybeBundles.get().addAll(updatedBundlesList);
         }
 
         return ccdCallbackDto.getCaseData();
-    }
-
-    private CcdBundleDTO cloneBundle(CcdBundleDTO originalBundle) {
-        CcdBundleDTO clonedBundle = new CcdBundleDTO();
-
-        clonedBundle.setId(originalBundle.getId());
-        clonedBundle.setTitle("CLONED " + originalBundle.getTitle());
-        clonedBundle.setDescription(originalBundle.getDescription());
-        clonedBundle.setEligibleForStitchingAsBoolean(false);
-        clonedBundle.setEligibleForCloningAsBoolean(false);
-        clonedBundle.setFileName(originalBundle.getFileName());
-        clonedBundle.setHasTableOfContents(originalBundle.getHasTableOfContents());
-        clonedBundle.setHasCoversheets(originalBundle.getHasCoversheets());
-
-        return clonedBundle;
     }
 
     private CcdBundleDTO bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
@@ -89,12 +79,8 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
         CcdValue<CcdBundleDTO> ccdValue = new CcdValue<>();
         ccdValue.setValue(ccdBundle);
+        ccdValue.setId(UUID.randomUUID().toString());
         return objectMapper.convertValue(ccdValue, JsonNode.class);
-    }
-
-    private CcdBundleDTO setCloningToFalse(CcdBundleDTO bundle) {
-        bundle.setEligibleForCloningAsBoolean(false);
-        return bundle;
     }
 
 }

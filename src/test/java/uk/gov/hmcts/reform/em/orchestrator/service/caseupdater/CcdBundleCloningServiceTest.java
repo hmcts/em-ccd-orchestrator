@@ -74,7 +74,7 @@ public class CcdBundleCloningServiceTest {
         Assert.assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
         Assert.assertEquals(updatedFirstBundle.getDescription(), updatedSecondBundle.getDescription());
         checkBundleTitle(updatedBundles, 0, "First Bundle");
-        checkBundleTitle(updatedBundles, 1, "CLONED First Bundle");
+        checkBundleTitle(updatedBundles, 1, "First Bundle - CLONED");
     }
 
     @Test
@@ -131,9 +131,9 @@ public class CcdBundleCloningServiceTest {
 
         Assert.assertEquals(4, node.get("case_details").get("case_data").get("caseBundles").size());
         checkBundleTitle(updatedBundles, 0, "First Bundle");
-        checkBundleTitle(updatedBundles, 1, "CLONED First Bundle");
+        checkBundleTitle(updatedBundles, 1, "First Bundle - CLONED");
         checkBundleTitle(updatedBundles, 2, "Second Bundle");
-        checkBundleTitle(updatedBundles, 3, "CLONED Second Bundle");
+        checkBundleTitle(updatedBundles, 3, "Second Bundle - CLONED");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class CcdBundleCloningServiceTest {
 
         Assert.assertEquals(3, node.get("case_details").get("case_data").get("caseBundles").size());
         checkBundleTitle(updatedBundles, 0, "First Bundle");
-        checkBundleTitle(updatedBundles, 1, "CLONED First Bundle");
+        checkBundleTitle(updatedBundles, 1, "First Bundle - CLONED");
         checkBundleTitle(updatedBundles, 2, "Second Bundle");
     }
 

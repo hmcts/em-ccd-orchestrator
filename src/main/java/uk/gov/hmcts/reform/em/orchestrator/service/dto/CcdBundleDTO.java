@@ -22,6 +22,7 @@ public class CcdBundleDTO {
     private String fileName;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
+    private String stitchStatus;
 
 
 //    @Override
@@ -139,5 +140,13 @@ public class CcdBundleDTO {
 
     public void setHasCoversheets(CcdBoolean hasCoversheets) {
         this.hasCoversheets = hasCoversheets;
+    }
+
+    public String getStitchStatus() {
+        return stitchStatus;
+    }
+
+    public void setStitchStatus(String stitchStatus) {
+        this.stitchStatus = stitchStatus;
     }
 }
