@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-//public class CcdBundleDTO implements Cloneable {
 public class CcdBundleDTO {
 
     private Long id;
@@ -23,12 +22,6 @@ public class CcdBundleDTO {
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
     private String stitchStatus;
-
-
-//    @Override
-//    public CcdBundleDTO clone() throws CloneNotSupportedException {
-//        return (CcdBundleDTO) super.clone();
-//    }
 
     public Long getId() {
         return id;

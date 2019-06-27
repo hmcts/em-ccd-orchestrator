@@ -26,11 +26,11 @@ public class FinancialRemedyBundlePopulator {
         JsonNode scanned4BFormDocument = caseData.findValue("uploadScanned4BForm");
         JsonNode miniFormADocument = caseData.findValue("miniFormA");
 
-        JsonNode additionalDocuments = caseData.findValue("uploadAdditionalDocument");
-
         addDocumentToBundle(ccdBundleDTO, scanned4AFormDocument, "scanned4AFormDocument");
         addDocumentToBundle(ccdBundleDTO, scanned4BFormDocument, "scanned4BFormDocument");
         addDocumentToBundle(ccdBundleDTO, miniFormADocument, "miniFormADocument");
+
+        JsonNode additionalDocuments = caseData.findValue("uploadAdditionalDocument");
 
         if (additionalDocuments != null) {
             ccdBundleDTO.setEligibleForStitchingAsBoolean(true);

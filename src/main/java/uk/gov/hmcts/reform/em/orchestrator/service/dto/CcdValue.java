@@ -8,22 +8,12 @@ import java.io.Serializable;
 public class CcdValue<T> implements Serializable {
     private T value;
 
-    private String id;
-
     public T getValue() {
         return value;
     }
 
     public void setValue(T value) {
         this.value = value;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public CcdValue(T t) {

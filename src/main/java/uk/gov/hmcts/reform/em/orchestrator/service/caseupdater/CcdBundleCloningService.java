@@ -79,7 +79,6 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
         CcdValue<CcdBundleDTO> ccdValue = new CcdValue<>();
         ccdValue.setValue(ccdBundle);
-        ccdValue.setId(UUID.randomUUID().toString());
         return objectMapper.convertValue(ccdValue, JsonNode.class);
     }
 
