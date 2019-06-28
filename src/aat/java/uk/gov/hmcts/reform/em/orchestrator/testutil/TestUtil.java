@@ -3,10 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,17 +65,30 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
+        bundle.setId(2L);
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
         bundle.setEligibleForStitchingAsBoolean(true);
+        bundle.setEligibleForCloningAsBoolean(false);
+
+        CcdDocument doc = new CcdDocument();
+        doc.setBinaryUrl("www.exampleurl.com/binary");
+        doc.setFileName("doc filename");
+        doc.setUrl("www.exampleurl.com");
+        bundle.setStitchedDocument(doc);
+
         List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
 
+        bundle.setFileName("fileName");
+        bundle.setHasTableOfContents(CcdBoolean.Yes);
+        bundle.setHasCoversheets(CcdBoolean.Yes);
+        bundle.setStitchStatus("");
         return bundle;
     }
 
-    public CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
+    private CcdValue<CcdBundleDocumentDTO> getTestBundleDocument(String documentUrl) {
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO("test document",
                 "description", 1, new CcdDocument(documentUrl, "fn",
                 uriWithBinarySuffix(documentUrl)));

@@ -79,11 +79,14 @@ public class CcdCloneScenarios {
                 .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        String balooba = response.getBody().prettyPrint();
+        String balooba = response.getBody().jsonPath().toString();
         if (!balooba.isEmpty()) {
             log.info("JJJ - multipleBundlesClone response body is ");
             log.info(balooba);
         }
+
+        log.info(path.getString("data.caseBundles[0].value.title"));
+
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle 1", path.getString("data.caseBundles[0].value.title"));
