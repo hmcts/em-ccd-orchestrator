@@ -15,6 +15,8 @@ import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CcdCloneScenarios {
 
@@ -27,8 +29,12 @@ public class CcdCloneScenarios {
     public void testSingleBundleClone() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setEligibleForCloningAsBoolean(true);
-        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
+        list.add(new CcdValue<>(bundle));
+        String json = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        log.info("JJJ - singleBundleClone request body is");
+        log.info(wrappedJson);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -36,8 +42,9 @@ public class CcdCloneScenarios {
                 .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        String balooba = path.prettyPrint();
+        String balooba = response.getBody().prettyPrint();
         if (!balooba.isEmpty()) {
+            log.info("JJJ - singleBundleClone response body is");
             log.info(balooba);
         }
 
@@ -57,11 +64,14 @@ public class CcdCloneScenarios {
         bundle2.setTitle("Bundle 2");
         bundle2.setEligibleForCloningAsBoolean(true);
 
-        String jsonBundle1 = mapper.writeValueAsString(new CcdValue<>(bundle1));
-        String jsonBundle2 = mapper.writeValueAsString(new CcdValue<>(bundle1));
-        String jsonBundles = "{ " + jsonBundle1 + " }, { " + jsonBundle2 + " }";
-        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", jsonBundles);
-        log.info("wrapped Json is " + wrappedJson);
+        List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
+        list.add(new CcdValue<>(bundle1));
+        list.add(new CcdValue<>(bundle2));
+
+        String jsonList = mapper.writeValueAsString(list);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", jsonList);
+        log.info("JJJ - multipleBundlesClone - request body");
+        log.info(wrappedJson);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -69,8 +79,9 @@ public class CcdCloneScenarios {
                 .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        String balooba = path.prettyPrint();
+        String balooba = response.getBody().prettyPrint();
         if (!balooba.isEmpty()) {
+            log.info("JJJ - multipleBundlesClone response body is ");
             log.info(balooba);
         }
 
