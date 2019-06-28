@@ -43,22 +43,23 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
 
         if (maybeBundles.isPresent()) {
 
-            log.info("JJJ - updateCase");
-
             log.info("JJJ - maybeBundles is ");
             log.info(maybeBundles.get().toString());
             for (int i = 0; i < maybeBundles.get().size(); i++) {
                 try {
                     JsonNode originalJson = maybeBundles.get().get(i);
-                    log.info("JJJ - next forloop. json for this one is ");
+                    log.info("JJJ - Processing bundle, i=".concat(Integer.toString(i)));
                     log.info(originalJson.toString());
 
                     CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
                     boolean isEligibleForCloning = originalBundle.getEligibleForCloningAsBoolean();
+                    log.info("JJJ - isEligibleForCloning is set to ".concat(Boolean.toString(isEligibleForCloning)));
                     if (isEligibleForCloning) {
                         originalBundle.setEligibleForCloningAsBoolean(false);
                     }
                     JsonNode processedOriginalJson = bundleDtoToBundleJson(originalBundle);
+                    log.info("JJJ - amended original bundle Json is ");
+                    log.info(processedOriginalJson.toString());
                     updatedBundlesList.add(processedOriginalJson);
 
                     if (isEligibleForCloning) {
@@ -68,19 +69,21 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
                         unprocessedClonedBundle.setTitle(originalBundle.getTitle() + " - CLONED");
                         unprocessedClonedBundle.setFileName(originalBundle.getFileName() + " - CLONED");
                         JsonNode inProgressClonedJson = bundleDtoToBundleJson(unprocessedClonedBundle);
-
+                        log.info("JJJ - cloned bundle with is ");
+                        log.info(inProgressClonedJson.toString());
                         updatedBundlesList.add(inProgressClonedJson);
                     }
                 } catch (IOException e) {
+                    log.info("Exception caught, returning input data");
                     return ccdCallbackDto.getCaseData();
                 }
             }
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(updatedBundlesList);
 
-            log.info("JJJ - at end of updateCase. MaybeBundles is now");
-            log.info(maybeBundles.get().toString());
         }
+        log.info("JJJ - at end of updateCase. MaybeBundles is now");
+        log.info(maybeBundles.get().toString());
 
         return ccdCallbackDto.getCaseData();
     }
