@@ -5,8 +5,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -21,8 +19,6 @@ public class CcdCloneScenarios {
 
     private final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
-
-    private final Logger log = LoggerFactory.getLogger(CcdCloneScenarios.class);
 
     @Test
     public void testSingleBundleClone() throws IOException {
