@@ -32,7 +32,7 @@ public class CcdCloneScenarios {
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
         list.add(new CcdValue<>(bundle));
         String json = mapper.writeValueAsString(list);
-        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
         log.info("JJJ - singleBundleClone request body is");
         log.info(wrappedJson);
 
@@ -62,6 +62,7 @@ public class CcdCloneScenarios {
 
         CcdBundleDTO bundle2 = testUtil.getTestBundle();
         bundle2.setTitle("Bundle 2");
+        bundle2.setFileName("Filename Bundle 2");
         bundle2.setEligibleForCloningAsBoolean(true);
 
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
@@ -69,7 +70,7 @@ public class CcdCloneScenarios {
         list.add(new CcdValue<>(bundle2));
 
         String jsonList = mapper.writeValueAsString(list);
-        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", jsonList);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s  } } }", jsonList);
         log.info("JJJ - multipleBundlesClone - request body");
         log.info(wrappedJson);
 
@@ -92,9 +93,10 @@ public class CcdCloneScenarios {
         Assert.assertEquals("Bundle 1", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("Bundle 2", path.getString("data.caseBundles[1].value.title"));
         Assert.assertEquals("Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.title"));
+        Assert.assertEquals("Filename Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.fileName"));
         Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
 
-        Assert.assertEquals(2, StringUtils.countMatches(path.toString(), "CLONED"));
+        Assert.assertEquals(2, StringUtils.countMatches(path.getString("data"), "CLONED"));
     }
 
 }
