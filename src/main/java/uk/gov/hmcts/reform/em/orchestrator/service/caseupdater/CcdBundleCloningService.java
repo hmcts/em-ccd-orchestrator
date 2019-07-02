@@ -82,9 +82,6 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
             maybeBundles.get().addAll(updatedBundlesList);
 
         }
-        log.info("JJJ - at end of updateCase. MaybeBundles is now");
-        log.info(maybeBundles.get().toString());
-
         return ccdCallbackDto.getCaseData();
     }
 
