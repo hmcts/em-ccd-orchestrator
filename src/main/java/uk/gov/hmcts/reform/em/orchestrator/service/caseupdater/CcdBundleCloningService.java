@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -21,7 +19,6 @@ import java.util.Optional;
 @Transactional
 public class CcdBundleCloningService implements CcdCaseUpdater {
 
-    private final Logger log = LoggerFactory.getLogger(CcdBundleCloningService.class);
     private final ObjectMapper objectMapper;
     private final JavaType type;
 
@@ -42,24 +39,16 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         List<JsonNode> updatedBundlesList = new ArrayList<>();
 
         if (maybeBundles.isPresent()) {
-
-            log.info("JJJ - maybeBundles is ");
-            log.info(maybeBundles.get().toString());
             for (int i = 0; i < maybeBundles.get().size(); i++) {
                 try {
                     JsonNode originalJson = maybeBundles.get().get(i);
-                    log.info("JJJ - Processing bundle, i=".concat(Integer.toString(i)));
-                    log.info(originalJson.toString());
 
                     CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
                     boolean isEligibleForCloning = originalBundle.getEligibleForCloningAsBoolean();
-                    log.info("JJJ - isEligibleForCloning is set to ".concat(Boolean.toString(isEligibleForCloning)));
                     if (isEligibleForCloning) {
                         originalBundle.setEligibleForCloningAsBoolean(false);
                     }
                     JsonNode processedOriginalJson = bundleDtoToBundleJson(originalBundle);
-                    log.info("JJJ - amended original bundle Json is ");
-                    log.info(processedOriginalJson.toString());
                     updatedBundlesList.add(processedOriginalJson);
 
                     if (isEligibleForCloning) {
@@ -69,12 +58,9 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
                         unprocessedClonedBundle.setTitle(originalBundle.getTitle() + " - CLONED");
                         unprocessedClonedBundle.setFileName(originalBundle.getFileName() + " - CLONED");
                         JsonNode inProgressClonedJson = bundleDtoToBundleJson(unprocessedClonedBundle);
-                        log.info("JJJ - cloned bundle with is ");
-                        log.info(inProgressClonedJson.toString());
                         updatedBundlesList.add(inProgressClonedJson);
                     }
                 } catch (IOException e) {
-                    log.info("Exception caught, returning input data");
                     return ccdCallbackDto.getCaseData();
                 }
             }

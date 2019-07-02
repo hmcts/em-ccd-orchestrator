@@ -33,8 +33,6 @@ public class CcdCloneScenarios {
         list.add(new CcdValue<>(bundle));
         String json = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
-        log.info("JJJ - singleBundleClone request body is");
-        log.info(wrappedJson);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -42,11 +40,6 @@ public class CcdCloneScenarios {
                 .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        String balooba = response.getBody().prettyPrint();
-        if (!balooba.isEmpty()) {
-            log.info("JJJ - singleBundleClone response body is");
-            log.info(balooba);
-        }
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
@@ -71,8 +64,6 @@ public class CcdCloneScenarios {
 
         String jsonList = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s  } } }", jsonList);
-        log.info("JJJ - multipleBundlesClone - request body");
-        log.info(wrappedJson);
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -80,14 +71,6 @@ public class CcdCloneScenarios {
                 .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
-        String balooba = response.getBody().jsonPath().toString();
-        if (!balooba.isEmpty()) {
-            log.info("JJJ - multipleBundlesClone response body is ");
-            log.info(balooba);
-        }
-
-        log.info(path.getString("data.caseBundles[0].value.title"));
-
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle 1", path.getString("data.caseBundles[0].value.title"));
@@ -95,8 +78,6 @@ public class CcdCloneScenarios {
         Assert.assertEquals("Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.title"));
         Assert.assertEquals("Filename Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.fileName"));
         Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
-
-        Assert.assertEquals(2, StringUtils.countMatches(path.getString("data"), "CLONED"));
     }
 
 }
