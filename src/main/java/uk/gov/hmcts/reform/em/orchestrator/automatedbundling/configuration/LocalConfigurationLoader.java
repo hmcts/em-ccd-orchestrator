@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.naming.ConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -23,17 +24,17 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
      * be empty.
      */
     @Override
-    public Optional<BundleConfiguration> load(String filename) {
+    public BundleConfiguration load(String filename) {
         InputStream input = Thread
             .currentThread()
             .getContextClassLoader()
             .getResourceAsStream("bundleconfiguration/" + filename);
 
         try {
-            return Optional.of(mapper.readValue(input, BundleConfiguration.class));
+            return mapper.readValue(input, BundleConfiguration.class);
         }
         catch (IOException e) {
-            return Optional.empty();
+            throw new BundleConfigurationException("Unable to load configuration: " + filename, e);
         }
     }
 }

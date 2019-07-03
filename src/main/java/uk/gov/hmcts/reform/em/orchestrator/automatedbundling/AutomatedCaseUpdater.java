@@ -40,20 +40,14 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         String configurationName = ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText();
-        Optional<BundleConfiguration> configuration = configurationLoader.load(configurationName);
+        BundleConfiguration configuration = configurationLoader.load(configurationName);
         Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 
-        if (!configuration.isPresent()) {
-            // todo set error
-            return ccdCallbackDto.getCaseData();
-        }
-
         if (!bundles.isPresent()) {
-            // todo set error
-            return ccdCallbackDto.getCaseData();
+            throw new InvalidCaseException("Could not find bundles inside case");
         }
 
-        this.addNewBundle(configuration.get(), bundles.get());
+        this.addNewBundle(configuration, bundles.get());
 
         return ccdCallbackDto.getCaseData();
     }

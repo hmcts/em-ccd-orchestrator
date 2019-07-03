@@ -12,19 +12,32 @@ import java.io.File;
 public class AutomatedBundlingScenarios {
 
     private final TestUtil testUtil = new TestUtil();
-    private final File jsonFile = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
+    private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
+    private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
 
     @Test
-    public void testPostBundleStitch() {
+    public void testCreateBundle() {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(jsonFile)
+            .body(validJson)
             .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("New bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("Folder 1", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.name"));
         Assert.assertEquals("Folder 2", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[1].value.name"));
+    }
+
+    @Test
+    public void testInvalidConfig() {
+        Response response = testUtil.authRequest()
+            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+            .body(invalidJson)
+            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
     }
 
 }
