@@ -35,7 +35,6 @@ public class AutomatedBundlingScenarios {
             .body(invalidJson)
             .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
     }
