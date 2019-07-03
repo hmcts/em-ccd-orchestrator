@@ -16,10 +16,19 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.title, "New bundle");
         assertEquals(config.folders.get(0).name, "Folder 1");
         assertEquals(config.folders.get(1).name, "Folder 2");
+        assertEquals(config.filename, "stitched.pdf");
     }
 
     @Test(expected = BundleConfigurationException.class)
     public void loadMissingConfig() {
         loader.load("does-not-exist.yaml");
+    }
+
+    @Test
+    public void filename() {
+        BundleConfiguration config = loader.load("example-with-filename.yaml");
+
+        assertEquals(config.title, "Bundle with filename");
+        assertEquals(config.filename, "bundle.pdf");
     }
 }

@@ -14,6 +14,7 @@ public class AutomatedBundlingScenarios {
     private final TestUtil testUtil = new TestUtil();
     private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
     private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
+    private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
 
     @Test
     public void testCreateBundle() {
@@ -26,6 +27,7 @@ public class AutomatedBundlingScenarios {
         Assert.assertEquals("New bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("Folder 1", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.name"));
         Assert.assertEquals("Folder 2", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[1].value.name"));
+        Assert.assertEquals("stitched.pdf", response.getBody().jsonPath().getString("data.caseBundles[0].value.fileName"));
     }
 
     @Test
@@ -37,6 +39,18 @@ public class AutomatedBundlingScenarios {
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
+    }
+
+    @Test
+    public void testFilename() {
+        Response response = testUtil.authRequest()
+            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+            .body(filenameJson)
+            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("Bundle with filename", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
+        Assert.assertEquals("bundle.pdf", response.getBody().jsonPath().getString("data.caseBundles[0].value.fileName"));
     }
 
 }
