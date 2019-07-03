@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.automatedbundling;
+package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

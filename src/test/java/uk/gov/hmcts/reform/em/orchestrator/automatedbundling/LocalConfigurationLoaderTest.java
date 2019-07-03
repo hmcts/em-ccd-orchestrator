@@ -1,8 +1,10 @@
-package uk.gov.hmcts.reform.em.orchestrator.service.automatedbundling;
+package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 
 import java.util.Optional;
 
