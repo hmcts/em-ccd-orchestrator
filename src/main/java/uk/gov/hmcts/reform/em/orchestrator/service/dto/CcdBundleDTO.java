@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +19,9 @@ public class CcdBundleDTO {
     private CcdDocument stitchedDocument;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
+
+    @Size(min = 2, max = 30)
+    @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
