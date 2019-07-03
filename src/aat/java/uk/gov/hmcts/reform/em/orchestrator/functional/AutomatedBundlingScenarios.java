@@ -23,6 +23,8 @@ public class AutomatedBundlingScenarios {
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("New bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
+        Assert.assertEquals("Folder 1", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.name"));
+        Assert.assertEquals("Folder 2", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[1].value.name"));
     }
 
 }

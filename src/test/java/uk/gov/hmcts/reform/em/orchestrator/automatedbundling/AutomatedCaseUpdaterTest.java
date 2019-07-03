@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -82,7 +83,7 @@ public class AutomatedCaseUpdaterTest {
 
         assertTrue(bundles.isPresent());
         assertEquals(1, bundles.get().size());
-
-        // todo more comprehensive testing
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
     }
 }

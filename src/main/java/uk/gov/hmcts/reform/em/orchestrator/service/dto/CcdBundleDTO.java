@@ -16,7 +16,6 @@ public class CcdBundleDTO {
     private String eligibleForCloning;
     private CcdDocument stitchedDocument;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
-    @JsonIgnore
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
     private String fileName;
     private CcdBoolean hasTableOfContents;

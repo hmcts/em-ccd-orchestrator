@@ -66,6 +66,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             CcdBundleFolderDTO ccdFolder = new CcdBundleFolderDTO();
             ccdFolder.setName(folder.name);
             ccdFolder.setSortIndex(sortIndex++);
+
+            bundle.getFolders().add(new CcdValue<>(ccdFolder));
         }
 
         bundles.add(bundleDtoToBundleJson(bundle));
