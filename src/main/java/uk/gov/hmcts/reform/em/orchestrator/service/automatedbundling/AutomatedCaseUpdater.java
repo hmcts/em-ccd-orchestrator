@@ -28,11 +28,12 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String filename = ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText();
+        // todo will this actually work? Is the field at the root?
+        String configurationName = ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText();
 
         // todo add errors (config not found or invalid, could not serialize
         return configurationLoader
-            .load(filename)
+            .load(configurationName)
             .map(c -> createBundle(c, ccdCallbackDto.getCaseData()))
             .orElse(ccdCallbackDto.getCaseData());
     }
