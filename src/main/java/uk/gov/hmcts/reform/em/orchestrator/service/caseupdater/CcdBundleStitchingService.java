@@ -49,7 +49,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             List<JsonNode> newBundles = StreamSupport
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
-                    .map(unchecked(this::bundleJsonToBundleDto))
+                    .map(unchecked(this::bundleJsonToBundleValue))
                     .map(unchecked(bundle ->
                         bundle.getValue().getEligibleForStitchingAsBoolean()
                                 ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle
@@ -71,7 +71,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         return bundle;
     }
 
-    private CcdValue<CcdBundleDTO> bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
+    private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) throws IOException {
         return objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
     }
 }

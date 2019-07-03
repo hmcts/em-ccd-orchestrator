@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,9 +46,6 @@ public class NewBundleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     public void shouldCallCcdCallbackHandlerService() throws Exception {

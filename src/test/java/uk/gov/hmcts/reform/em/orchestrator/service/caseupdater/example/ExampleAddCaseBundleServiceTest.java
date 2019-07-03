@@ -24,7 +24,7 @@ public class ExampleAddCaseBundleServiceTest {
     @Mock
     JsonNodesVerifier exampleCaseVerifier;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
     ExampleAddCaseBundleService exampleAddCaseBundleService;
@@ -35,9 +35,9 @@ public class ExampleAddCaseBundleServiceTest {
         ccdCallbackDto.setJwt("x");
 
         ccdCallbackDto.setCcdPayload(objectMapper.readTree(
-                "{\"caseBundles\": [{\"x\":\"y\"}], " +
-                        "\"case_details\": {\"jurisdiction\":\"PUBLICLAW\", " +
-                        "\"case_type_id\":\"CCD_BUNDLE_MVP_TYPE\"}}"));
+                "{\"caseBundles\": [{\"x\":\"y\"}], "
+                        + "\"case_details\": {\"jurisdiction\":\"PUBLICLAW\", "
+                        + "\"case_type_id\":\"CCD_BUNDLE_MVP_TYPE\"}}"));
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         exampleAddCaseBundleService.handles(ccdCallbackDto);
         Mockito.verify(exampleCaseVerifier, Mockito.times(1)).verify(Mockito.any(JsonNode.class));

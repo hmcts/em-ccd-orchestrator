@@ -119,7 +119,7 @@ public class StitchingServiceTest {
         String processedString = (String) binarySuffixAdder.invoke(service, testString);
 
         Assert.assertEquals("testString/binary", processedString);
-}
+    }
 
 
     public StitchingService getStitchingService(OkHttpClient http) {
