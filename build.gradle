@@ -103,6 +103,7 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${versions.jackson}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:${versions.jackson}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.jackson}"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}"
     compile "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
     compile "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner:${versions.jackson}"
