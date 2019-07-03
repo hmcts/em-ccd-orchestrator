@@ -24,7 +24,7 @@ public class ExampleAddCaseBundleServiceTest {
     @Mock
     JsonNodesVerifier exampleCaseVerifier;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
     ExampleAddCaseBundleService exampleAddCaseBundleService;

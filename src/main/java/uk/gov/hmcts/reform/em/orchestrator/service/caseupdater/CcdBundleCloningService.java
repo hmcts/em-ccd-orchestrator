@@ -4,13 +4,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.springframework.stereotype.Service;
-import springfox.documentation.spring.web.json.Json;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,19 +28,23 @@ public class CcdBundleCloningService {
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
-
-        maybeBundles = maybeBundles.map(bundles -> {
-            ArrayNode processedBundlesList = objectMapper.createArrayNode();
+        Optional<ArrayNode> processedMaybeBundles = maybeBundles.map(bundles -> {
+            ArrayNode processedBundles = objectMapper.createArrayNode();
             try {
                 for (JsonNode bundleJson : bundles) {
                     List<JsonNode> processedBundleOrBundles = processBundle(bundleJson);
-                    processedBundlesList.addAll(processedBundleOrBundles);
+                    processedBundles.addAll(processedBundleOrBundles);
                 }
-                return processedBundlesList;
+                return processedBundles;
             } catch (IOException e) {
                 return bundles;
             }
         });
+
+        if (processedMaybeBundles.isPresent()) {
+            maybeBundles.get().removeAll();
+            maybeBundles.get().addAll(processedMaybeBundles.get());
+        }
 
         return ccdCallbackDto.getCaseData();
     }
@@ -56,7 +57,7 @@ public class CcdBundleCloningService {
             originalBundle.setEligibleForCloningAsBoolean(false);
 
             JsonNode originalProcessedJson = bundleDtoToBundleJson(originalBundle);
-            JsonNode clonedJson = cloneBundle(originalJson);
+            JsonNode clonedJson = cloneBundle(originalProcessedJson);
 
             returnList.add(originalProcessedJson);
             returnList.add(clonedJson);

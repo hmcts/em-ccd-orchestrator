@@ -31,7 +31,7 @@ public class CcdBundleStitchingServiceTest {
 
     private CcdBundleStitchingService ccdBundleStitchingService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void setup() throws Exception {

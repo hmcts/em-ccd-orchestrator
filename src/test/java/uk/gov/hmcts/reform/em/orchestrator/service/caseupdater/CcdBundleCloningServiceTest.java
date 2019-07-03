@@ -22,7 +22,7 @@ public class CcdBundleCloningServiceTest {
 
     private CcdBundleCloningService ccdBundleCloningService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final File jsonOneEligible = new File(ClassLoader.getSystemResource("case-one-eligible.json").getPath());
 
@@ -90,11 +90,12 @@ public class CcdBundleCloningServiceTest {
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
+
         CcdBundleDTO updatedFirstBundle = getIthBundleDto(updatedBundles, 0);
         CcdBundleDTO updatedSecondBundle = getIthBundleDto(updatedBundles, 1);
 
-        Assert.assertEquals("no", updatedFirstBundle.getEligibleForCloning());
-        Assert.assertEquals("no", updatedSecondBundle.getEligibleForCloning());
+        Assert.assertFalse(updatedFirstBundle.getEligibleForCloningAsBoolean());
+        Assert.assertFalse(updatedSecondBundle.getEligibleForCloningAsBoolean());
     }
 
     @Test
