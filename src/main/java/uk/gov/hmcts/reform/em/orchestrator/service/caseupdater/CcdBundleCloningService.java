@@ -41,7 +41,7 @@ public class CcdBundleCloningService {
             }
         });
 
-        if (processedMaybeBundles.isPresent()) {
+        if (maybeBundles.isPresent() && processedMaybeBundles.isPresent()) {
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(processedMaybeBundles.get());
         }
