@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.Bundl
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -60,6 +61,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private void addNewBundle(BundleConfiguration configuration, ArrayNode bundles) {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setTitle(configuration.title);
+        bundle.setHasCoversheets(CcdBoolean.Yes);
+        bundle.setHasTableOfContents(CcdBoolean.Yes);
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : configuration.folders) {
