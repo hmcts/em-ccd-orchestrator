@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.spring.web.json.Json;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class CcdBundleCloningService implements CcdCaseUpdater {
+public class CcdBundleCloningService {
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -27,48 +28,51 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
     }
 
-    @Override
-    public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return false;
-    }
-
-    @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
-        List<JsonNode> updatedBundlesList = new ArrayList<>();
 
-        if (maybeBundles.isPresent()) {
-            for (int i = 0; i < maybeBundles.get().size(); i++) {
-                try {
-                    JsonNode originalJson = maybeBundles.get().get(i);
-
-                    CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
-                    boolean isEligibleForCloning = originalBundle.getEligibleForCloningAsBoolean();
-                    if (isEligibleForCloning) {
-                        originalBundle.setEligibleForCloningAsBoolean(false);
-                    }
-                    JsonNode processedOriginalJson = bundleDtoToBundleJson(originalBundle);
-                    updatedBundlesList.add(processedOriginalJson);
-
-                    if (isEligibleForCloning) {
-                        JsonNode initialClonedJson = processedOriginalJson.deepCopy();
-
-                        CcdBundleDTO unprocessedClonedBundle = bundleJsonToBundleDto(initialClonedJson);
-                        unprocessedClonedBundle.setTitle(originalBundle.getTitle() + " - CLONED");
-                        unprocessedClonedBundle.setFileName(originalBundle.getFileName() + " - CLONED");
-                        JsonNode inProgressClonedJson = bundleDtoToBundleJson(unprocessedClonedBundle);
-                        updatedBundlesList.add(inProgressClonedJson);
-                    }
-                } catch (IOException e) {
-                    return ccdCallbackDto.getCaseData();
+        maybeBundles = maybeBundles.map(bundles -> {
+            ArrayNode processedBundlesList = objectMapper.createArrayNode();
+            try {
+                for (JsonNode bundleJson : bundles) {
+                    List<JsonNode> processedBundleOrBundles = processBundle(bundleJson);
+                    processedBundlesList.addAll(processedBundleOrBundles);
                 }
+                return processedBundlesList;
+            } catch (IOException e) {
+                return bundles;
             }
-            maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(updatedBundlesList);
+        });
 
-        }
         return ccdCallbackDto.getCaseData();
+    }
+
+    private List<JsonNode> processBundle(JsonNode originalJson) throws IOException {
+        List<JsonNode> returnList = new ArrayList<>();
+
+        CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
+        if (originalBundle.getEligibleForCloningAsBoolean()) {
+            originalBundle.setEligibleForCloningAsBoolean(false);
+
+            JsonNode originalProcessedJson = bundleDtoToBundleJson(originalBundle);
+            JsonNode clonedJson = cloneBundle(originalJson);
+
+            returnList.add(originalProcessedJson);
+            returnList.add(clonedJson);
+        } else {
+            returnList.add(originalJson);
+        }
+
+        return returnList;
+    }
+
+    private JsonNode cloneBundle(JsonNode originalJson) throws IOException {
+        JsonNode unprocessedClonedJson = originalJson.deepCopy();
+        CcdBundleDTO clonedBundle = bundleJsonToBundleDto(unprocessedClonedJson);
+        clonedBundle.setTitle(clonedBundle.getTitle() + " - CLONED");
+        clonedBundle.setFileName(clonedBundle.getFileName() + " - CLONED");
+        return bundleDtoToBundleJson(clonedBundle);
     }
 
     private CcdBundleDTO bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
