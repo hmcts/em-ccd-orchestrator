@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;

@@ -2,10 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.naming.ConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
 
 /**
  * This loading strategy takes a file from the local filesystem and converts it to a BundleConfiguration object. The local

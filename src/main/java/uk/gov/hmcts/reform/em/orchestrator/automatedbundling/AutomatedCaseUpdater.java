@@ -47,7 +47,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             throw new InvalidCaseException("Could not find bundles inside case");
         }
 
-        this.addNewBundle(configuration, bundles.get());
+        addNewBundle(configuration, bundles.get());
 
         return ccdCallbackDto.getCaseData();
     }
