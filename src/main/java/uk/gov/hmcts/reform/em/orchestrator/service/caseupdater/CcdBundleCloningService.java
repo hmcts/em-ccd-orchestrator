@@ -86,5 +86,4 @@ public class CcdBundleCloningService {
         ccdValue.setValue(ccdBundle);
         return objectMapper.convertValue(ccdValue, JsonNode.class);
     }
-
 }

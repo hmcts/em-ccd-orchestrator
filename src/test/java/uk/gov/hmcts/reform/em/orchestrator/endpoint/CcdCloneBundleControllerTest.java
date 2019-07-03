@@ -102,5 +102,4 @@ public class CcdCloneBundleControllerTest {
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
-
 }
