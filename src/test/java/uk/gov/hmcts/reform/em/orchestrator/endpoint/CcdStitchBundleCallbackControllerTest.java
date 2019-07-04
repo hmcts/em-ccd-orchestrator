@@ -17,10 +17,15 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,4 +107,25 @@ public class CcdStitchBundleCallbackControllerTest {
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
+    @Test
+    public void shouldCallCcdCallbackHandlerServiceInputValidationException() throws Exception {
+        Set<ConstraintViolation<CcdBundleDTO>> violations = new HashSet<>();
+
+        Mockito
+            .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+            .thenThrow(new InputValidationException(violations));
+
+        this.mockMvc
+            .perform(post("/api/stitch-ccd-bundles")
+                .content("[]")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "xxx")
+                .header("ServiceAuthorization", "xxx"))
+            .andDo(print())
+            .andExpect(status().isOk());
+
+        Mockito
+            .verify(ccdBundleStitchingService, Mockito.times(1))
+            .updateCase(Mockito.any(CcdCallbackDto.class));
+    }
 }

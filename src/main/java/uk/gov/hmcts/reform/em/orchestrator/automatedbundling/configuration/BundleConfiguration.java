@@ -10,11 +10,14 @@ import java.util.List;
 public class BundleConfiguration {
 
     public final String title;
+    public final String filename;
     public final List<BundleConfigurationFolder> folders;
 
     public BundleConfiguration(@JsonProperty("title") String title,
+                               @JsonProperty(value = "filename") String filename,
                                @JsonProperty("folders") List<BundleConfigurationFolder> folders) {
         this.title = title;
+        this.filename = filename == null ? "stitched.pdf" : filename;
         this.folders = folders;
     }
 }

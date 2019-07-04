@@ -12,13 +12,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import pl.touk.throwing.exception.WrappedException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +40,9 @@ public class CcdBundleStitchingServiceTest {
         MockitoAnnotations.initMocks(this);
         CcdDocument ccdDocument = new CcdDocument("", "", "");
         BDDMockito.given(stitchingService.stitch(any(), any())).willReturn(ccdDocument);
-        ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService);
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService, validator);
     }
 
     @Test
@@ -58,7 +62,7 @@ public class CcdBundleStitchingServiceTest {
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
     }
 
-    @Test(expected = WrappedException.class)
+    @Test(expected = StitchingServiceException.class)
     public void testUpdateCaseStitchingException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
@@ -69,8 +73,17 @@ public class CcdBundleStitchingServiceTest {
         Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new StitchingServiceException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
+    }
 
+    @Test(expected = InputValidationException.class)
+    public void testInvalidFilename() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
+        ccdCallbackDto.setPropertyName(Optional.of("cb"));
+        ccdCallbackDto.setCaseData(node);
+        ccdCallbackDto.setJwt("jwt");
 
+        ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
@@ -36,6 +37,9 @@ public class CcdStitchBundleCallbackController {
 
         try {
             ccdCallbackResponseDto.setData(ccdBundleStitchingService.updateCase(ccdCallbackDto));
+        } catch (InputValidationException e) {
+            log.error(e.getMessage(), e);
+            ccdCallbackResponseDto.getErrors().addAll(e.violations);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().add(e.getMessage());

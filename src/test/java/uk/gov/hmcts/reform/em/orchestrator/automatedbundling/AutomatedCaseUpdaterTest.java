@@ -83,6 +83,9 @@ public class AutomatedCaseUpdaterTest {
         assertTrue(bundles.isPresent());
         assertEquals(1, bundles.get().size());
         assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
         assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
     }
 }
