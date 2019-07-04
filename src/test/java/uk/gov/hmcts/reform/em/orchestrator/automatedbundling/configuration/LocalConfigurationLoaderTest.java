@@ -15,6 +15,8 @@ public class LocalConfigurationLoaderTest {
 
         assertEquals(config.title, "New bundle");
         assertEquals(config.folders.get(0).name, "Folder 1");
+        assertEquals(config.folders.get(0).folders.get(0).name, "Folder 1.a");
+        assertEquals(config.folders.get(0).folders.get(1).name, "Folder 1.b");
         assertEquals(config.folders.get(1).name, "Folder 2");
         assertEquals(config.filename, "stitched.pdf");
     }

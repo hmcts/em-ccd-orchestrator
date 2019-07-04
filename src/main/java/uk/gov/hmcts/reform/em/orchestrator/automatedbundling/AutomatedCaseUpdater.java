@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,17 +59,29 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setFileName(configuration.filename);
-        int sortIndex = 0;
 
-        for (BundleConfigurationFolder folder : configuration.folders) {
+        addFolders(configuration.folders, bundle.getFolders(), 0);
+
+        bundles.add(bundleDtoToBundleJson(bundle));
+    }
+
+    private int addFolders(List<BundleConfigurationFolder> sourceFolders,
+                           List<CcdValue<CcdBundleFolderDTO>> destinationFolders,
+                           int sortIndex) {
+
+        for (BundleConfigurationFolder folder : sourceFolders) {
             CcdBundleFolderDTO ccdFolder = new CcdBundleFolderDTO();
             ccdFolder.setName(folder.name);
             ccdFolder.setSortIndex(sortIndex++);
 
-            bundle.getFolders().add(new CcdValue<>(ccdFolder));
+            destinationFolders.add(new CcdValue<>(ccdFolder));
+
+            if (folder.folders != null && !folder.folders.isEmpty()) {
+                sortIndex = addFolders(folder.folders, ccdFolder.getFolders(), sortIndex);
+            }
         }
 
-        bundles.add(bundleDtoToBundleJson(bundle));
+        return sortIndex;
     }
 
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
