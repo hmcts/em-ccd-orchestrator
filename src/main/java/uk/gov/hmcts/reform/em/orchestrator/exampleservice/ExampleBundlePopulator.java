@@ -23,6 +23,8 @@ public class ExampleBundlePopulator {
         ccdBundleDTO.setFileName("exampleservice-bundle.pdf");
         ccdBundleDTO.setHasCoversheets(CcdBoolean.Yes);
         ccdBundleDTO.setHasTableOfContents(CcdBoolean.Yes);
+        ccdBundleDTO.setEligibleForStitchingAsBoolean(false);
+        ccdBundleDTO.setEligibleForCloningAsBoolean(false);
 
         ArrayNode caseDocuments = (ArrayNode) caseData.findValue("caseDocuments");
 

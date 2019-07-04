@@ -71,8 +71,8 @@ public class CcdBundleCloningService {
     private JsonNode cloneBundle(JsonNode originalJson) throws IOException {
         JsonNode unprocessedClonedJson = originalJson.deepCopy();
         CcdBundleDTO clonedBundle = bundleJsonToBundleDto(unprocessedClonedJson);
-        clonedBundle.setTitle(clonedBundle.getTitle() + " - CLONED");
-        clonedBundle.setFileName(clonedBundle.getFileName() + " - CLONED");
+        clonedBundle.setTitle("CLONED_" + clonedBundle.getTitle());
+        clonedBundle.setFileName("CLONED_" + clonedBundle.getFileName());
         return bundleDtoToBundleJson(clonedBundle);
     }
 
