@@ -3,10 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.financialremedyservice;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
 
 @Service
@@ -21,6 +18,10 @@ public class FinancialRemedyBundlePopulator {
     public JsonNode populateNewBundle(JsonNode caseData) {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         ccdBundleDTO.setTitle("New Bundle");
+        ccdBundleDTO.setEligibleForStitchingAsBoolean(false);
+        ccdBundleDTO.setEligibleForCloningAsBoolean(false);
+        ccdBundleDTO.setHasTableOfContents(CcdBoolean.Yes);
+        ccdBundleDTO.setHasCoversheets(CcdBoolean.Yes);
 
         JsonNode scanned4AFormDocument = caseData.findValue("uploadScanned4AForm");
         JsonNode scanned4BFormDocument = caseData.findValue("uploadScanned4BForm");
