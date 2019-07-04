@@ -59,6 +59,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setFileName(configuration.filename);
+        bundle.setEligibleForCloningAsBoolean(false);
+        bundle.setEligibleForStitchingAsBoolean(false);
 
         addFolders(configuration.folders, bundle.getFolders(), 0);
 

@@ -39,7 +39,7 @@ public class CcdCloneScenarios {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("no", path.getString("data.caseBundles[0].value.eligibleForCloning"));
-        Assert.assertEquals("Bundle title - CLONED", path.getString("data.caseBundles[1].value.title"));
+        Assert.assertEquals("CLONED_Bundle title", path.getString("data.caseBundles[1].value.title"));
         Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
     }
 
@@ -50,7 +50,7 @@ public class CcdCloneScenarios {
 
         CcdBundleDTO bundle2 = testUtil.getTestBundle();
         bundle2.setTitle("Bundle 2");
-        bundle2.setFileName("Filename Bundle 2");
+        bundle2.setFileName("FilenameBundle2");
         bundle2.setEligibleForCloningAsBoolean(true);
 
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
@@ -70,8 +70,8 @@ public class CcdCloneScenarios {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle 1", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("Bundle 2", path.getString("data.caseBundles[1].value.title"));
-        Assert.assertEquals("Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.title"));
-        Assert.assertEquals("Filename Bundle 2 - CLONED", path.getString("data.caseBundles[2].value.fileName"));
+        Assert.assertEquals("CLONED_Bundle 2", path.getString("data.caseBundles[2].value.title"));
+        Assert.assertEquals("CLONED_FilenameBundle2", path.getString("data.caseBundles[2].value.fileName"));
         Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
     }
 
