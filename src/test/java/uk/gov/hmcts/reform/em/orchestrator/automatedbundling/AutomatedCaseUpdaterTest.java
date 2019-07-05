@@ -88,4 +88,24 @@ public class AutomatedCaseUpdaterTest {
         assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
         assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
     }
+
+    @Test
+    public void createCaseBundlesPropertyWhenItDoesntExist() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\"}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
 }
