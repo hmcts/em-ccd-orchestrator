@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationFolder;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
@@ -14,7 +15,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration
@@ -42,13 +42,15 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         String configurationName = ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText();
         BundleConfiguration configuration = configurationLoader.load(configurationName);
-        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+        ArrayNode bundles = ccdCallbackDto
+            .findCaseProperty(ArrayNode.class)
+            .orElseGet(() -> {
+                ArrayNode arrayNode = jsonMapper.createArrayNode();
+                ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                return arrayNode;
+            });
 
-        if (!bundles.isPresent()) {
-            throw new InvalidCaseException("Could not find bundles inside case");
-        }
-
-        addNewBundle(configuration, bundles.get());
+        addNewBundle(configuration, bundles);
 
         return ccdCallbackDto.getCaseData();
     }
