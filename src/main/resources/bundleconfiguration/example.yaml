@@ -1,4 +1,6 @@
 title: New bundle
+hasCoversheets: true
+hasTableOfContents: true
 folders:
   - name: Folder 1
     folders:

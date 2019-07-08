@@ -25,6 +25,7 @@ public class CcdBundleDTO {
     private String fileName;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
+    private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
 
     public Long getId() {
@@ -146,4 +147,13 @@ public class CcdBundleDTO {
     public void setStitchStatus(String stitchStatus) {
         this.stitchStatus = stitchStatus;
     }
+
+    public CcdBoolean getHasFolderCoversheets() {
+        return hasFolderCoversheets;
+    }
+
+    public void setHasFolderCoversheets(CcdBoolean hasFolderCoversheets) {
+        this.hasFolderCoversheets = hasFolderCoversheets;
+    }
+
 }
