@@ -14,6 +14,9 @@ public class LocalConfigurationLoaderTest {
         BundleConfiguration config = loader.load("example.yaml");
 
         assertEquals(config.title, "New bundle");
+        assertEquals(config.hasTableOfContents, true);
+        assertEquals(config.hasCoversheets, true);
+        assertEquals(config.hasFolderCoversheets, false);
         assertEquals(config.folders.get(0).name, "Folder 1");
         assertEquals(config.folders.get(0).folders.get(0).name, "Folder 1.a");
         assertEquals(config.folders.get(0).folders.get(1).name, "Folder 1.b");
@@ -32,5 +35,9 @@ public class LocalConfigurationLoaderTest {
 
         assertEquals(config.title, "Bundle with filename");
         assertEquals(config.filename, "bundle.pdf");
+        assertEquals(config.hasTableOfContents, false);
+        assertEquals(config.hasCoversheets, false);
+        assertEquals(config.hasFolderCoversheets, true);
+
     }
 }

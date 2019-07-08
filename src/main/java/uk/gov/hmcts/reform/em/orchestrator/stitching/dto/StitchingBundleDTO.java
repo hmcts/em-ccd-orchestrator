@@ -12,6 +12,7 @@ public class StitchingBundleDTO {
     private String fileName;
     private boolean hasTableOfContents;
     private boolean hasCoversheets;
+    private boolean hasFolderCoversheets;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -68,5 +69,14 @@ public class StitchingBundleDTO {
     public void setHasCoversheets(boolean hasCoversheets) {
         this.hasCoversheets = hasCoversheets;
     }
+
+    public boolean getHasFolderCoversheets() {
+        return hasFolderCoversheets;
+    }
+
+    public void setHasFolderCoversheets(boolean hasFolderCoversheets) {
+        this.hasFolderCoversheets = hasFolderCoversheets;
+    }
+
 }
 

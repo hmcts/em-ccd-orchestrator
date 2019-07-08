@@ -1,5 +1,8 @@
 title: Bundle with filename
 filename: bundle.pdf
+hasTableOfContents: false
+hasCoversheets: false
+hasFolderCoversheets: true
 folders:
   - name: Folder 1
   - name: Folder 2

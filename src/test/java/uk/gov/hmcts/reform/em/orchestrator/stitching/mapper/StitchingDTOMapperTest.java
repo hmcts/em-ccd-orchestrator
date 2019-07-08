@@ -34,6 +34,7 @@ public class StitchingDTOMapperTest {
         bundleDTO.setFileName("a-file.pdf");
         bundleDTO.setHasCoversheets(CcdBoolean.No);
         bundleDTO.setHasTableOfContents(CcdBoolean.Yes);
+        bundleDTO.setHasFolderCoversheets(CcdBoolean.No);
         bundleDTO.getDocuments().add(new CcdValue<>(document1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder3DTO));
@@ -46,6 +47,7 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getFileName(), stitchingBundleDTO.getFileName());
         assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasCoversheets());
         assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes, stitchingBundleDTO.getHasTableOfContents());
+        assertEquals(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasFolderCoversheets());
 
         assertEquals(
                 bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(),
