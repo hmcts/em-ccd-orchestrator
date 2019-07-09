@@ -38,6 +38,14 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.hasTableOfContents, false);
         assertEquals(config.hasCoversheets, false);
         assertEquals(config.hasFolderCoversheets, true);
+    }
 
+    @Test
+    public void documentSet() {
+        BundleConfiguration config = loader.load("example-with-documents.yaml");
+
+        assertEquals(config.documents.size(), 1);
+        assertEquals(config.folders.get(0).documents.size(), 0);
+        assertEquals(config.folders.get(1).documents.size(), 2);
     }
 }
