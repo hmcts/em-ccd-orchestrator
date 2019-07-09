@@ -55,4 +55,30 @@ public class AutomatedBundlingScenarios {
         Assert.assertEquals("bundle.pdf", response.getBody().jsonPath().getString("data.caseBundles[0].value.fileName"));
     }
 
+    @Test
+    public void testTableOfContentsAndCoversheet() {
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
+        Assert.assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasTableOfContents"));
+        Assert.assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasFolderCoversheets"));
+    }
+
+    @Test
+    public void testFolderCoversheets() {
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(filenameJson)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
+        Assert.assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasTableOfContents"));
+        Assert.assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasFolderCoversheets"));
+    }
+
 }
