@@ -4,6 +4,6 @@ hasTableOfContents: true
 folders:
   - name: Folder 1
     folders:
-        - name: Folder 1.a
-        - name: Folder 1.b
+      - name: Folder 1.a
+      - name: Folder 1.b
   - name: Folder 2
