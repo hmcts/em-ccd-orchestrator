@@ -1,0 +1,24 @@
+title: New bundle
+hasCoversheets: true
+hasTableOfContents: true
+folders:
+  - name: Folder 1
+    folders:
+      - name: Folder 1.a
+      - name: Folder 1.b
+  - name: Folder 2
+    documents:
+      - type: document
+        name: value.name
+        url: otherDocument.value.document.document_url
+      - type: document
+        name: anotherDocument.value.name
+        url: anotherDocument.value.document.document_url
+documents:
+  - type: documentSet
+    collection: caseDocuments
+    filter:
+      property: name
+      value: Document 1
+    name: value.name
+    url: value.document.document_url
