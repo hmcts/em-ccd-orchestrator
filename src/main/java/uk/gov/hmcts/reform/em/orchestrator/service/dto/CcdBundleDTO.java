@@ -156,4 +156,15 @@ public class CcdBundleDTO {
         this.hasFolderCoversheets = hasFolderCoversheets;
     }
 
+    public void setHasCoversheets(boolean hasCoversheets) {
+        this.hasCoversheets = hasCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public void setHasTableOfContents(boolean hasTableOfContents) {
+        this.hasTableOfContents = hasTableOfContents ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public void setHasFolderCoversheets(boolean hasFolderCoversheets) {
+        this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
 }

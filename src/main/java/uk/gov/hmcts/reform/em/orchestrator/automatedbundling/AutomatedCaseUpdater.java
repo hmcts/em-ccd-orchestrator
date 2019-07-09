@@ -58,8 +58,9 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private void addNewBundle(BundleConfiguration configuration, ArrayNode bundles) {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setTitle(configuration.title);
-        bundle.setHasCoversheets(CcdBoolean.Yes);
-        bundle.setHasTableOfContents(CcdBoolean.Yes);
+        bundle.setHasCoversheets(configuration.hasCoversheets);
+        bundle.setHasTableOfContents(configuration.hasTableOfContents);
+        bundle.setHasFolderCoversheets(configuration.hasFolderCoversheets);
         bundle.setFileName(configuration.filename);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
