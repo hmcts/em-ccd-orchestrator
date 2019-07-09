@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class CcdBundleFolderDTO {
         this.documents = documents;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public ArrayList<CcdValue<CcdBundleFolderDTO>> getFolders() {
         return folders;
     }

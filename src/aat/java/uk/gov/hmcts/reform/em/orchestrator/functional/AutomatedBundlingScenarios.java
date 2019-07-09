@@ -81,4 +81,16 @@ public class AutomatedBundlingScenarios {
         Assert.assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasFolderCoversheets"));
     }
 
+    @Test
+    public void testSubSubfolders() {
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.folders"));
+        Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.documents"));
+    }
 }
