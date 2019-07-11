@@ -263,6 +263,7 @@ task validateYaml(type: JavaExec){
     description = "Validate the automated bundling YAML configuration"
     main = 'uk.gov.hmcts.reform.em.orchestrator.CliApplication'
     classpath = sourceSets.main.runtimeClasspath
+    args '--validate'
 }
 
 dependencyCheck {
