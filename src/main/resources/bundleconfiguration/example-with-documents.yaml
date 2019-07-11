@@ -9,16 +9,14 @@ folders:
   - name: Folder 2
     documents:
       - type: document
-        name: value.name
-        url: otherDocument.value.document.document_url
+        property: someFolder.value.someDocument
       - type: document
-        name: anotherDocument.value.name
-        url: anotherDocument.value.document.document_url
+        property: anotherDocument
 documents:
   - type: documentSet
-    collection: caseDocuments
+    property: caseDocuments
     filter:
-      property: name
-      value: Document 1
-    name: value.name
-    url: value.document.document_url
+      - property: name
+        value: Document 1
+  - type: document
+    property: otherDocument

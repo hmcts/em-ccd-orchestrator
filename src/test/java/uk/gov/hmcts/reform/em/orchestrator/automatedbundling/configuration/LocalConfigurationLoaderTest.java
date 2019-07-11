@@ -44,8 +44,8 @@ public class LocalConfigurationLoaderTest {
     public void documentSet() {
         BundleConfiguration config = loader.load("example-with-documents.yaml");
 
-        assertEquals(config.documents.size(), 1);
-        assertEquals(config.folders.get(0).documents.size(), 0);
-        assertEquals(config.folders.get(1).documents.size(), 2);
+        assertEquals(2, config.documents.size());
+        assertEquals(0, config.folders.get(0).documents.size());
+        assertEquals(2, config.folders.get(1).documents.size());
     }
 }
