@@ -28,10 +28,13 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         this.jsonMapper = jsonMapper;
     }
 
-    @Override
-    public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return ccdCallbackDto.getCaseData().has(CONFIG_FIELD);
-    }
+        @Override
+        public boolean handles(CcdCallbackDto ccdCallbackDto) {
+            JsonNode caseData =  ccdCallbackDto.getCaseData();
+            return (caseData.has(CONFIG_FIELD)
+                    && caseData.get(CONFIG_FIELD) != null
+                    && !caseData.get(CONFIG_FIELD).asText().isEmpty());
+        }
 
     /**
      * Load the configuration file then add a new bundle to the case data based on that configuration. If an error occurs
