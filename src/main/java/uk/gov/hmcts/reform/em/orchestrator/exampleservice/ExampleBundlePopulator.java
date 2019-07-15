@@ -36,13 +36,13 @@ public class ExampleBundlePopulator {
                 ccdBundleDTO.getDocuments().add(
                     new CcdValue(
                         new CcdBundleDocumentDTO(
-                            caseDocument.at("/value/name").asText(),
+                            caseDocument.at("/value/documentName").asText(),
                             null,
                             i,
                             new CcdDocument(
-                                caseDocument.at("/value/document/document_url").asText(),
-                                caseDocument.at("/value/document/document_filename").asText(),
-                                caseDocument.at("/value/document/document_binary_url").asText()
+                                caseDocument.at("/value/documentLink/document_url").asText(),
+                                caseDocument.at("/value/documentLink/document_filename").asText(),
+                                caseDocument.at("/value/documentLink/document_binary_url").asText()
                             )
                         )
                     )
