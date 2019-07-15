@@ -1,40 +1,24 @@
-buildscript {
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
-    }
-}
 
 plugins {
     id 'application'
-    id 'io.spring.dependency-management' version '1.0.4.RELEASE'
-    id 'org.springframework.boot' version '2.1.2.RELEASE'
-    id 'org.owasp.dependencycheck' version '3.1.2'
-    id 'com.github.ben-manes.versions' version '0.17.0'
-    id 'org.sonarqube' version '2.6.2'
-    id "net.ltgt.apt-eclipse" version "0.18"
-    id "net.ltgt.apt-idea" version "0.18"
-    id "net.ltgt.apt" version "0.18"
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'org.owasp.dependencycheck' version '5.1.0'
+    id 'com.github.ben-manes.versions' version '0.21.0'
+    id 'org.sonarqube' version '2.7.1'
     id 'jacoco'
     id 'checkstyle'
     id 'pmd'
-   // id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.0.11"
-    id "com.github.lkishalmi.gatling" version "3.0.1"
+    id "com.github.lkishalmi.gatling" version "3.0.2"
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'application'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'idea'
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-openfeign:2.1.1.RELEASE'
-    }
-}
 
 if (!project.hasProperty('runList')) {
     project.ext.runList = 'main'
@@ -48,6 +32,58 @@ mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 configurations {
     aatCompile.extendsFrom(testCompile)
     aatRuntime.extendsFrom(testRuntime)
+}
+
+repositories {
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    jcenter()
+    mavenLocal()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+dependencies {
+    compile "com.squareup.okhttp3:okhttp:4.0.1"
+    compile group: "commons-io", name: "commons-io", version: "2.6"
+    compile "org.springframework.boot:spring-boot-starter-batch"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.9.9"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:2.9.9"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9"
+    compile "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.9.9.1"
+    compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.9"
+    compile "pl.touk:throwing-function:1.3"
+    compile "com.jayway.jsonpath:json-path:2.4.0"
+    compile "org.zalando:problem-spring-web:0.24.0-RC.0"
+    compile "io.springfox:springfox-swagger2:2.9.2"
+    compile "io.springfox:springfox-swagger-ui:2.9.2"
+    compile group: "org.apache.commons", name: "commons-lang3", version: "3.9"
+    compile group: "com.microsoft.azure", name: "applicationinsights-core", version: "2.4.0"
+    compile group: "commons-validator", name: "commons-validator", version: "1.6"
+    compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.3"
+    compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "2.0.1"
+    compile group: "uk.gov.hmcts.reform", name: "java-logging-appinsights", version: "5.0.1"
+    compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
+    compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.3"
+    compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
+
+    annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
+        exclude group: "com.vaadin.external.google", module: "android-json"
+    }
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: "junit", name: "junit", version: "4.12"
+    testCompile "com.github.gmazzo:okhttp-mock:1.3.1"
+    testCompile "io.rest-assured:rest-assured:4.0.0"
+    testCompile group: "io.rest-assured", name: "json-path", version: "4.0.0"
+    testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
 }
 
 checkstyle {
@@ -68,14 +104,16 @@ pmd {
 checkstyleMain.shouldRunAfter(compileJava)
 test.shouldRunAfter(checkstyleTest)
 
-repositories {
-    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-    jcenter()
-    mavenLocal()
-    maven {
-        url 'https://repo.spring.io/libs-snapshot'
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
     }
 }
 
@@ -83,62 +121,11 @@ dependencyCheck {
     // Specifies if the build should be failed if a CVSS score above a specified level is identified.
     // range of 0-10 fails the build, anything greater and it doesn't fail the build
     failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'false' ? 11 : 0
-    suppressionFile = 'dependency-check-suppressions.xml'
+    suppressionFile = 'config/owasp/dependency-check-suppressions.xml'
     analyzers {
         // Disable scanning of .NET related binaries
         assemblyEnabled = false
     }
-}
-
-def versions = [
-        springBoot         : '2.1.2.RELEASE',
-        springfoxSwagger   : '2.7.0',
-        jackson            : '2.9.8'
-]
-
-dependencies {
-    compile 'com.squareup.okhttp3:okhttp:3.11.0'
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile("org.springframework.boot:spring-boot-starter-batch")
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${versions.jackson}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:${versions.jackson}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.jackson}"
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}"
-    compile "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
-    compile "com.fasterxml.jackson.module:jackson-module-afterburner:${versions.jackson}"
-    compile "org.zalando:problem-spring-web:0.24.0-RC.0"
-    compile("io.springfox:springfox-swagger2:${versions.springfoxSwagger}")
-    compile("io.springfox:springfox-swagger-ui:${versions.springfoxSwagger}")
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile( 'org.apache.httpcomponents:httpclient:4.5.5')
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-    compile group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '2.1.1'
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.6'
-    compile "org.ehcache:ehcache"
-    compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.3'
-    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '2.0.1'
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.0.1'
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '5.0.1'
-    compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.3'
-    compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version:'0.0.4'
-
-    compile "pl.touk:throwing-function:1.3"
-    compile "com.jayway.jsonpath:json-path:2.4.0"
-    compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    compile "org.mapstruct:mapstruct-jdk8:${mapstruct_version}"
-    compile "org.springframework.boot:spring-boot-starter-security"
-
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
-    annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
-        exclude group: 'com.vaadin.external.google', module: 'android-json'
-    }
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile 'com.github.gmazzo:okhttp-mock:1.0.4'
-    testCompile 'io.rest-assured:rest-assured:3.2.0'
-    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
 }
 
 bootJar {
@@ -264,10 +251,6 @@ task validateYaml(type: JavaExec){
     main = 'uk.gov.hmcts.reform.em.orchestrator.CliApplication'
     classpath = sourceSets.main.runtimeClasspath
     args '--validate'
-}
-
-dependencyCheck {
-    suppressionFile = 'dependency-check-suppressions.xml'
 }
 
 compileJava.dependsOn processResources
