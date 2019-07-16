@@ -13,13 +13,18 @@ public class AutomatedCaseConfiguration {
     @Bean
     AutomatedCaseUpdater automatedCaseUpdater() {
         return new AutomatedCaseUpdater(
-            new LocalConfigurationLoader(
-                new ObjectMapper(
-                    new YAMLFactory()
-                )
-            ),
+            localConfigurationLoader(),
             new ObjectMapper(),
             new BundleFactory()
+        );
+    }
+
+    @Bean
+    LocalConfigurationLoader localConfigurationLoader() {
+        return new LocalConfigurationLoader(
+            new ObjectMapper(
+                new YAMLFactory()
+            )
         );
     }
 }

@@ -152,6 +152,7 @@ bootJar {
 
 def coverageExclusionList = [
     '**uk/gov/hmcts/reform/em/orchestrator/Application*',
+    '**uk/gov/hmcts/reform/em/orchestrator/CliApplication*',
     '**uk/gov/hmcts/reform/em/orchestrator/appinsights/*',
     '**uk/gov/hmcts/reform/em/orchestrator/config/*',
     '**uk/gov/hmcts/reform/em/orchestrator/config/logging/*',
@@ -256,6 +257,13 @@ task smoke(type: Test) {
     include "uk/gov/hmcts/reform/em/orchestrator/smoke/**"
 
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+}
+
+task validateYaml(type: JavaExec){
+    description = "Validate the automated bundling YAML configuration"
+    main = 'uk.gov.hmcts.reform.em.orchestrator.CliApplication'
+    classpath = sourceSets.main.runtimeClasspath
+    args '--validate'
 }
 
 dependencyCheck {
