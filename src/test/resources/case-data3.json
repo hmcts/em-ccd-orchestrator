@@ -30,7 +30,7 @@
   }, {
     "value": {
       "documentName": "Case document 4",
-      "selectMe": "yesPlease",
+      "selectMe": "noThanks",
       "alsoSelectMe": "okayThen",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
