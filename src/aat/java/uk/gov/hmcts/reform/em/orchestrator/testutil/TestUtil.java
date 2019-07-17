@@ -5,6 +5,10 @@ import io.restassured.specification.RequestSpecification;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,5 +146,11 @@ public class TestUtil {
             ? url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl())
             : url;
     }
+
+    public static String readFile(String path) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, StandardCharsets.US_ASCII);
+    }
+
 }
 
