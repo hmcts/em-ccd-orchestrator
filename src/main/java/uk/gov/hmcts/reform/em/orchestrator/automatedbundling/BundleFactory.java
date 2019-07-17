@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * Creates a new bundle from a bundle configuration and some case json.
+ */
 public class BundleFactory {
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
@@ -101,18 +104,21 @@ public class BundleFactory {
 
         return StreamSupport
             .stream(list.spliterator(), true)
-            .filter(n -> applyFilters(documentSelector.filter, n))
-            .map(n -> getDocumentFromNode(n.at("/value")))
+            .map(n -> n.at("/value"))
+            .filter(n -> anyFilterMatches(documentSelector.filters, n))
+            .map(this::getDocumentFromNode)
             .collect(Collectors.toList());
     }
 
-    private boolean applyFilters(List<BundleConfigurationDocumentSet.BundleConfigurationFilter> filters, JsonNode node) {
+    private boolean anyFilterMatches(List<BundleConfigurationDocumentSet.BundleConfigurationFilter> filters,
+                                     JsonNode node) {
+
         for (BundleConfigurationDocumentSet.BundleConfigurationFilter filter : filters) {
-            if (!node.at(filter.property).asText().equals(filter.property)) {
-                return false;
+            if (node.at(filter.property).asText().equals(filter.value)) {
+                return true;
             }
         }
 
-        return true;
+        return filters.isEmpty();
     }
 }

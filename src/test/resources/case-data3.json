@@ -1,0 +1,42 @@
+{
+  "document1": {
+    "documentName": "Case document 1",
+    "documentLink": {
+      "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
+      "document_filename":"document1.pdf",
+      "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+    }
+  },
+  "caseDocuments": [{
+    "value": {
+      "documentName": "Case document 2",
+      "selectMe": "yesPlease",
+      "documentLink": {
+        "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
+        "document_filename":"document2.pdf",
+        "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+      }
+    }
+  }, {
+    "value": {
+      "documentName": "Case document 3",
+      "selectMe": "noThanksPlease",
+      "documentLink": {
+        "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
+        "document_filename":"document3.pdf",
+        "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+      }
+    }
+  }, {
+    "value": {
+      "documentName": "Case document 4",
+      "selectMe": "yesPlease",
+      "alsoSelectMe": "okayThen",
+      "documentLink": {
+        "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
+        "document_filename":"document4.pdf",
+        "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+      }
+    }
+  }]
+}

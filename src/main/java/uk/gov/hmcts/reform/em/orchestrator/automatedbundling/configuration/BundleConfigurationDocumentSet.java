@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BundleConfigurationDocumentSet implements BundleConfigurationDocumentSelector {
     public final String property;
-    public final List<BundleConfigurationFilter> filter;
+    public final List<BundleConfigurationFilter> filters;
 
     public static class BundleConfigurationFilter {
         public final String property;
@@ -21,9 +21,9 @@ public class BundleConfigurationDocumentSet implements BundleConfigurationDocume
     }
 
     public BundleConfigurationDocumentSet(@JsonProperty("property") String property,
-                                          @JsonProperty("filter") List<BundleConfigurationFilter> filter) {
+                                          @JsonProperty("filters") List<BundleConfigurationFilter> filters) {
         this.property = property;
-        this.filter = filter == null ? new ArrayList<>() : filter;
+        this.filters = filters == null ? new ArrayList<>() : filters;
     }
 
 

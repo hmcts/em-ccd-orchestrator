@@ -9,14 +9,14 @@ folders:
   - name: Folder 2
     documents:
       - type: document
-        property: someFolder.value.someDocument
+        property: /someFolder/someDocument
       - type: document
-        property: anotherDocument
+        property: /anotherDocument
 documents:
   - type: documentSet
-    property: caseDocuments
-    filter:
-      - property: name
+    property: /caseDocuments
+    filters:
+      - property: /name
         value: Document 1
   - type: document
-    property: otherDocument
+    property: /otherDocument

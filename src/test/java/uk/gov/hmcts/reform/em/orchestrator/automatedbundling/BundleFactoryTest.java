@@ -25,6 +25,7 @@ public class BundleFactoryTest {
     private final ObjectNode emptyJson = new ObjectNode(new JsonNodeFactory(false));
     private final File case1Json = new File(ClassLoader.getSystemResource("case-data1.json").getPath());
     private final File case2Json = new File(ClassLoader.getSystemResource("case-data2.json").getPath());
+    private final File case3Json = new File(ClassLoader.getSystemResource("case-data3.json").getPath());
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -89,7 +90,6 @@ public class BundleFactoryTest {
         factory.create(configuration, json);
     }
 
-
     @Test
     public void createWithDocumentSetSelect() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
@@ -149,5 +149,32 @@ public class BundleFactoryTest {
 
         JsonNode json = mapper.readTree(case2Json);
         factory.create(configuration, json);
+    }
+
+    @Test
+    public void createWithDocumentSetFilters() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yesPlease"),
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
+                ))
+            )
+        );
+
+        JsonNode json = mapper.readTree(case3Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals("document4.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
+        assertEquals(3, bundle.getDocuments().size());
     }
 }
