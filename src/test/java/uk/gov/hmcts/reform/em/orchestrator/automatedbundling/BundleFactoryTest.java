@@ -173,8 +173,7 @@ public class BundleFactoryTest {
         CcdBundleDTO bundle = factory.create(configuration, json);
 
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
-        assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
-        assertEquals("document4.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
-        assertEquals(3, bundle.getDocuments().size());
+        assertEquals("document4.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals(2, bundle.getDocuments().size());
     }
 }

@@ -114,11 +114,11 @@ public class BundleFactory {
                                      JsonNode node) {
 
         for (BundleConfigurationDocumentSet.BundleConfigurationFilter filter : filters) {
-            if (node.at(filter.property).asText().equals(filter.value)) {
-                return true;
+            if (!node.at(filter.property).asText().equals(filter.value)) {
+                return false;
             }
         }
 
-        return filters.isEmpty();
+        return true;
     }
 }
