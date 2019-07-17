@@ -22,8 +22,8 @@ public class BundleConfigurationDocumentSet implements BundleConfigurationDocume
 
     public BundleConfigurationDocumentSet(@JsonProperty("property") String property,
                                           @JsonProperty("filter") List<BundleConfigurationFilter> filter) {
-        this.property= property;
-        this.filter= filter == null ? new ArrayList<>() : filter;
+        this.property = property;
+        this.filter = filter == null ? new ArrayList<>() : filter;
     }
 
 

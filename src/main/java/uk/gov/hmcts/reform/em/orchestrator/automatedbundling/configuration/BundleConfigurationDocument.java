@@ -6,7 +6,7 @@ public class BundleConfigurationDocument implements BundleConfigurationDocumentS
     public final String property;
 
     public BundleConfigurationDocument(@JsonProperty("property") String property) {
-        this.property= property;
+        this.property = property;
     }
 
 }
