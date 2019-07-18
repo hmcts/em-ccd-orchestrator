@@ -5,14 +5,14 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.DocumentSelectorException;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AutomatedBundlingScenarios {
 
@@ -195,7 +195,7 @@ public class AutomatedBundlingScenarios {
         assertEquals("Single doc 1", firstBundle.getString("folders[1].value.documents[0].value.name"));
     }
 
-@Test
+    @Test
     public void testTooManySubfolders() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("documentUrl", testUtil.uploadDocument());
@@ -290,22 +290,22 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        String correctDocumentFormat = "{\n" +
-                "          \"documentName\": \"Prosecution doc 1\",\n" +
-                "          \"documentType\": \"Prosecution\",\n" +
-                "          \"documentLink\": {\n" +
-                "            \"document_url\":\"documentUrl\",\n" +
-                "            \"document_filename\":\"prosecution1.pdf\",\n" +
-                "            \"document_binary_url\":\"documentUrl/binary\"\n" +
-                "          },";
-        String corruptDocumentFormat = "{\n" +
-                "          \"documentName\": \"Prosecution doc 1\",\n" +
-                "          \"documentType\": \"Prosecution\",\n" +
-                "          \"documentLink\": {\n" +
-                "            \"document_typo\":\"documentUrl\",\n" +
-                "            \"document_filename\":\"prosecution1.pdf\",\n" +
-                "            \"document_binary_url\":\"documentUrl/binary\"\n" +
-                "          },";
+        String correctDocumentFormat = "{\n"
+                 + "          \"documentName\": \"Prosecution doc 1\",\n"
+                 + "          \"documentType\": \"Prosecution\",\n"
+                 + "          \"documentLink\": {\n"
+                 + "            \"document_url\":\"documentUrl\",\n"
+                 + "            \"document_filename\":\"prosecution1.pdf\",\n"
+                 + "            \"document_binary_url\":\"documentUrl/binary\"\n"
+                 + "          },";
+        String corruptDocumentFormat = "{\n"
+                 + "          \"documentName\": \"Prosecution doc 1\",\n"
+                 + "          \"documentType\": \"Prosecution\",\n"
+                 + "          \"documentLink\": {\n"
+                 + "            \"document_typo\":\"documentUrl\",\n"
+                 + "            \"document_filename\":\"prosecution1.pdf\",\n"
+                 + "            \"document_binary_url\":\"documentUrl/binary\"\n"
+                 + "          },";
 
         json = json.replaceAll(correctDocumentFormat, corruptDocumentFormat);
         json = json.replaceAll("documentUrl", testUtil.uploadDocument());

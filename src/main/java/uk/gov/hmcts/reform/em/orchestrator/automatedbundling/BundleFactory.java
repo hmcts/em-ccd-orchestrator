@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */
@@ -71,7 +73,7 @@ public class BundleFactory {
             throw new DocumentSelectorException("Could not find element: " + documentSelector.property);
         }
 
-        if (!node.isArray()) {
+        if (node.isArray()) {
             throw new DocumentSelectorException("Element is an array: " + documentSelector.property);
         }
 
@@ -119,7 +121,7 @@ public class BundleFactory {
             .stream(list.spliterator(), true)
             .map(n -> n.at("/value"))
             .filter(n -> anyFilterMatches(documentSelector.filters, n))
-            .map(this::getDocumentFromNode) //TODO Deal with this exception in the map
+            .map(unchecked(this::getDocumentFromNode))
             .collect(Collectors.toList());
     }
 
