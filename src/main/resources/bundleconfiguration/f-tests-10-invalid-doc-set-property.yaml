@@ -5,4 +5,4 @@ hasCoversheets: true
 hasFolderCoversheets: true
 documents:
   - type: documentSet
-    property: quesoDocuments
+    property: /quesoDocuments

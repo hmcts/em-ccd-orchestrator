@@ -8,9 +8,9 @@ folders:
     sortIndex: 1
     documents:
     - type: documentSet
-      property: caseDocuments
+      property: /caseDocuments
   - name: Folder 2
     sortIndex: 2
     documents:
     - type: document
-      property: singleDocument
+      property: /singleDocument

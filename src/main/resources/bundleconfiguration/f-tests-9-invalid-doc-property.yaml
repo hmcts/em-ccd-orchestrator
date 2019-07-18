@@ -5,4 +5,4 @@ hasCoversheets: true
 hasFolderCoversheets: true
 documents:
   - type: document
-    property: typoDocument
+    property: /typoDocument
