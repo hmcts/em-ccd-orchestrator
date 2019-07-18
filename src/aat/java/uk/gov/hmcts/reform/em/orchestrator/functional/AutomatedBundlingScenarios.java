@@ -101,7 +101,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testAddFlatDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
 
         Response response = testUtil.authRequest()
@@ -121,7 +120,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testAddFlatFilteredDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-2-filter-flat-docs.yaml");
 
         Response response = testUtil.authRequest()
@@ -140,7 +138,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testAddFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-3-foldered-docs.yaml");
 
         Response response = testUtil.authRequest()
@@ -163,7 +160,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testAddFilteredFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-4-filtered-foldered-docs.yaml");
 
         Response response = testUtil.authRequest()
@@ -185,7 +181,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testTypoInConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-6-has-typo.yaml");
 
         Response response = testUtil.authRequest()
@@ -199,7 +194,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");
 
         Response response = testUtil.authRequest()
@@ -213,7 +207,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testDocumentSetPropertyIsNotAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-8-not-an-array.yaml");
 
         Response response = testUtil.authRequest()
@@ -227,7 +220,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testInvalidDocumentProperty() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-9-invalid-doc-property.yaml");
 
         Response response = testUtil.authRequest()
@@ -241,7 +233,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testInvalidDocumentSetProperty() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-10-invalid-doc-set-property.yaml");
 
         Response response = testUtil.authRequest()
@@ -256,7 +247,6 @@ public class AutomatedBundlingScenarios {
     public void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("document_url", "incorrect_property_name");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "f-tests-5-invalid-url.yaml");
 
         Response response = testUtil.authRequest()
@@ -270,7 +260,6 @@ public class AutomatedBundlingScenarios {
     @Test
     public void testConfigurationFileDoesNotExist() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
         json = json.replaceAll("configurationFile", "nonexistent.yaml");
 
         Response response = testUtil.authRequest()
