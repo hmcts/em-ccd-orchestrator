@@ -5,18 +5,13 @@ hasCoversheets: true
 hasFolderCoversheets: true
 folders:
   - name: Folder 1
-    sortIndex: 1
     documents:
       - type: documentSet
         property: /caseDocuments
-        filter:
+        filters:
           - property: /documentType
             value: Prosecution
   - name: Folder 2
-    sortIndex: 2
     documents:
       - type: document
         property: /singleDocument
-        filter:
-          - property: /documentType
-            value: Court notice

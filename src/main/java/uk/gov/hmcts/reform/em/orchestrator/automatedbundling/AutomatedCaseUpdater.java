@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -21,7 +19,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
-    private final Logger log = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
 
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
@@ -55,12 +52,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 return arrayNode;
             });
 
-        try {
-            CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
-            bundles.add(bundleDtoToBundleJson(bundle));
-        } catch (DocumentSelectorException e) {
-            log.info("Could not create bundle", e);
-        }
+        CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
+        bundles.add(bundleDtoToBundleJson(bundle));
 
         return ccdCallbackDto.getCaseData();
     }

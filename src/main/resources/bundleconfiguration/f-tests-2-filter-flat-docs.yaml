@@ -6,6 +6,6 @@ hasFolderCoversheets: true
 documents:
   - type: documentSet
     property: /caseDocuments
-    filter:
+    filters:
       - property: /documentType
         value: Prosecution

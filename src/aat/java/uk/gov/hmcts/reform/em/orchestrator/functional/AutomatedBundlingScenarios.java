@@ -20,7 +20,6 @@ public class AutomatedBundlingScenarios {
     private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
     private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
     private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
-    private final File documentsJson = new File(ClassLoader.getSystemResource("documents-case.json").getPath());
 
     @Test
     public void testCreateBundle() {
@@ -110,8 +109,6 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
-
         JsonPath responsePath = response.jsonPath();
 
         assertEquals(200, response.getStatusCode());
@@ -132,15 +129,12 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
-
         JsonPath responsePath = response.jsonPath();
-        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(2, firstBundle.getList("documents").size());
-        assertEquals("Prosecution doc 1", firstBundle.getString("documents[0].value.name"));
-        assertEquals("Prosecution doc 2", firstBundle.getString("documents[1].value.name"));
+        assertEquals(2, responsePath.getList("data.caseBundles[0].value.documents").size());
+        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
+        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
     }
 
     @Test
@@ -154,19 +148,16 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
-
         JsonPath responsePath = response.jsonPath();
-        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(2, firstBundle.getList("folders").size());
-        assertEquals(3, firstBundle.getList("folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", firstBundle.getString("folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", firstBundle.getString("folders[0].value.documents[1].value.name"));
-        assertEquals("Defendant doc 1", firstBundle.getString("folders[0].value.documents[2].value.name"));
-        assertEquals(1, firstBundle.getList("folders[1].value.documents").size());
-        assertEquals("Single doc 1", firstBundle.getString("folders[1].value.documents[0].value.name"));
+        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
+        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
+        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
+        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
+        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
+        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
 
     @Test
@@ -180,36 +171,15 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
-
         JsonPath responsePath = response.jsonPath();
-        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(2, firstBundle.getList("folders").size());
-        assertEquals(2, firstBundle.getList("folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", firstBundle.getString("folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", firstBundle.getString("folders[0].value.documents[1].value.name"));
-        assertEquals(1, firstBundle.getList("folders[1].value.documents").size());
-        assertEquals("Single doc 1", firstBundle.getString("folders[1].value.documents[0].value.name"));
-    }
-
-    @Test
-    public void testTooManySubfolders() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
-        json = json.replaceAll("configurationFile", "f-tests-5-too-many-subfolders.yaml");
-
-        Response response = testUtil.authRequest()
-                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
-
-        // Expect subfolders to just be ignored
-        System.out.println("JJJ - too many subfolders - response is");
-        response.prettyPrint();
-
-        assertEquals(200, response.getStatusCode());
+        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
+        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
+        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
+        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
+        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
 
     @Test
@@ -237,8 +207,7 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.prettyPrint().contains("Could not create bundle"));
-        assertTrue(response.prettyPrint().contains("Element is an array: caseDocuments"));
+        assertTrue(response.prettyPrint().contains("Element is an array: /caseDocuments"));
     }
 
     @Test
@@ -252,8 +221,7 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.prettyPrint().contains("Could not create bundle"));
-        assertTrue(response.prettyPrint().contains("Element is not an array: singleDocument"));
+        assertTrue(response.prettyPrint().contains("Element is not an array: /singleDocument"));
     }
 
     @Test
@@ -267,8 +235,7 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.prettyPrint().contains("Could not create bundle"));
-        assertTrue(response.prettyPrint().contains("Could not find element: typoDocument"));
+        assertTrue(response.prettyPrint().contains("Could not find element: /typoDocument"));
     }
 
     @Test
@@ -282,40 +249,21 @@ public class AutomatedBundlingScenarios {
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.prettyPrint().contains("Could not create bundle"));
-        assertTrue(response.prettyPrint().contains("Could not find element: quesoDocument"));
+        assertTrue(response.prettyPrint().contains("Could not find element: /quesoDocument"));
     }
 
     @Test
     public void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        String correctDocumentFormat = "{\n"
-                 + "          \"documentName\": \"Prosecution doc 1\",\n"
-                 + "          \"documentType\": \"Prosecution\",\n"
-                 + "          \"documentLink\": {\n"
-                 + "            \"document_url\":\"documentUrl\",\n"
-                 + "            \"document_filename\":\"prosecution1.pdf\",\n"
-                 + "            \"document_binary_url\":\"documentUrl/binary\"\n"
-                 + "          },";
-        String corruptDocumentFormat = "{\n"
-                 + "          \"documentName\": \"Prosecution doc 1\",\n"
-                 + "          \"documentType\": \"Prosecution\",\n"
-                 + "          \"documentLink\": {\n"
-                 + "            \"document_typo\":\"documentUrl\",\n"
-                 + "            \"document_filename\":\"prosecution1.pdf\",\n"
-                 + "            \"document_binary_url\":\"documentUrl/binary\"\n"
-                 + "          },";
-
-        json = json.replaceAll(correctDocumentFormat, corruptDocumentFormat);
+        json = json.replaceAll("document_url", "incorrect_property_name");
         json = json.replaceAll("documentUrl", testUtil.uploadDocument());
-        json = json.replaceAll("configurationFile", "f-tests-10-invalid-doc-set-property.yaml");
+        json = json.replaceAll("configurationFile", "f-tests-5-invalid-url.yaml");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.prettyPrint().contains("Could not create bundle"));
         assertTrue(response.prettyPrint().contains("Could not find the property /documentLink/document_url in the node"));
     }
 
