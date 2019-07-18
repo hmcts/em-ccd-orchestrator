@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */
@@ -71,22 +73,35 @@ public class BundleFactory {
             throw new DocumentSelectorException("Could not find element: " + documentSelector.property);
         }
 
+        if (node.isArray()) {
+            throw new DocumentSelectorException("Element is an array: " + documentSelector.property);
+        }
+
         list.add(getDocumentFromNode(node));
 
         return list;
     }
 
-    private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node) {
+    private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node) throws DocumentSelectorException {
         CcdDocument sourceDocument = new CcdDocument();
-        sourceDocument.setUrl(node.at("/documentLink/document_url").asText());
-        sourceDocument.setBinaryUrl(node.at("/documentLink/document_binary_url").asText());
-        sourceDocument.setFileName(node.at("/documentLink/document_filename").asText());
+
+        sourceDocument.setUrl(getField(node, "/documentLink/document_url").asText());
+        sourceDocument.setBinaryUrl(getField(node, "/documentLink/document_binary_url").asText());
+        sourceDocument.setFileName(getField(node, "/documentLink/document_filename").asText());
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
-        document.setName(node.at("/documentName").asText());
+        document.setName(getField(node, "/documentName").asText());
         document.setSourceDocument(sourceDocument);
 
         return new CcdValue<>(document);
+    }
+
+    private JsonNode getField(JsonNode outerNode, String path) throws DocumentSelectorException {
+        JsonNode innerNode = outerNode.at(path);
+        if (innerNode.isMissingNode()) {
+            throw new DocumentSelectorException("Could not find the property " + path + " in the node: " + outerNode.asText());
+        }
+        return innerNode;
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(BundleConfigurationDocumentSet documentSelector,
@@ -106,7 +121,7 @@ public class BundleFactory {
             .stream(list.spliterator(), true)
             .map(n -> n.at("/value"))
             .filter(n -> anyFilterMatches(documentSelector.filters, n))
-            .map(this::getDocumentFromNode)
+            .map(unchecked(this::getDocumentFromNode))
             .collect(Collectors.toList());
     }
 

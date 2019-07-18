@@ -1,0 +1,8 @@
+title: Functional tests bundle 7
+filename: bundle.pdf
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+documents:
+  - type: document
+    property: /caseDocuments
