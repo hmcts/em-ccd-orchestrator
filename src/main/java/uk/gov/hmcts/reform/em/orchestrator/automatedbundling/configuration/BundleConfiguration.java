@@ -30,7 +30,7 @@ public class BundleConfiguration {
         this.hasTableOfContents = hasTableOfContents;
         this.hasCoversheets = hasCoversheets;
         this.hasFolderCoversheets = hasFolderCoversheets;
-        this.folders = folders;
+        this.folders = folders == null ? new ArrayList<>() : folders;
         this.documents = documents == null ? new ArrayList<>() : documents;
     }
 }
