@@ -110,7 +110,7 @@
       "caseDescription":"This is the description of the case.",
       "caseBundles":[
       ],
-      "caseComments":null,
+      "caseComments":null
     },
     "data_classification":{
       "caseOwner":"PUBLIC",
@@ -123,7 +123,7 @@
         "value":[
         ]
       },
-      "caseComments":"PUBLIC",
+      "caseComments":"PUBLIC"
     },
     "after_submit_callback_response":null,
     "callback_response_status_code":null,
