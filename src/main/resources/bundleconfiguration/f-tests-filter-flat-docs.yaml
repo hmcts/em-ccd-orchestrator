@@ -1,0 +1,11 @@
+title: Functional tests bundle 2
+filename: bundle.pdf
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+documents:
+  - type: documentSet
+    property: caseDocuments
+    filter:
+      - property: documentType
+        value: Prosecution

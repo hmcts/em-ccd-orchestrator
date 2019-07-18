@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.File;
+import java.io.IOException;
 
 public class AutomatedBundlingScenarios {
 
@@ -15,6 +17,7 @@ public class AutomatedBundlingScenarios {
     private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
     private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
     private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
+    private final File documentsJson = new File(ClassLoader.getSystemResource("documents-case.json").getPath());
 
     @Test
     public void testCreateBundle() {
@@ -88,9 +91,106 @@ public class AutomatedBundlingScenarios {
                 .body(validJson)
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
-        response.prettyPeek();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.folders"));
         Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.documents"));
     }
+
+    @Test
+    public void testAddFlatDocuments() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
+        json = json.replaceAll("configurationFile", "f-tests-flat-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+
+        JsonPath responsePath = response.jsonPath();
+        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals(3, firstBundle.getList("documents").size());
+        Assert.assertEquals("Prosecution doc 1", firstBundle.getString("documents[0].value.name"));
+        Assert.assertEquals("Prosecution doc 2", firstBundle.getString("documents[1].value.name"));
+        Assert.assertEquals("Defendant doc 2", firstBundle.getString("documents[2].value.name"));
+    }
+
+    @Test
+    public void testAddFlatFilteredDocuments() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
+        json = json.replaceAll("configurationFile", "f-tests-filter-flat-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+
+        JsonPath responsePath = response.jsonPath();
+        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals(2, firstBundle.getList("documents").size());
+        Assert.assertEquals("Prosecution doc 1", firstBundle.getString("documents[0].value.name"));
+        Assert.assertEquals("Prosecution doc 2", firstBundle.getString("documents[1].value.name"));
+    }
+
+    @Test
+    public void testAddFolderedDocuments() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
+        json = json.replaceAll("configurationFile", "f-tests-foldered-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+
+        JsonPath responsePath = response.jsonPath();
+        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals(2, firstBundle.getList("folders").size());
+        Assert.assertEquals(3, firstBundle.getList("folders[0].value.documents").size());
+        Assert.assertEquals("Prosecution doc 1", firstBundle.getString("folders[0].value.documents[0].value.name"));
+        Assert.assertEquals("Prosecution doc 2", firstBundle.getString("folders[0].value.documents[1].value.name"));
+        Assert.assertEquals("Defendant doc 1", firstBundle.getString("folders[0].value.documents[2].value.name"));
+        Assert.assertEquals(1, firstBundle.getList("folders[1].value.documents").size());
+        Assert.assertEquals("Single doc 1", firstBundle.getString("folders[1].value.documents[0].value.name"));
+    }
+
+    @Test
+    public void testAddFilteredFolderedDocuments() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("documentUrl", testUtil.uploadDocument());
+        json = json.replaceAll("configurationFile", "f-tests-filtered-foldered-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        response.prettyPeek();
+
+        JsonPath responsePath = response.jsonPath();
+        JsonPath firstBundle = responsePath.get("case_details.case_data.caseBundles[0].value");
+
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals(2, firstBundle.getList("folders").size());
+        Assert.assertEquals(2, firstBundle.getList("folders[0].value.documents").size());
+        Assert.assertEquals("Prosecution doc 1", firstBundle.getString("folders[0].value.documents[0].value.name"));
+        Assert.assertEquals("Prosecution doc 2", firstBundle.getString("folders[0].value.documents[1].value.name"));
+        Assert.assertEquals(1, firstBundle.getList("folders[1].value.documents").size());
+        Assert.assertEquals("Single doc 1", firstBundle.getString("folders[1].value.documents[0].value.name"));
+    }
+
+
 }
