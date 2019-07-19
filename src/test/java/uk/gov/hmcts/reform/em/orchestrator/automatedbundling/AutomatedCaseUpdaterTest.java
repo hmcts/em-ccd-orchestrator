@@ -25,7 +25,8 @@ public class AutomatedCaseUpdaterTest {
                 new YAMLFactory()
             )
         ),
-        new ObjectMapper()
+        new ObjectMapper(),
+        new BundleFactory()
     );
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(

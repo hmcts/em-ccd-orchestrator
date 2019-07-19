@@ -5,15 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationFolder;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-
-import java.util.List;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration
@@ -22,10 +18,14 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
+    private final BundleFactory bundleFactory;
 
-    public AutomatedCaseUpdater(ConfigurationLoader configurationLoader, ObjectMapper jsonMapper) {
+    public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
+                                ObjectMapper jsonMapper,
+                                BundleFactory bundleFactory) {
         this.configurationLoader = configurationLoader;
         this.jsonMapper = jsonMapper;
+        this.bundleFactory = bundleFactory;
     }
 
         @Override
@@ -52,43 +52,10 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 return arrayNode;
             });
 
-        addNewBundle(configuration, bundles);
+        CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
+        bundles.add(bundleDtoToBundleJson(bundle));
 
         return ccdCallbackDto.getCaseData();
-    }
-
-    private void addNewBundle(BundleConfiguration configuration, ArrayNode bundles) {
-        CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setTitle(configuration.title);
-        bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);
-        bundle.setHasTableOfContentsAsBoolean(configuration.hasTableOfContents);
-        bundle.setHasFolderCoversheetsAsBoolean(configuration.hasFolderCoversheets);
-        bundle.setFileName(configuration.filename);
-        bundle.setEligibleForCloningAsBoolean(false);
-        bundle.setEligibleForStitchingAsBoolean(false);
-
-        addFolders(configuration.folders, bundle.getFolders(), 0);
-
-        bundles.add(bundleDtoToBundleJson(bundle));
-    }
-
-    private int addFolders(List<BundleConfigurationFolder> sourceFolders,
-                           List<CcdValue<CcdBundleFolderDTO>> destinationFolders,
-                           int sortIndex) {
-
-        for (BundleConfigurationFolder folder : sourceFolders) {
-            CcdBundleFolderDTO ccdFolder = new CcdBundleFolderDTO();
-            ccdFolder.setName(folder.name);
-            ccdFolder.setSortIndex(sortIndex++);
-
-            destinationFolders.add(new CcdValue<>(ccdFolder));
-
-            if (folder.folders != null && !folder.folders.isEmpty()) {
-                sortIndex = addFolders(folder.folders, ccdFolder.getFolders(), sortIndex);
-            }
-        }
-
-        return sortIndex;
     }
 
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
