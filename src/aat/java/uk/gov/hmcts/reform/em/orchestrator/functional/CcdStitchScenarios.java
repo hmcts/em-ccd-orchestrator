@@ -95,6 +95,33 @@ public class CcdStitchScenarios {
     }
 
     @Test
+    public void testLongBundleDescriptionErrors() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setFileName("1234567890123456789012345678901%.pdf");
+
+        StringBuilder sample = new StringBuilder();
+        for (int i = 0;i < 300;i++) {
+            sample.append("y");
+        }
+        bundle.setDescription(sample.toString());
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+
+        JsonPath path = response.getBody().jsonPath();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
+        Assert.assertEquals("1234567890123456789012345678901%.pdf", path.getString("data.caseBundles[0].value.fileName"));
+        Assert.assertNotNull(path.getString("errors[0]"));
+        Assert.assertNotNull(path.getString("errors[1]"));
+        Assert.assertNotNull(path.getString("errors[2]"));
+    }
+
+    @Test
     public void testWithoutCoversheets() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setHasCoversheets(CcdBoolean.No);

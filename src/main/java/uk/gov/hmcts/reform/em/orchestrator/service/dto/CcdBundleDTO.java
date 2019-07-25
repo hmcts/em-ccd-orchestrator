@@ -13,6 +13,7 @@ public class CcdBundleDTO {
 
     private Long id;
     private String title;
+    @Size(max = 255)
     private String description;
     private String eligibleForStitching;
     private String eligibleForCloning;
