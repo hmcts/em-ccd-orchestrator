@@ -32,9 +32,9 @@ public class StitchingDTOMapperTest {
         bundleDTO.setTitle("title");
         bundleDTO.setDescription("description");
         bundleDTO.setFileName("a-file.pdf");
-        bundleDTO.setHasCoversheets(CcdBoolean.No);
+        bundleDTO.setHasCoversheets(CcdBoolean.Yes);
         bundleDTO.setHasTableOfContents(CcdBoolean.Yes);
-        bundleDTO.setHasFolderCoversheets(CcdBoolean.No);
+        bundleDTO.setHasFolderCoversheets(CcdBoolean.Yes);
         bundleDTO.getDocuments().add(new CcdValue<>(document1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder3DTO));
