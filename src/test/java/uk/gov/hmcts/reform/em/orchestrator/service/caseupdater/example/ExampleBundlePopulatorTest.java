@@ -10,9 +10,9 @@ import static org.junit.Assert.assertNull;
 
 public class ExampleBundlePopulatorTest {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    ExampleBundlePopulator exampleBundlePopulator = new ExampleBundlePopulator(objectMapper);
+    private ExampleBundlePopulator exampleBundlePopulator = new ExampleBundlePopulator(objectMapper);
 
     @Test
     public void populateNewBundle() throws Exception {

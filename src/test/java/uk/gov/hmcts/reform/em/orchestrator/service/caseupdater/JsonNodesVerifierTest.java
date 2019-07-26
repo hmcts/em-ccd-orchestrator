@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class JsonNodesVerifierTest {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsWhenLessThan2Args() {
