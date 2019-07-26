@@ -49,6 +49,22 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
+    public void doesNotHandleWithOutBundleConfigValue() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+                .thenReturn(
+                        new BufferedReader(
+                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"\"}}}")
+                        )
+                );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
+
+        assertFalse(updater.handles(ccdCallbackDto));
+    }
+
+    @Test
     public void doesNotHandle() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");

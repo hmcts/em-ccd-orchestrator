@@ -10,8 +10,13 @@ public class JsonNodesVerifierTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test(expected = IllegalArgumentException.class)
-    public void throwsWhenOddNumberOfArgs() {
+    public void throwsWhenLessThan2Args() {
         new JsonNodesVerifier("x");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsWhenOddNumberOfArgs() {
+        new JsonNodesVerifier("x","y","z");
     }
 
     @Test(expected = IllegalArgumentException.class)

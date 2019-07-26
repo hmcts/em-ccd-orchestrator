@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +23,9 @@ import javax.validation.ValidatorFactory;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CcdBundleStitchingServiceTest {
@@ -54,9 +56,9 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
-        Assert.assertEquals(2, ((ArrayNode)node.get("cb")).size());
-        Assert.assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
-        Assert.assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
+        assertEquals(2, ((ArrayNode)node.get("cb")).size());
+        assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
+        assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
@@ -84,6 +86,32 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
+    }
+
+    @Test
+    public void testHandles() {
+        assertFalse(ccdBundleStitchingService.handles(null));
+    }
+
+    @Test(expected = StitchingServiceException.class)
+    public void testUpdateCaseInterruptedException() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        ccdCallbackDto.setPropertyName(Optional.of("cb"));
+        ccdCallbackDto.setCaseData(node);
+        ccdCallbackDto.setJwt("jwt");
+
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new InterruptedException("x"));
+
+        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+    }
+
+    @Test
+    public void testUpdateCaseMissingBundles() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setCaseData(objectMapper.getNodeFactory().arrayNode());
+        JsonNode node = ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertNull(node.get(0));
     }
 
 }
