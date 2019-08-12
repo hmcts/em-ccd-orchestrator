@@ -3,7 +3,7 @@ version: '2.1'
 
 services:
   service-auth-provider-app:
-    image: hmcts/service-auth-provider-app:latest
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     environment:
       - jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
 #      - Add key for any microservice that will be used: orchestrator, stitching api, doc store
