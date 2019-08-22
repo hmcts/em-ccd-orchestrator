@@ -1,4 +1,4 @@
-FROM hmcts/cnp-java-base:openjdk-8u191-jre-alpine3.9-2.0.1
+FROM hmctspublic.azurecr.io/base/java:openjdk-8-distroless-1.1
 
 COPY build/libs/rpa-em-ccd-orchestrator.jar /opt/app/
 
