@@ -18,5 +18,7 @@
         <cve>CVE-2019-11358</cve>
         <cve>CVE-2016-7103</cve>
         <cve>CVE-2010-5312</cve>
+        <cve>CVE-2019-14379</cve>
+        <cve>CVE-2019-14439</cve>
     </suppress>
 </suppressions>
