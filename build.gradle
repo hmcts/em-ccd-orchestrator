@@ -10,6 +10,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id "com.github.lkishalmi.gatling" version "3.0.2"
+    id 'au.com.dius.pact' version '3.5.24'
 }
 
 apply plugin: 'java'
@@ -42,6 +43,34 @@ repositories {
     mavenLocal()
     maven {
         url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+sourceSets {
+    aat {
+        scala {
+            srcDirs = ['src/aat/java']
+        }
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir('src/aat/java')
+        }
+        resources {
+            srcDir('src/aat/resources')
+        }
+        compileClasspath += configurations.gatling
+    }
+    test {
+        java.srcDir 'src/test/java'
+    }
+    contractTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/contractTest/java')
+        }
+        resources.srcDir file('src/contactTest/resources')
     }
 }
 
@@ -84,6 +113,21 @@ dependencies {
     testCompile "io.rest-assured:rest-assured:4.0.0"
     testCompile group: "io.rest-assured", name: "json-path", version: "4.0.0"
     testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
+
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+
+    //pact contract testing
+    contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: '3.5.24'
+    contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: "3.5.24"
+
+    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+
+    contractTestCompile sourceSets.main.runtimeClasspath
+    contractTestCompile sourceSets.test.runtimeClasspath
 }
 
 checkstyle {
@@ -179,32 +223,27 @@ sonarqube {
     }
 }
 
-sourceSets {
-    aat {
-        scala {
-            srcDirs = ['src/aat/java']
-        }
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir('src/aat/java')
-        }
-        resources {
-            srcDir('src/aat/resources')
-        }
-        compileClasspath += configurations.gatling
-    }
-    test {
-        java.srcDir 'src/test/java'
-    }
-}
-
 configurations {
     gatling
 }
 
 gatling {
     logLevel = "INFO"
+}
+
+configurations {
+    contractTestCompile.extendsFrom testCompile
+    contractTestRuntime.extendsFrom testRuntime
+}
+
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.aat.java.srcDirs
+        testResourceDirs += project.sourceSets.aat.resources.srcDirs
+        testSourceDirs += project.sourceSets.contractTest.java.srcDirs
+        testResourceDirs += project.sourceSets.contractTest.resources.srcDirs
+    }
 }
 
 task gatlingRunAAT(type: JavaExec) {
@@ -257,3 +296,31 @@ task validateYaml(type: JavaExec){
 }
 
 compileJava.dependsOn processResources
+
+task contract(type: Test) {
+    group = 'Delivery pipeline'
+    description = 'Runs the consumer Pact tests'
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+    include "uk/gov/hmcts/reform/em/orchestrator/**"
+    systemProperty 'pact.rootDir', "${rootDir}/pacts"
+    environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+}
+
+project.ext {
+    pactVersion = getCheckedOutGitCommitHash()
+}
+
+def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+pact {
+    publish {
+        pactDirectory = 'target/pacts'
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+        version = project.pactVersion
+    }
+}
