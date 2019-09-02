@@ -3,7 +3,7 @@ version: '2.1'
 
 services:
   service-auth-provider-app:
-    image: hmcts/service-auth-provider-app:latest
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     environment:
       - jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
 #      - Add key for any microservice that will be used: orchestrator, stitching api, doc store
@@ -27,7 +27,7 @@ services:
       - 4502:8489
 
   idam-api:
-    image: hmcts.azurecr.io/hmcts/tidam-api:latest
+    image: hmctsprivate.azurecr.io/tidam/api:latest
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -71,7 +71,7 @@ services:
       - 5434:5432
 
   stitching-api:
-    image: hmcts.azurecr.io/hmcts/em-stitching:latest
+    image: hmctspublic.azurecr.io/em/stitching:latest
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -104,14 +104,14 @@ services:
       - POSTGRES_PASSWORD=emstitch
 
   dm-store:
-    image: hmcts/dm-store:latest
+    image: hmctspublic.azurecr.io/dm/store:latest
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5432/evidence
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5433/evidence
       - SPRING_DATASOURCE_USERNAME=evidence
       - SPRING_DATASOURCE_PASSWORD=evidence
       - SPRING_PROFILES_ACTIVE=dev
@@ -145,4 +145,11 @@ services:
       - 4603:8080
 
   dm-store-db:
-    image: hmcts/dm-store-db:latest
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=evidence
+      - POSTGRES_USER=evidence
+      - POSTGRES_PASSWORD=evidence
+    ports:
+      - 5433:5432
