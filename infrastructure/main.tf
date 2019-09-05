@@ -75,9 +75,14 @@ provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
+data "azurerm_key_vault" "s2s_vault" {
+  name = "s2s-${local.local_env}"
+  resource_group_name = "rpe-service-auth-provider-${local.local_env}"
+}
+
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-em-ccd-orchestrator"
-  vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
+  key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
 data "azurerm_key_vault" "shared_key_vault" {
