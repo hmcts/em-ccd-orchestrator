@@ -51,8 +51,4 @@ withPipeline(type , product, component) {
     enableDockerBuild()
     loadVaultSecrets(secrets)
     installCharts()
-
-    after('smoketest:aat') {
-        sh "rm -rf infrastructure/"
-    }
 }
