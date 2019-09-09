@@ -47,8 +47,9 @@ class CcdCallbackBundleUpdater {
                                 stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
                 bundles.set(i, objectMapper.valueToTree(ccdBundleDTO));
+                break;
             }
-            break;
+
         }
 
     }
