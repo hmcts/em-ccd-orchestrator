@@ -60,7 +60,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         automatedStitchingExecutor.startStitching(
                 ccdCallbackDto.getCaseId(),
-                "ASYNC_STITCHING",
+                "ASYNC_STITCHING_COMPLETE",
                 ccdCallbackDto.getJwt(),
                 bundle);
 
