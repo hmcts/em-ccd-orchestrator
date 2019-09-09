@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -12,6 +14,8 @@ import java.io.IOException;
 
 @Service
 class CcdCallbackBundleUpdater {
+
+    private final Logger log = LoggerFactory.getLogger(CcdCallbackBundleUpdater.class);
 
     private final ObjectMapper objectMapper;
 
@@ -30,6 +34,9 @@ class CcdCallbackBundleUpdater {
             String id = tempBundle.findValue("id").asText();
             if (stitchingCompleteCallbackDto.getCcdBundleId().toString().equals(id)) {
                 CcdBundleDTO ccdBundleDTO = objectMapper.treeToValue(tempBundle, CcdBundleDTO.class);
+                log.info(String.format("Updating bundle#%s with %s",
+                        stitchingCompleteCallbackDto.getCcdBundleId().toString(),
+                        stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
                 ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
                 ccdBundleDTO.setEligibleForCloningAsBoolean(false);
                 ccdBundleDTO.setStitchedDocument(new CcdDocument(
