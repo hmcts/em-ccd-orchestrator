@@ -39,6 +39,8 @@ class CcdCallbackBundleUpdater {
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
                 ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
                 ccdBundleDTO.setEligibleForCloningAsBoolean(false);
+                ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()
+                        .getFailureDescription());
                 ccdBundleDTO.setStitchedDocument(new CcdDocument(
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null ?

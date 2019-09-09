@@ -29,6 +29,7 @@ public class CcdBundleDTO {
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
+    private String stitchingFailureMessage;
 
     public UUID getId() {
         return id;
@@ -168,5 +169,13 @@ public class CcdBundleDTO {
 
     public void setHasFolderCoversheetsAsBoolean(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public String getStitchingFailureMessage() {
+        return stitchingFailureMessage;
+    }
+
+    public void setStitchingFailureMessage(String stitchingFailureMessage) {
+        this.stitchingFailureMessage = stitchingFailureMessage;
     }
 }
