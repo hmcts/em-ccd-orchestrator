@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
-// import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleFolderDTO;
@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleFolderDT
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class StitchingDTOMapper {
 
     public StitchingBundleDTO toStitchingDTO(CcdBundleDTO bundleDTO) {

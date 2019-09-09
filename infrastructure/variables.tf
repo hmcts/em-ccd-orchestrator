@@ -77,6 +77,11 @@ variable "em_ccd_orchestrator_url" {
   default = "em-ccd-orchestrator"
 }
 
+variable "ccd_data_store_api_url" {
+  default = "ccd-data-store-api"
+}
+
+
 ////////////////////////////////////////////////
 // Logging
 ////////////////////////////////////////////////

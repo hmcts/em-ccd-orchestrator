@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TestUtil {
 
@@ -69,7 +70,7 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setId(2L);
+        bundle.setId(UUID.randomUUID());
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
         bundle.setEligibleForStitchingAsBoolean(true);

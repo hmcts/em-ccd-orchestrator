@@ -79,3 +79,13 @@ idam:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
+
+callbackUrlCreator:
+  scheme: ${HTTP_SCHEME:http}
+  host: ${HTTP_HOST:localhost}
+  port: ${HTTP_HOST_PORT:8080}
+
+ccd:
+  data:
+    api:
+      url: ${CCD_DATA_API_URL:http://localhost:4452}

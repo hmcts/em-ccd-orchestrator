@@ -54,4 +54,8 @@ public class CcdCallbackDto {
     public void setCcdPayload(JsonNode ccdPayload) {
         this.ccdPayload = ccdPayload;
     }
+
+    public String getCaseId() {
+        return ccdPayload != null ? ccdPayload.findValue("id").asText() : null;
+    }
 }

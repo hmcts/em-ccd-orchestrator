@@ -20,6 +20,8 @@ public class DocumentTaskDTO implements Serializable {
 
     private String failureDescription;
 
+    private CallbackDto callback;
+
     @JsonIgnore
     private String jwt;
 
@@ -77,6 +79,14 @@ public class DocumentTaskDTO implements Serializable {
             return false;
         }
         return Objects.equals(getId(), documentTaskDTO.getId());
+    }
+
+    public CallbackDto getCallback() {
+        return callback;
+    }
+
+    public void setCallback(CallbackDto callback) {
+        this.callback = callback;
     }
 
     @Override

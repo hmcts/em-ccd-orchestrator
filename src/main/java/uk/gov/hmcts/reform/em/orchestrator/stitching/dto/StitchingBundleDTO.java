@@ -7,6 +7,7 @@ public class StitchingBundleDTO {
 
     private String bundleTitle;
     private String description;
+    private String stitchedDocumentURI;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
@@ -78,5 +79,12 @@ public class StitchingBundleDTO {
         this.hasFolderCoversheets = hasFolderCoversheets;
     }
 
+    public String getStitchedDocumentURI() {
+        return stitchedDocumentURI;
+    }
+
+    public void setStitchedDocumentURI(String stitchedDocumentURI) {
+        this.stitchedDocumentURI = stitchedDocumentURI;
+    }
 }
 

@@ -7,11 +7,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO {
 
-    private Long id;
+    private UUID id;
     private String title;
     @Size(max = 255)
     private String description;
@@ -29,11 +30,11 @@ public class CcdBundleDTO {
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

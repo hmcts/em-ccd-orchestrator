@@ -3,8 +3,12 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -17,21 +21,40 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AutomatedCaseUpdaterTest {
 
-    private final AutomatedCaseUpdater updater = new AutomatedCaseUpdater(
+    @Mock
+    private AutomatedStitchingExecutor automatedStitchingExecutor;
+
+    private AutomatedCaseUpdater updater = new AutomatedCaseUpdater(
         new LocalConfigurationLoader(
             new ObjectMapper(
                 new YAMLFactory()
             )
         ),
         new ObjectMapper(),
-        new BundleFactory()
+        new BundleFactory(),
+        automatedStitchingExecutor
     );
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(
         new ObjectMapper()
     );
+
+    @Before
+    public void setup() {
+        updater = new AutomatedCaseUpdater(
+            new LocalConfigurationLoader(
+                    new ObjectMapper(
+                            new YAMLFactory()
+                    )
+            ),
+            new ObjectMapper(),
+            new BundleFactory(),
+            automatedStitchingExecutor
+        );
+    }
 
     @Test
     public void handles() throws IOException {
@@ -44,7 +67,7 @@ public class AutomatedCaseUpdaterTest {
                 )
             );
 
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
 
         assertTrue(updater.handles(ccdCallbackDto));
     }
@@ -57,10 +80,9 @@ public class AutomatedCaseUpdaterTest {
                 .thenReturn(
                         new BufferedReader(
                                 new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"\"}}}")
-                        )
-                );
+                        ));
 
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
 
         assertFalse(updater.handles(ccdCallbackDto));
     }
@@ -76,7 +98,7 @@ public class AutomatedCaseUpdaterTest {
                 )
             );
 
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
 
         assertFalse(updater.handles(ccdCallbackDto));
     }

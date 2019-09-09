@@ -12,29 +12,32 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 /**
- * This class will update add a new bundle to case based on some predefined configuration
+ * This class will update add a new bundle to case based on some predefined configuration.
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
+    private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
-                                BundleFactory bundleFactory) {
+                                BundleFactory bundleFactory,
+                                AutomatedStitchingExecutor automatedStitchingExecutor) {
         this.configurationLoader = configurationLoader;
         this.jsonMapper = jsonMapper;
         this.bundleFactory = bundleFactory;
+        this.automatedStitchingExecutor = automatedStitchingExecutor;
     }
 
-        @Override
-        public boolean handles(CcdCallbackDto ccdCallbackDto) {
-            JsonNode caseData =  ccdCallbackDto.getCaseData();
-            return (caseData.has(CONFIG_FIELD)
-                    && caseData.get(CONFIG_FIELD) != null
-                    && !caseData.get(CONFIG_FIELD).asText().isEmpty());
-        }
+    @Override
+    public boolean handles(CcdCallbackDto ccdCallbackDto) {
+        JsonNode caseData =  ccdCallbackDto.getCaseData();
+        return (caseData.has(CONFIG_FIELD)
+                && caseData.get(CONFIG_FIELD) != null
+                && !caseData.get(CONFIG_FIELD).asText().isEmpty());
+    }
 
     /**
      * Load the configuration file then add a new bundle to the case data based on that configuration. If an error occurs
@@ -54,6 +57,12 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
         bundles.add(bundleDtoToBundleJson(bundle));
+
+        automatedStitchingExecutor.startStitching(
+                ccdCallbackDto.getCaseId(),
+                "ASYNC_STITCHING",
+                ccdCallbackDto.getJwt(),
+                bundle);
 
         return ccdCallbackDto.getCaseData();
     }
