@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.UUID;
 
