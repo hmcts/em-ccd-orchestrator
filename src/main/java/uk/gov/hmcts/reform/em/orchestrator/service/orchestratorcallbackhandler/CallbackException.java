@@ -11,12 +11,6 @@ public class CallbackException extends RuntimeException {
         this.httpResponseBody = httpResponseBody;
     }
 
-    public CallbackException(int httpStatus, String httpResponseBody, String message, Throwable e) {
-        super(message, e);
-        this.httpStatus = httpStatus;
-        this.httpResponseBody = httpResponseBody;
-    }
-
     public int getHttpStatus() {
         return httpStatus;
     }
