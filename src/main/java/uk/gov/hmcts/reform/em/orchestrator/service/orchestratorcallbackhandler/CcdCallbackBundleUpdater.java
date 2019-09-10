@@ -25,8 +25,7 @@ public class CcdCallbackBundleUpdater {
         this.objectMapper = objectMapper;
     }
 
-    void updateBundle(CcdCallbackDto ccdCallbackDto, StitchingCompleteCallbackDto stitchingCompleteCallbackDto)
-            throws CallbackException {
+    void updateBundle(CcdCallbackDto ccdCallbackDto, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
 
         ArrayNode bundles = ccdCallbackDto
                 .findCaseProperty(ArrayNode.class)

@@ -20,7 +20,7 @@ public class CallbackException extends RuntimeException {
     }
 
     public String toString() {
-        return String.format("CallbackException(%s,%d, %s)", getMessage(), httpStatus, httpResponseBody);
+        return String.format("CallbackException(%s,%d, %s)", getMessage(), getHttpStatus(), getHttpResponseBody());
     }
 
 }

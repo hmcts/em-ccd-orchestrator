@@ -6,8 +6,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdDataApiCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdDataApiEventCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 
-import java.io.IOException;
-
 @Service
 @Transactional
 public class StitchingCompleteCallbackService {
@@ -24,7 +22,7 @@ public class StitchingCompleteCallbackService {
         this.ccdCallbackBundleUpdater = ccdCallbackBundleUpdater;
     }
 
-    public void handleCallback(StitchingCompleteCallbackDto stitchingCompleteCallbackDto) throws CallbackException {
+    public void handleCallback(StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
 
         CcdCallbackDto ccdCallbackDto = null;
 
@@ -36,17 +34,11 @@ public class StitchingCompleteCallbackService {
 
             ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-        } catch (IOException e) {
-            throw new CallbackException(500, null, String.format("IO Exception: %s", e.getMessage(), e));
         } finally {
-            try {
-                if (ccdCallbackDto != null) {
-                    ccdDataApiCaseUpdater.executeUpdate(stitchingCompleteCallbackDto.getCaseId(),
-                            stitchingCompleteCallbackDto.getJwt(),
-                            ccdCallbackDto.getCaseData());
-                }
-            } catch (IOException e) {
-                throw new CallbackException(500, null, String.format("IO Exception: %s", e.getMessage(), e));
+            if (ccdCallbackDto != null) {
+                ccdDataApiCaseUpdater.executeUpdate(stitchingCompleteCallbackDto.getCaseId(),
+                        stitchingCompleteCallbackDto.getJwt(),
+                        ccdCallbackDto.getCaseData());
             }
         }
 

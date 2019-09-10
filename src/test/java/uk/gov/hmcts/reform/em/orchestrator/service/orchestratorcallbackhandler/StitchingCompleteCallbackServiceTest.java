@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdDataApiEventCreator
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +30,7 @@ public class StitchingCompleteCallbackServiceTest {
     private StitchingCompleteCallbackService stitchingCompleteCallbackService;
 
     @Test
-    public void handleCallback() throws Exception {
+    public void handleCallback() {
         Mockito
             .when(ccdDataApiEventCreator.executeTrigger("a","1", "x"))
             .thenReturn(new CcdCallbackDto());
@@ -41,7 +40,7 @@ public class StitchingCompleteCallbackServiceTest {
     }
 
     @Test
-    public void handleCallbackException() throws Exception {
+    public void handleCallbackException()  {
         Mockito
                 .when(ccdDataApiEventCreator.executeTrigger("a","1", "x"))
                 .thenThrow(new CallbackException(111, "err body", "err"));
@@ -51,12 +50,12 @@ public class StitchingCompleteCallbackServiceTest {
     }
 
     @Test
-    public void handleCallbackExceptionFinally() throws Exception {
+    public void handleCallbackExceptionFinally() {
         Mockito
                 .when(ccdDataApiEventCreator.executeTrigger(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(new CcdCallbackDto());
 
-        Mockito.doThrow(new IOException("x")).when(ccdDataApiCaseUpdater)
+        Mockito.doThrow(new CallbackException(1, "", "")).when(ccdDataApiCaseUpdater)
                 .executeUpdate(Mockito.any(), Mockito.any(), Mockito.any());
 
         assertThrows(CallbackException.class, () ->
@@ -65,7 +64,7 @@ public class StitchingCompleteCallbackServiceTest {
     }
 
     @Test
-    public void handleCallbackExceptionFinallyNullCcdCallbackDto() throws Exception {
+    public void handleCallbackExceptionFinallyNullCcdCallbackDto() {
         Mockito
                 .when(ccdDataApiEventCreator.executeTrigger(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(null);

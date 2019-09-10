@@ -29,20 +29,24 @@ public class CcdDataApiCaseUpdater {
         this.objectMapper = objectMapper;
     }
 
-    public void executeUpdate(String caseId, String jwt, JsonNode caseData) throws IOException, CallbackException {
-        final String json = objectMapper.writeValueAsString(caseData);
-        final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
-        final Request updateRequest = new Request.Builder()
-                .addHeader("Authorization", jwt)
-                .addHeader("ServiceAuthorization", authTokenGenerator.generate())
-                .url(String.format(ccdDataBaseUrl + ccdUpdateCasePath, caseId))
-                .method("POST", body)
-                .build();
+    public void executeUpdate(String caseId, String jwt, JsonNode caseData) {
+        try {
+            final String json = objectMapper.writeValueAsString(caseData);
+            final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
+            final Request updateRequest = new Request.Builder()
+                    .addHeader("Authorization", jwt)
+                    .addHeader("ServiceAuthorization", authTokenGenerator.generate())
+                    .url(String.format(ccdDataBaseUrl + ccdUpdateCasePath, caseId))
+                    .method("POST", body)
+                    .build();
 
-        final Response updateResponse = http.newCall(updateRequest).execute();
+            final Response updateResponse = http.newCall(updateRequest).execute();
 
-        if (!updateResponse.isSuccessful()) {
-            throw new CallbackException(updateResponse.code(), updateResponse.body().string(), "Update of case data failed");
+            if (!updateResponse.isSuccessful()) {
+                throw new CallbackException(updateResponse.code(), updateResponse.body().string(), "Update of case data failed");
+            }
+        } catch (IOException e) {
+            throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
         }
 
     }

@@ -30,7 +30,7 @@ public class CcdDataApiEventCreator {
         this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
     }
 
-    public CcdCallbackDto executeTrigger(String caseId, String triggerId, String jwt) throws IOException, CallbackException {
+    public CcdCallbackDto executeTrigger(String caseId, String triggerId, String jwt) {
         final Request request = new Request.Builder()
                 .addHeader("Authorization", jwt)
                 .addHeader("ServiceAuthorization", authTokenGenerator.generate())
@@ -40,16 +40,20 @@ public class CcdDataApiEventCreator {
                 .get()
                 .build();
 
-        final Response response = http.newCall(request).execute();
+        try {
+            final Response response = http.newCall(request).execute();
 
-        if (!response.isSuccessful()) {
-            throw new CallbackException(response.code(), response.body().string(), "Creation of event-trigger failed");
+            if (!response.isSuccessful()) {
+                throw new CallbackException(response.code(), response.body().string(), "Creation of event-trigger failed");
+            }
+
+            return ccdCallbackDtoCreator.createDto(
+                    "caseBundles",
+                    jwt,
+                    response.body().charStream());
+        } catch (IOException e) {
+            throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
         }
-
-        return ccdCallbackDtoCreator.createDto(
-                "caseBundles",
-                jwt,
-                response.body().charStream());
 
     }
 
