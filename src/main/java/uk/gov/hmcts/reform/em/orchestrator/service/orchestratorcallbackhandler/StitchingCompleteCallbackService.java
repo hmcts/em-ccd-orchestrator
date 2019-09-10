@@ -40,6 +40,8 @@ public class StitchingCompleteCallbackService {
 
         } catch (IOException e) {
             throw new CallbackException(500, null, String.format("IO Exception: %s", e.getMessage(), e));
+        } finally {
+
         }
 
     }

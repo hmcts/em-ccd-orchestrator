@@ -69,8 +69,8 @@ module "app" {
     ENABLE_IDAM_HEALTH_CHECK = "${var.enable_idam_healthcheck}"
     ENABLE_S2S_HEALTH_CHECK = "${var.enable_s2s_healthcheck}"
 
-    HTTP_SCHEME = "https"
-    HTTP_HOST_PORT = "443"
+    CALLBACK_HTTP_SCHEME = "http"
+    CALLBACK_HTTP_HOST_PORT = "80"
 
     CCD_DATA_API_URL = "http://${var.ccd_data_store_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
   }

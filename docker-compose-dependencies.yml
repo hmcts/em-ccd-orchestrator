@@ -105,16 +105,21 @@ services:
 
   dm-store:
     image: hmctspublic.azurecr.io/dm/store:latest
-    command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5433/evidence
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5432/evidence
       - SPRING_DATASOURCE_USERNAME=evidence
       - SPRING_DATASOURCE_PASSWORD=evidence
       - SPRING_PROFILES_ACTIVE=dev
+      - ENABLE_AZURE_STORAGE_CONTAINER=true
+      - ENABLE_POSTGRES_BLOB_STORAGE=false
+      - STORAGEACCOUNT_PRIMARY_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azure-storage-emulator-azurite:10000/devstoreaccount1
+      - STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME=hmctstestcontainer
+      - BLOBSTORE_MIGRATE_CCD_PUBLIC_KEY_REQUIRED=false
+      - BLOBSTORE_MIGRATE_CCD_PUBLIC_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDiQ//gc/G53d9dLCtf123fIYo49gUySuJuxOcw2GtieWTMSy+O7RNtsAIjVf3mCOdDNuN69tZNPEWMdaW8n11s9MwYFahtxDecyn0KIP9MvPsfSMSbxhp/f7kfbdB/H/S5eYea66JTyeJS6uNd76RdHttx0mLO30ZkRcXB25c2SIXhRYsdoeKS5GXHDdNejkQM0S/Ev94x2UunApmYHjWN1XcDhsEsAeF4WHnvYh2XiMn9vHY44AqvbWLlAmCgzaXpz8Xhl0fO7jDKSeReDyuM3UTMaiFFaxuvliGol7aIXq/aVe/miiD2SLxHZ6RxAPW80bhXrzJMTLTCqhCEhzfv someone@somewhere.sometime"
       - IDAM_TESTING_SUPPORT_ENABLED=true
       - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
       - IDAM_S2S_BASE_URI=http://service-auth-provider-app:8489
@@ -123,6 +128,7 @@ services:
       - https_proxy=
       - no_proxy=
       #      logging env vars
+      - ROOT_APPENDER=JSON_CONSOLE
       - JSON_CONSOLE_PRETTY_PRINT=false
       - REFORM_SERVICE_TYPE=java
       - REFORM_SERVICE_NAME=dm-store
@@ -138,11 +144,30 @@ services:
     links:
       - dm-store-db
       - service-auth-provider-app
+      - make-container-call
     depends_on:
       - dm-store-db
       - service-auth-provider-app
+      - make-container-call
     ports:
       - 4603:8080
+
+  make-container-call:
+    image: byrnedo/alpine-curl
+    command: -XPUT --verbose http://azure-storage-emulator-azurite:10000/devstoreaccount1/hmctstestcontainer?restype=container
+    links:
+      - azure-storage-emulator-azurite
+    depends_on:
+      - azure-storage-emulator-azurite
+
+  azure-storage-emulator-azurite:
+    image: arafato/azurite
+    ports:
+      - 10000:10000
+    environment:
+      executable: "blob"
+    volumes:
+      - ccd-docker-azure-blob-data:/opt/azurite/folder
 
   dm-store-db:
     image: postgres
@@ -153,3 +178,6 @@ services:
       - POSTGRES_PASSWORD=evidence
     ports:
       - 5433:5432
+
+volumes:
+  ccd-docker-azure-blob-data:

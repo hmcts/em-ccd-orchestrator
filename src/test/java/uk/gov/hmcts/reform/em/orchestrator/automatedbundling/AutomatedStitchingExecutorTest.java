@@ -14,7 +14,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class AutomatedStitchingExecutorTest {
+public class AutomatedStitchingExecutorTest {
 
     @Mock
     private StitchingService stitchingService;
@@ -27,7 +27,7 @@ class AutomatedStitchingExecutorTest {
     private AutomatedStitchingExecutor automatedStitchingExecutor;
 
     @Test
-    void startStitching() throws Exception {
+    public void startStitching() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
         automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO);
 
@@ -44,7 +44,7 @@ class AutomatedStitchingExecutorTest {
 
 
     @Test
-    void startStitchingIOException() throws Exception {
+    public void startStitchingIOException() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
         Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString())).thenThrow(new IOException("x"));

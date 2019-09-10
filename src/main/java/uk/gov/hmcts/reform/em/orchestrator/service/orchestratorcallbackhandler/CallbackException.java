@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
-public class CallbackException extends Exception {
+public class CallbackException extends RuntimeException {
 
     private final int httpStatus;
     private final String httpResponseBody;

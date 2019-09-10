@@ -81,9 +81,9 @@ idam:
     microservice: em_ccd_orchestrator
 
 callbackUrlCreator:
-  scheme: ${HTTP_SCHEME:http}
-  host: ${HTTP_HOST:localhost}
-  port: ${HTTP_HOST_PORT:8080}
+  scheme: ${CALLBACK_HTTP_SCHEME:http}
+  host: ${HTTP_HOST:localhost} # HTTP_HOST is the domain injected by the Azure
+  port: ${CALLBACK_HTTP_HOST_PORT:8080}
 
 ccd:
   data:
