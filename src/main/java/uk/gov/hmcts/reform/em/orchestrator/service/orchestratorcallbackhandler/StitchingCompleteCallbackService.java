@@ -26,22 +26,28 @@ public class StitchingCompleteCallbackService {
 
     public void handleCallback(StitchingCompleteCallbackDto stitchingCompleteCallbackDto) throws CallbackException {
 
+        CcdCallbackDto ccdCallbackDto = null;
+
         try {
 
-            CcdCallbackDto ccdCallbackDto = ccdDataApiEventCreator.executeTrigger(stitchingCompleteCallbackDto.getCaseId(),
+            ccdCallbackDto = ccdDataApiEventCreator.executeTrigger(stitchingCompleteCallbackDto.getCaseId(),
                     stitchingCompleteCallbackDto.getTriggerId(),
                     stitchingCompleteCallbackDto.getJwt());
 
             ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-            ccdDataApiCaseUpdater.executeUpdate(stitchingCompleteCallbackDto.getCaseId(),
-                    stitchingCompleteCallbackDto.getJwt(),
-                    ccdCallbackDto.getCaseData());
-
         } catch (IOException e) {
             throw new CallbackException(500, null, String.format("IO Exception: %s", e.getMessage(), e));
         } finally {
-
+            try {
+                if (ccdCallbackDto != null) {
+                    ccdDataApiCaseUpdater.executeUpdate(stitchingCompleteCallbackDto.getCaseId(),
+                            stitchingCompleteCallbackDto.getJwt(),
+                            ccdCallbackDto.getCaseData());
+                }
+            } catch (IOException e) {
+                throw new CallbackException(500, null, String.format("IO Exception: %s", e.getMessage(), e));
+            }
         }
 
     }

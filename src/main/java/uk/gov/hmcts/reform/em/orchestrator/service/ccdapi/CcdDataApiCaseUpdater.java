@@ -16,7 +16,7 @@ public class CcdDataApiCaseUpdater {
     private final OkHttpClient http;
     private final AuthTokenGenerator authTokenGenerator;
     private final String ccdDataBaseUrl;
-    private final String CCD_UPDATE_CASE = "/cases/%s/events";
+    private final String ccdUpdateCasePath = "/cases/%s/events";
     private final ObjectMapper objectMapper;
 
     public CcdDataApiCaseUpdater(OkHttpClient http,
@@ -35,7 +35,7 @@ public class CcdDataApiCaseUpdater {
         final Request updateRequest = new Request.Builder()
                 .addHeader("Authorization", jwt)
                 .addHeader("ServiceAuthorization", authTokenGenerator.generate())
-                .url(String.format(ccdDataBaseUrl + CCD_UPDATE_CASE, caseId))
+                .url(String.format(ccdDataBaseUrl + ccdUpdateCasePath, caseId))
                 .method("POST", body)
                 .build();
 

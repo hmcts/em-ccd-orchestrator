@@ -8,7 +8,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.UUID;
 
 /**
- *
  * Creates a callback URL which is passed to the Stitching API.
  */
 @Component
