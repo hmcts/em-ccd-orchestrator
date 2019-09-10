@@ -33,13 +33,11 @@ public class CcdCallbackBundleUpdater {
                 .orElseThrow(() -> new CallbackException(400, null, "Bundle collection could not be found"));
 
         StreamSupport.stream(bundles.spliterator(), false)
-                .filter( jsonNode ->
-                         jsonNode.findValue("id").asText()
-                                 .equals(stitchingCompleteCallbackDto.getCcdBundleId().toString()) )
+                .filter(jsonNode ->
+                        jsonNode.findValue("id").asText()
+                            .equals(stitchingCompleteCallbackDto.getCcdBundleId().toString()))
                 .findFirst()
-                .ifPresent( ccdBundleJson ->
-                    this.updateCcdBundle(ccdBundleJson, stitchingCompleteCallbackDto)
-                );
+                .ifPresent(ccdBundleJson -> this.updateCcdBundle(ccdBundleJson, stitchingCompleteCallbackDto));
     }
 
     private void updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
@@ -54,8 +52,8 @@ public class CcdCallbackBundleUpdater {
                     .getFailureDescription());
             ccdBundleDTO.setStitchedDocument(new CcdDocument(
                     stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null ?
-                            stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
+                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null
+                            ? stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
                     stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
 
             JsonNode updatedCcdBundle = objectMapper.valueToTree(ccdBundleDTO);
