@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 
 @Controller
+@ConditionalOnProperty("endpoint-toggles.stitching-complete-callback")
 public class StitchingCompleteCallbackController {
 
     private final Logger log = LoggerFactory.getLogger(StitchingCompleteCallbackController.class);
