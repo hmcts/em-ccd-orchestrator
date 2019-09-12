@@ -98,7 +98,7 @@ data "azurerm_key_vault" "shared_key_vault" {
 }
 
 module "local_key_vault" {
-  source = "git@github.com:hmcts/moj-module-key-vault?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${local.app_full_name}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
