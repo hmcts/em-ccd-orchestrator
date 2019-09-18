@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -32,7 +33,7 @@ public class CcdCallbackBundleUpdater {
                 .findCaseProperty(ArrayNode.class)
                 .orElseThrow(() -> new CallbackException(400, null, "Bundle collection could not be found"));
 
-        StreamSupport.stream(bundles.spliterator(), false)
+        JsonNode ccdBundle = StreamSupport.stream(bundles.spliterator(), false)
                 .map(jsonNode -> jsonNode.get("value"))
                 .filter(ccdBundleJson ->
                         ccdBundleJson.get("id").asText()
@@ -42,6 +43,8 @@ public class CcdCallbackBundleUpdater {
                 .orElseThrow(() -> new CallbackException(400, null,
                         String.format("Bundle#%s could not be found",
                                 stitchingCompleteCallbackDto.getCcdBundleId().toString())));
+
+        log.debug(String.format("Updated ccdBundle: %s", ccdBundle.toString()));
     }
 
     private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
