@@ -13,7 +13,6 @@ import java.util.UUID;
 @Component
 public class CallbackUrlCreator {
 
-    private final UriComponentsBuilder uriComponentsBuilder;
     private final String host;
     private final String scheme;
     private final int port;
@@ -21,7 +20,6 @@ public class CallbackUrlCreator {
     public CallbackUrlCreator(@Value("${callbackUrlCreator.host}") String host,
                               @Value("${callbackUrlCreator.scheme}") String scheme,
                               @Value("${callbackUrlCreator.port}") int port) {
-        this.uriComponentsBuilder = UriComponentsBuilder.newInstance();
         this.host = host;
         this.scheme = scheme;
         this.port = port;
@@ -29,7 +27,7 @@ public class CallbackUrlCreator {
 
     public String createCallbackUrl(String caseId, String triggerId, UUID ccdBundleId) {
 
-        UriComponents uriComponents = uriComponentsBuilder
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .scheme(scheme)
                 .host(host)
                 .port(port)

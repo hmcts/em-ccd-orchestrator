@@ -36,9 +36,7 @@ public class StitchingCompleteCallbackService {
 
         } finally {
             if (ccdCallbackDto != null) {
-                ccdDataApiCaseUpdater.executeUpdate(stitchingCompleteCallbackDto.getCaseId(),
-                        stitchingCompleteCallbackDto.getJwt(),
-                        ccdCallbackDto.getCaseData());
+                ccdDataApiCaseUpdater.executeUpdate(ccdCallbackDto, stitchingCompleteCallbackDto.getJwt());
             }
         }
 

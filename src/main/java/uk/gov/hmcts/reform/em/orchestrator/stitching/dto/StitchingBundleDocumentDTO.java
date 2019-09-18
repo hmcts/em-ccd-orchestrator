@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StitchingBundleDocumentDTO {
 
     private String documentId;

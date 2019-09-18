@@ -56,7 +56,7 @@ public class StitchingCompleteCallbackServiceTest {
                 .thenReturn(new CcdCallbackDto());
 
         Mockito.doThrow(new CallbackException(1, "", "")).when(ccdDataApiCaseUpdater)
-                .executeUpdate(Mockito.any(), Mockito.any(), Mockito.any());
+                .executeUpdate(Mockito.any(), Mockito.any());
 
         assertThrows(CallbackException.class, () ->
                 stitchingCompleteCallbackService.handleCallback(new StitchingCompleteCallbackDto("x",
@@ -71,6 +71,8 @@ public class StitchingCompleteCallbackServiceTest {
 
         stitchingCompleteCallbackService.handleCallback(new StitchingCompleteCallbackDto("x",
                 "a", "1", UUID.randomUUID(), new DocumentTaskDTO()));
+
+        Mockito.verify(ccdDataApiCaseUpdater, Mockito.never()).executeUpdate(Mockito.any(), Mockito.any());
 
         assertTrue(true, "No exception should be thrown");
     }

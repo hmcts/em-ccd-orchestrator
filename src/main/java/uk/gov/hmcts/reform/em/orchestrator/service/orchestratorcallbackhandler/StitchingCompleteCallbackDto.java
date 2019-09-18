@@ -12,7 +12,8 @@ public class StitchingCompleteCallbackDto {
     private final UUID ccdBundleId;
     private final DocumentTaskDTO documentTaskDTO;
 
-    public StitchingCompleteCallbackDto(String jwt, String caseId, String triggerId, UUID ccdBundleId, DocumentTaskDTO documentTaskDTO) {
+    public StitchingCompleteCallbackDto(String jwt, String caseId, String triggerId, UUID ccdBundleId,
+                                        DocumentTaskDTO documentTaskDTO) {
         this.jwt = jwt;
         this.caseId = caseId;
         this.triggerId = triggerId;

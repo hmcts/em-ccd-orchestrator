@@ -34,10 +34,10 @@ public class StitchingCompleteCallbackController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
-                                                            @PathVariable String caseId,
-                                                            @PathVariable String triggerId,
-                                                            @PathVariable UUID bundleId,
-                                                            @RequestBody DocumentTaskDTO documentTaskDTO) {
+                                                                       @PathVariable String caseId,
+                                                                       @PathVariable String triggerId,
+                                                                       @PathVariable UUID bundleId,
+                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) {
 
         try {
 

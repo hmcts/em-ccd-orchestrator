@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import java.util.stream.StreamSupport;
 
@@ -32,14 +33,18 @@ public class CcdCallbackBundleUpdater {
                 .orElseThrow(() -> new CallbackException(400, null, "Bundle collection could not be found"));
 
         StreamSupport.stream(bundles.spliterator(), false)
-                .filter(jsonNode ->
-                        jsonNode.findValue("id").asText()
+                .map(jsonNode -> jsonNode.get("value"))
+                .filter(ccdBundleJson ->
+                        ccdBundleJson.get("id").asText()
                             .equals(stitchingCompleteCallbackDto.getCcdBundleId().toString()))
                 .findFirst()
-                .ifPresent(ccdBundleJson -> this.updateCcdBundle(ccdBundleJson, stitchingCompleteCallbackDto));
+                .map(ccdBundleJson -> this.updateCcdBundle(ccdBundleJson, stitchingCompleteCallbackDto))
+                .orElseThrow(() -> new CallbackException(400, null,
+                        String.format("Bundle#%s could not be found",
+                                stitchingCompleteCallbackDto.getCcdBundleId().toString())));
     }
 
-    private void updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
+    private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
         try {
             CcdBundleDTO ccdBundleDTO = this.objectMapper.treeToValue(ccdBundle, CcdBundleDTO.class);
             log.info(String.format("Updating bundle#%s with %s",
@@ -49,18 +54,24 @@ public class CcdCallbackBundleUpdater {
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()
                     .getFailureDescription());
-            ccdBundleDTO.setStitchedDocument(new CcdDocument(
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null
-                            ? stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
+
+            if (stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().equals(TaskState.DONE)) {
+
+                ccdBundleDTO.setStitchedDocument(new CcdDocument(
+                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
+                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null
+                                ? stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
+                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
+
+            }
 
             JsonNode updatedCcdBundle = objectMapper.valueToTree(ccdBundleDTO);
             ObjectNode ccdBundleObjectNode = (ObjectNode) ccdBundle;
             ccdBundleObjectNode.set("stitchStatus", updatedCcdBundle.get("stitchStatus"));
-            ccdBundleObjectNode.set("eligibleForCloningAsBoolean", updatedCcdBundle.get("eligibleForCloningAsBoolean"));
-            ccdBundleObjectNode.set("setStitchingFailureMessage", updatedCcdBundle.get("setStitchingFailureMessage"));
+            ccdBundleObjectNode.set("eligibleForCloning", updatedCcdBundle.get("eligibleForCloning"));
+            ccdBundleObjectNode.set("stitchingFailureMessage", updatedCcdBundle.get("stitchingFailureMessage"));
             ccdBundleObjectNode.set("stitchedDocument", updatedCcdBundle.get("stitchedDocument"));
+            return ccdBundle;
         } catch (JsonProcessingException e) {
             throw new CallbackException(400, null, String.format("Error processing JSON %s", e.getMessage()));
         }

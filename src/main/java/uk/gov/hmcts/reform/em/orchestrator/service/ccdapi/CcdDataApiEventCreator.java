@@ -30,9 +30,17 @@ public class CcdDataApiEventCreator {
         this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
     }
 
+    /**
+     * Call to https://hmcts.github.io/reform-api-docs/swagger.html?url=https://hmcts.github.io/reform-api-docs/specs/ccd-data-store-api.v2.json#/start-trigger-controller/getStartEventTriggerUsingGET.
+     * @param caseId - case id
+     * @param triggerId - trigger id
+     * @param jwt - authentication
+     * @return - DTO with CCD case
+     */
     public CcdCallbackDto executeTrigger(String caseId, String triggerId, String jwt) {
         final Request request = new Request.Builder()
                 .addHeader("Authorization", jwt)
+                .addHeader("experimental", "true")
                 .addHeader("ServiceAuthorization", authTokenGenerator.generate())
                 .url(String.format(ccdDataBaseUrl + ccdTriggerPath,
                         caseId,

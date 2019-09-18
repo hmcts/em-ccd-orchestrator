@@ -15,12 +15,17 @@ public class CcdCallbackDtoTest {
     }
 
     @Test
-    public void getCaseIdHappyPath() throws Exception {
+    public void getPayloadStaticProperties() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": { \"id\": \"1\" }}");
+
+        JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": { \"id\": \"1\", "
+                + "\"jurisdiction\": \"j\", \"case_type_id\": \"c\", \"token\": \"t\", \"event_id\":\"e\" }}");
         ccdCallbackDto.setCcdPayload(ccdPayload);
         assertEquals("1", ccdCallbackDto.getCaseId());
-
+        assertEquals("j", ccdCallbackDto.getJurisdiction());
+        assertEquals("c", ccdCallbackDto.getCaseTypeId());
+        assertEquals("t", ccdCallbackDto.getEventToken());
+        assertEquals("e", ccdCallbackDto.getEventId());
     }
 }

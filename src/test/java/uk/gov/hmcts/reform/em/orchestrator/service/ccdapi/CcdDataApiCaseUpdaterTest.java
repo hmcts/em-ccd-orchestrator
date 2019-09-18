@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdapi;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,17 +18,19 @@ public class CcdDataApiCaseUpdaterTest {
     @Test
     public void executeUpdate() throws Exception {
         ccdDataApiCaseUpdater = buildTestedService(200, "OK");
-        JsonNode jsonNode = objectMapper.readTree("{}");
-        ccdDataApiCaseUpdater.executeUpdate("1", "jwt", jsonNode);
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setCcdPayload(objectMapper.readTree("{}"));
+        ccdDataApiCaseUpdater.executeUpdate(ccdCallbackDto, "jwt");
         assertTrue(true, "No exceptions");
     }
 
     @Test
     public void executeUpdateWith400Response() throws Exception {
         ccdDataApiCaseUpdater = buildTestedService(400, "OK");
-        JsonNode jsonNode = objectMapper.readTree("{}");
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setCcdPayload(objectMapper.readTree("{}"));
         assertThrows(CallbackException.class, () ->
-                ccdDataApiCaseUpdater.executeUpdate("1", "jwt", jsonNode));
+                ccdDataApiCaseUpdater.executeUpdate(ccdCallbackDto, "jwt"));
     }
 
     private OkHttpClient mockHttp(int httpStatus, String responseBody) {
