@@ -23,6 +23,12 @@ public final class Env {
         defaults.setProperty("S2S_BASE_URI", "http://localhost:4502");
         defaults.setProperty("FUNCTIONAL_TEST_CLIENT_S2S_TOKEN", "AAAAAAAAAAAAAAAA");
         defaults.setProperty("S2S_SERVICE_NAME", "em_gw");
+        defaults.setProperty("CCD_GW_SERVICE_NAME", "ccd_gw");
+        defaults.setProperty("FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET", "AAAAAAAAAAAAAAAA");
+        defaults.setProperty("CCD_DEF_API", "http://localhost:4451");
+        defaults.setProperty("CCD_DATA_API", "http://localhost:4452");
+
+
     }
 
     public static String getIdamUrl() {
@@ -45,12 +51,20 @@ public final class Env {
         return require("S2S_BASE_URI");
     }
 
-    public static String getS2sSecret() {
+    public static String getEmGwS2sSecret() {
         return require("FUNCTIONAL_TEST_CLIENT_S2S_TOKEN");
     }
 
-    public static String getS2sMicroservice() {
+    public static String getEmGwS2sMicroservice() {
         return require("S2S_SERVICE_NAME");
+    }
+
+    public static String getCcdGwS2sSecret() {
+        return require("FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET");
+    }
+
+    public static String getCcdGwS2sMicroservice() {
+        return require("CCD_GW_SERVICE_NAME");
     }
 
     public static String getUseProxy() {
@@ -67,6 +81,14 @@ public final class Env {
 
     public static String getDockerDmApiUrl() {
         return require("DOCKER_DM_STORE_APP_URL");
+    }
+
+    public static String getCcdDefApiUrl() {
+        return require("CCD_DEF_API");
+    }
+
+    public static String getCcdDataApiUrl() {
+        return require("CCD_DATA_API");
     }
 
     public static String require(String name) {

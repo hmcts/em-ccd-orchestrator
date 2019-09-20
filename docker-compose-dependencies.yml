@@ -77,30 +77,30 @@ services:
     ports:
       - 5434:5432
 
-#  stitching-api:
-#    image: hmctspublic.azurecr.io/em/stitching:latest
-#    healthcheck:
-#      interval: 10s
-#      timeout: 10s
-#      retries: 10
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://stitching-db:5432/emstitch
-#      - SPRING_DATASOURCE_USERNAME=emstitch
-#      - SPRING_DATASOURCE_PASSWORD=emstitch
-#      - S2S_BASE_URI=http://service-auth-provider-api:8489
-#      - IDAM_API_BASE_URI=http://idam-api:8080
-#      - ENABLE_LIQUIBASE=true
-#      - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
-#      - DM_STORE_APP_URL=http://dm-store:8080
-#      - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
-#    depends_on:
-#      - stitching-db
-#      - dm-store
-#    links:
-#      - stitching-db
-#      - dm-store
-#    ports:
-#      - 4630:8080
+  stitching-api:
+    image: hmctspublic.azurecr.io/em/stitching:latest
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stitching-db:5432/emstitch
+      - SPRING_DATASOURCE_USERNAME=emstitch
+      - SPRING_DATASOURCE_PASSWORD=emstitch
+      - S2S_BASE_URI=http://service-auth-provider-api:8489
+      - IDAM_API_BASE_URI=http://idam-api:8080
+      - ENABLE_LIQUIBASE=true
+      - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
+      - DM_STORE_APP_URL=http://dm-store:8080
+      - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+    depends_on:
+      - stitching-db
+      - dm-store
+    links:
+      - stitching-db
+      - dm-store
+    ports:
+      - 4630:8080
 
   stitching-db:
     image: postgres

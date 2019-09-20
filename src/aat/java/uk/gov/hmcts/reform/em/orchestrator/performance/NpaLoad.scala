@@ -17,7 +17,7 @@ class NpaLoad extends Simulation with HttpConfiguration {
 //          http("create-npa-task-" + testConfig.pdfName)
 //            .startStitchingTask(Env.getTestUrl + "/api/document-tasks")
 //            .header("Authorization", testUtil.getIdamToken())
-//            .header("ServiceAuthorization", testUtil.getS2sToken())
+//            .header("ServiceAuthorization", testUtil.getEmGwS2sToken())
 //            .body(StringBody(jsonObject))
 //            .check(
 //              status.find.in(201),

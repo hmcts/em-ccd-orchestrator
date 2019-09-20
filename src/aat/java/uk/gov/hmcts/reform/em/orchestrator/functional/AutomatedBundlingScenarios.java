@@ -269,4 +269,6 @@ public class AutomatedBundlingScenarios {
 
         assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
     }
+
+
 }
