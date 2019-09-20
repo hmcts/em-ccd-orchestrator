@@ -60,7 +60,7 @@ public class IdamHelper {
 
     public String getUserId(String username) {
         try {
-            return mapper.readTree(jodd.util.Base64.decodeToString(idamTokens.get(username).split("\\.")[1]))
+            return mapper.readTree(Base64.getDecoder().decode(idamTokens.get(username).split("\\.")[1]))
                     .get("id").asText();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -79,6 +79,8 @@ public class IdamHelper {
                     .body(mapper.writeValueAsString(CreateUserDto.builder()
                             .email(username)
                             .password(PASSWORD)
+                            .surname("x")
+                            .forename("x")
                             .roles(roles.stream().map(role -> new CreateUserRolesDto(role)).collect(Collectors.toList()))
                             .build()))
                     .post(idamUrl + "/testing-support/accounts").andReturn().print());
