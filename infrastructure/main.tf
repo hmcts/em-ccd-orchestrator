@@ -98,7 +98,7 @@ data "azurerm_key_vault" "shared_key_vault" {
 }
 
 module "local_key_vault" {
-  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
+  source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
   product = "${local.app_full_name}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
@@ -106,5 +106,4 @@ module "local_key_vault" {
   resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${var.common_tags}"
-  name = "em-ccdorc-${var.env}"
 }
