@@ -3,6 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCooooooooooversheets: true
 hasFolderCoversheets: true
+pageNumberFormat: PageRange
 documents:
   - type: documentSet
     property: /caseDocuments

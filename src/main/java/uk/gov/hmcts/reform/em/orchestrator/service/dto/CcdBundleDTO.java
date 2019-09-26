@@ -28,6 +28,7 @@ public class CcdBundleDTO {
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
+    private String pageNumberFormat;
 
     public Long getId() {
         return id;
@@ -167,5 +168,13 @@ public class CcdBundleDTO {
 
     public void setHasFolderCoversheetsAsBoolean(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public String getPageNumberFormat() {
+        return pageNumberFormat;
+    }
+
+    public void setPageNumberFormat(String pageNumberFormat) {
+        this.pageNumberFormat = pageNumberFormat;
     }
 }

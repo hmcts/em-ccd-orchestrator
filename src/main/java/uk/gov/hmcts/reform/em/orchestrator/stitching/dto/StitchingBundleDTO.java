@@ -13,6 +13,7 @@ public class StitchingBundleDTO {
     private boolean hasTableOfContents;
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
+    private String pageNumberFormat;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -78,5 +79,12 @@ public class StitchingBundleDTO {
         this.hasFolderCoversheets = hasFolderCoversheets;
     }
 
+    public String getPageNumberFormat() {
+        return pageNumberFormat;
+    }
+
+    public void setPageNumberFormat(String pageNumberFormat) {
+        this.pageNumberFormat = pageNumberFormat;
+    }
 }
 

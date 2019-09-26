@@ -3,6 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+pageNumberFormat: PageRange
 folders:
   - name: Folder 1
     documents:

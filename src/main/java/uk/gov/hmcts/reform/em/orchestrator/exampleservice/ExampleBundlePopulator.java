@@ -25,6 +25,7 @@ public class ExampleBundlePopulator {
         ccdBundleDTO.setHasTableOfContents(CcdBoolean.Yes);
         ccdBundleDTO.setEligibleForStitchingAsBoolean(false);
         ccdBundleDTO.setEligibleForCloningAsBoolean(false);
+        ccdBundleDTO.setPageNumberFormat("PageRange");
 
         ArrayNode caseDocuments = (ArrayNode) caseData.findValue("caseDocuments");
 
