@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Parsed configuration file for automated bundles.
  */
+@SuppressWarnings("all")
 public class BundleConfiguration {
 
     public final String title;
