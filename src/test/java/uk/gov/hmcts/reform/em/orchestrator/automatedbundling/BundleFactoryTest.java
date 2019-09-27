@@ -33,7 +33,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -55,7 +55,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -78,7 +78,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -98,7 +98,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -122,7 +122,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -142,7 +142,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,
@@ -162,7 +162,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "PageRange",
+                "numberOfPages",
             true,
             true,
             true,

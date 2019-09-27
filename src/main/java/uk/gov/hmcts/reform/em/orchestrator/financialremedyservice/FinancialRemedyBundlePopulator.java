@@ -22,7 +22,7 @@ public class FinancialRemedyBundlePopulator {
         ccdBundleDTO.setEligibleForCloningAsBoolean(false);
         ccdBundleDTO.setHasTableOfContents(CcdBoolean.Yes);
         ccdBundleDTO.setHasCoversheets(CcdBoolean.Yes);
-        ccdBundleDTO.setPageNumberFormat("PageRange");
+        ccdBundleDTO.setPageNumberFormat("pageRange");
 
         JsonNode scanned4AFormDocument = caseData.findValue("uploadScanned4AForm");
         JsonNode scanned4BFormDocument = caseData.findValue("uploadScanned4BForm");

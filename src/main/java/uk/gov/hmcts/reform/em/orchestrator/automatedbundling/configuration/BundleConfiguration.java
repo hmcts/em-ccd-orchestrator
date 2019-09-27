@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class BundleConfiguration {
 
     public final String title;
     public final String filename;
-    public final String pageNumberFormat;
+    public final PageNumberFormat pageNumberFormat;
     public final boolean hasTableOfContents;
     public final boolean hasCoversheets;
     public final boolean hasFolderCoversheets;
@@ -21,7 +22,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
-                               @JsonProperty("pageNumberFormat") String pageNumberFormat,
+                               @JsonProperty(value = "pageNumberFormat", defaultValue = "numberOfPages") String pageNumberFormat,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
@@ -29,7 +30,7 @@ public class BundleConfiguration {
                                @JsonProperty("documents") List<BundleConfigurationDocumentSelector> documents) {
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
-        this.pageNumberFormat = pageNumberFormat;
+        this.pageNumberFormat = PageNumberFormat.valueOf(pageNumberFormat);
         this.hasTableOfContents = hasTableOfContents;
         this.hasCoversheets = hasCoversheets;
         this.hasFolderCoversheets = hasFolderCoversheets;
