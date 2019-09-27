@@ -3,7 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
-pageNumberFormat: pageRange
+pageNumberFormat: numberOfPages
 documents:
   - type: document
     property: /singleDocument
