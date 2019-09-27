@@ -22,7 +22,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
-                               @JsonProperty(value = "pageNumberFormat", defaultValue = "numberOfPages") String pageNumberFormat,
+                               @JsonProperty(value = "pageNumberFormat", defaultValue = "numberOfPages") PageNumberFormat pageNumberFormat,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
@@ -30,7 +30,7 @@ public class BundleConfiguration {
                                @JsonProperty("documents") List<BundleConfigurationDocumentSelector> documents) {
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
-        this.pageNumberFormat = PageNumberFormat.valueOf(pageNumberFormat);
+        this.pageNumberFormat = pageNumberFormat;
         this.hasTableOfContents = hasTableOfContents;
         this.hasCoversheets = hasCoversheets;
         this.hasFolderCoversheets = hasFolderCoversheets;
