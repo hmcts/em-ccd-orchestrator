@@ -9,7 +9,7 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id 'pmd'
-    id "com.github.lkishalmi.gatling" version "3.0.2"
+    id "com.github.lkishalmi.gatling" version "3.2.9"
     id 'au.com.dius.pact' version '3.5.24'
 }
 
