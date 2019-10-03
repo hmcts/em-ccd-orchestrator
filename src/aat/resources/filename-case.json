@@ -82,7 +82,7 @@
     "id":1549544720400525,
     "jurisdiction":"CIRCUS",
     "state":"1_OPEN",
-    "case_type_id":"CCD_BUNDLE_MVP_TYPE",
+    "case_type_id":"CCD_BUNDLE_MVP_TYPE_ASYNC",
     "created_date":[
       2019,
       2,
