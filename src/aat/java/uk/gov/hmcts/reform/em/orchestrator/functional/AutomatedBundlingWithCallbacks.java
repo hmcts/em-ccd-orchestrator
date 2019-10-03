@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
@@ -9,9 +10,13 @@ public class AutomatedBundlingWithCallbacks {
 
     private final TestUtil testUtil = new TestUtil();
 
+    @Before
+    public void setup() {
+        testUtil.getCcdHelper().importCcdDefinitionFile();
+    }
+
     @Test
     public void testSuccessfulAsyncStitching() throws Exception {
-        testUtil.getCcdHelper().importCcdDefinitionFile();
         String uploadedUrl = testUtil.uploadDocument();
         String documentString = testUtil.getCcdHelper().getCcdDocumentJson("my doc", uploadedUrl, "mypdf.pdf");
         String caseId = testUtil.getCcdHelper().createCase(documentString);
@@ -42,7 +47,6 @@ public class AutomatedBundlingWithCallbacks {
 
     @Test
     public void testUnSuccessfulAsyncStitching() throws Exception {
-        testUtil.getCcdHelper().importCcdDefinitionFile();
         String uploadedUrl = testUtil.uploadDocument("dm-text.txt", "text/plain");
         String documentString = testUtil.getCcdHelper().getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = testUtil.getCcdHelper().createCase(documentString);

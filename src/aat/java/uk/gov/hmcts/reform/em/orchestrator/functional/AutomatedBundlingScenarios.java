@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
@@ -20,6 +21,11 @@ public class AutomatedBundlingScenarios {
     private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
     private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
     private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
+
+    @Before
+    public void setup() {
+        testUtil.getCcdHelper().importCcdDefinitionFile();
+    }
 
     @Test
     public void testCreateBundle() {
