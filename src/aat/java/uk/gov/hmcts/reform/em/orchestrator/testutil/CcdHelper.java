@@ -53,7 +53,7 @@ public class CcdHelper {
         Assert.assertTrue(HttpHelper.isSuccessful(ccdGwRequest()
                 .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("file", "adv_bundling_functional_tests_ccd_def.xlsx",
-                        ClassLoader.getSystemResourceAsStream("adv_bundling_functional_tests_ccd_def.xlsx"),
+                        ClassLoader.getSystemResourceAsStream(Env.getCcdDefFileName()),
                         "application/octet-stream")
                 .request("POST", Env.getCcdDefApiUrl() + "/import")
                 .getStatusCode()));

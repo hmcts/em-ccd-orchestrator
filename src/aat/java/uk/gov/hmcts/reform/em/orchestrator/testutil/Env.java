@@ -27,6 +27,7 @@ public final class Env {
         defaults.setProperty("FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET", "AAAAAAAAAAAAAAAA");
         defaults.setProperty("CCD_DEF_API", "http://localhost:4451");
         defaults.setProperty("CCD_DATA_API", "http://localhost:4452");
+        defaults.setProperty("CCD_CASE_DEF_FILE", "adv_bundling_functional_tests_ccd_def.xlsx");
 
 
     }
@@ -89,6 +90,10 @@ public final class Env {
 
     public static String getCcdDataApiUrl() {
         return require("CCD_DATA_API");
+    }
+
+    public static String getCcdDefFileName() {
+        return require("CCD_CASE_DEF_FILE");
     }
 
     public static String require(String name) {
