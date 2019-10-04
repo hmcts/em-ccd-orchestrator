@@ -81,7 +81,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.9.9"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.10.0"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:2.9.9"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9"
