@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
-
 import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 
 public class HttpHelper {
 
-    private final static Logger log = LoggerFactory.getLogger(HttpHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpHelper.class);
 
     public static boolean isSuccessful(int code) {
         boolean success = code >= 200 && code < 300;
