@@ -68,6 +68,13 @@ module "app" {
     # Toggles
     ENABLE_IDAM_HEALTH_CHECK = "${var.enable_idam_healthcheck}"
     ENABLE_S2S_HEALTH_CHECK = "${var.enable_s2s_healthcheck}"
+
+    CALLBACK_HTTP_SCHEME = "http"
+    CALLBACK_HTTP_HOST_PORT = "80"
+
+    CCD_DATA_API_URL = "http://${var.ccd_data_store_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
+
+    ENABLE_STITCHING_COMPLETE_CALLBACK="${var.enable_stitching_complete_callback}"
   }
 }
 
@@ -99,5 +106,4 @@ module "local_key_vault" {
   resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${var.common_tags}"
-  name = "em-ccdorc-${var.env}"
 }

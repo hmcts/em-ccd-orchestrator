@@ -77,6 +77,11 @@ variable "em_ccd_orchestrator_url" {
   default = "em-ccd-orchestrator"
 }
 
+variable "ccd_data_store_api_url" {
+  default = "ccd-data-store-api"
+}
+
+
 ////////////////////////////////////////////////
 // Logging
 ////////////////////////////////////////////////
@@ -132,6 +137,12 @@ variable "s2s_names_whitelist" {
 
 variable "case_worker_roles" {
   default = "caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce"
+}
+////////////////////////////////////////////////
+// Toggleable Endpoints
+////////////////////////////////////////////////
+variable "enable_stitching_complete_callback" {
+  default = "true"
 }
 ////////////////////////////////////////////////
 // Addtional

@@ -9,7 +9,9 @@ public class HttpClientConfiguration {
 
     @Bean
     public OkHttpClient okHttpClient() {
-        return new OkHttpClient();
+        return new OkHttpClient.Builder()
+                .build();
+
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CcdCaseUpdaterFinderImplTest {
+public class CcdDataApiCaseUpdaterFinderImplTest {
 
     @Test
     public void find() {

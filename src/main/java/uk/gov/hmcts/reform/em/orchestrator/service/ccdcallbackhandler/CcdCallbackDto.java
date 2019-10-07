@@ -54,4 +54,29 @@ public class CcdCallbackDto {
     public void setCcdPayload(JsonNode ccdPayload) {
         this.ccdPayload = ccdPayload;
     }
+
+    public String getCaseId() {
+        return ccdPayload != null && ccdPayload.findValue("id") != null
+                ? ccdPayload.findValue("id").asText() : null;
+    }
+
+    public String getJurisdiction() {
+        return ccdPayload != null && ccdPayload.findValue("jurisdiction") != null
+                ? ccdPayload.findValue("jurisdiction").asText() : null;
+    }
+
+    public String getCaseTypeId() {
+        return ccdPayload != null && ccdPayload.findValue("case_type_id") != null
+                ? ccdPayload.findValue("case_type_id").asText() : null;
+    }
+
+    public String getEventToken() {
+        return ccdPayload != null && ccdPayload.findValue("token") != null
+                ? ccdPayload.findValue("token").asText() : null;
+    }
+
+    public String getEventId() {
+        return ccdPayload != null && ccdPayload.findValue("event_id") != null
+                ? ccdPayload.findValue("event_id").asText() : null;
+    }
 }
