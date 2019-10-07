@@ -78,8 +78,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             bundle.getValue().setEligibleForStitchingAsBoolean(false);
 
             return bundle;
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new StitchingServiceException(e.getMessage(), e);
         }

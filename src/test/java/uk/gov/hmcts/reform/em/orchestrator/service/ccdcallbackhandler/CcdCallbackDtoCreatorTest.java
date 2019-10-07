@@ -30,7 +30,7 @@ public class CcdCallbackDtoCreatorTest {
 
         Assert.assertEquals("a", ccdCallbackDto.getJwt());
         Assert.assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
-        Assert.assertEquals(Optional.ofNullable(null), ccdCallbackDto.getPropertyName());
+        Assert.assertEquals(Optional.ofNullable("caseBundles"), ccdCallbackDto.getPropertyName());
     }
 
     @Test

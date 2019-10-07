@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class CcdCallbackDtoTest {
+public class CcdBundleDtoTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private final File jsonFile = new File(ClassLoader.getSystemResource("case.json").getPath());
     private final JavaType type = mapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);

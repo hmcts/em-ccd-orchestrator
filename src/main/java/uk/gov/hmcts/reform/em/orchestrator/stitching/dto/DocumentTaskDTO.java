@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Objects;
 /**
  * A DTO for the DocumentTask entity.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DocumentTaskDTO implements Serializable {
 
     private Long id;
@@ -19,6 +21,8 @@ public class DocumentTaskDTO implements Serializable {
     private TaskState taskState;
 
     private String failureDescription;
+
+    private CallbackDto callback;
 
     @JsonIgnore
     private String jwt;
@@ -77,6 +81,14 @@ public class DocumentTaskDTO implements Serializable {
             return false;
         }
         return Objects.equals(getId(), documentTaskDTO.getId());
+    }
+
+    public CallbackDto getCallback() {
+        return callback;
+    }
+
+    public void setCallback(CallbackDto callback) {
+        this.callback = callback;
     }
 
     @Override

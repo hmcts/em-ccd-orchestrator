@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,6 +19,7 @@ public class BundleFactory {
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
+        bundle.setId(UUID.randomUUID());
         bundle.setTitle(configuration.title);
         bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);
         bundle.setHasTableOfContentsAsBoolean(configuration.hasTableOfContents);

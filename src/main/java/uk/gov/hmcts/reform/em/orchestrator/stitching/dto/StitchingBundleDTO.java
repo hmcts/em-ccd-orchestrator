@@ -1,12 +1,16 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StitchingBundleDTO {
 
     private String bundleTitle;
     private String description;
+    private String stitchedDocumentURI;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
@@ -79,12 +83,20 @@ public class StitchingBundleDTO {
         this.hasFolderCoversheets = hasFolderCoversheets;
     }
 
+
     public String getPageNumberFormat() {
         return pageNumberFormat;
     }
 
     public void setPageNumberFormat(String pageNumberFormat) {
         this.pageNumberFormat = pageNumberFormat;
+    }
+    public String getStitchedDocumentURI() {
+        return stitchedDocumentURI;
+    }
+
+    public void setStitchedDocumentURI(String stitchedDocumentURI) {
+        this.stitchedDocumentURI = stitchedDocumentURI;
     }
 }
 

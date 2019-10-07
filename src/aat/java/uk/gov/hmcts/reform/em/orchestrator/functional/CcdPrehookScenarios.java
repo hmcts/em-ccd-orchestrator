@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
@@ -18,6 +19,11 @@ public class CcdPrehookScenarios {
     private final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
+
+    @Before
+    public void setup() {
+        testUtil.getCcdHelper().importCcdDefinitionFile();
+    }
 
     @Test
     public void testPostBundleStitch() {

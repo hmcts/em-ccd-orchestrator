@@ -1,11 +1,18 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IdamHelper {
 
@@ -16,6 +23,10 @@ public class IdamHelper {
     private final String client;
     private final String secret;
     private final String redirect;
+
+    private final Map<String, String> idamTokens = new HashMap<>();
+
+    ObjectMapper mapper = new ObjectMapper();
 
     public IdamHelper(String idamUrl, String client, String secret, String redirect) {
         this.idamUrl = idamUrl;
@@ -33,39 +44,81 @@ public class IdamHelper {
         return "Bearer " + token;
     }
 
-    private void createUser() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("email", USERNAME);
-        jsonObject.put("password", PASSWORD);
-        jsonObject.put("forename", "test");
-        jsonObject.put("surname", "test");
+    public String getIdamToken(String username, List<String> roles) {
 
-        RestAssured
-            .given()
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .body(jsonObject.toString())
-            .post(idamUrl + "/testing-support/accounts");
+        if (!idamTokens.containsKey(username)) {
+            deleteUser(username);
+            createUser(username, roles);
+
+            String code = getCode(username);
+            String token = getToken(code);
+
+            idamTokens.put(username, "Bearer " + token);
+        }
+        return idamTokens.get(username);
+    }
+
+    public String getUserId(String username) {
+        try {
+            return mapper.readTree(Base64.getDecoder().decode(idamTokens.get(username).split("\\.")[1]))
+                    .get("id").asText();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createUser() {
+        createUser(USERNAME, Stream.of("caseworker").collect(Collectors.toList()));
+    }
+
+    public void createUser(String username, List<String> roles) {
+        try {
+            System.out.println(RestAssured
+                    .given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .body(mapper.writeValueAsString(CreateUserDto.builder()
+                            .email(username)
+                            .password(PASSWORD)
+                            .surname("x")
+                            .forename("x")
+                            .roles(roles.stream().map(role -> new CreateUserRolesDto(role)).collect(Collectors.toList()))
+                            .build()))
+                    .post(idamUrl + "/testing-support/accounts").andReturn().print());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteUser(String username) {
+        int statusCode = RestAssured.given().log().all()
+                .delete(idamUrl + "/testing-support/accounts/" + username).andReturn().getStatusCode();
+        Assert.assertTrue(HttpHelper.isSuccessful(statusCode) || statusCode == 404);
+        idamTokens.remove(username);
     }
 
     private String getCode() {
-        String credentials = USERNAME + ":" + PASSWORD;
+        return getCode(USERNAME);
+    }
+
+    private String getCode(String username) {
+        String credentials = username + ":" + PASSWORD;
         String authHeader = Base64.getEncoder().encodeToString(credentials.getBytes());
 
         return RestAssured
-            .given()
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .header("Authorization", "Basic " + authHeader)
-            .formParam("redirect_uri", redirect)
-            .formParam("client_id", client)
-            .formParam("response_type", "code")
-            .post(idamUrl + "/oauth2/authorize")
-            .jsonPath()
-            .get("code");
+                .given()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .header("Authorization", "Basic " + authHeader)
+                .formParam("redirect_uri", redirect)
+                .formParam("client_id", client)
+                .formParam("response_type", "code")
+                .post(idamUrl + "/oauth2/authorize")
+                .jsonPath()
+                .get("code");
     }
 
     private String getToken(String code) {
         return RestAssured
-            .given()
+            .given().log().all()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .formParam("code", code)
             .formParam("grant_type", "authorization_code")
@@ -77,3 +130,7 @@ public class IdamHelper {
             .getString("access_token");
     }
 }
+
+
+
+

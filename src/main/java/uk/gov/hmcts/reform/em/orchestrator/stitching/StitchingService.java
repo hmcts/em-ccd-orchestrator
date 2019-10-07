@@ -56,7 +56,7 @@ public class StitchingService {
         documentTask.setJwt(jwt);
 
         try {
-            final int taskId = post(documentTask, jwt);
+            final int taskId = startStitchingTask(documentTask, jwt);
             final String response = poll(taskId, jwt);
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
@@ -84,7 +84,7 @@ public class StitchingService {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 
-    private int post(DocumentTaskDTO documentTask, String jwt) throws IOException {
+    public int startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
