@@ -29,6 +29,10 @@ public class CcdHelper {
 
     public void importCcdDefinitionFile() {
 
+        if (Env.isManualCcdDefFileImport()) {
+            return;
+        }
+
         /*
          *curl -XPUT \
          *   http://localhost:4451/api/user-role -v \

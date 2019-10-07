@@ -28,7 +28,7 @@ public final class Env {
         defaults.setProperty("CCD_DEF_API", "http://localhost:4451");
         defaults.setProperty("CCD_DATA_API", "http://localhost:4452");
         defaults.setProperty("CCD_CASE_DEF_FILE", "adv_bundling_functional_tests_ccd_def.xlsx");
-
+        defaults.setProperty("MANUAL_CCD_DEF_FILE_IMPORT", "true");
 
     }
 
@@ -94,6 +94,10 @@ public final class Env {
 
     public static String getCcdDefFileName() {
         return require("CCD_CASE_DEF_FILE");
+    }
+
+    public static boolean isManualCcdDefFileImport() {
+        return new Boolean(require("MANUAL_CCD_DEF_FILE_IMPORT"));
     }
 
     public static String require(String name) {
