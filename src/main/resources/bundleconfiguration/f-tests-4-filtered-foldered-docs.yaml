@@ -1,5 +1,6 @@
 title: Functional tests bundle 4
 filename: bundle.pdf
+hasCoverPage: true
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true

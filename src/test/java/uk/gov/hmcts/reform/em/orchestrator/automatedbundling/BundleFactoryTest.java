@@ -36,6 +36,7 @@ public class BundleFactoryTest {
             true,
             true,
             true,
+            true,
             new ArrayList<>(),
             new ArrayList<>()
         );
@@ -54,6 +55,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            true,
             true,
             true,
             true,
@@ -79,6 +81,7 @@ public class BundleFactoryTest {
             true,
             true,
             true,
+            true,
             new ArrayList<>(),
             Arrays.asList(
                 new BundleConfigurationDocument("/does not exist"),
@@ -95,6 +98,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            true,
             true,
             true,
             true,
@@ -121,6 +125,7 @@ public class BundleFactoryTest {
             true,
             true,
             true,
+            true,
             new ArrayList<>(),
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
@@ -140,6 +145,7 @@ public class BundleFactoryTest {
             true,
             true,
             true,
+            true,
             new ArrayList<>(),
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
@@ -156,6 +162,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            true,
             true,
             true,
             true,

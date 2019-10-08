@@ -17,6 +17,7 @@ public class StitchingDTOMapper {
         bundle.setBundleTitle(bundleDTO.getTitle());
         bundle.setDescription(bundleDTO.getDescription());
         bundle.setFileName(bundleDTO.getFileName());
+        bundle.setHasCoverPage(bundleDTO.getHasCoverPage() == CcdBoolean.Yes);
         bundle.setHasTableOfContents(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes);
         bundle.setHasCoversheets(bundleDTO.getHasCoversheets() == CcdBoolean.Yes);
         bundle.setHasFolderCoversheets(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes);

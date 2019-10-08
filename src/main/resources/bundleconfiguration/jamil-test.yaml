@@ -1,5 +1,6 @@
 title: SSCS Demo Bundle
 filename: bundle.pdf
+hasCoverPage: true
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true

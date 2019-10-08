@@ -1,5 +1,6 @@
 title: Bundle with filename
 filename: bundle.pdf
+hasCoverPage: true
 hasTableOfContents: false
 hasCoversheets: false
 hasFolderCoversheets: true

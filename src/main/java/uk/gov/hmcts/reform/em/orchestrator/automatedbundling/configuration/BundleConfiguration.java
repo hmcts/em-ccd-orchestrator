@@ -12,6 +12,7 @@ public class BundleConfiguration {
 
     public final String title;
     public final String filename;
+    public final boolean hasCoverPage;
     public final boolean hasTableOfContents;
     public final boolean hasCoversheets;
     public final boolean hasFolderCoversheets;
@@ -20,6 +21,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
+                               @JsonProperty("hasCoverPage") boolean hasCoverPage,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
@@ -27,6 +29,7 @@ public class BundleConfiguration {
                                @JsonProperty("documents") List<BundleConfigurationDocumentSelector> documents) {
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
+        this.hasCoverPage = hasCoverPage;
         this.hasTableOfContents = hasTableOfContents;
         this.hasCoversheets = hasCoversheets;
         this.hasFolderCoversheets = hasFolderCoversheets;

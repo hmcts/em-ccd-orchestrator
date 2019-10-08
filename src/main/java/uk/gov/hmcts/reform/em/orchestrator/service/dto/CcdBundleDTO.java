@@ -25,6 +25,7 @@ public class CcdBundleDTO {
     @Size(min = 2, max = 30)
     @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
+    private CcdBoolean hasCoverPage;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
@@ -125,6 +126,14 @@ public class CcdBundleDTO {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public CcdBoolean getHasCoverPage() {
+        return hasCoverPage;
+    }
+
+    public void setHasCoverPage(CcdBoolean hasCoverPage) {
+        this.hasCoverPage = hasCoverPage;
     }
 
     public CcdBoolean getHasTableOfContents() {

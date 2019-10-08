@@ -14,6 +14,7 @@ public class StitchingBundleDTO {
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
+    private boolean hasCoverPage;
     private boolean hasTableOfContents;
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
@@ -56,6 +57,14 @@ public class StitchingBundleDTO {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public boolean isHasCoverPage() {
+        return hasCoverPage;
+    }
+
+    public void setHasCoverPage(boolean hasCoverPage) {
+        this.hasCoverPage = hasCoverPage;
     }
 
     public boolean getHasTableOfContents() {
