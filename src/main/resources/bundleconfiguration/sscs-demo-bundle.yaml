@@ -14,12 +14,10 @@ folders:
         value: Evidence
       - property: /documentType
         value: Response
-documents:
-  - type: documentSet
-    property: /caseDocuments
-    filters:
-    - property: /documentType
-      value: AppellantEvidence
-
-
-
+  - name: Further Additions
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+        - property: /documentType
+          value: AppellantEvidence
