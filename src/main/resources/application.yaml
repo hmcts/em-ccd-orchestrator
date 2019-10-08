@@ -82,7 +82,7 @@ idam:
 
 callbackUrlCreator:
   scheme: ${CALLBACK_HTTP_SCHEME:http}
-  host: ${HTTP_HOST:localhost} # HTTP_HOST is the domain injected by the Azure
+  host: ${SERVER_NAME:localhost} # SERVER_NAME is the domain injected by the Azure
   port: ${CALLBACK_HTTP_HOST_PORT:8080}
 
 ccd:

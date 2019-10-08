@@ -96,13 +96,10 @@ public class DocumentTaskDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    @Override
+
     public String toString() {
-        return "DocumentTaskDTO{"
-                + "id=" + getId()
-                + ", bundle='" + getBundle() + "'"
-                + ", taskState='" + getTaskState() + "'"
-                + ", failureDescription='" + getFailureDescription() + "'"
-                + "}";
+        return "DocumentTaskDTO(id=" + this.getId() + ", bundle=" + this.getBundle()
+                + ", taskState=" + this.getTaskState() + ", failureDescription=" + this.getFailureDescription()
+                + ", callback=" + this.getCallback() + ", jwt=" + this.getJwt() + ")";
     }
 }
