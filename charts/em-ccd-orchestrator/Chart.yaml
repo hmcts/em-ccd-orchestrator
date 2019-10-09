@@ -1,6 +1,6 @@
 name: em-ccd-orchestrator
 home: https://github.com/hmcts/rpa-em-ccd-orchestrator
-version: 0.1.2
+version: 0.1.3
 description: HMCTS EM - CCD Orchestrator API
 maintainers:
   - name: HMCTS EM Team
