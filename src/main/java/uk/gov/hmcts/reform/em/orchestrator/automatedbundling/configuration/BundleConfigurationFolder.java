@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Configuration for a bundle folder
+ * Configuration for a bundle folder.
  */
 public class BundleConfigurationFolder {
 

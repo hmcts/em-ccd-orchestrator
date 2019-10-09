@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class CcdCallbackResponseDto {
 
+    @JsonIgnore
     private JsonNode copyOfCcdData;
 
     public CcdCallbackResponseDto() {

@@ -7,28 +7,41 @@ import org.json.JSONObject;
 public class S2sHelper {
 
     private final String s2sUrl;
-    private final String totpSecret;
-    private final String microservice;
+    private final String emGwTotpSecret;
+    private final String emGwMicroserviceName;
+    private final String ccdGwTotpSecret;
+    private final String ccdGwMicroserviceName;
 
-    public S2sHelper(String s2sUrl, String totpSecret, String microservice) {
+    public S2sHelper(String s2sUrl, String emGwTotpSecret, String emGwMicroserviceName,
+                     String ccdGwTotpSecret, String ccdGwMicroserviceName) {
         this.s2sUrl = s2sUrl;
-        this.totpSecret = totpSecret;
-        this.microservice = microservice;
+        this.emGwTotpSecret = emGwTotpSecret;
+        this.emGwMicroserviceName = emGwMicroserviceName;
+        this.ccdGwTotpSecret = ccdGwTotpSecret;
+        this.ccdGwMicroserviceName = ccdGwMicroserviceName;
     }
 
-    public String getS2sToken() {
-        String otp = String.valueOf(new GoogleAuthenticator().getTotpPassword(totpSecret));
+    public String getEmGwS2sToken() {
+        return getS2sToken(emGwMicroserviceName, emGwTotpSecret);
+    }
+
+    public String getCcdGwS2sToken() {
+        return getS2sToken(ccdGwMicroserviceName, ccdGwTotpSecret);
+    }
+
+    private String getS2sToken(String microserviceName, String microserviceSecret) {
+        String otp = String.valueOf(new GoogleAuthenticator().getTotpPassword(microserviceSecret));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("microservice", microservice);
+        jsonObject.put("microservice", microserviceName);
         jsonObject.put("oneTimePassword", otp);
 
         return "Bearer " + RestAssured
-            .given()
-            .header("Content-Type", "application/json")
-            .body(jsonObject.toString())
-            .post(s2sUrl + "/lease")
-            .getBody()
-            .asString();
+                .given()
+                .header("Content-Type", "application/json")
+                .body(jsonObject.toString())
+                .post(s2sUrl + "/lease")
+                .getBody()
+                .asString();
     }
 }

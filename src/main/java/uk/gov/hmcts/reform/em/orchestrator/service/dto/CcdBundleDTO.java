@@ -7,11 +7,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO {
 
-    private Long id;
+    private UUID id;
     private String title;
     @Size(max = 255)
     private String description;
@@ -28,12 +29,13 @@ public class CcdBundleDTO {
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
+    private String stitchingFailureMessage;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -167,5 +169,13 @@ public class CcdBundleDTO {
 
     public void setHasFolderCoversheetsAsBoolean(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public String getStitchingFailureMessage() {
+        return stitchingFailureMessage;
+    }
+
+    public void setStitchingFailureMessage(String stitchingFailureMessage) {
+        this.stitchingFailureMessage = stitchingFailureMessage;
     }
 }

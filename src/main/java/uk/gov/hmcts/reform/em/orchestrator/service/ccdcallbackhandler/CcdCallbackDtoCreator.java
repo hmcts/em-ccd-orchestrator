@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Optional;
 
 @Service
@@ -18,10 +19,21 @@ public class CcdCallbackDtoCreator {
     }
 
     public CcdCallbackDto createDto(HttpServletRequest request) {
-        CcdCallbackDto dto = new CcdCallbackDto();
-        dto.setJwt(request.getHeader("Authorization"));
+        return createDto(request, "caseBundles");
+    }
+
+    public CcdCallbackDto createDto(HttpServletRequest request, String propertyName) {
         try {
-            JsonNode payload = objectMapper.readTree(request.getReader());
+            return this.createDto(propertyName, request.getHeader("Authorization"), request.getReader());
+        } catch (IOException e) {
+            throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
+        }
+    }
+
+    public CcdCallbackDto createDto(String propertyName, String jwt, Reader reader) {
+        CcdCallbackDto dto = new CcdCallbackDto();
+        try {
+            JsonNode payload = objectMapper.readTree(reader);
             if (payload == null) {
                 throw new CantReadCcdPayloadException("Payload from CCD is empty");
             }
@@ -30,12 +42,8 @@ public class CcdCallbackDtoCreator {
             throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
         }
         dto.setCaseData(dto.getCcdPayload().findValue("case_data"));
-        return dto;
-    }
-
-    public CcdCallbackDto createDto(HttpServletRequest request, String propertyName) {
-        CcdCallbackDto dto = createDto(request);
-        dto.setPropertyName(Optional.ofNullable(propertyName));
+        dto.setPropertyName(Optional.of(propertyName));
+        dto.setJwt(jwt);
         return dto;
     }
 
