@@ -62,9 +62,6 @@ module "app" {
     ENDPOINTS_HEALTH_SENSITIVE = "${var.endpoints_health_sensitive}"
     ENDPOINTS_INFO_SENSITIVE = "${var.endpoints_info_sensitive}"
 
-    S2S_NAMES_WHITELIST = "${var.s2s_names_whitelist}"
-    CASE_WORKER_ROLES = "${var.case_worker_roles}"
-
     # Toggles
     ENABLE_IDAM_HEALTH_CHECK = "${var.enable_idam_healthcheck}"
     ENABLE_S2S_HEALTH_CHECK = "${var.enable_s2s_healthcheck}"
