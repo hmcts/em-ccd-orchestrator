@@ -72,7 +72,7 @@ module "app" {
     CCD_DATA_API_URL = "http://${var.ccd_data_store_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
     ENABLE_STITCHING_COMPLETE_CALLBACK="${var.enable_stitching_complete_callback}"
-    managed_identity_object_id = "${var.managed_identity_object_id}
+    managed_identity_object_id = "${var.managed_identity_object_id}"
 
   }
 }
