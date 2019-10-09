@@ -181,6 +181,7 @@ public class CcdBundleDTO {
 
     public void setPageNumberFormat(String pageNumberFormat) {
         this.pageNumberFormat = pageNumberFormat;
+    }
 
     public String getStitchingFailureMessage() {
         return stitchingFailureMessage;

@@ -91,6 +91,7 @@ public class StitchingBundleDTO {
     public void setPageNumberFormat(String pageNumberFormat) {
         this.pageNumberFormat = pageNumberFormat;
     }
+
     public String getStitchedDocumentURI() {
         return stitchedDocumentURI;
     }
