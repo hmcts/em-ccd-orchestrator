@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
@@ -11,6 +13,8 @@ import java.io.IOException;
 
 @Service
 public class AutomatedStitchingExecutor {
+
+    private final Logger log = LoggerFactory.getLogger(AutomatedStitchingExecutor.class);
 
     private final StitchingService stitchingService;
     private final StitchingDTOMapper stitchingDTOMapper;
@@ -32,8 +36,10 @@ public class AutomatedStitchingExecutor {
         documentTask.setCallback(callbackDto);
 
         try {
+            log.info("Starting new stitching task {}", documentTask.toString());
             stitchingService.startStitchingTask(documentTask, jwt);
         } catch (IOException e) {
+            log.error(String.format("Starting new stitching task - failed %s", documentTask.toString()), e);
             throw new StartStitchingException(String.format("Could not start stitching: %s", e.getMessage()), e);
         }
 

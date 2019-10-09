@@ -1,0 +1,22 @@
+title: SSCS Demo Bundle
+filename: bundle.pdf
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+folders:
+  - name: DWP
+    documents:
+    - type: documentSet
+      property: /caseDocuments
+      filters:
+      - property: /documentType
+        value: Evidence
+      - property: /documentType
+        value: Response
+  - name: Further Additions
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+        - property: /documentType
+          value: AppellantEvidence

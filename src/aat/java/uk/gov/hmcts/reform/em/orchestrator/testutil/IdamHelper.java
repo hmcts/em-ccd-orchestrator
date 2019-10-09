@@ -59,12 +59,12 @@ public class IdamHelper {
     }
 
     public String getUserId(String username) {
-        try {
-            return mapper.readTree(Base64.getDecoder().decode(idamTokens.get(username).split("\\.")[1]))
-                    .get("id").asText();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        String userId = RestAssured
+            .given().log().all()
+            .header("Authorization", idamTokens.get(username))
+            .get(idamUrl + "/details").andReturn().jsonPath().get("id").toString();
+
+        return userId;
     }
 
     public void createUser() {

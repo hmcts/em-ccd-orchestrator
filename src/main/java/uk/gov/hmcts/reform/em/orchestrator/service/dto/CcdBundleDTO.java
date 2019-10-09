@@ -7,12 +7,11 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO {
 
-    private UUID id;
+    private String id;
     private String title;
     @Size(max = 255)
     private String description;
@@ -33,12 +32,11 @@ public class CcdBundleDTO {
 
     private String stitchingFailureMessage;
 
-
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
