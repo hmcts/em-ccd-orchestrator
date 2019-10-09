@@ -7,7 +7,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
-@Ignore
 public class AutomatedBundlingWithCallbacks {
 
     private final TestUtil testUtil = new TestUtil();
