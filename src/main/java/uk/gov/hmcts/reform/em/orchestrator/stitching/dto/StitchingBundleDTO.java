@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class StitchingBundleDTO {
     private boolean hasTableOfContents;
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
+    private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -80,6 +82,14 @@ public class StitchingBundleDTO {
 
     public void setHasFolderCoversheets(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets;
+    }
+
+    public CcdBundlePaginationStyle getPaginationStyle() {
+        return paginationStyle;
+    }
+
+    public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
+        this.paginationStyle = paginationStyle;
     }
 
     public String getStitchedDocumentURI() {

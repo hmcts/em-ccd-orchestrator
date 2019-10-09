@@ -1,6 +1,7 @@
 title: New bundle
 hasCoversheets: true
 hasTableOfContents: true
+paginationStyle: topCenter
 folders:
   - name: Folder 1
     folders:

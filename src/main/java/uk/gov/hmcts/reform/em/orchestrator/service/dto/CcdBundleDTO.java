@@ -29,6 +29,7 @@ public class CcdBundleDTO {
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
+    private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private String stitchingFailureMessage;
 
     public UUID getId() {
@@ -169,6 +170,14 @@ public class CcdBundleDTO {
 
     public void setHasFolderCoversheetsAsBoolean(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    public CcdBundlePaginationStyle getPaginationStyle() {
+        return paginationStyle;
+    }
+
+    public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
+        this.paginationStyle = paginationStyle;
     }
 
     public String getStitchingFailureMessage() {

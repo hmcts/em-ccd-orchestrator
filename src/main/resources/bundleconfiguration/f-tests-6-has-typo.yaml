@@ -3,6 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCooooooooooversheets: true
 hasFolderCoversheets: true
+paginationStyle: bottomRight
 documents:
   - type: documentSet
     property: /caseDocuments
