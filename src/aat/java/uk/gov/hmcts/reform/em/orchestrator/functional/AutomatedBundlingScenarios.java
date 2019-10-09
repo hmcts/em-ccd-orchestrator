@@ -23,7 +23,7 @@ public class AutomatedBundlingScenarios {
     private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

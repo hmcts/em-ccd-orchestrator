@@ -22,7 +22,7 @@ public class CcdCloneScenarios {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

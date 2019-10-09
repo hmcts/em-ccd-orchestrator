@@ -44,7 +44,6 @@ env.DM_STORE_APP_URL = 'http://dm-store-aat.service.core-compute-aat.internal'
 env.CCD_DEF_API = 'http://ccd-definition-store-api-aat.service.core-compute-aat.internal'
 env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.internal'
 env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.internal'
-env.CCD_CASE_DEF_FILE='adv_bundling_functional_tests_ccd_def_aat.xlsx'
 
 def vaultOverrides = [
         'preview' : 'aat',

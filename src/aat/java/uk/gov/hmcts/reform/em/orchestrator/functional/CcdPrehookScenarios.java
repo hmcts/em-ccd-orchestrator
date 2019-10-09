@@ -23,7 +23,7 @@ public class CcdPrehookScenarios {
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

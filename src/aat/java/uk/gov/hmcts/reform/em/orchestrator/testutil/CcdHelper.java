@@ -6,15 +6,49 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.springframework.http.MediaType;
 
+import java.io.*;
+import java.net.InetAddress;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CcdHelper {
 
+    public final String createAutomatedBundlingCaseTemplate = "{\n"
+            + "  \"data\": {\n"
+            + "    \"caseTitle\": null,\n"
+            + "    \"caseOwner\": null,\n"
+            + "    \"caseCreationDate\": null,\n"
+            + "    \"caseDescription\": null,\n"
+            + "    \"caseComments\": null,\n"
+            + "    \"caseDocuments\": [%s],\n"
+            + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
+            + "  },\n"
+            + "  \"event\": {\n"
+            + "    \"id\": \"createCase\",\n"
+            + "    \"summary\": \"\",\n"
+            + "    \"description\": \"\"\n"
+            + "  },\n"
+            + "  \"event_token\": \"%s\",\n"
+            + "  \"ignore_warning\": false,\n"
+            + "  \"draft_id\": null\n"
+            + "}";
+    public final String finishEventTemplate = "{\"event_data\": %s, \"event\": {\"id\": \"%s\"}, \"event_token\": \"%s\"}";
+    public final String documentTemplate = "{\n"
+                    + "        \"value\": {\n"
+                    + "          \"documentName\": \"%s\",\n"
+                    + "          \"documentLink\": {\n"
+                    + "            \"document_url\": \"%s\",\n"
+                    + "            \"document_binary_url\": \"%s/binary\",\n"
+                    + "            \"document_filename\": \"%s\"\n"
+                    + "          }\n"
+                    + "        }\n"
+                    + "      }";
     private IdamHelper idamHelper;
     private S2sHelper s2sHelper;
     private String bundleTesterUser = "bundle-tester@gmail.com";
@@ -27,7 +61,7 @@ public class CcdHelper {
 
     }
 
-    public void importCcdDefinitionFile() {
+    public void importCcdDefinitionFile() throws Exception {
 
         if (Env.isManualCcdDefFileImport()) {
             return;
@@ -57,7 +91,7 @@ public class CcdHelper {
         Assert.assertTrue(HttpHelper.isSuccessful(ccdGwRequest()
                 .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("file", "adv_bundling_functional_tests_ccd_def.xlsx",
-                        ClassLoader.getSystemResourceAsStream(Env.getCcdDefFileName()),
+                        getEnvSpecificDefinitionFile(),
                         "application/octet-stream")
                 .request("POST", Env.getCcdDefApiUrl() + "/import")
                 .getStatusCode()));
@@ -90,7 +124,7 @@ public class CcdHelper {
     public String createCase(String documents) {
         Response createTriggerResponse = ccdGwRequest()
                 .header("experimental", "true")
-                .get(Env.getCcdDataApiUrl() + "/case-types/CCD_BUNDLE_MVP_TYPE_ASYNC/event-triggers/createCase")
+                .get(Env.getCcdDataApiUrl() + "/case-types/" + getEnvCcdCaseTypeId() + "/event-triggers/createCase")
                 .andReturn();
 
         Assert.assertTrue(HttpHelper.isSuccessful(createTriggerResponse.getStatusCode()));
@@ -98,7 +132,7 @@ public class CcdHelper {
         Response createCaseResponse = ccdGwRequest()
             .contentType(ContentType.JSON)
             .body(String.format(createAutomatedBundlingCaseTemplate, documents, createTriggerResponse.jsonPath().getString("token")))
-            .post(Env.getCcdDataApiUrl() + String.format("/caseworkers/%s/jurisdictions/PUBLICLAW/case-types/CCD_BUNDLE_MVP_TYPE_ASYNC/cases",
+            .post(Env.getCcdDataApiUrl() + String.format("/caseworkers/%s/jurisdictions/PUBLICLAW/case-types/" + getEnvCcdCaseTypeId() + "/cases",
                     idamHelper.getUserId(bundleTesterUser))).andReturn();
 
         Assert.assertTrue(HttpHelper.isSuccessful(createCaseResponse.getStatusCode()));
@@ -121,6 +155,57 @@ public class CcdHelper {
         }
     }
 
+    public String getEnvCcdCaseTypeId() {
+        return String.format("BUND_ASYNC_%d", Env.getTestUrl().hashCode());
+    }
+
+    public InputStream getEnvSpecificDefinitionFile() throws Exception {
+        Workbook workbook = new XSSFWorkbook(ClassLoader.getSystemResourceAsStream(Env.getCcdDefFileName()));
+        Sheet caseEventSheet = workbook.getSheet("CaseEvent");
+
+        caseEventSheet.getRow(5).getCell(11).setCellValue(
+                String.format("%s/api/new-bundle", getCallbackUrl())
+        );
+        caseEventSheet.getRow(7).getCell(11).setCellValue(
+                String.format("%s/api/stitch-ccd-bundles", getCallbackUrl())
+        );
+        caseEventSheet.getRow(8).getCell(11).setCellValue(
+                String.format("%s/api/clone-ccd-bundles", getCallbackUrl())
+        );
+
+        Sheet caseTypeSheet = workbook.getSheet("CaseType");
+
+        caseTypeSheet.getRow(3).getCell(3).setCellValue(getEnvCcdCaseTypeId());
+
+        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+            Sheet sheet = workbook.getSheetAt(i);
+            for (Row row : sheet) {
+                for (Cell cell : row) {
+                    if (cell.getCellType().equals(CellType.STRING)
+                            && cell.getStringCellValue().trim().equals("CCD_BUNDLE_MVP_TYPE_ASYNC")) {
+                        cell.setCellValue(getEnvCcdCaseTypeId());
+                    }
+                }
+            }
+        }
+
+        File outputFile = File.createTempFile("ccd", "ftest-def");
+
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+            workbook.write(fileOutputStream);
+        }
+
+        return new FileInputStream(outputFile);
+    }
+
+    private String getCallbackUrl() throws Exception {
+        if (Env.getTestUrl().contains("localhost")) {
+            return String.format("http://%s:8080", InetAddress.getLocalHost().getHostAddress());
+        } else {
+            return Env.getTestUrl();
+        }
+    }
+
     public RequestSpecification ccdGwRequest() {
         String userToken = idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
 
@@ -136,40 +221,6 @@ public class CcdHelper {
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {
         return String.format(documentTemplate, documentName, dmUrl, dmUrl, fileName);
     }
-
-    public final String createAutomatedBundlingCaseTemplate = "{\n"
-            + "  \"data\": {\n"
-            + "    \"caseTitle\": null,\n"
-            + "    \"caseOwner\": null,\n"
-            + "    \"caseCreationDate\": null,\n"
-            + "    \"caseDescription\": null,\n"
-            + "    \"caseComments\": null,\n"
-            + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
-            + "  },\n"
-            + "  \"event\": {\n"
-            + "    \"id\": \"createCase\",\n"
-            + "    \"summary\": \"\",\n"
-            + "    \"description\": \"\"\n"
-            + "  },\n"
-            + "  \"event_token\": \"%s\",\n"
-            + "  \"ignore_warning\": false,\n"
-            + "  \"draft_id\": null\n"
-            + "}";
-
-
-    public final String finishEventTemplate = "{\"event_data\": %s, \"event\": {\"id\": \"%s\"}, \"event_token\": \"%s\"}";
-
-    public final String documentTemplate = "{\n"
-                    + "        \"value\": {\n"
-                    + "          \"documentName\": \"%s\",\n"
-                    + "          \"documentLink\": {\n"
-                    + "            \"document_url\": \"%s\",\n"
-                    + "            \"document_binary_url\": \"%s/binary\",\n"
-                    + "            \"document_filename\": \"%s\"\n"
-                    + "          }\n"
-                    + "        }\n"
-                    + "      }";
 
 }
 
