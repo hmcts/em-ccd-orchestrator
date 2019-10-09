@@ -22,6 +22,7 @@ public class StitchingDTOMapper {
         bundle.setHasFolderCoversheets(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes);
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
+        bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
 
         return bundle;
     }
