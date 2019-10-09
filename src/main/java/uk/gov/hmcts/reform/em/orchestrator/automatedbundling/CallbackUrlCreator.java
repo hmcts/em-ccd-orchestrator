@@ -25,14 +25,14 @@ public class CallbackUrlCreator {
         this.port = port;
     }
 
-    public String createCallbackUrl(String caseId, String triggerId, UUID ccdBundleId) {
+    public String createCallbackUrl(String caseId, String triggerId, String ccdBundleId) {
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .scheme(scheme)
                 .host(host)
                 .port(port)
                 .path(String.format("/api/stitching-complete-callback/%s/%s/%s",
-                        caseId, triggerId, ccdBundleId.toString()))
+                        caseId, triggerId, ccdBundleId))
                 .build();
 
         return uriComponents.toString();
