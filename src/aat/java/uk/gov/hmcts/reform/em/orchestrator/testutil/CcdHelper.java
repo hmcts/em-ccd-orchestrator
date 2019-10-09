@@ -202,7 +202,7 @@ public class CcdHelper {
         if (Env.getTestUrl().contains("localhost")) {
             return String.format("http://%s:8080", InetAddress.getLocalHost().getHostAddress());
         } else {
-            return Env.getTestUrl();
+            return Env.getTestUrl().replaceAll("https", "http");
         }
     }
 
