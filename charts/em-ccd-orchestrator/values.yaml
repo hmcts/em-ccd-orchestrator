@@ -11,13 +11,10 @@ ccd-orchestrator:
   livenessFailureThreshold: 10
   aadIdentityName: em
   keyVaults:
-    rpa:
-      resourceGroup: rpa
+    em-ccd-orchestrator:
+      resourceGroup: em-ccd-orchestrator
       secrets:
         - AppInsightsInstrumentationKey
-    s2s:
-      resourceGroup: rpe-service-auth-provider
-      secrets:
         - microservicekey-em-ccd-orchestrator
   environment:
     # Regardless of environment, point towards AAT instances. Overwrite in product charts etc.
