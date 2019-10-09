@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.UUID;
-
 /**
  * Creates a callback URL which is passed to the Stitching API.
  */
@@ -25,14 +23,14 @@ public class CallbackUrlCreator {
         this.port = port;
     }
 
-    public String createCallbackUrl(String caseId, String triggerId, UUID ccdBundleId) {
+    public String createCallbackUrl(String caseId, String triggerId, String ccdBundleId) {
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .scheme(scheme)
                 .host(host)
                 .port(port)
                 .path(String.format("/api/stitching-complete-callback/%s/%s/%s",
-                        caseId, triggerId, ccdBundleId.toString()))
+                        caseId, triggerId, ccdBundleId))
                 .build();
 
         return uriComponents.toString();

@@ -75,7 +75,7 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setId(UUID.randomUUID());
+        bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
         bundle.setEligibleForStitchingAsBoolean(true);
