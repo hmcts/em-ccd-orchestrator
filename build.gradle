@@ -88,7 +88,7 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.10"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.10"
     compile "com.fasterxml.jackson.core:jackson-core:2.9.10"
-    compile "com.fasterxml.jackson.core:jackson-annotations:2.9.10"
+    compile "com.fasterxml.jackson.core:jackson-annotations:2.10.0"
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.10"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.10"
     compile "pl.touk:throwing-function:1.3"
