@@ -51,7 +51,7 @@ public class CcdHelper {
                     + "      }";
     private IdamHelper idamHelper;
     private S2sHelper s2sHelper;
-    private String bundleTesterUser = "bundle-tester@gmail.com";
+    private String bundleTesterUser = String.format("bundle-tester-%s@gmail.com", Env.getTestUrl().hashCode());
     private List<String> bundleTesterUserRoles = Stream.of("caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
     private ObjectMapper objectMapper = new ObjectMapper();
 

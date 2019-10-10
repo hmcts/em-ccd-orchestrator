@@ -7,16 +7,13 @@ import org.junit.Assert;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class IdamHelper {
 
-    private static final String USERNAME = "testytesttest@test.net";
+    private static final String USERNAME = "testytesttest" + new Random().nextLong() + "@test.net";
     private static final String PASSWORD = "4590fgvhbfgbDdffm3lk4j";
 
     private final String idamUrl;
@@ -36,12 +33,7 @@ public class IdamHelper {
     }
 
     public String getIdamToken() {
-        createUser();
-
-        String code = getCode();
-        String token = getToken(code);
-
-        return "Bearer " + token;
+        return getIdamToken(USERNAME, Stream.of("caseworker").collect(Collectors.toList()));
     }
 
     public String getIdamToken(String username, List<String> roles) {
@@ -67,10 +59,6 @@ public class IdamHelper {
         return userId;
     }
 
-    public void createUser() {
-        createUser(USERNAME, Stream.of("caseworker").collect(Collectors.toList()));
-    }
-
     public void createUser(String username, List<String> roles) {
         try {
             System.out.println(RestAssured
@@ -94,10 +82,6 @@ public class IdamHelper {
                 .delete(idamUrl + "/testing-support/accounts/" + username).andReturn().getStatusCode();
         Assert.assertTrue(HttpHelper.isSuccessful(statusCode) || statusCode == 404);
         idamTokens.remove(username);
-    }
-
-    private String getCode() {
-        return getCode(USERNAME);
     }
 
     private String getCode(String username) {
