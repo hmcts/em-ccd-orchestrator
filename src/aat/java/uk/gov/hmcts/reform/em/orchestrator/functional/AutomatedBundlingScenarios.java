@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
@@ -17,13 +18,13 @@ import static org.junit.Assert.assertTrue;
 
 public class AutomatedBundlingScenarios {
 
-    private final TestUtil testUtil = new TestUtil();
+    private static final TestUtil testUtil = new TestUtil();
     private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
     private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
     private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

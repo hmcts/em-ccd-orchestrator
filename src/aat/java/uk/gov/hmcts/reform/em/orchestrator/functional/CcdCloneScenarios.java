@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -18,11 +19,11 @@ import java.util.List;
 
 public class CcdCloneScenarios {
 
-    private final TestUtil testUtil = new TestUtil();
+    private static final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

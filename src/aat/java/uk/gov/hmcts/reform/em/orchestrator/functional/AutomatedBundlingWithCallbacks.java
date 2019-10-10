@@ -2,16 +2,16 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 public class AutomatedBundlingWithCallbacks {
 
-    private final TestUtil testUtil = new TestUtil();
+    private static final TestUtil testUtil = new TestUtil();
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 
