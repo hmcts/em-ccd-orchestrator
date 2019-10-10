@@ -23,7 +23,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
-                               @JsonProperty(value = "pageNumberFormat", defaultValue = "numberOfPages") PageNumberFormat pageNumberFormat,
+                               @JsonProperty("pageNumberFormat") PageNumberFormat pageNumberFormat,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
