@@ -2,17 +2,17 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO {
 
-    private UUID id;
+    private String id;
     private String title;
     @Size(max = 255)
     private String description;
@@ -30,13 +30,14 @@ public class CcdBundleDTO {
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
+    private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
     private String stitchingFailureMessage;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -179,6 +180,14 @@ public class CcdBundleDTO {
     public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
         this.paginationStyle = paginationStyle;
     }
+  
+    public PageNumberFormat getPageNumberFormat() {
+        return pageNumberFormat;
+    }
+
+    public void setPageNumberFormat(PageNumberFormat pageNumberFormat) {
+        this.pageNumberFormat = pageNumberFormat;
+    }
 
     public String getStitchingFailureMessage() {
         return stitchingFailureMessage;
@@ -186,5 +195,6 @@ public class CcdBundleDTO {
 
     public void setStitchingFailureMessage(String stitchingFailureMessage) {
         this.stitchingFailureMessage = stitchingFailureMessage;
+
     }
 }

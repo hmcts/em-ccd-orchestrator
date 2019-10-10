@@ -4,6 +4,7 @@ hasTableOfContents: false
 hasCoversheets: false
 hasFolderCoversheets: true
 paginationStyle: topRight
+pageNumberFormat: numberOfPages
 folders:
   - name: Folder 1
   - name: Folder 2

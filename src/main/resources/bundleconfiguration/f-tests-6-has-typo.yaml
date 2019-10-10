@@ -4,6 +4,7 @@ hasTableOfContents: true
 hasCooooooooooversheets: true
 hasFolderCoversheets: true
 paginationStyle: bottomRight
+pageNumberFormat: numberOfPages
 documents:
   - type: documentSet
     property: /caseDocuments
