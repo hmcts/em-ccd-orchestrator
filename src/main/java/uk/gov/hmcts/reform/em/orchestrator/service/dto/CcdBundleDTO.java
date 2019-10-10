@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -28,6 +29,8 @@ public class CcdBundleDTO {
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
+    private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+
     private String stitchingFailureMessage;
 
     public String getId() {
@@ -170,11 +173,20 @@ public class CcdBundleDTO {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
     }
 
+    public PageNumberFormat getPageNumberFormat() {
+        return pageNumberFormat;
+    }
+
+    public void setPageNumberFormat(PageNumberFormat pageNumberFormat) {
+        this.pageNumberFormat = pageNumberFormat;
+    }
+
     public String getStitchingFailureMessage() {
         return stitchingFailureMessage;
     }
 
     public void setStitchingFailureMessage(String stitchingFailureMessage) {
         this.stitchingFailureMessage = stitchingFailureMessage;
+
     }
 }
