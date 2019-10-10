@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class IdamHelper {
 
-    private static final String USERNAME = "testytesttest" + new Random().nextLong() + "@test.net";
+    private static final String USERNAME = "testytesttest" + Env.getTestUrl().hashCode() + "@test.net";
     private static final String PASSWORD = "4590fgvhbfgbDdffm3lk4j";
 
     private final String idamUrl;
