@@ -2,8 +2,8 @@ spring:
   cloud:
     propertiesvolume:
       enabled: true
-      prefixed: true
-      paths: /mnt/secrets/s2s, /mnt/secrets/rpa
+      prefixed: false
+      paths: /mnt/secrets/em-ccd-orchestrator
       aliases:
-        s2s.microservicekey-em-ccd-orchestrator: S2S_KEY
-        rpa.AppInsightsInstrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
+        microservicekey-em-ccd-orchestrator: S2S_KEY
+        AppInsightsInstrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY

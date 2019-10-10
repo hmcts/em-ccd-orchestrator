@@ -19,7 +19,7 @@ public class CallbackUrlCreatorTest {
             callbackUrlCreator.createCallbackUrl(
                     "12",
                     "34",
-                    UUID.fromString("ab8e5c4f-2309-4a47-9ce8-be7f5c114c39")));
+                    UUID.fromString("ab8e5c4f-2309-4a47-9ce8-be7f5c114c39").toString()));
 
     }
 }
