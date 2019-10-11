@@ -3,6 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+paginationStyle: bottomLeft
 pageNumberFormat: pageRange
 documents:
   - type: documentSet
