@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CcdHelper {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public final String createAutomatedBundlingCaseTemplate = "{\n"
             + "  \"data\": {\n"
@@ -53,7 +56,6 @@ public class CcdHelper {
     private S2sHelper s2sHelper;
     private String bundleTesterUser = String.format("bundle-tester-%s@gmail.com", Env.getTestUrl().hashCode());
     private List<String> bundleTesterUserRoles = Stream.of("caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     public CcdHelper(IdamHelper idamHelper, S2sHelper s2sHelper) {
         this.idamHelper = idamHelper;
@@ -185,6 +187,10 @@ public class CcdHelper {
                             && cell.getStringCellValue().trim().equals("CCD_BUNDLE_MVP_TYPE_ASYNC")) {
                         cell.setCellValue(getEnvCcdCaseTypeId());
                     }
+                    if (cell.getCellType().equals(CellType.STRING)
+                            && cell.getStringCellValue().trim().equals("bundle-tester@gmail.com")) {
+                        cell.setCellValue(bundleTesterUser);
+                    }
                 }
             }
         }
@@ -206,6 +212,10 @@ public class CcdHelper {
         }
     }
 
+    public void initBundleTesterUser() {
+        idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
+    }
+
     public RequestSpecification ccdGwRequest() {
         String userToken = idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
 
@@ -220,6 +230,16 @@ public class CcdHelper {
 
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {
         return String.format(documentTemplate, documentName, dmUrl, dmUrl, fileName);
+    }
+
+    public JsonNode assignEnvCcdCaseTypeIdToCase(JsonNode ccdCase) {
+        ((ObjectNode) ccdCase.get("case_details")).put("case_type_id", getEnvCcdCaseTypeId());
+        return ccdCase;
+    }
+
+    public JsonNode loadCaseFromFile(String file) throws Exception {
+        return assignEnvCcdCaseTypeIdToCase(
+                objectMapper.readTree(ClassLoader.getSystemResource(file)));
     }
 
 }

@@ -12,6 +12,7 @@ public class AutomatedBundlingWithCallbacks {
 
     @BeforeClass
     public static void setup() throws Exception {
+        testUtil.getCcdHelper().initBundleTesterUser();
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 

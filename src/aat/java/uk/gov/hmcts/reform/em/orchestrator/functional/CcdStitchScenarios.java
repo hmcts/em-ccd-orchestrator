@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
@@ -19,11 +18,6 @@ public class CcdStitchScenarios {
 
     private static final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        testUtil.getCcdHelper().importCcdDefinitionFile();
-    }
 
     @Test
     public void testPostBundleStitch() throws IOException {
