@@ -27,6 +27,7 @@ public class StitchingDTOMapper {
         bundle.setPageNumberFormat(bundleDTO.getPageNumberFormat());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
+        bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
 
         return bundle;
     }
