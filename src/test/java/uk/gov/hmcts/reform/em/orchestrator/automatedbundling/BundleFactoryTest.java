@@ -8,6 +8,7 @@ import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 
@@ -33,6 +34,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -54,6 +56,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -76,6 +79,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -95,6 +99,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -118,6 +123,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -137,6 +143,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -156,6 +163,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,

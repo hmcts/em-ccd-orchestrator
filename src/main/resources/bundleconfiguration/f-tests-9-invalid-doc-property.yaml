@@ -3,6 +3,7 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+pageNumberFormat: numberOfPages
 documents:
   - type: document
     property: /typoDocument
