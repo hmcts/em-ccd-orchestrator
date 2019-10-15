@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
@@ -49,11 +50,12 @@ public class StitchingService {
      * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt, JsonNode caseData) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
         documentTask.setJwt(jwt);
+        documentTask.setCaseData(caseData.toString());
 
         try {
             final int taskId = startStitchingTask(documentTask, jwt);

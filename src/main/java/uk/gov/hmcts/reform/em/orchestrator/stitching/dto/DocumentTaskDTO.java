@@ -24,6 +24,8 @@ public class DocumentTaskDTO implements Serializable {
 
     private CallbackDto callback;
 
+    private String caseData;
+
     @JsonIgnore
     private String jwt;
 
@@ -65,6 +67,14 @@ public class DocumentTaskDTO implements Serializable {
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
+    }
+
+    public String getCaseData() {
+        return caseData;
+    }
+
+    public void setCaseData(String caseData) {
+        this.caseData = caseData;
     }
 
     @Override

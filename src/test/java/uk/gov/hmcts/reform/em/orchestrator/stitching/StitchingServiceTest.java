@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import okhttp3.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token", JsonNodeFactory.instance.objectNode());
 
         Assert.assertEquals(docId.getUrl(), "AAAAAA");
         Assert.assertEquals(docId.getFileName(), "stitched.pdf");
@@ -56,7 +57,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token", JsonNodeFactory.instance.objectNode());
 
         Assert.assertEquals(docId.getUrl(), "AAAAAA");
         Assert.assertEquals(docId.getFileName(), "a.pdf");
@@ -73,7 +74,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), "token");
+        service.stitch(new CcdBundleDTO(), "token", JsonNodeFactory.instance.objectNode());
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -88,7 +89,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), "token");
+        service.stitch(new CcdBundleDTO(), "token", JsonNodeFactory.instance.objectNode());
     }
 
     @Test

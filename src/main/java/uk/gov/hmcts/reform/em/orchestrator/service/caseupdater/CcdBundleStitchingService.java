@@ -54,7 +54,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
-                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean() ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle)
+                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean() ?
+                            this.stitchBundle(bundle, ccdCallbackDto.getJwt(), ccdCallbackDto.getCaseData()) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -65,7 +66,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) {
+    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt, JsonNode caseData) {
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
 
         if (!violations.isEmpty()) {
@@ -73,7 +74,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         try {
-            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
+            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt, caseData);
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
             bundle.getValue().setEligibleForStitchingAsBoolean(false);
 

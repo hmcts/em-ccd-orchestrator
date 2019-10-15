@@ -41,7 +41,7 @@ public class CcdBundleStitchingServiceTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         CcdDocument ccdDocument = new CcdDocument("", "", "");
-        BDDMockito.given(stitchingService.stitch(any(), any())).willReturn(ccdDocument);
+        BDDMockito.given(stitchingService.stitch(any(), any(), any())).willReturn(ccdDocument);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService, validator);
@@ -61,7 +61,7 @@ public class CcdBundleStitchingServiceTest {
         assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
+                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any(JsonNode.class));
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -72,7 +72,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new StitchingServiceException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any(JsonNode.class))).thenThrow(new StitchingServiceException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
@@ -101,7 +101,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new InterruptedException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any(JsonNode.class))).thenThrow(new InterruptedException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
