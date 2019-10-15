@@ -1,7 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleFolderDTO;
@@ -21,8 +25,10 @@ public class StitchingDTOMapper {
         bundle.setHasTableOfContents(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes);
         bundle.setHasCoversheets(bundleDTO.getHasCoversheets() == CcdBoolean.Yes);
         bundle.setHasFolderCoversheets(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes);
+        bundle.setPageNumberFormat(bundleDTO.getPageNumberFormat());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
+        bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
 
         return bundle;
     }

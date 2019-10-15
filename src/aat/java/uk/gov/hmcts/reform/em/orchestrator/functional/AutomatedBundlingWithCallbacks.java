@@ -2,18 +2,18 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
-@Ignore
 public class AutomatedBundlingWithCallbacks {
 
-    private final TestUtil testUtil = new TestUtil();
+    private static final TestUtil testUtil = new TestUtil();
+    private static final int WAIT_SECONDS = 30;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() throws Exception {
+        testUtil.getCcdHelper().initBundleTesterUser();
         testUtil.getCcdHelper().importCcdDefinitionFile();
     }
 
@@ -31,7 +31,7 @@ public class AutomatedBundlingWithCallbacks {
                 createTriggerResponse.get("case_details").get("case_data"));
         System.out.println(finishEventResponse.toString());
         int i = 0;
-        while (i < 10) {
+        while (i < WAIT_SECONDS) {
             JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
             if (!caseJson.findPath("stitchStatus").asText().equals("null")) {
                 Assert.assertEquals("DONE", caseJson.findPath("stitchStatus").asText());
@@ -42,7 +42,7 @@ public class AutomatedBundlingWithCallbacks {
             System.out.println("waiting");
             i++;
         }
-        if (i >= 10) {
+        if (i >= WAIT_SECONDS) {
             Assert.fail("Status was not retrieved.");
         }
     }
@@ -61,7 +61,7 @@ public class AutomatedBundlingWithCallbacks {
                 createTriggerResponse.get("case_details").get("case_data"));
         System.out.println(finishEventResponse.toString());
         int i = 0;
-        while (i < 10) {
+        while (i < WAIT_SECONDS) {
             JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
             if (!caseJson.findPath("stitchStatus").asText().equals("null")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
@@ -72,7 +72,7 @@ public class AutomatedBundlingWithCallbacks {
             i++;
             System.out.println("waiting");
         }
-        if (i >= 10) {
+        if (i >= WAIT_SECONDS) {
             Assert.fail("Status was not retrieved.");
         }
     }

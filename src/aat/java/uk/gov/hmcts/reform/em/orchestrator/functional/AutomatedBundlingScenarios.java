@@ -1,15 +1,15 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -17,14 +17,17 @@ import static org.junit.Assert.assertTrue;
 
 public class AutomatedBundlingScenarios {
 
-    private final TestUtil testUtil = new TestUtil();
-    private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
-    private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
-    private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
+    private static final TestUtil testUtil = new TestUtil();
+    private static JsonNode validJson;
+    private static JsonNode invalidJson;
+    private static JsonNode filenameJson;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() throws Exception {
         testUtil.getCcdHelper().importCcdDefinitionFile();
+        validJson = testUtil.getCcdHelper().loadCaseFromFile("automated-case.json");
+        invalidJson = testUtil.getCcdHelper().loadCaseFromFile("invalid-automated-case.json");
+        filenameJson = testUtil.getCcdHelper().loadCaseFromFile("filename-case.json");
     }
 
     @Test
