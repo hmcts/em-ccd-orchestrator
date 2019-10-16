@@ -33,6 +33,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "FL-FRM-GOR-ENG-12345",
             true,
             true,
             true,
@@ -54,7 +55,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
@@ -76,7 +78,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
@@ -95,7 +98,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
@@ -118,7 +122,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
@@ -137,7 +142,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
@@ -156,7 +162,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-            true,
+                "FL-FRM-GOR-ENG-12345",
+                true,
             true,
             true,
             new ArrayList<>(),
