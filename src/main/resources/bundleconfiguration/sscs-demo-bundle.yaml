@@ -11,8 +11,6 @@ folders:
       filters:
       - property: /documentType
         value: Evidence
-      - property: /documentType
-        value: Response
   - name: Further Additions
     documents:
       - type: documentSet
