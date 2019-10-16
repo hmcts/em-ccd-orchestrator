@@ -279,23 +279,5 @@ public class AutomatedBundlingScenarios {
         assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
     }
 
-    @Test
-    public void testMultipleFilters() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-11-multiple-filters.yaml");
 
-        Response response = testUtil.authRequest()
-                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
-
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
-    }
 }
