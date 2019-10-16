@@ -4,6 +4,8 @@ coverpageTemplate: FL-FRM-GOR-ENG-12345
 hasTableOfContents: true
 hasCooooooooooversheets: true
 hasFolderCoversheets: true
+paginationStyle: bottomRight
+pageNumberFormat: numberOfPages
 documents:
   - type: documentSet
     property: /caseDocuments

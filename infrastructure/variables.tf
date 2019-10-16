@@ -3,6 +3,11 @@ variable "product" {
   default = "em"
 }
 
+variable "enable_ase" {
+  default = true
+}
+
+
 variable "shared_product_name" {
   default = "rpa"
 }
@@ -43,6 +48,10 @@ variable "jenkins_AAD_objectId" {
 
 variable "common_tags" {
   type = "map"
+}
+
+variable "managed_identity_object_id" {
+  default = ""
 }
 ////////////////////////////////////////////////
 //Addtional Vars ///////////////////////////////
@@ -128,16 +137,6 @@ variable "enable_s2s_healthcheck" {
     default = "false"
 }
 
-////////////////////////////////////////////////
-// Whitelists
-////////////////////////////////////////////////
-variable "s2s_names_whitelist" {
-  default = "em_api,em_gw,ccd_gw,ccd_data,sscs,divorce_document_upload,divorce_document_generator,probate_backend,jui_webapp,pui_webapp,iac,em_stitching_api"
-}
-
-variable "case_worker_roles" {
-  default = "caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce"
-}
 ////////////////////////////////////////////////
 // Toggleable Endpoints
 ////////////////////////////////////////////////
