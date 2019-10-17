@@ -3,9 +3,11 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
+@Ignore
 public class AutomatedBundlingWithCallbacks {
 
     private static final TestUtil testUtil = new TestUtil();

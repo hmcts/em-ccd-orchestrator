@@ -61,7 +61,7 @@ public class IdamHelper {
 
     public void createUser(String username, List<String> roles) {
         try {
-            System.out.println(RestAssured
+            RestAssured
                     .given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .body(mapper.writeValueAsString(CreateUserDto.builder()
@@ -71,7 +71,7 @@ public class IdamHelper {
                             .forename("x")
                             .roles(roles.stream().map(role -> new CreateUserRolesDto(role)).collect(Collectors.toList()))
                             .build()))
-                    .post(idamUrl + "/testing-support/accounts").andReturn().print());
+                    .post(idamUrl + "/testing-support/accounts");
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
