@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
 
 public class CcdCallbackDtoCreatorTest {
 
@@ -63,6 +66,8 @@ public class CcdCallbackDtoCreatorTest {
 
     @Test(expected = CantReadCcdPayloadException.class)
     public void createDtoWithEmptyMessage() throws Exception {
+        ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+        CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
@@ -74,11 +79,14 @@ public class CcdCallbackDtoCreatorTest {
 
     @Test(expected = CantReadCcdPayloadException.class)
     public void createDtoWithNull() throws Exception {
+        ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+        CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader()).thenReturn(null);
+        Mockito.when(objectMapper.readTree(any(JsonParser.class))).thenReturn(null);
+
 
         ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
     }

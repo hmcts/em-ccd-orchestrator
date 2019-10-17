@@ -30,7 +30,7 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
 
         try {
             return mapper.readValue(input, BundleConfiguration.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new BundleConfigurationException("Unable to load configuration: " + filename, e);
         }
     }
