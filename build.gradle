@@ -105,7 +105,7 @@ dependencies {
     compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
     compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: "com.vaadin.external.google", module: "android-json"
     }
