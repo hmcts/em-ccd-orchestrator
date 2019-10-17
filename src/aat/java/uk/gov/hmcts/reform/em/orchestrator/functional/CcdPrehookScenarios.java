@@ -11,8 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.testUtil;
 
 @Ignore
 public class CcdPrehookScenarios {
