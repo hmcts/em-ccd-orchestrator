@@ -83,8 +83,28 @@
             404000000
           ],
           "createdBy":"Jeroen"
-        }
-      }],
+        }},
+        {
+          "value": {
+            "documentName": "Evidence doc",
+            "documentType": "Evidence",
+            "documentLink": {
+              "document_url":"documentUrl",
+              "document_filename":"evidence.pdf",
+              "document_binary_url":"documentUrl/binary"
+            },
+            "createdDatetime":[
+              2019,
+              2,
+              7,
+              13,
+              5,
+              20,
+              404000000
+            ],
+            "createdBy":"Linus"
+          }
+        }],
       "singleDocument": {
         "documentName": "Single doc 1",
         "documentType": "Court notice",
