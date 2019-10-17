@@ -10,7 +10,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id "com.github.lkishalmi.gatling" version "3.2.9"
-    id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'io.franzbecker.gradle-lombok' version '3.2.0'
     id 'au.com.dius.pact' version '3.5.24'
 }
 
