@@ -2,20 +2,13 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
+
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
 
 public class AutomatedBundlingWithCallbacks {
 
-    private static final TestUtil testUtil = new TestUtil();
     private static final int WAIT_SECONDS = 30;
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        testUtil.getCcdHelper().initBundleTesterUser();
-        testUtil.getCcdHelper().importCcdDefinitionFile();
-    }
 
     @Test
     public void testSuccessfulAsyncStitching() throws Exception {

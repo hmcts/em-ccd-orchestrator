@@ -10,13 +10,13 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
 
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
 public class CcdStitchScenarios {
 
-    private static final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test

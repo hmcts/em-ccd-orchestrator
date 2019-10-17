@@ -6,16 +6,17 @@ import io.restassured.response.Response;
 import org.junit.*;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
 @Ignore
 public class CcdPrehookScenarios {
 
-    private static final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
 

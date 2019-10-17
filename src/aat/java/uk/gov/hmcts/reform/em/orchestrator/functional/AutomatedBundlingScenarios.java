@@ -15,9 +15,11 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
 public class AutomatedBundlingScenarios {
 
-    private static final TestUtil testUtil = new TestUtil();
+
     private static JsonNode validJson;
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
