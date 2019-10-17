@@ -36,8 +36,10 @@ public class AutomatedStitchingExecutor {
         documentTask.setCallback(callbackDto);
 
         try {
-            log.info("Starting new stitching task {}", documentTask.toString());
-            stitchingService.startStitchingTask(documentTask, jwt);
+            log.info("Creating new stitching task {}", documentTask.toString());
+            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask, jwt);
+            ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
+            log.info("Created new stitching task {}", createdDocumentTaskDTO.toString());
         } catch (IOException e) {
             log.error(String.format("Starting new stitching task - failed %s", documentTask.toString()), e);
             throw new StartStitchingException(String.format("Could not start stitching: %s", e.getMessage()), e);

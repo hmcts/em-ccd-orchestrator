@@ -26,7 +26,7 @@ public class AutomatedBundlingWithCallbacks {
         int i = 0;
         while (i < WAIT_SECONDS) {
             JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
-            if (!caseJson.findPath("stitchStatus").asText().equals("null")) {
+            if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("DONE", caseJson.findPath("stitchStatus").asText());
                 Assert.assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
                 break;
@@ -56,7 +56,7 @@ public class AutomatedBundlingWithCallbacks {
         int i = 0;
         while (i < WAIT_SECONDS) {
             JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
-            if (!caseJson.findPath("stitchStatus").asText().equals("null")) {
+            if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
                 Assert.assertEquals("Unknown file type: text/plain", caseJson.findPath("stitchingFailureMessage").asText());
                 break;

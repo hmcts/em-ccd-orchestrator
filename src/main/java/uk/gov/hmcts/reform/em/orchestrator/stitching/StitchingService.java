@@ -56,8 +56,8 @@ public class StitchingService {
         documentTask.setJwt(jwt);
 
         try {
-            final int taskId = startStitchingTask(documentTask, jwt);
-            final String response = poll(taskId, jwt);
+            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt);
+            final String response = poll(createdDocumentTaskDTO.getId(), jwt);
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
@@ -84,7 +84,7 @@ public class StitchingService {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 
-    public int startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
+    public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
@@ -97,13 +97,14 @@ public class StitchingService {
         final Response response = http.newCall(request).execute();
 
         if (response.isSuccessful()) {
-            return JsonPath.read(response.body().string(), "$.id");
+            return jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
+
         } else {
             throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
 
-    private String poll(int taskId, String jwt) throws IOException, InterruptedException {
+    private String poll(long taskId, String jwt) throws IOException, InterruptedException {
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
             .addHeader("ServiceAuthorization", authTokenGenerator.generate())

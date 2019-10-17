@@ -56,13 +56,14 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             });
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
-        bundles.add(bundleDtoToBundleJson(bundle));
 
         automatedStitchingExecutor.startStitching(
                 ccdCallbackDto.getCaseId(),
                 "asyncStitchingComplete",
                 ccdCallbackDto.getJwt(),
                 bundle);
+
+        bundles.add(bundleDtoToBundleJson(bundle));
 
         return ccdCallbackDto.getCaseData();
     }
