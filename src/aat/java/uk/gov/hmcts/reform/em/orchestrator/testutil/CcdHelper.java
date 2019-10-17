@@ -63,7 +63,7 @@ public class CcdHelper {
 
     }
 
-    public void importCcdDefinitionFile() throws Exception {
+    public synchronized void importCcdDefinitionFile() throws Exception {
 
         if (Env.isManualCcdDefFileImport()) {
             return;
@@ -212,7 +212,7 @@ public class CcdHelper {
         }
     }
 
-    public void initBundleTesterUser() {
+    public synchronized void initBundleTesterUser() {
         idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
     }
 
