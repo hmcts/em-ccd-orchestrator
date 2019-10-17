@@ -119,10 +119,11 @@ public class AutomatedBundlingScenarios {
         JsonPath responsePath = response.jsonPath();
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.documents").size());
+        assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
         assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
+        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[3].value.name"));
     }
 
     @Test
@@ -157,10 +158,11 @@ public class AutomatedBundlingScenarios {
 
         assertEquals(200, response.getStatusCode());
         assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
         assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
+        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3].value.name"));
         assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
         assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
