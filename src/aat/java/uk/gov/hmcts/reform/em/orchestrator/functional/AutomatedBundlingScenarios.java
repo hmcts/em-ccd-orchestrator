@@ -24,6 +24,8 @@ public class AutomatedBundlingScenarios {
 
     @BeforeClass
     public static void setup() throws Exception {
+        testUtil.getCcdHelper().initBundleTesterUser();
+        testUtil.getCcdHelper().importCcdDefinitionFile();
         validJson = testUtil.getCcdHelper().loadCaseFromFile("automated-case.json");
         invalidJson = testUtil.getCcdHelper().loadCaseFromFile("invalid-automated-case.json");
         filenameJson = testUtil.getCcdHelper().loadCaseFromFile("filename-case.json");
