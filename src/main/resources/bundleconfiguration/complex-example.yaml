@@ -1,0 +1,113 @@
+title: Structured and filtered bundle test
+filename: bundle.pdf
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+folders:
+  - name: Claimant Documents
+    folders:
+      - name: Claimant 1
+        folders:
+          - name: Witness Statements
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Witness Statement
+                  - property: /OwnerCaseRole
+                    value: Claimant
+                  - property: /ownerCaseRolePartyId
+                    value: 1
+          - name: Medical Reports
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Medical Report
+                  - property: /OwnerCaseRole
+                    value: Claimant
+                  - property: /ownerCaseRolePartyId
+                    value: 1
+      - name: Claimant 2
+        folders:
+          - name: Witness Statements
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Witness Statement
+                  - property: /OwnerCaseRole
+                    value: Claimant
+                  - property: /ownerCaseRolePartyId
+                    value: 2
+          -  name: Medical Reports
+             documents:
+               - type: documentSet
+                 property: /caseDocuments
+                 filter:
+                   - property: /documentType
+                     value: Medical Report
+                   - property: /OwnerCaseRole
+                     value: Claimant
+                   - property: /ownerCaseRolePartyId
+                     value: 2
+  - name: Defendant Documents
+    folders:
+      - name: Defendant 1
+        folders:
+          - name: Witness Statements
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Witness Statement
+                  - property: /OwnerCaseRole
+                    value: Defendant
+                  - property: /ownerCaseRolePartyId
+                    value: 3
+          - name: Medical Reports
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Medical Report
+                  - property: /OwnerCaseRole
+                    value: Defendant
+                  - property: /ownerCaseRolePartyId
+                    value: 3
+      - name: Defendant 2
+        folders:
+          - name: Witness Statements
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Witness Statement
+                  - property: /OwnerCaseRole
+                    value: Defendant
+                  - property: /ownerCaseRolePartyId
+                    value: 4
+          - name: Medical Reports
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Medical Report
+                  - property: /OwnerCaseRole
+                    value: Defendant
+                  - property: /ownerCaseRolePartyId
+                    value: 4
+  - name: Miscellaneous
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filter:
+          - property: /documentType
+            value: Miscellaneous
