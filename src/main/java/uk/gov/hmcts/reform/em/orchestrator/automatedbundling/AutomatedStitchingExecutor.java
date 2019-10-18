@@ -20,10 +20,16 @@ public class AutomatedStitchingExecutor {
     private final StitchingDTOMapper stitchingDTOMapper;
     private final CallbackUrlCreator callbackUrlCreator;
 
+    public static final String DEFAULT_TRIGGER_NAME  = "asyncStitchingComplete";
+
     public AutomatedStitchingExecutor(StitchingService stitchingService, StitchingDTOMapper stitchingDTOMapper, CallbackUrlCreator callbackUrlCreator) {
         this.stitchingService = stitchingService;
         this.stitchingDTOMapper = stitchingDTOMapper;
         this.callbackUrlCreator = callbackUrlCreator;
+    }
+
+    public void startStitching(String caseId, String jwt, CcdBundleDTO ccdBundleDTO) {
+        startStitching(caseId, DEFAULT_TRIGGER_NAME, jwt, ccdBundleDTO);
     }
 
     public void startStitching(String caseId, String triggerId, String jwt, CcdBundleDTO ccdBundleDTO) {
