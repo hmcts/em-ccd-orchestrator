@@ -20,10 +20,16 @@ public class AutomatedStitchingExecutor {
     private final StitchingDTOMapper stitchingDTOMapper;
     private final CallbackUrlCreator callbackUrlCreator;
 
+    public static final String DEFAULT_TRIGGER_NAME  = "asyncStitchingComplete";
+
     public AutomatedStitchingExecutor(StitchingService stitchingService, StitchingDTOMapper stitchingDTOMapper, CallbackUrlCreator callbackUrlCreator) {
         this.stitchingService = stitchingService;
         this.stitchingDTOMapper = stitchingDTOMapper;
         this.callbackUrlCreator = callbackUrlCreator;
+    }
+
+    public void startStitching(String caseId, String jwt, CcdBundleDTO ccdBundleDTO) {
+        startStitching(caseId, DEFAULT_TRIGGER_NAME, jwt, ccdBundleDTO);
     }
 
     public void startStitching(String caseId, String triggerId, String jwt, CcdBundleDTO ccdBundleDTO) {
@@ -36,8 +42,10 @@ public class AutomatedStitchingExecutor {
         documentTask.setCallback(callbackDto);
 
         try {
-            log.info("Starting new stitching task {}", documentTask.toString());
-            stitchingService.startStitchingTask(documentTask, jwt);
+            log.info("Creating new stitching task {}", documentTask.toString());
+            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask, jwt);
+            ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
+            log.info("Created new stitching task {}", createdDocumentTaskDTO.toString());
         } catch (IOException e) {
             log.error(String.format("Starting new stitching task - failed %s", documentTask.toString()), e);
             throw new StartStitchingException(String.format("Could not start stitching: %s", e.getMessage()), e);

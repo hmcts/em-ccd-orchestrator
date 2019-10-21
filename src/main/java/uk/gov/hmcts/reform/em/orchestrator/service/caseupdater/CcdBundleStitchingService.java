@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
-import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -29,13 +27,13 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     private final ObjectMapper objectMapper;
     private final JavaType type;
     private final Validator validator;
-    private final StitchingService stitchingService;
+    private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
     public CcdBundleStitchingService(ObjectMapper objectMapper,
-                                     StitchingService stitchingService,
+                                     AutomatedStitchingExecutor automatedStitchingExecutor,
                                      Validator validator) {
         this.objectMapper = objectMapper;
-        this.stitchingService = stitchingService;
+        this.automatedStitchingExecutor = automatedStitchingExecutor;
         type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
         this.validator = validator;
     }
@@ -54,7 +52,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
-                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean() ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle)
+                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
+                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto.getJwt()) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -65,23 +64,17 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) {
+    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, String jwt) {
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
 
         if (!violations.isEmpty()) {
             throw new InputValidationException(violations);
         }
 
-        try {
-            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
-            bundle.getValue().setStitchedDocument(stitchedDocumentURI);
-            bundle.getValue().setEligibleForStitchingAsBoolean(false);
+        automatedStitchingExecutor.startStitching(caseId, jwt, bundle.getValue());
+        bundle.getValue().setEligibleForStitchingAsBoolean(false);
 
-            return bundle;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new StitchingServiceException(e.getMessage(), e);
-        }
+        return bundle;
     }
 
     private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) throws IOException {

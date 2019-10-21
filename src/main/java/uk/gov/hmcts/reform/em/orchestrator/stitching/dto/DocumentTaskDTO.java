@@ -18,7 +18,7 @@ public class DocumentTaskDTO implements Serializable {
     @NotNull
     private StitchingBundleDTO  bundle;
 
-    private TaskState taskState;
+    private TaskState taskState = TaskState.NEW;
 
     private String failureDescription;
 

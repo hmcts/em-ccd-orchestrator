@@ -29,6 +29,12 @@ public class AutomatedStitchingExecutorTest {
     @Test
     public void startStitching() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
+
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.any()))
+                .thenReturn(documentTaskDTO);
+
         automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO);
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))
@@ -50,7 +56,7 @@ public class AutomatedStitchingExecutorTest {
         Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString())).thenThrow(new IOException("x"));
 
         assertThrows(StartStitchingException.class, () ->
-            automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO)
+            automatedStitchingExecutor.startStitching("1", "jwt", ccdBundleDTO)
         );
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))
