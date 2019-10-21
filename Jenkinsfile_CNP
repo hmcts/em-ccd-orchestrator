@@ -55,7 +55,7 @@ withPipeline(type , product, component) {
     loadVaultSecrets(secrets)
     installCharts()
     enableAksStagingDeployment()
-    disableLegacyDeploymentOnAAT()
+    disableLegacyDeployment()
 
     after('test') {
         sh '''
