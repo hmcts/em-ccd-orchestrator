@@ -169,7 +169,7 @@ public class CcdHelper {
                 String.format("%s/api/new-bundle", getCallbackUrl())
         );
         caseEventSheet.getRow(7).getCell(11).setCellValue(
-                String.format("%s/api/stitch-ccd-bundles", getCallbackUrl())
+                String.format("%s/api/async-stitch-ccd-bundles", getCallbackUrl())
         );
         caseEventSheet.getRow(8).getCell(11).setCellValue(
                 String.format("%s/api/clone-ccd-bundles", getCallbackUrl())
@@ -206,7 +206,8 @@ public class CcdHelper {
 
     private String getCallbackUrl() throws Exception {
         if (Env.getTestUrl().contains("localhost")) {
-            return String.format("http://%s:8080", InetAddress.getLocalHost().getHostAddress());
+            return String.format("http://%s:8080", OSValidator.isMac()
+                    ? "host.docker.internal" : InetAddress.getLocalHost().getHostAddress());
         } else {
             return Env.getTestUrl().replaceAll("https", "http");
         }
