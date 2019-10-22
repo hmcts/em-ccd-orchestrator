@@ -169,7 +169,7 @@ public class CcdHelper {
                 String.format("%s/api/new-bundle", getCallbackUrl())
         );
         caseEventSheet.getRow(7).getCell(11).setCellValue(
-                String.format("%s/api/stitch-ccd-bundles", getCallbackUrl())
+                String.format("%s/api/async-stitch-ccd-bundles", getCallbackUrl())
         );
         caseEventSheet.getRow(8).getCell(11).setCellValue(
                 String.format("%s/api/clone-ccd-bundles", getCallbackUrl())
