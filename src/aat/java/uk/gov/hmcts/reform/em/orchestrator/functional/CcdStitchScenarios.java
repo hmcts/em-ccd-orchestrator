@@ -33,7 +33,7 @@ public class CcdStitchScenarios {
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertEquals("NEW", path.getString("data.caseBundles[0].value.stitchStatus"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
     @Test
@@ -43,14 +43,14 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertEquals("NEW", path.getString("data.caseBundles[0].value.stitchStatus"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
     @Test
@@ -62,15 +62,15 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("my-file-name.pdf", path.getString("data.caseBundles[0].value.fileName"));
-        Assert.assertEquals("NEW", path.getString("data.caseBundles[0].value.stitchStatus"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
     @Test
@@ -82,9 +82,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -125,9 +125,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
