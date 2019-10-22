@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.AsyncCcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -45,6 +46,9 @@ public class CcdStitchBundleCallbackControllerTest {
 
     @MockBean
     private AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
+
+    @MockBean
+    private CcdBundleStitchingService ccdBundleStitchingService;
 
     @MockBean
     private ServiceRequestAuthorizer serviceRequestAuthorizer;
@@ -82,7 +86,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(asyncCcdBundleStitchingService, Mockito.times(1))
+                .verify(ccdBundleStitchingService, Mockito.times(1))
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
@@ -90,11 +94,71 @@ public class CcdStitchBundleCallbackControllerTest {
     public void shouldCallCcdCallbackHandlerServiceUpdateException() throws Exception {
 
         Mockito
-                .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("test message"));
 
         this.mockMvc
                 .perform(post("/api/stitch-ccd-bundles")
+                        .content("[]")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "xxx")
+                        .header("ServiceAuthorization", "xxx"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]", Matchers.is("test message")));
+
+        Mockito
+                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .updateCase(Mockito.any(CcdCallbackDto.class));
+    }
+
+    @Test
+    public void shouldCallCcdCallbackHandlerServiceInputValidationException() throws Exception {
+        Set<ConstraintViolation<CcdBundleDTO>> violations = new HashSet<>();
+
+        Mockito
+            .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+            .thenThrow(new InputValidationException(violations));
+
+        this.mockMvc
+            .perform(post("/api/stitch-ccd-bundles")
+                .content("[]")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "xxx")
+                .header("ServiceAuthorization", "xxx"))
+            .andDo(print())
+            .andExpect(status().isOk());
+
+        Mockito
+            .verify(ccdBundleStitchingService, Mockito.times(1))
+            .updateCase(Mockito.any(CcdCallbackDto.class));
+    }
+
+    @Test
+    public void shouldCallCcdCallbackHandlerServiceAsync() throws Exception {
+
+        this.mockMvc
+                .perform(post("/api/async-stitch-ccd-bundles")
+                        .content("[]")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "xxx")
+                        .header("ServiceAuthorization", "xxx"))
+                .andDo(print()).andExpect(status().isOk());
+
+        Mockito
+                .verify(asyncCcdBundleStitchingService, Mockito.times(1))
+                .updateCase(Mockito.any(CcdCallbackDto.class));
+    }
+
+    @Test
+    public void shouldCallCcdCallbackHandlerServiceUpdateExceptionAsync() throws Exception {
+
+        Mockito
+                .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .thenThrow(new RuntimeException("test message"));
+
+        this.mockMvc
+                .perform(post("/api/async-stitch-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
@@ -109,24 +173,24 @@ public class CcdStitchBundleCallbackControllerTest {
     }
 
     @Test
-    public void shouldCallCcdCallbackHandlerServiceInputValidationException() throws Exception {
+    public void shouldCallCcdCallbackHandlerServiceInputValidationExceptionAsync() throws Exception {
         Set<ConstraintViolation<CcdBundleDTO>> violations = new HashSet<>();
 
         Mockito
-            .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
-            .thenThrow(new InputValidationException(violations));
+                .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .thenThrow(new InputValidationException(violations));
 
         this.mockMvc
-            .perform(post("/api/stitch-ccd-bundles")
-                .content("[]")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "xxx")
-                .header("ServiceAuthorization", "xxx"))
-            .andDo(print())
-            .andExpect(status().isOk());
+                .perform(post("/api/async-stitch-ccd-bundles")
+                        .content("[]")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "xxx")
+                        .header("ServiceAuthorization", "xxx"))
+                .andDo(print())
+                .andExpect(status().isOk());
 
         Mockito
-            .verify(asyncCcdBundleStitchingService, Mockito.times(1))
-            .updateCase(Mockito.any(CcdCallbackDto.class));
+                .verify(asyncCcdBundleStitchingService, Mockito.times(1))
+                .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 }
