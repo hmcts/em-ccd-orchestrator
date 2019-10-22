@@ -206,7 +206,8 @@ public class CcdHelper {
 
     private String getCallbackUrl() throws Exception {
         if (Env.getTestUrl().contains("localhost")) {
-            return String.format("http://%s:8080", InetAddress.getLocalHost().getHostAddress());
+            return String.format("http://%s:8080", OSValidator.isMac()
+                    ? "host.docker.internal" : InetAddress.getLocalHost().getHostAddress());
         } else {
             return Env.getTestUrl().replaceAll("https", "http");
         }
