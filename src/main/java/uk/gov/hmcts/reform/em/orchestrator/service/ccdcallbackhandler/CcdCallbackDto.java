@@ -13,10 +13,16 @@ public class CcdCallbackDto {
 
     private JsonNode caseData;
 
+    private JsonNode caseDetails;
+
     private String jwt;
 
     public JsonNode getCaseData() {
         return caseData;
+    }
+
+    public JsonNode getCaseDetails() {
+        return caseDetails;
     }
 
     public String getJwt() {
@@ -25,6 +31,10 @@ public class CcdCallbackDto {
 
     public void setCaseData(JsonNode caseData) {
         this.caseData = caseData;
+    }
+
+    public void setCaseDetails(JsonNode caseDetails) {
+        this.caseDetails = caseDetails;
     }
 
     public void setJwt(String jwt) {

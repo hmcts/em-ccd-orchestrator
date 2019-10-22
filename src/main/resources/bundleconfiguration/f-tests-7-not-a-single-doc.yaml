@@ -1,5 +1,6 @@
 title: Functional tests bundle 7
 filename: bundle.pdf
+coverpageTemplate: FL-FRM-GOR-ENG-12345.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true

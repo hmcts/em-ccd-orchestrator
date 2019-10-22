@@ -35,6 +35,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -58,6 +59,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -82,6 +84,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -103,6 +106,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -128,6 +132,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -149,6 +154,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,
@@ -170,6 +176,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
             true,
             true,

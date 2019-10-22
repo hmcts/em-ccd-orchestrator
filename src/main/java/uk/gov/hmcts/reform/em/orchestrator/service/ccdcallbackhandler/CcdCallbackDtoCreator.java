@@ -42,6 +42,7 @@ public class CcdCallbackDtoCreator {
             throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
         }
         dto.setCaseData(dto.getCcdPayload().findValue("case_data"));
+        dto.setCaseDetails(dto.getCcdPayload().findValue("case_details"));
         dto.setPropertyName(Optional.of(propertyName));
         dto.setJwt(jwt);
         return dto;

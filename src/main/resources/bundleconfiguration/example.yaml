@@ -1,4 +1,5 @@
 title: New bundle
+coverpageTemplate: FL-FRM-GOR-ENG-12345.pdf
 hasCoversheets: true
 hasTableOfContents: true
 paginationStyle: topLeft

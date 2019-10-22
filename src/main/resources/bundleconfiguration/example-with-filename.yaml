@@ -1,5 +1,6 @@
 title: Bundle with filename
 filename: bundle.pdf
+coverpageTemplate: FL-FRM-GOR-ENG-12345.pdf
 hasTableOfContents: false
 hasCoversheets: false
 hasFolderCoversheets: true

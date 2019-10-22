@@ -21,6 +21,7 @@ public class BundleFactory {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle(configuration.title);
+        bundle.setCoverpageTemplate(configuration.coverpageTemplate);
         bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);
         bundle.setHasTableOfContentsAsBoolean(configuration.hasTableOfContents);
         bundle.setHasFolderCoversheetsAsBoolean(configuration.hasFolderCoversheets);
