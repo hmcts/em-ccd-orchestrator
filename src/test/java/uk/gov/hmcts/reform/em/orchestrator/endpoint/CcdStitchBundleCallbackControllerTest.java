@@ -17,7 +17,7 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.AsyncCcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -44,7 +44,7 @@ public class CcdStitchBundleCallbackControllerTest {
     private CcdCallbackDtoCreator ccdCallbackDtoCreator;
 
     @MockBean
-    private CcdBundleStitchingService ccdBundleStitchingService;
+    private AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
 
     @MockBean
     private ServiceRequestAuthorizer serviceRequestAuthorizer;
@@ -82,7 +82,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .verify(asyncCcdBundleStitchingService, Mockito.times(1))
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
@@ -90,7 +90,7 @@ public class CcdStitchBundleCallbackControllerTest {
     public void shouldCallCcdCallbackHandlerServiceUpdateException() throws Exception {
 
         Mockito
-                .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("test message"));
 
         this.mockMvc
@@ -104,7 +104,7 @@ public class CcdStitchBundleCallbackControllerTest {
                 .andExpect(jsonPath("$.errors[0]", Matchers.is("test message")));
 
         Mockito
-                .verify(ccdBundleStitchingService, Mockito.times(1))
+                .verify(asyncCcdBundleStitchingService, Mockito.times(1))
                 .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 
@@ -113,7 +113,7 @@ public class CcdStitchBundleCallbackControllerTest {
         Set<ConstraintViolation<CcdBundleDTO>> violations = new HashSet<>();
 
         Mockito
-            .when(ccdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
+            .when(asyncCcdBundleStitchingService.updateCase(Mockito.any(CcdCallbackDto.class)))
             .thenThrow(new InputValidationException(violations));
 
         this.mockMvc
@@ -126,7 +126,7 @@ public class CcdStitchBundleCallbackControllerTest {
             .andExpect(status().isOk());
 
         Mockito
-            .verify(ccdBundleStitchingService, Mockito.times(1))
+            .verify(asyncCcdBundleStitchingService, Mockito.times(1))
             .updateCase(Mockito.any(CcdCallbackDto.class));
     }
 }
