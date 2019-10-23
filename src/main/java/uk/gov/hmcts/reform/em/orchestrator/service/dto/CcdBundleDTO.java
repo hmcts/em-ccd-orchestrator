@@ -27,6 +27,7 @@ public class CcdBundleDTO {
     @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
     private String coverpageTemplate;
+    @JsonIgnore
     private JsonNode coverpageTemplateData;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
@@ -199,7 +200,7 @@ public class CcdBundleDTO {
     public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
         this.paginationStyle = paginationStyle;
     }
-  
+
     public PageNumberFormat getPageNumberFormat() {
         return pageNumberFormat;
     }
