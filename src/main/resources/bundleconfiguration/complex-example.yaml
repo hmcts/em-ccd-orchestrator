@@ -46,17 +46,17 @@ folders:
                     value: Claimant
                   - property: /ownerCaseRolePartyId
                     value: C2
-          -  name: Medical Reports
-             documents:
-               - type: documentSet
-                 property: /caseDocuments
-                 filter:
-                   - property: /documentType
-                     value: Medical Report
-                   - property: /ownerCaseRole
-                     value: Claimant
-                   - property: /ownerCaseRolePartyId
-                     value: C2
+          - name: Medical Reports
+            documents:
+              - type: documentSet
+                property: /caseDocuments
+                filter:
+                  - property: /documentType
+                    value: Medical Report
+                  - property: /ownerCaseRole
+                    value: Claimant
+                  - property: /ownerCaseRolePartyId
+                    value: C2
   - name: Defendant Documents
     folders:
       - name: Defendant 1
