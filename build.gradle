@@ -76,6 +76,8 @@ sourceSets {
 }
 
 dependencies {
+    aatCompileOnly 'org.projectlombok:lombok:1.18.10'
+    aatAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
     compile "com.squareup.okhttp3:okhttp:4.2.2"
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.2.2'
     compile group: "commons-io", name: "commons-io", version: "2.6"
