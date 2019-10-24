@@ -3,6 +3,8 @@ filename: bundle.pdf
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+paginationStyle: topCenter
+pageNumberFormat: numberOfPages
 folders:
   - name: Claimant Documents
     folders:
