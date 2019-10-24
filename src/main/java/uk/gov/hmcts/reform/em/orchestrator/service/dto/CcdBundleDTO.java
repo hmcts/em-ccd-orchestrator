@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 
 import javax.validation.constraints.Pattern;
@@ -25,6 +26,9 @@ public class CcdBundleDTO {
     @Size(min = 2, max = 30)
     @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
+    private String coverpageTemplate;
+    @JsonIgnore
+    private JsonNode coverpageTemplateData;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
@@ -129,6 +133,22 @@ public class CcdBundleDTO {
         this.fileName = fileName;
     }
 
+    public String getCoverpageTemplate() {
+        return coverpageTemplate;
+    }
+
+    public void setCoverpageTemplate(String coverpageTemplate) {
+        this.coverpageTemplate = coverpageTemplate;
+    }
+
+    public JsonNode getCoverpageTemplateData() {
+        return coverpageTemplateData;
+    }
+
+    public void setCoverpageTemplateData(JsonNode coverpageTemplateData) {
+        this.coverpageTemplateData = coverpageTemplateData;
+    }
+
     public CcdBoolean getHasTableOfContents() {
         return hasTableOfContents;
     }
@@ -180,7 +200,7 @@ public class CcdBundleDTO {
     public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
         this.paginationStyle = paginationStyle;
     }
-  
+
     public PageNumberFormat getPageNumberFormat() {
         return pageNumberFormat;
     }

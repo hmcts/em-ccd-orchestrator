@@ -15,6 +15,7 @@ public class BundleConfiguration {
 
     public final String title;
     public final String filename;
+    public final String coverpageTemplate;
     public final PageNumberFormat pageNumberFormat;
     public final boolean hasTableOfContents;
     public final boolean hasCoversheets;
@@ -25,6 +26,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
+                               @JsonProperty("coverpageTemplate") String coverpageTemplate,
                                @JsonProperty("pageNumberFormat") PageNumberFormat pageNumberFormat,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
@@ -34,6 +36,7 @@ public class BundleConfiguration {
                                @JsonProperty("paginationStyle") CcdBundlePaginationStyle paginationStyle) {
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
+        this.coverpageTemplate = coverpageTemplate == null ? "" : coverpageTemplate;
         this.pageNumberFormat = pageNumberFormat;
         this.hasTableOfContents = hasTableOfContents;
         this.hasCoversheets = hasCoversheets;

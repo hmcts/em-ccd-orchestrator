@@ -1,5 +1,6 @@
 title: Functional tests bundle 9
 filename: bundle.pdf
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
