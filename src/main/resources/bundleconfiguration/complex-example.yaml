@@ -16,10 +16,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Witness Statement
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Claimant
                   - property: /ownerCaseRolePartyId
-                    value: 1
+                    value: C1
           - name: Medical Reports
             documents:
               - type: documentSet
@@ -27,10 +27,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Medical Report
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Claimant
                   - property: /ownerCaseRolePartyId
-                    value: 1
+                    value: C1
       - name: Claimant 2
         folders:
           - name: Witness Statements
@@ -40,10 +40,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Witness Statement
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Claimant
                   - property: /ownerCaseRolePartyId
-                    value: 2
+                    value: C2
           -  name: Medical Reports
              documents:
                - type: documentSet
@@ -51,10 +51,10 @@ folders:
                  filter:
                    - property: /documentType
                      value: Medical Report
-                   - property: /OwnerCaseRole
+                   - property: /ownerCaseRole
                      value: Claimant
                    - property: /ownerCaseRolePartyId
-                     value: 2
+                     value: C2
   - name: Defendant Documents
     folders:
       - name: Defendant 1
@@ -66,10 +66,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Witness Statement
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Defendant
                   - property: /ownerCaseRolePartyId
-                    value: 3
+                    value: D1
           - name: Medical Reports
             documents:
               - type: documentSet
@@ -77,10 +77,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Medical Report
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Defendant
                   - property: /ownerCaseRolePartyId
-                    value: 3
+                    value: D1
       - name: Defendant 2
         folders:
           - name: Witness Statements
@@ -90,10 +90,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Witness Statement
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Defendant
                   - property: /ownerCaseRolePartyId
-                    value: 4
+                    value: D2
           - name: Medical Reports
             documents:
               - type: documentSet
@@ -101,10 +101,10 @@ folders:
                 filter:
                   - property: /documentType
                     value: Medical Report
-                  - property: /OwnerCaseRole
+                  - property: /ownerCaseRole
                     value: Defendant
                   - property: /ownerCaseRolePartyId
-                    value: 4
+                    value: D2
   - name: Miscellaneous
     documents:
       - type: documentSet
