@@ -11,7 +11,7 @@ plugins {
     id 'pmd'
     id "com.github.lkishalmi.gatling" version "3.2.9"
     id 'io.franzbecker.gradle-lombok' version '3.2.0'
-    id 'au.com.dius.pact' version '3.5.24'
+    id 'au.com.dius.pact' version '4.0.1'
 }
 
 apply plugin: 'java'
