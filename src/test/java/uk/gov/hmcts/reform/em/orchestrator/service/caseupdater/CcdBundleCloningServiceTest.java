@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,9 +64,9 @@ public class CcdBundleCloningServiceTest {
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
 
         Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
-        
+
         ccdBundleCloningService.updateCase(ccdCallbackDto);
-        
+
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
         CcdBundleDTO updatedFirstBundle = getIthBundleDto(updatedBundles, 0);
         CcdBundleDTO updatedSecondBundle = getIthBundleDto(updatedBundles, 1);
