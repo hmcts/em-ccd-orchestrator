@@ -15,7 +15,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Witness Statement
                   - property: /ownerCaseRole
@@ -26,7 +26,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Medical Report
                   - property: /ownerCaseRole
@@ -39,7 +39,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Witness Statement
                   - property: /ownerCaseRole
@@ -50,7 +50,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Medical Report
                   - property: /ownerCaseRole
@@ -65,7 +65,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Witness Statement
                   - property: /ownerCaseRole
@@ -76,7 +76,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Medical Report
                   - property: /ownerCaseRole
@@ -89,7 +89,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Witness Statement
                   - property: /ownerCaseRole
@@ -100,7 +100,7 @@ folders:
             documents:
               - type: documentSet
                 property: /caseDocuments
-                filter:
+                filters:
                   - property: /documentType
                     value: Medical Report
                   - property: /ownerCaseRole
@@ -111,6 +111,6 @@ folders:
     documents:
       - type: documentSet
         property: /caseDocuments
-        filter:
+        filters:
           - property: /documentType
             value: Miscellaneous
