@@ -54,7 +54,11 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
-                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean() ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle)
+                    .map(bundle -> {
+                        bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
+                        return bundle.getValue().getEligibleForStitchingAsBoolean()
+                            ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle;
+                    })
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
