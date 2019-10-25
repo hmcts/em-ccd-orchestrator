@@ -55,7 +55,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .map(bundle -> {
                         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
                         return bundle.getValue().getEligibleForStitchingAsBoolean()
-                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto.getJwt()) : bundle;
+                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle;
                     })
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
@@ -67,14 +67,15 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, String jwt) {
+    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
+        bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
 
         if (!violations.isEmpty()) {
             throw new InputValidationException(violations);
         }
 
-        automatedStitchingExecutor.startStitching(caseId, jwt, bundle.getValue());
+        automatedStitchingExecutor.startStitching(caseId, ccdCallbackDto.getJwt(), bundle.getValue());
         bundle.getValue().setEligibleForStitchingAsBoolean(false);
 
         return bundle;
