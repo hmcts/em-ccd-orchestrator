@@ -3,11 +3,6 @@ variable "product" {
   default = "em"
 }
 
-variable "enable_ase" {
-  default = true
-}
-
-
 variable "shared_product_name" {
   default = "rpa"
 }
