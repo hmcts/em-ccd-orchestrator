@@ -22,6 +22,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 @Service
 @Transactional
+@SuppressWarnings("all")
 public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
 
     private final ObjectMapper objectMapper;
