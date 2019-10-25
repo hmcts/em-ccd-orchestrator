@@ -25,7 +25,7 @@ module "app" {
   common_tags  = "${var.common_tags}"
   asp_rg = "${var.shared_product_name}-${var.env}"
   asp_name = "${var.shared_product_name}-bundling-${var.env}"
-  enable_ase                      = "${var.enable_ase}"
+  enable_ase                      = false
 
   app_settings = {
     # JAVA_OPTS = "${var.java_opts}"
