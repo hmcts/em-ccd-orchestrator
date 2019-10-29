@@ -1,0 +1,10 @@
+title: New bundle
+filename: bundle.pdf
+hasCoversheets: true
+hasTableOfContents: true
+documents:
+  - type: documentSet
+    property: /caseDocuments
+    filters:
+      - property: /documentName
+        value: Document 1

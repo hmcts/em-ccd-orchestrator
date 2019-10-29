@@ -5,8 +5,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 
 public interface CcdCaseUpdater {
 
-    boolean handles(CcdCallbackDto ccdCallbackDto);
-
     JsonNode updateCase(CcdCallbackDto ccdCallbackDto);
 
 }

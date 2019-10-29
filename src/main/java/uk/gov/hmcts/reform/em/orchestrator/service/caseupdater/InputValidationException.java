@@ -8,7 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InputValidationException extends RuntimeException {
-    public final List<String> violations;
+
+    private final List<String> violations;
 
     public InputValidationException(Set<ConstraintViolation<CcdBundleDTO>> violations) {
         super("Bundle input validation error");
@@ -16,5 +17,9 @@ public class InputValidationException extends RuntimeException {
         this.violations = violations.stream()
             .map(v -> v.getMessage())
             .collect(Collectors.toList());
+    }
+
+    public List<String> getViolations() {
+        return this.violations;
     }
 }
