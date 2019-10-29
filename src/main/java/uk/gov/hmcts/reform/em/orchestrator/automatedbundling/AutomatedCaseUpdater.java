@@ -11,11 +11,14 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
+import java.util.Optional;
+
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
+    private static final String DEFAULT_CONFIG = "default-config.yuaml";
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
@@ -31,21 +34,15 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         this.automatedStitchingExecutor = automatedStitchingExecutor;
     }
 
-    @Override
-    public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        JsonNode caseData =  ccdCallbackDto.getCaseData();
-        return (caseData.has(CONFIG_FIELD)
-                && caseData.get(CONFIG_FIELD) != null
-                && !caseData.get(CONFIG_FIELD).asText().isEmpty());
-    }
-
     /**
      * Load the configuration file then add a new bundle to the case data based on that configuration. If an error occurs
      * during loading or processing the original case data will be returned with errors
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String configurationName = ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText();
+        String configurationName = Optional.ofNullable(
+                ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText())
+                .orElse(DEFAULT_CONFIG);
         BundleConfiguration configuration = configurationLoader.load(configurationName);
         ArrayNode bundles = ccdCallbackDto
             .findCaseProperty(ArrayNode.class)

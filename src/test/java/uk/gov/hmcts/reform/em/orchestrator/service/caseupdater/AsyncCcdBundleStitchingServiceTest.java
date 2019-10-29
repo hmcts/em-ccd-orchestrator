@@ -18,7 +18,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,11 +60,6 @@ public class AsyncCcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
 
         asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
-    }
-
-    @Test
-    public void testHandles() {
-        assertFalse(asyncCcdBundleStitchingService.handles(null));
     }
 
     @Test(expected = StitchingServiceException.class)

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CcdBundleCloningService {
+public class CcdBundleCloningService implements CcdCaseUpdater {
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -25,6 +25,7 @@ public class CcdBundleCloningService {
         type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
     }
 
+    @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);

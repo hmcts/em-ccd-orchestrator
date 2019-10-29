@@ -39,11 +39,6 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
     }
 
     @Override
-    public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return false;
-    }
-
-    @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 

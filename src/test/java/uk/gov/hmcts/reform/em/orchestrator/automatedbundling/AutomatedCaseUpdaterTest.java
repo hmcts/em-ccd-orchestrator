@@ -56,52 +56,6 @@ public class AutomatedCaseUpdaterTest {
         );
     }
 
-    @Test
-    public void handles() throws IOException {
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"b\"}}}")
-                )
-            );
-
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
-
-        assertTrue(updater.handles(ccdCallbackDto));
-    }
-
-    @Test
-    public void doesNotHandleWithOutBundleConfigValue() throws IOException {
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-                .thenReturn(
-                        new BufferedReader(
-                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"\"}}}")
-                        ));
-
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
-
-        assertFalse(updater.handles(ccdCallbackDto));
-    }
-
-    @Test
-    public void doesNotHandle() throws IOException {
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")
-                )
-            );
-
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
-
-        assertFalse(updater.handles(ccdCallbackDto));
-    }
 
     @Test
     public void updateCase() throws IOException {

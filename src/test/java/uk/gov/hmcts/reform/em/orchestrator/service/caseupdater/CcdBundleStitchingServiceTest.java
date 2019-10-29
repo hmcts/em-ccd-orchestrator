@@ -22,10 +22,9 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CcdBundleStitchingServiceTest {
@@ -86,11 +85,6 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt("jwt");
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
-    }
-
-    @Test
-    public void testHandles() {
-        assertFalse(ccdBundleStitchingService.handles(null));
     }
 
     @Test(expected = StitchingServiceException.class)
