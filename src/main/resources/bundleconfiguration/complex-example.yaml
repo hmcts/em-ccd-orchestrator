@@ -1,6 +1,6 @@
 title: Structured and filtered bundle test
 filename: bundle.pdf
-coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+coverpageTemplate: CC-EDM-GOR-ENG-12345.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
