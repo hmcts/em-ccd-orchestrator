@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
-    private static final String DEFAULT_CONFIG = "default-config.yuaml";
+    private static final String DEFAULT_CONFIG = "default-config.yaml";
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
