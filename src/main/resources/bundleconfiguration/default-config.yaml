@@ -6,5 +6,5 @@ documents:
   - type: documentSet
     property: /caseDocuments
     filters:
-      - property: /name
+      - property: /documentName
         value: Document 1
