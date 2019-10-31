@@ -1,5 +1,4 @@
 dependencies:
   - name: java
-    version: '~2.10.0'
+    version: '~2.11.2'
     repository: '@hmctspublic'
-    alias: ccd-orchestrator

@@ -1,4 +1,4 @@
-ccd-orchestrator:
+java:
   applicationPort: 8080
   image: hmcts.azurecr.io/hmcts/em-ccd-orchestrator:latest
   readinessDelay: 40

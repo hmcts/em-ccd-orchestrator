@@ -1,4 +1,4 @@
-ccd-orchestrator:
+java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
   # Don't modify below here
