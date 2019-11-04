@@ -8,7 +8,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
 
 public class AutomatedBundlingWithCallbacks {
 
-    private static final int WAIT_SECONDS = 30;
+    private static final int WAIT_SECONDS = 60;
 
     @Test
     public void testSuccessfulAsyncStitching() throws Exception {
