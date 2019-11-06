@@ -7,13 +7,19 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.springframework.http.MediaType;
 
-import java.io.*;
-import java.net.InetAddress;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -206,7 +212,7 @@ public class CcdHelper {
 
     private String getCallbackUrl() throws Exception {
         if (Env.getTestUrl().contains("localhost")) {
-            return String.format("http://%s:8080", InetAddress.getLocalHost().getHostAddress());
+            return String.format("http://%s:8080", "host.docker.internal");
         } else {
             return Env.getTestUrl().replaceAll("https", "http");
         }
