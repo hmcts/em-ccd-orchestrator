@@ -18,11 +18,12 @@ java:
         - microservicekey-em-ccd-orchestrator
   environment:
     # Regardless of environment, point towards AAT instances. Overwrite in product charts etc.
-    IDAM_API_BASE_URI: https://idam-api.aat.platform.hmcts.net
-    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
-    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
-    CCD_DATA_API_URL: http://ccd-data-store-api-aat.service.core-compute-aat.internal
+    IDAM_API_BASE_URI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    S2S_BASE_URI: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    EM_STITCHING_API_URL: http://em-stitching-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    DM_STORE_APP_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CCD_DATA_API_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CALLBACK_DOMAIN: em-ccd-orchestrator-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
     REFORM_SERVICE_NAME: em-ccd-orchestrator
     REFORM_TEAM: evidence
