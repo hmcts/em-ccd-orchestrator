@@ -1,8 +1,11 @@
 title: Functional tests bundle 3
 filename: bundle.pdf
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+paginationStyle: bottomRight
+pageNumberFormat: pageRange
 folders:
   - name: Folder 1
     documents:

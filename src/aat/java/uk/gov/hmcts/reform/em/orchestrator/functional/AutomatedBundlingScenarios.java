@@ -1,25 +1,35 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
 public class AutomatedBundlingScenarios {
 
-    private final TestUtil testUtil = new TestUtil();
-    private final File validJson = new File(ClassLoader.getSystemResource("automated-case.json").getPath());
-    private final File invalidJson = new File(ClassLoader.getSystemResource("invalid-automated-case.json").getPath());
-    private final File filenameJson = new File(ClassLoader.getSystemResource("filename-case.json").getPath());
+
+    private static JsonNode validJson;
+    private static JsonNode invalidJson;
+    private static JsonNode filenameJson;
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        validJson = testUtil.getCcdHelper().loadCaseFromFile("automated-case.json");
+        invalidJson = testUtil.getCcdHelper().loadCaseFromFile("invalid-automated-case.json");
+        filenameJson = testUtil.getCcdHelper().loadCaseFromFile("filename-case.json");
+    }
 
     @Test
     public void testCreateBundle() {
@@ -111,10 +121,11 @@ public class AutomatedBundlingScenarios {
         JsonPath responsePath = response.jsonPath();
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.documents").size());
+        assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
         assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
         assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.documents[3].value.name"));
     }
 
     @Test
@@ -149,10 +160,11 @@ public class AutomatedBundlingScenarios {
 
         assertEquals(200, response.getStatusCode());
         assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
         assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
         assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3].value.name"));
         assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
         assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
@@ -268,5 +280,25 @@ public class AutomatedBundlingScenarios {
                 .request("POST", Env.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
+    }
+
+    @Test
+    public void testMultipleFilters() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "f-tests-11-multiple-filters.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders").size());
+        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
+        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
     }
 }

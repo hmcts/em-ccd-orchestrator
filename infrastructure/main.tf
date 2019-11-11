@@ -25,6 +25,7 @@ module "app" {
   common_tags  = "${var.common_tags}"
   asp_rg = "${var.shared_product_name}-${var.env}"
   asp_name = "${var.shared_product_name}-bundling-${var.env}"
+  enable_ase                      = false
 
   app_settings = {
     # JAVA_OPTS = "${var.java_opts}"
@@ -62,12 +63,19 @@ module "app" {
     ENDPOINTS_HEALTH_SENSITIVE = "${var.endpoints_health_sensitive}"
     ENDPOINTS_INFO_SENSITIVE = "${var.endpoints_info_sensitive}"
 
-    S2S_NAMES_WHITELIST = "${var.s2s_names_whitelist}"
-    CASE_WORKER_ROLES = "${var.case_worker_roles}"
-
     # Toggles
     ENABLE_IDAM_HEALTH_CHECK = "${var.enable_idam_healthcheck}"
     ENABLE_S2S_HEALTH_CHECK = "${var.enable_s2s_healthcheck}"
+
+    CALLBACK_HTTP_SCHEME = "http"
+    CALLBACK_HTTP_HOST_PORT = "80"
+    CALLBACK_DOMAIN = "em-ccd-orchestrator-${local.local_env}.service.core-compute-${local.local_env}.internal"
+
+    CCD_DATA_API_URL = "http://${var.ccd_data_store_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
+
+    ENABLE_STITCHING_COMPLETE_CALLBACK="${var.enable_stitching_complete_callback}"
+    managed_identity_object_id = "${var.managed_identity_object_id}"
+
   }
 }
 
@@ -75,9 +83,14 @@ provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
+data "azurerm_key_vault" "s2s_vault" {
+  name = "s2s-${local.local_env}"
+  resource_group_name = "rpe-service-auth-provider-${local.local_env}"
+}
+
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-em-ccd-orchestrator"
-  vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
+  key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
 data "azurerm_key_vault" "shared_key_vault" {
@@ -86,7 +99,7 @@ data "azurerm_key_vault" "shared_key_vault" {
 }
 
 module "local_key_vault" {
-  source = "git@github.com:hmcts/moj-module-key-vault?ref=master"
+  source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
   product = "${local.app_full_name}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
@@ -94,5 +107,17 @@ module "local_key_vault" {
   resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${var.common_tags}"
-  name = "em-ccdorc-${var.env}"
+  managed_identity_object_id = "${var.managed_identity_object_id}"
+}
+
+# Copy s2s key from shared to local vault
+data "azurerm_key_vault" "local_key_vault" {
+  name = "${module.local_key_vault.key_vault_name}"
+  resource_group_name = "${module.local_key_vault.key_vault_name}"
+}
+
+resource "azurerm_key_vault_secret" "local_s2s_key" {
+  name         = "microservicekey-em-ccd-orchestrator"
+  value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
+  key_vault_id = "${data.azurerm_key_vault.local_key_vault.id}"
 }

@@ -44,6 +44,10 @@ variable "jenkins_AAD_objectId" {
 variable "common_tags" {
   type = "map"
 }
+
+variable "managed_identity_object_id" {
+  default = ""
+}
 ////////////////////////////////////////////////
 //Addtional Vars ///////////////////////////////
 ////////////////////////////////////////////////
@@ -76,6 +80,11 @@ variable "em_stitching_api_url" {
 variable "em_ccd_orchestrator_url" {
   default = "em-ccd-orchestrator"
 }
+
+variable "ccd_data_store_api_url" {
+  default = "ccd-data-store-api"
+}
+
 
 ////////////////////////////////////////////////
 // Logging
@@ -124,14 +133,10 @@ variable "enable_s2s_healthcheck" {
 }
 
 ////////////////////////////////////////////////
-// Whitelists
+// Toggleable Endpoints
 ////////////////////////////////////////////////
-variable "s2s_names_whitelist" {
-  default = "em_api,em_gw,ccd_gw,ccd_data,sscs,divorce_document_upload,divorce_document_generator,probate_backend,jui_webapp,pui_webapp,iac"
-}
-
-variable "case_worker_roles" {
-  default = "caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce"
+variable "enable_stitching_complete_callback" {
+  default = "true"
 }
 ////////////////////////////////////////////////
 // Addtional

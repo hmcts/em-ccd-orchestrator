@@ -3,8 +3,12 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -17,53 +21,41 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AutomatedCaseUpdaterTest {
 
-    private final AutomatedCaseUpdater updater = new AutomatedCaseUpdater(
+    @Mock
+    private AutomatedStitchingExecutor automatedStitchingExecutor;
+
+    private AutomatedCaseUpdater updater = new AutomatedCaseUpdater(
         new LocalConfigurationLoader(
             new ObjectMapper(
                 new YAMLFactory()
             )
         ),
         new ObjectMapper(),
-        new BundleFactory()
+        new BundleFactory(),
+        automatedStitchingExecutor
     );
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(
         new ObjectMapper()
     );
 
-    @Test
-    public void handles() throws IOException {
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"b\"}}}")
-                )
-            );
-
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
-
-        assertTrue(updater.handles(ccdCallbackDto));
+    @Before
+    public void setup() {
+        updater = new AutomatedCaseUpdater(
+            new LocalConfigurationLoader(
+                    new ObjectMapper(
+                            new YAMLFactory()
+                    )
+            ),
+            new ObjectMapper(),
+            new BundleFactory(),
+            automatedStitchingExecutor
+        );
     }
 
-    @Test
-    public void doesNotHandle() throws IOException {
-        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")
-                )
-            );
-
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
-
-        assertFalse(updater.handles(ccdCallbackDto));
-    }
 
     @Test
     public void updateCase() throws IOException {

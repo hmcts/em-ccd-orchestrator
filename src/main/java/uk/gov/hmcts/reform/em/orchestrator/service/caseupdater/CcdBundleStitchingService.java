@@ -41,11 +41,6 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     }
 
     @Override
-    public boolean handles(CcdCallbackDto ccdCallbackDto) {
-        return false;
-    }
-
-    @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 
@@ -54,7 +49,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
-                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean() ? this.stitchBundle(bundle, ccdCallbackDto.getJwt()) : bundle)
+                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
+                            ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -65,7 +61,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, String jwt) {
+    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
+        bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
 
         if (!violations.isEmpty()) {
@@ -73,13 +70,12 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         try {
-            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), jwt);
+            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), ccdCallbackDto.getJwt());
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
             bundle.getValue().setEligibleForStitchingAsBoolean(false);
 
             return bundle;
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new StitchingServiceException(e.getMessage(), e);
         }

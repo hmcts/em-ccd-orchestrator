@@ -8,8 +8,10 @@ import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +35,14 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            CcdBundlePaginationStyle.off
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -54,6 +59,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -61,7 +68,8 @@ public class BundleFactoryTest {
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocument("/folder/document")
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -76,6 +84,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -83,7 +93,8 @@ public class BundleFactoryTest {
             Arrays.asList(
                 new BundleConfigurationDocument("/does not exist"),
                 new BundleConfigurationDocument("/folder/document")
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -95,6 +106,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -102,7 +115,8 @@ public class BundleFactoryTest {
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -118,6 +132,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -125,7 +141,8 @@ public class BundleFactoryTest {
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/does not exist", Collections.emptyList())
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -137,6 +154,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -144,7 +163,8 @@ public class BundleFactoryTest {
             Arrays.asList(
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/document1", Collections.emptyList())
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -156,6 +176,8 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
             true,
             true,
             true,
@@ -166,7 +188,8 @@ public class BundleFactoryTest {
                     new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yesPlease"),
                     new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
                 ))
-            )
+            ),
+            CcdBundlePaginationStyle.off
         );
 
         JsonNode json = mapper.readTree(case3Json);

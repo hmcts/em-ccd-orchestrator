@@ -10,13 +10,13 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
 
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
 public class CcdStitchScenarios {
 
-    private final TestUtil testUtil = new TestUtil();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -43,9 +43,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -62,9 +62,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -82,9 +82,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -92,6 +92,28 @@ public class CcdStitchScenarios {
         Assert.assertEquals("1234567890123456789012345678901%.pdf", path.getString("data.caseBundles[0].value.fileName"));
         Assert.assertNotNull(path.getString("errors[0]"));
         Assert.assertNotNull(path.getString("errors[1]"));
+    }
+
+    @Test
+    public void testLongBundleDescriptionErrors() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+
+        StringBuilder sample = new StringBuilder();
+        for (int i = 0; i < 300; i++) {
+            sample.append("y");
+        }
+        bundle.setDescription(sample.toString());
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+
+        JsonPath path = response.getBody().jsonPath();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertNotNull(path.getString("errors[0]"));
     }
 
     @Test
@@ -103,9 +125,9 @@ public class CcdStitchScenarios {
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());

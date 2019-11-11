@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -16,9 +15,8 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackHandlerService;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedCaseUpdater;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
@@ -26,7 +24,6 @@ import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -34,10 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class NewBundleControllerTest {
     @MockBean
-    private CcdCallbackDtoCreator ccdCallbackDtoCreator;
-
-    @MockBean
-    private CcdCallbackHandlerService ccdCallbackHandlerService;
+    private DefaultUpdateCaller defaultUpdateCaller;
 
     @MockBean
     private ServiceRequestAuthorizer serviceRequestAuthorizer;
@@ -59,10 +53,6 @@ public class NewBundleControllerTest {
                 .when(userRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new User("john", Stream.of("caseworker").collect(Collectors.toSet())));
 
-        Mockito
-                .when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
-                .thenReturn(new CcdCallbackDto());
-
         this.mockMvc
                 .perform(post("/api/new-bundle")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,42 +61,8 @@ public class NewBundleControllerTest {
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCcdCallback(Mockito.any(CcdCallbackDto.class));
+                .verify(defaultUpdateCaller, Mockito.times(1))
+                .executeUpdate(Mockito.any(AutomatedCaseUpdater.class), Mockito.any(HttpServletRequest.class));
     }
-
-    @Test
-    public void shouldCallCcdCallbackHandlerServiceUpdateException() throws Exception {
-
-        Mockito
-                .when(serviceRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
-                .thenReturn(new Service("ccd"));
-
-        Mockito
-                .when(userRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
-                .thenReturn(new User("john", Stream.of("caseworker").collect(Collectors.toSet())));
-
-        Mockito
-                .when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
-                .thenReturn(new CcdCallbackDto());
-
-        Mockito
-                .when(ccdCallbackHandlerService.handleCcdCallback(Mockito.any(CcdCallbackDto.class)))
-                .thenThrow(new RuntimeException("test message"));
-
-        this.mockMvc
-                .perform(post("/api/new-bundle")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]", Matchers.is("test message")));
-
-        Mockito
-                .verify(ccdCallbackHandlerService, Mockito.times(1))
-                .handleCcdCallback(Mockito.any(CcdCallbackDto.class));
-    }
-
 
 }

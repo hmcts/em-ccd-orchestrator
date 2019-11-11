@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Objects;
 /**
  * A DTO for the DocumentTask entity.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DocumentTaskDTO implements Serializable {
 
     private Long id;
@@ -16,9 +18,11 @@ public class DocumentTaskDTO implements Serializable {
     @NotNull
     private StitchingBundleDTO  bundle;
 
-    private TaskState taskState;
+    private TaskState taskState = TaskState.NEW;
 
     private String failureDescription;
+
+    private CallbackDto callback;
 
     @JsonIgnore
     private String jwt;
@@ -79,18 +83,23 @@ public class DocumentTaskDTO implements Serializable {
         return Objects.equals(getId(), documentTaskDTO.getId());
     }
 
+    public CallbackDto getCallback() {
+        return callback;
+    }
+
+    public void setCallback(CallbackDto callback) {
+        this.callback = callback;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }
 
-    @Override
+
     public String toString() {
-        return "DocumentTaskDTO{"
-                + "id=" + getId()
-                + ", bundle='" + getBundle() + "'"
-                + ", taskState='" + getTaskState() + "'"
-                + ", failureDescription='" + getFailureDescription() + "'"
-                + "}";
+        return "DocumentTaskDTO(id=" + this.getId() + ", bundle=" + this.getBundle()
+                + ", taskState=" + this.getTaskState() + ", failureDescription=" + this.getFailureDescription()
+                + ", callback=" + this.getCallback() + ", jwt=" + this.getJwt() + ")";
     }
 }

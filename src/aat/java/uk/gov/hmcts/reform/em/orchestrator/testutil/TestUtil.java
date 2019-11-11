@@ -11,11 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TestUtil {
 
     private final String idamAuth;
     private final String s2sAuth;
+    private final CcdHelper ccdHelper;
 
     public TestUtil() {
         IdamHelper idamHelper = new IdamHelper(
@@ -27,20 +29,24 @@ public class TestUtil {
 
         S2sHelper s2sHelper = new S2sHelper(
             Env.getS2sUrl(),
-            Env.getS2sSecret(),
-            Env.getS2sMicroservice()
+            Env.getEmGwS2sSecret(),
+            Env.getEmGwS2sMicroservice(),
+            Env.getCcdGwS2sSecret(),
+            Env.getCcdGwS2sMicroservice()
         );
+
+        ccdHelper = new CcdHelper(idamHelper, s2sHelper);
 
         RestAssured.useRelaxedHTTPSValidation();
 
         idamAuth = idamHelper.getIdamToken();
-        s2sAuth = s2sHelper.getS2sToken();
+        s2sAuth = s2sHelper.getEmGwS2sToken();
     }
 
-    public String uploadDocument(String pdfName) {
+    public String uploadDocument(String fileName, String mimeType) {
         String url = s2sAuthRequest()
             .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
-            .multiPart("files", "test.pdf", ClassLoader.getSystemResourceAsStream(pdfName), "application/pdf")
+            .multiPart("files", fileName, ClassLoader.getSystemResourceAsStream(fileName), mimeType)
             .multiPart("classification", "PUBLIC")
             .request("POST", Env.getDmApiUrl() + "/documents")
             .getBody()
@@ -53,7 +59,7 @@ public class TestUtil {
     }
 
     public String uploadDocument() {
-        return uploadDocument("annotationTemplate.pdf");
+        return uploadDocument("annotationTemplate.pdf", "application/pdf");
     }
 
     public RequestSpecification s2sAuthRequest() {
@@ -69,7 +75,7 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setId(2L);
+        bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle("Bundle title");
         bundle.setDescription("Test bundle");
         bundle.setEligibleForStitchingAsBoolean(true);
@@ -151,6 +157,11 @@ public class TestUtil {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, StandardCharsets.US_ASCII);
     }
+
+    public CcdHelper getCcdHelper() {
+        return ccdHelper;
+    }
+
 
 }
 

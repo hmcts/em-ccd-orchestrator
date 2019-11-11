@@ -43,7 +43,7 @@ info:
 
 authorization:
   case-worker-roles: ${CASE_WORKER_ROLES:caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce,caseworker-ia}
-  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac}
+  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api}
 
 auth:
   idam:
@@ -79,3 +79,17 @@ idam:
     url: ${S2S_BASE_URI:http://localhost:4502}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
+
+callbackUrlCreator:
+  scheme: ${CALLBACK_HTTP_SCHEME:http}
+  host: ${CALLBACK_DOMAIN:host.docker.internal} # SERVER_NAME is the domain injected by the Azure
+  port: ${CALLBACK_HTTP_HOST_PORT:8080}
+
+ccd:
+  data:
+    api:
+      url: ${CCD_DATA_API_URL:http://localhost:4452}
+
+
+endpoint-toggles:
+  stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}

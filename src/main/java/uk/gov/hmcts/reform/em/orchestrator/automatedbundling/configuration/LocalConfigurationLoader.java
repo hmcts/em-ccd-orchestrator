@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -30,8 +29,7 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
 
         try {
             return mapper.readValue(input, BundleConfiguration.class);
-        }
-        catch (IOException e) {
+        } catch (Exception e) {
             throw new BundleConfigurationException("Unable to load configuration: " + filename, e);
         }
     }

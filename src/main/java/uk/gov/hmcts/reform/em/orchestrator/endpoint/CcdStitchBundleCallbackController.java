@@ -1,30 +1,26 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.AsyncCcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 @Controller
 public class CcdStitchBundleCallbackController {
 
-    private final Logger log = LoggerFactory.getLogger(CcdStitchBundleCallbackController.class);
-
-    private final CcdCallbackDtoCreator ccdCallbackDtoCreator;
+    private final DefaultUpdateCaller defaultUpdateCaller;
+    private final AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
     private final CcdBundleStitchingService ccdBundleStitchingService;
 
-    public CcdStitchBundleCallbackController(CcdCallbackDtoCreator ccdCallbackDtoCreator, CcdBundleStitchingService ccdBundleStitchingService) {
-        this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
+    public CcdStitchBundleCallbackController(DefaultUpdateCaller defaultUpdateCaller, AsyncCcdBundleStitchingService asyncCcdBundleStitchingService, CcdBundleStitchingService ccdBundleStitchingService) {
+        this.defaultUpdateCaller = defaultUpdateCaller;
+        this.asyncCcdBundleStitchingService = asyncCcdBundleStitchingService;
         this.ccdBundleStitchingService = ccdBundleStitchingService;
     }
 
@@ -32,20 +28,16 @@ public class CcdStitchBundleCallbackController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
-        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(ccdCallbackDto.getCaseData());
-
-        try {
-            ccdCallbackResponseDto.setData(ccdBundleStitchingService.updateCase(ccdCallbackDto));
-        } catch (InputValidationException e) {
-            log.error(e.getMessage(), e);
-            ccdCallbackResponseDto.getErrors().addAll(e.violations);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            ccdCallbackResponseDto.getErrors().add(e.getMessage());
-        }
-
-        return ResponseEntity.ok(ccdCallbackResponseDto);
+        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request));
     }
+
+    @PostMapping(value = "/api/async-stitch-ccd-bundles",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CcdCallbackResponseDto> asyncStitchCcdBundles(HttpServletRequest request) {
+        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(asyncCcdBundleStitchingService, request));
+    }
+
+
 
 }

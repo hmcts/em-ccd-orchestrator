@@ -1,4 +1,4 @@
-ccd-orchestrator:
+java:
   applicationPort: 8080
   image: hmcts.azurecr.io/hmcts/em-ccd-orchestrator:latest
   readinessDelay: 40
@@ -9,21 +9,21 @@ ccd-orchestrator:
   livenessTimeout: 5
   livenessPeriod: 15
   livenessFailureThreshold: 10
+  aadIdentityName: em
   keyVaults:
-    rpa:
-      resourceGroup: rpa
+    em-ccd-orchestrator:
+      resourceGroup: em-ccd-orchestrator
       secrets:
         - AppInsightsInstrumentationKey
-    s2s:
-      resourceGroup: rpe-service-auth-provider
-      secrets:
         - microservicekey-em-ccd-orchestrator
   environment:
     # Regardless of environment, point towards AAT instances. Overwrite in product charts etc.
-    IDAM_API_BASE_URI: https://idam-api.aat.platform.hmcts.net
-    S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    EM_STITCHING_API_URL: http://em-stitching-aat.service.core-compute-aat.internal
-    DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
+    IDAM_API_BASE_URI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    S2S_BASE_URI: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    EM_STITCHING_API_URL: http://em-stitching-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    DM_STORE_APP_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CCD_DATA_API_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CALLBACK_DOMAIN: em-ccd-orchestrator-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
     REFORM_SERVICE_NAME: em-ccd-orchestrator
     REFORM_TEAM: evidence
@@ -40,8 +40,8 @@ ccd-orchestrator:
     SHOW_SQL: true
     ENDPOINTS_HEALTH_SENSITIVE: false
     ENDPOINTS_INFO_SENSITIVE: false
-    S2S_NAMES_WHITELIST: em_api,em_gw,em_ccd_orchestrator, em_stitching,ccd_gw,ccd_data,sscs,divorce_document_upload,divorce_document_generator,probate_backend,jui_webapp,pui_webapp
-    CASE_WORKER_ROLES: caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce
     ENABLE_IDAM_HEALTH_CHECK: false
     ENABLE_S2S_HEALTH_CHECK: false
     SERVER_PORT: 8080
+    CALLBACK_HTTP_SCHEME: http
+    CALLBACK_HTTP_HOST_PORT: 80

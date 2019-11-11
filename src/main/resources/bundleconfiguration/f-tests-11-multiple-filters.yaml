@@ -1,0 +1,19 @@
+title: Functional Test 11
+filename: bundle.pdf
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+folders:
+  - name: DWP
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: Prosecution
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: Evidence
