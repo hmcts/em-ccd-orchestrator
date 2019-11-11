@@ -1,3 +1,4 @@
+apiVersion: v1
 name: em-ccd-orchestrator
 home: https://github.com/hmcts/rpa-em-ccd-orchestrator
 version: 0.1.6
