@@ -100,7 +100,7 @@ data "azurerm_key_vault" "shared_key_vault" {
 
 module "local_key_vault" {
   source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
-  product = "${(var.env == "perftest") ? "em-ccdorch" : local.app_full_name}"
+  product = "${(var.env == "perftest") ? "em-ccdorc" : local.app_full_name}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
   object_id = "${var.jenkins_AAD_objectId}"
