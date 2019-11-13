@@ -114,7 +114,7 @@ module "local_key_vault" {
 # Copy s2s key from shared to local vault
 data "azurerm_key_vault" "local_key_vault" {
   name = "${module.local_key_vault.key_vault_name}"
-  resource_group_name = "${module.local_key_vault.key_vault_name}"
+  resource_group_name = "${module.app.resource_group_name}"
 }
 
 resource "azurerm_key_vault_secret" "local_s2s_key" {
