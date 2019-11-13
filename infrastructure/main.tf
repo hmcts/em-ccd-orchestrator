@@ -100,11 +100,11 @@ data "azurerm_key_vault" "shared_key_vault" {
 
 module "local_key_vault" {
   source = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
-  product = "${(var.env == "perftest") ? "em-ccdorc" : local.app_full_name}"
+  product = "${local.app_full_name}"
   env = "${var.env}"
   tenant_id = "${var.tenant_id}"
   object_id = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${(var.env == "perftest") ? "em-ccd-orchestrator-perftest" : module.app.resource_group_name}"
+  resource_group_name = "${module.app.resource_group_name}"
   product_group_object_id = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags = "${var.common_tags}"
   managed_identity_object_id = "${var.managed_identity_object_id}"
