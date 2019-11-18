@@ -29,7 +29,7 @@ folders:
                     value: Medical Report
                   - property: /ownerCaseRole
                     value: Claimant
-      - name: Claimant 2
+      - name: Witness Statements
         documents:
           - type: documentSet
             property: /caseDocuments
