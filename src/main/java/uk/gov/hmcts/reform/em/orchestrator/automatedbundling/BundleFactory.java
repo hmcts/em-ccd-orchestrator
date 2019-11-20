@@ -25,6 +25,8 @@ public class BundleFactory {
         bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);
         bundle.setHasTableOfContentsAsBoolean(configuration.hasTableOfContents);
         bundle.setHasFolderCoversheetsAsBoolean(configuration.hasFolderCoversheets);
+        bundle.setPageNumberFormat(configuration.pageNumberFormat);
+        bundle.setPaginationStyle(configuration.paginationStyle);
         bundle.setFileName(configuration.filename);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
