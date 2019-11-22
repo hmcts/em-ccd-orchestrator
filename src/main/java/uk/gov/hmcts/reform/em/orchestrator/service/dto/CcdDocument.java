@@ -1,6 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDateTime;
 
 public class CcdDocument {
 
@@ -10,6 +13,8 @@ public class CcdDocument {
     private String fileName;
     @JsonProperty("document_binary_url")
     private String binaryUrl;
+    @JsonIgnore
+    private LocalDateTime createdDatetime;
 
     public CcdDocument() {
     }
@@ -18,6 +23,13 @@ public class CcdDocument {
         this.url = url;
         this.fileName = fileName;
         this.binaryUrl = binaryUrl;
+    }
+
+    public CcdDocument(String url, String fileName, String binaryUrl, LocalDateTime createdDatetime) {
+        this.url = url;
+        this.fileName = fileName;
+        this.binaryUrl = binaryUrl;
+        this.createdDatetime = createdDatetime;
     }
 
     public String getUrl() {
@@ -42,5 +54,13 @@ public class CcdDocument {
 
     public void setBinaryUrl(String binaryUrl) {
         this.binaryUrl = binaryUrl;
+    }
+
+    public LocalDateTime getCreatedDatetime() {
+        return createdDatetime;
+    }
+
+    public void setCreatedDatetime(LocalDateTime createdDatetime) {
+        this.createdDatetime = createdDatetime;
     }
 }

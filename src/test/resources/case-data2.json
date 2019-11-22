@@ -5,25 +5,55 @@
       "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
       "document_filename":"document1.pdf",
       "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
-    }
+    },
+    "createdDatetime":[
+      2019,
+      2,
+      7,
+      12,
+      5,
+      20,
+      404000000
+    ]
   },
-  "caseDocuments": [{
-    "value": {
-      "documentName": "Case document 2",
-      "documentLink": {
+  "caseDocuments": [
+    {
+      "value": {
+        "documentName": "Case document 2",
+        "documentLink": {
+            "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
+            "document_filename":"document2.pdf",
+            "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+        },
+        "createdDatetime":[
+          2019,
+          2,
+          7,
+          10,
+          5,
+          20,
+          404000000
+        ]
+      }
+    },
+    {
+      "value": {
+        "documentName": "Case document 3",
+        "documentLink": {
           "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-          "document_filename":"document2.pdf",
+          "document_filename":"document3.pdf",
           "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
+        },
+        "createdDatetime":[
+          2019,
+          2,
+          7,
+          11,
+          5,
+          20,
+          404000000
+        ]
       }
     }
-  }, {
-    "value": {
-      "documentName": "Case document 3",
-      "documentLink": {
-        "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-        "document_filename":"document3.pdf",
-        "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
-      }
-    }
-  }]
+  ]
 }
