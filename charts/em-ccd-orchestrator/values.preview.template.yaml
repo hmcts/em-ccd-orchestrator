@@ -7,7 +7,7 @@ java:
           - AppInsightsInstrumentationKey
           - microservicekey-em-ccd-orchestrator
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
-  # Don't modify below here
+  # Don't modify below here.
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   aadIdentityName:
