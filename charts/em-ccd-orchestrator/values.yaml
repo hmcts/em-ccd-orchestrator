@@ -11,7 +11,7 @@ java:
   livenessFailureThreshold: 10
   aadIdentityName: em
   keyVaults:
-    em-ccd-orchestrator:
+    em-ccdorc:
       resourceGroup: em-ccd-orchestrator
       secrets:
         - AppInsightsInstrumentationKey
