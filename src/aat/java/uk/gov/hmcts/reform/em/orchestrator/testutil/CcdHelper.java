@@ -208,7 +208,7 @@ public class CcdHelper {
 
     private String getCallbackUrl() throws Exception {
         if (Env.getTestUrl().contains("localhost")) {
-            return "http://rpa-em-ccd-orchestrator:80";
+            return "http://rpa-em-ccd-orchestrator:8080";
         } else {
             return Env.getTestUrl().replaceAll("https", "http");
         }
