@@ -1,5 +1,11 @@
 java:
   environment:
+    keyVaults:
+      em-ccd-orchestrator:
+        resourceGroup: em-ccd-orchestrator
+        secrets:
+          - AppInsightsInstrumentationKey
+          - microservicekey-em-ccd-orchestrator
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
   # Don't modify below here
   image: ${IMAGE_NAME}
