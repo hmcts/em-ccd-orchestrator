@@ -7,11 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.springframework.http.MediaType;
@@ -212,7 +208,7 @@ public class CcdHelper {
 
     private String getCallbackUrl() throws Exception {
         if (Env.getTestUrl().contains("localhost")) {
-            return String.format("http://%s:8080", "host.docker.internal");
+            return "http://rpa-em-ccd-orchestrator:8080";
         } else {
             return Env.getTestUrl().replaceAll("https", "http");
         }
@@ -228,7 +224,7 @@ public class CcdHelper {
         String s2sToken = s2sHelper.getCcdGwS2sToken();
 
 
-        return RestAssured.given().log().all()
+        return RestAssured.given()
                 .header("Authorization", userToken)
                 .header("ServiceAuthorization", s2sToken);
 

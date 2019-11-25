@@ -1,0 +1,17 @@
+title: Functional tests bundle 3
+filename: bundle.pdf
+hasTableOfContents: true
+hasCoversheets: true
+sort: dateAscending
+hasFolderCoversheets: true
+paginationStyle: bottomRight
+pageNumberFormat: pageRange
+folders:
+  - name: Folder 1
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+  - name: Folder 2
+    documents:
+      - type: document
+        property: /singleDocument

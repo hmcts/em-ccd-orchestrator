@@ -8,6 +8,7 @@ import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationSortOrder;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -35,8 +36,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -59,8 +61,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -84,8 +87,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -106,8 +110,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -132,8 +137,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -154,8 +160,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -176,8 +183,9 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
             true,
             true,
             true,
@@ -199,4 +207,65 @@ public class BundleFactoryTest {
         assertEquals("document4.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
         assertEquals(2, bundle.getDocuments().size());
     }
+
+    @Test
+    public void createWithSortOrderAscending() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            BundleConfigurationSortOrder.dateAscending,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off
+        );
+
+        JsonNode json = mapper.readTree(case2Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document2.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals(0, bundle.getDocuments().get(0).getValue().getSortIndex());
+        assertEquals("document3.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals(1, bundle.getDocuments().get(1).getValue().getSortIndex());
+        assertEquals("document1.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
+        assertEquals(2, bundle.getDocuments().get(2).getValue().getSortIndex());
+    }
+
+    @Test
+    public void createWithSortOrderDescending() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            BundleConfigurationSortOrder.dateDescending,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off
+        );
+
+        JsonNode json = mapper.readTree(case2Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals(0, bundle.getDocuments().get(0).getValue().getSortIndex());
+        assertEquals("document3.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals(1, bundle.getDocuments().get(1).getValue().getSortIndex());
+        assertEquals("document2.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
+        assertEquals(2, bundle.getDocuments().get(2).getValue().getSortIndex());
+    }
+
 }

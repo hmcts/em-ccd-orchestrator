@@ -15,6 +15,8 @@ docker-compose -f docker-compose-dependencies.yml pull
 DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up
 ```
 
+Note that unlike other Evidence Management projects the ccd-orchestrator-api is included in the docker-compose-dependencies.yaml and will run via docker for local functional testing. This is to work around [an issue with Linux docker container networking](https://github.com/docker/for-linux/issues/264).
+
 ### Tech
 
 It uses:
@@ -41,9 +43,6 @@ cd rpa-em-ccd-orchestrator/
 ./idam.sh
 ```
 
-### Integration
-There is currently a Java Client available here:
-https://github.com/hmcts/document-management-client
 
 ### Swagger UI
 To view our REST API go to {HOST}:{PORT}/swagger-ui.html

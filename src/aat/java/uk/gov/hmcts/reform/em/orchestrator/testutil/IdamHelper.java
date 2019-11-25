@@ -52,7 +52,7 @@ public class IdamHelper {
 
     public String getUserId(String username) {
         String userId = RestAssured
-            .given().log().all()
+            .given()
             .header("Authorization", idamTokens.get(username))
             .get(idamUrl + "/details").andReturn().jsonPath().get("id").toString();
 
@@ -62,7 +62,7 @@ public class IdamHelper {
     public void createUser(String username, List<String> roles) {
         try {
             RestAssured
-                    .given().log().all()
+                    .given()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .body(mapper.writeValueAsString(CreateUserDto.builder()
                             .email(username)
@@ -78,7 +78,7 @@ public class IdamHelper {
     }
 
     public void deleteUser(String username) {
-        int statusCode = RestAssured.given().log().all()
+        int statusCode = RestAssured.given()
                 .delete(idamUrl + "/testing-support/accounts/" + username).andReturn().getStatusCode();
         Assert.assertTrue(HttpHelper.isSuccessful(statusCode) || statusCode == 404);
         idamTokens.remove(username);
@@ -102,7 +102,7 @@ public class IdamHelper {
 
     private String getToken(String code) {
         return RestAssured
-            .given().log().all()
+            .given()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .formParam("code", code)
             .formParam("grant_type", "authorization_code")

@@ -18,7 +18,9 @@ public class CcdStitchBundleCallbackController {
     private final AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
     private final CcdBundleStitchingService ccdBundleStitchingService;
 
-    public CcdStitchBundleCallbackController(DefaultUpdateCaller defaultUpdateCaller, AsyncCcdBundleStitchingService asyncCcdBundleStitchingService, CcdBundleStitchingService ccdBundleStitchingService) {
+    public CcdStitchBundleCallbackController(DefaultUpdateCaller defaultUpdateCaller,
+                                             AsyncCcdBundleStitchingService asyncCcdBundleStitchingService,
+                                             CcdBundleStitchingService ccdBundleStitchingService) {
         this.defaultUpdateCaller = defaultUpdateCaller;
         this.asyncCcdBundleStitchingService = asyncCcdBundleStitchingService;
         this.ccdBundleStitchingService = ccdBundleStitchingService;
