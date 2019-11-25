@@ -11,8 +11,8 @@ CCD Orchestrator is a backend service that facilitates interactions between CCD,
 ```
 az login
 az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
-docker-compose -f docker-compose-dependencies.yml pull
-DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up
+./gradlew assemble
+DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up --build
 ```
 
 Note that unlike other Evidence Management projects the ccd-orchestrator-api is included in the docker-compose-dependencies.yaml and will run via docker for local functional testing. This is to work around [an issue with Linux docker container networking](https://github.com/docker/for-linux/issues/264).
