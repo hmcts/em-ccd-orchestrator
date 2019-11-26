@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
@@ -15,20 +15,17 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
-
-public class AutomatedBundlingScenarios {
-
+public class AutomatedBundlingScenarios extends BaseTest {
 
     private static JsonNode validJson;
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        validJson = testUtil.getCcdHelper().loadCaseFromFile("automated-case.json");
-        invalidJson = testUtil.getCcdHelper().loadCaseFromFile("invalid-automated-case.json");
-        filenameJson = testUtil.getCcdHelper().loadCaseFromFile("filename-case.json");
+    @Before
+    public void setup() throws Exception {
+        validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
+        invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
+        filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
     }
 
     @Test

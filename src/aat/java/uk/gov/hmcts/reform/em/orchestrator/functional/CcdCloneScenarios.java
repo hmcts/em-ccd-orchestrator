@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -14,11 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
-
-public class CcdCloneScenarios {
-
-    private final ObjectMapper mapper = new ObjectMapper();
+public class CcdCloneScenarios extends BaseTest {
 
     @Test
     public void testSingleBundleClone() throws IOException {

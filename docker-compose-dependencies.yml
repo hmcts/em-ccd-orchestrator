@@ -13,6 +13,7 @@ services:
       - DM_STORE_APP_URL=http://dm-store:8080
       - EM_STITCHING_API_URL=http://stitching-api:8080
       - CALLBACK_DOMAIN=rpa-em-ccd-orchestrator
+      - CCD_DATA_API_URL=http://ccd-data-store-api:4452
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       # these environment variables are used by java-logging library
@@ -22,6 +23,7 @@ services:
       - REFORM_SERVICE_NAME=rpa-em-ccd-orchestrator
       - REFORM_TEAM=em-ccd-orchestrator
       - REFORM_ENVIRONMENT=docker
+      - S2S_NAMES_WHITELIST=sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api,ccd_gw
     ports:
       - 8080:8080
 
@@ -115,7 +117,7 @@ services:
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
-      - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+      - DOCMOSIS_ACCESS_KEY=ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ
     depends_on:
       - stitching-db
       - dm-store

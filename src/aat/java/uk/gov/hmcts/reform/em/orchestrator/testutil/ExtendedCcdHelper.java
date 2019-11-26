@@ -5,13 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Assert;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
+import uk.gov.hmcts.reform.em.test.ccddefinition.CcdDefinitionHelper;
+import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
+import uk.gov.hmcts.reform.em.test.s2s.S2sHelper;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,12 +30,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CcdHelper {
+@Service
+public class ExtendedCcdHelper {
+
+    @Autowired
+    private IdamHelper idamHelper;
+
+    @Autowired
+    private S2sHelper s2sHelper;
+
+    @Autowired
+    private CcdDataHelper ccdDataHelper;
+
+    @Autowired
+    private CcdDefinitionHelper ccdDefinitionHelper;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public final String createAutomatedBundlingCaseTemplate = "{\n"
-            + "  \"data\": {\n"
             + "    \"caseTitle\": null,\n"
             + "    \"caseOwner\": null,\n"
             + "    \"caseCreationDate\": null,\n"
@@ -33,16 +55,7 @@ public class CcdHelper {
             + "    \"caseComments\": null,\n"
             + "    \"caseDocuments\": [%s],\n"
             + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
-            + "  },\n"
-            + "  \"event\": {\n"
-            + "    \"id\": \"createCase\",\n"
-            + "    \"summary\": \"\",\n"
-            + "    \"description\": \"\"\n"
-            + "  },\n"
-            + "  \"event_token\": \"%s\",\n"
-            + "  \"ignore_warning\": false,\n"
-            + "  \"draft_id\": null\n"
-            + "}";
+            + "  }";
     public final String finishEventTemplate = "{\"event_data\": %s, \"event\": {\"id\": \"%s\"}, \"event_token\": \"%s\"}";
     public final String documentTemplate = "{\n"
                     + "        \"value\": {\n"
@@ -54,109 +67,44 @@ public class CcdHelper {
                     + "          }\n"
                     + "        }\n"
                     + "      }";
-    private IdamHelper idamHelper;
-    private S2sHelper s2sHelper;
     private String bundleTesterUser = String.format("bundle-tester-%s@gmail.com", Env.getTestUrl().hashCode());
     private List<String> bundleTesterUserRoles = Stream.of("caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
 
-    public CcdHelper(IdamHelper idamHelper, S2sHelper s2sHelper) {
-        this.idamHelper = idamHelper;
-        this.s2sHelper = s2sHelper;
-
+    @PostConstruct
+    public void init() throws Exception {
+        initBundleTesterUser();
+        importCcdDefinitionFile();
     }
 
+
     public void importCcdDefinitionFile() throws Exception {
+
 
         if (Env.isManualCcdDefFileImport()) {
             return;
         }
 
-        /*
-         *curl -XPUT \
-         *   http://localhost:4451/api/user-role -v \
-         *   -H "Authorization: Bearer ${userToken}" \
-         *   -H "ServiceAuthorization: Bearer ${serviceToken}" \
-         *   -H "Content-Type: application/json" \
-         *   -d '{"role":"'${role}'","security_classification":"'${classification}'"}'
-         */
-        Assert.assertTrue(HttpHelper.isSuccessful(ccdGwRequest()
-            .contentType(ContentType.JSON)
-            .body("{\"role\":\"caseworker-publiclaw\",\"security_classification\":\"PUBLIC\"}")
-            .put(Env.getCcdDefApiUrl() + "/api/user-role").andReturn().getStatusCode()));
 
-        /*
-         * curl --silent \
-         *   http://localhost:4451/import \
-         *   -H "Authorization: Bearer ${userToken}" \
-         *   -H "ServiceAuthorization: Bearer ${serviceToken}" \
-         *   -F file="@$1"
-         * @param file
-         */
-        Assert.assertTrue(HttpHelper.isSuccessful(ccdGwRequest()
-                .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
-                .multiPart("file", "adv_bundling_functional_tests_ccd_def.xlsx",
-                        getEnvSpecificDefinitionFile(),
-                        "application/octet-stream")
-                .request("POST", Env.getCcdDefApiUrl() + "/import")
-                .getStatusCode()));
-    }
+        ccdDefinitionHelper.importDefinitionFile(
+                bundleTesterUser,
+                "caseworker-publiclaw",
+                getEnvSpecificDefinitionFile());
 
-    public JsonNode startCaseEventAndGetToken(String caseId, String triggerId) {
-        try {
-            return objectMapper.readTree(ccdGwRequest()
-                    .header("experimental", "true")
-                    .get(Env.getCcdDataApiUrl() + String.format("/cases/%s/event-triggers/%s", caseId, triggerId))
-                    .andReturn().getBody().print());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public JsonNode finishCaseEvent(String caseId, String triggerId, String token, JsonNode data) {
-        try {
-            return objectMapper.readTree(ccdGwRequest()
-                    .contentType(ContentType.JSON)
-                    .header("experimental", "true")
-                    .body(String.format(finishEventTemplate, data.toString(), triggerId, token))
-                    .post(Env.getCcdDataApiUrl() + String.format("/cases/%s/events", caseId))
-                    .andReturn().getBody().print());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String createCase(String documents) {
-        Response createTriggerResponse = ccdGwRequest()
-                .header("experimental", "true")
-                .get(Env.getCcdDataApiUrl() + "/case-types/" + getEnvCcdCaseTypeId() + "/event-triggers/createCase")
-                .andReturn();
-
-        Assert.assertTrue(HttpHelper.isSuccessful(createTriggerResponse.getStatusCode()));
-
-        Response createCaseResponse = ccdGwRequest()
-            .contentType(ContentType.JSON)
-            .body(String.format(createAutomatedBundlingCaseTemplate, documents, createTriggerResponse.jsonPath().getString("token")))
-            .post(Env.getCcdDataApiUrl() + String.format("/caseworkers/%s/jurisdictions/PUBLICLAW/case-types/" + getEnvCcdCaseTypeId() + "/cases",
-                    idamHelper.getUserId(bundleTesterUser))).andReturn();
-
-        Assert.assertTrue(HttpHelper.isSuccessful(createCaseResponse.getStatusCode()));
-
-        return createCaseResponse.jsonPath().getString("id");
 
     }
 
-    public JsonNode getCase(String caseId) {
-        try {
-            return objectMapper.readTree(
-                    ccdGwRequest()
-                            .header("experimental", "true")
-                            .get(Env.getCcdDataApiUrl() + String.format("/cases/%s", caseId))
-                            .andReturn()
-                            .getBody()
-                            .print());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public CaseDetails createCase(String documents) throws Exception {
+        return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
+                objectMapper.readTree(String.format(createAutomatedBundlingCaseTemplate, documents)));
+    }
+
+    public JsonNode triggerEvent(String caseId, String eventId) throws Exception {
+        return objectMapper.readTree(objectMapper.writeValueAsString(ccdDataHelper.triggerEvent(bundleTesterUser, caseId, eventId)));
+    }
+
+    public JsonNode getCase(String caseId) throws Exception {
+        return objectMapper.readTree(objectMapper.writeValueAsString(ccdDataHelper.getCase(bundleTesterUser, caseId)));
     }
 
     public String getEnvCcdCaseTypeId() {
@@ -206,7 +154,7 @@ public class CcdHelper {
         return new FileInputStream(outputFile);
     }
 
-    private String getCallbackUrl() throws Exception {
+    private String getCallbackUrl() {
         if (Env.getTestUrl().contains("localhost")) {
             return "http://rpa-em-ccd-orchestrator:8080";
         } else {
@@ -214,14 +162,15 @@ public class CcdHelper {
         }
     }
 
-    public void initBundleTesterUser() {
-        idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
+    public void initBundleTesterUser() throws Exception {
+        idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
+        importCcdDefinitionFile();
     }
 
     public RequestSpecification ccdGwRequest() {
-        String userToken = idamHelper.getIdamToken(bundleTesterUser,bundleTesterUserRoles);
+        String userToken = idamHelper.authenticateUser(bundleTesterUser);
 
-        String s2sToken = s2sHelper.getCcdGwS2sToken();
+        String s2sToken = s2sHelper.getS2sToken();
 
 
         return RestAssured.given()

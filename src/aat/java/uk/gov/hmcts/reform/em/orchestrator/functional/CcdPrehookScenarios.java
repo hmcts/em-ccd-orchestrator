@@ -1,9 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
@@ -11,18 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.testUtil;
-
 @Ignore
-public class CcdPrehookScenarios {
+public class CcdPrehookScenarios extends BaseTest {
 
-    private final ObjectMapper mapper = new ObjectMapper();
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        testUtil.getCcdHelper().importCcdDefinitionFile();
-    }
 
     @Test
     public void testPostBundleStitch() {

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -13,11 +12,7 @@ import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
 import java.io.IOException;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
-
-public class CcdStitchScenarios {
-
-    private final ObjectMapper mapper = new ObjectMapper();
+public class CcdStitchScenarios extends BaseTest {
 
     @Test
     public void testPostBundleStitch() throws IOException {
