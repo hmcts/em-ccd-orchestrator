@@ -40,6 +40,7 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
         int i = 0;
         while (i < WAIT_SECONDS) {
             JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+            System.out.println(String.format("Testing %s - %s", caseId, caseJson.toPrettyString()));
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
                 Assert.assertEquals("Unknown file type: text/csv", caseJson.findPath("stitchingFailureMessage").asText());
