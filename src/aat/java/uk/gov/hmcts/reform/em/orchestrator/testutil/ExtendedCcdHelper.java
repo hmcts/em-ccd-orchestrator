@@ -63,7 +63,7 @@ public class ExtendedCcdHelper {
                     + "        }\n"
                     + "      }";
     private String bundleTesterUser;
-    private List<String> bundleTesterUserRoles = Stream.of("caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
+    private List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
 
     @PostConstruct
     public void init() throws Exception {
@@ -149,10 +149,9 @@ public class ExtendedCcdHelper {
         }
     }
 
-    public void initBundleTesterUser() throws Exception {
+    public void initBundleTesterUser() {
         bundleTesterUser = String.format("bundle-tester-%d@gmail.com", testUrl.hashCode());
         idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
-        importCcdDefinitionFile();
     }
 
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {
