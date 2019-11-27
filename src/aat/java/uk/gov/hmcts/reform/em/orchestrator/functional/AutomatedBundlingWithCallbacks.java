@@ -4,28 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
-
-public class AutomatedBundlingWithCallbacks {
+public class AutomatedBundlingWithCallbacks extends BaseTest {
 
     private static final int WAIT_SECONDS = 60;
 
     @Test
     public void testSuccessfulAsyncStitching() throws Exception {
         String uploadedUrl = testUtil.uploadDocument();
-        String documentString = testUtil.getCcdHelper().getCcdDocumentJson("my doc", uploadedUrl, "mypdf.pdf");
-        String caseId = testUtil.getCcdHelper().createCase(documentString);
-        JsonNode createTriggerResponse = testUtil.getCcdHelper().startCaseEventAndGetToken(caseId, "createBundle");
-        System.out.println(createTriggerResponse.toString());
-        JsonNode finishEventResponse = testUtil.getCcdHelper().finishCaseEvent(
-                caseId,
-                "createBundle",
-                createTriggerResponse.get("token").asText(),
-                createTriggerResponse.get("case_details").get("case_data"));
-        System.out.println(finishEventResponse.toString());
+        String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
+        String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
+        extendedCcdHelper.triggerEvent(caseId, "createBundle");
         int i = 0;
         while (i < WAIT_SECONDS) {
-            JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
+            JsonNode caseJson = extendedCcdHelper.getCase(caseId);
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("DONE", caseJson.findPath("stitchStatus").asText());
                 Assert.assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
@@ -42,23 +33,16 @@ public class AutomatedBundlingWithCallbacks {
 
     @Test
     public void testUnSuccessfulAsyncStitching() throws Exception {
-        String uploadedUrl = testUtil.uploadDocument("dm-text.txt", "text/plain");
-        String documentString = testUtil.getCcdHelper().getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
-        String caseId = testUtil.getCcdHelper().createCase(documentString);
-        JsonNode createTriggerResponse = testUtil.getCcdHelper().startCaseEventAndGetToken(caseId, "createBundle");
-        System.out.println(createTriggerResponse.toString());
-        JsonNode finishEventResponse = testUtil.getCcdHelper().finishCaseEvent(
-                caseId,
-                "createBundle",
-                createTriggerResponse.get("token").asText(),
-                createTriggerResponse.get("case_details").get("case_data"));
-        System.out.println(finishEventResponse.toString());
+        String uploadedUrl = testUtil.uploadDocument("dm-text.csv", "text/csv");
+        String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
+        String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
+        extendedCcdHelper.triggerEvent(caseId, "createBundle");
         int i = 0;
         while (i < WAIT_SECONDS) {
-            JsonNode caseJson = testUtil.getCcdHelper().getCase(caseId);
+            JsonNode caseJson = extendedCcdHelper.getCase(caseId);
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
-                Assert.assertEquals("Unknown file type: text/plain", caseJson.findPath("stitchingFailureMessage").asText());
+                Assert.assertEquals("Unknown file type: text/csv", caseJson.findPath("stitchingFailureMessage").asText());
                 break;
             }
             Thread.sleep(1000);
