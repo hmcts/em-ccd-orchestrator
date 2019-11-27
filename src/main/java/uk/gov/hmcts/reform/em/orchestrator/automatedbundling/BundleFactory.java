@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.jetbrains.annotations.NotNull;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
@@ -109,7 +108,7 @@ public class BundleFactory {
         JsonNode dateNode = node.at("/createdDatetime");
 
         if (!dateNode.isMissingNode()) {
-            sourceDocument.setCreatedDatetime(getLocalDateTimeFromNode(dateNode));
+            sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
         }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
@@ -117,19 +116,6 @@ public class BundleFactory {
         document.setSourceDocument(sourceDocument);
 
         return new CcdValue<>(document);
-    }
-
-    @NotNull
-    private LocalDateTime getLocalDateTimeFromNode(JsonNode dateNode) {
-        final int year = dateNode.get(0).asInt();
-        final int month = dateNode.get(1).asInt();
-        final int day = dateNode.get(2).asInt();
-        final int hour = dateNode.get(3).asInt();
-        final int minute = dateNode.get(4).asInt();
-        final int second = dateNode.get(5).asInt();
-        final int nano = dateNode.get(6).asInt();
-
-        return LocalDateTime.of(year, month, day, hour, minute, second, nano);
     }
 
     private JsonNode getField(JsonNode outerNode, String path) throws DocumentSelectorException {
