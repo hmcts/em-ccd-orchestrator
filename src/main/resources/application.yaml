@@ -43,7 +43,7 @@ info:
 
 authorization:
   case-worker-roles: ${CASE_WORKER_ROLES:caseworker-probate,caseworker-cmc,caseworker-sscs,caseworker-divorce,caseworker-ia}
-  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api}
+  s2s-names-whitelist: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api,ccd_gw}
 
 auth:
   idam:
