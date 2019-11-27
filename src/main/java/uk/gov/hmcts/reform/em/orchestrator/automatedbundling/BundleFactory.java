@@ -107,8 +107,11 @@ public class BundleFactory {
 
         JsonNode dateNode = node.at("/createdDatetime");
 
-        if (!dateNode.isMissingNode()) {
+        if (!dateNode.isNull() && !dateNode.isMissingNode()) {
             sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
+        }
+        else {
+            sourceDocument.setCreatedDatetime(LocalDateTime.MIN);
         }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
