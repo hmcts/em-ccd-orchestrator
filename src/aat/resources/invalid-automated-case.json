@@ -4,24 +4,8 @@
     "jurisdiction":"CIRCUS",
     "state":"1_OPEN",
     "case_type_id":"CCD_AUTOMATED_BUNDLE_MVP_TYPE",
-    "created_date":[
-      2019,
-      2,
-      7,
-      13,
-      5,
-      20,
-      404000000
-    ],
-    "last_modified":[
-      2019,
-      2,
-      7,
-      13,
-      5,
-      57,
-      843000000
-    ],
+    "created_date":"2019-02-07T13:05:20.000",
+    "last_modified":"2019-02-07T13:05:57.000",
     "security_classification":"PUBLIC",
     "case_data":{
       "bundleConfiguration": "does-not-exist.yaml",
@@ -83,24 +67,8 @@
     "jurisdiction":"CIRCUS",
     "state":"1_OPEN",
     "case_type_id":"CCD_BUNDLE_MVP_TYPE_ASYNC",
-    "created_date":[
-      2019,
-      2,
-      7,
-      13,
-      5,
-      20,
-      404000000
-    ],
-    "last_modified":[
-      2019,
-      2,
-      7,
-      13,
-      5,
-      41,
-      977000000
-    ],
+    "created_date":"2019-02-07T13:05:20.000",
+    "last_modified":"2019-02-07T13:05:41.000",
     "security_classification":"PUBLIC",
     "case_data":{
       "caseOwner":null,
