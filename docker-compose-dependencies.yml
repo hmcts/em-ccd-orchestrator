@@ -117,7 +117,7 @@ services:
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
-      - DOCMOSIS_ACCESS_KEY=ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ
+      - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
     depends_on:
       - stitching-db
       - dm-store

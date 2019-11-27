@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.restassured.RestAssured;
-import io.restassured.specification.RequestSpecification;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +15,6 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
 import uk.gov.hmcts.reform.em.test.ccddefinition.CcdDefinitionHelper;
 import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
-import uk.gov.hmcts.reform.em.test.s2s.S2sHelper;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -33,9 +30,6 @@ public class ExtendedCcdHelper {
 
     @Autowired
     private IdamHelper idamHelper;
-
-    @Autowired
-    private S2sHelper s2sHelper;
 
     @Autowired
     private CcdDataHelper ccdDataHelper;
@@ -54,7 +48,6 @@ public class ExtendedCcdHelper {
             + "    \"caseDocuments\": [%s],\n"
             + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
             + "  }";
-    public final String finishEventTemplate = "{\"event_data\": %s, \"event\": {\"id\": \"%s\"}, \"event_token\": \"%s\"}";
     public final String documentTemplate = "{\n"
                     + "        \"value\": {\n"
                     + "          \"documentName\": \"%s\",\n"
@@ -163,18 +156,6 @@ public class ExtendedCcdHelper {
     public void initBundleTesterUser() throws Exception {
         idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
         importCcdDefinitionFile();
-    }
-
-    public RequestSpecification ccdGwRequest() {
-        String userToken = idamHelper.authenticateUser(bundleTesterUser);
-
-        String s2sToken = s2sHelper.getS2sToken();
-
-
-        return RestAssured.given()
-                .header("Authorization", userToken)
-                .header("ServiceAuthorization", s2sToken);
-
     }
 
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {
