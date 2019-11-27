@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -27,8 +28,6 @@ import java.util.stream.Stream;
 @Service
 public class TestUtil {
 
-    private static final String USERNAME = "testytesttest" + Env.getTestUrl().hashCode() + "@test.net";
-
     private String idamAuth;
     private String s2sAuth;
 
@@ -38,12 +37,18 @@ public class TestUtil {
     private S2sHelper s2sHelper;
     @Autowired
     private DmHelper dmHelper;
+    @Value("${test.url}")
+    private String testUrl;
+    @Value("${document_management.url}")
+    private String dmApiUrl;
+    @Value("${document_management.docker_url}")
+    private String dmDocumentApiUrl;
 
     @PostConstruct
     public void init() {
-        idamHelper.createUser(USERNAME, Stream.of("caseworker").collect(Collectors.toList()));
+        idamHelper.createUser(getUsername(), Stream.of("caseworker").collect(Collectors.toList()));
         RestAssured.useRelaxedHTTPSValidation();
-        idamAuth = idamHelper.authenticateUser(USERNAME);
+        idamAuth = idamHelper.authenticateUser(getUsername());
         s2sAuth = s2sHelper.getS2sToken();
     }
 
@@ -54,8 +59,8 @@ public class TestUtil {
                             ClassLoader.getSystemResourceAsStream(fileName), mimeType, fileName))
                     .links.self.href;
 
-            return Env.getDmApiUrl().equals("http://localhost:4603")
-                    ? url.replaceAll(Env.getDmApiUrl(), Env.getDockerDmApiUrl())
+            return getDmApiUrl().equals("http://localhost:4603")
+                    ? url.replaceAll(getDmApiUrl(), getDmDocumentApiUrl())
                     : url;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -132,6 +137,22 @@ public class TestUtil {
     public static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, StandardCharsets.US_ASCII);
+    }
+
+    public String getUsername() {
+        return "testytesttest" + getTestUrl().hashCode() + "@test.net";
+    }
+
+    public String getTestUrl() {
+        return testUrl;
+    }
+
+    public String getDmApiUrl() {
+        return dmApiUrl;
+    }
+
+    public String getDmDocumentApiUrl() {
+        return dmDocumentApiUrl;
     }
 
 }

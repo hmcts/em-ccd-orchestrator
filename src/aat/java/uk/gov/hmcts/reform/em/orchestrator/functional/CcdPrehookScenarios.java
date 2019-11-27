@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class CcdPrehookScenarios extends BaseTest {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(jsonFile)
-            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+            .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("New Bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
@@ -33,7 +32,7 @@ public class CcdPrehookScenarios extends BaseTest {
         HashMap caseData = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(jsonFile)
-            .request("POST", Env.getTestUrl() + "/api/new-bundle")
+            .request("POST", testUtil.getTestUrl() + "/api/new-bundle")
             .getBody()
             .jsonPath()
             .get("data");
@@ -50,7 +49,7 @@ public class CcdPrehookScenarios extends BaseTest {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(request)
-            .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+            .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());

@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class CcdCloneScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
 
@@ -58,7 +57,7 @@ public class CcdCloneScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
 

@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
@@ -27,6 +28,9 @@ import java.util.stream.Stream;
 
 @Service
 public class ExtendedCcdHelper {
+
+    @Value("${test.url}")
+    private String testUrl;
 
     @Autowired
     private IdamHelper idamHelper;
@@ -58,7 +62,7 @@ public class ExtendedCcdHelper {
                     + "          }\n"
                     + "        }\n"
                     + "      }";
-    private String bundleTesterUser = String.format("bundle-tester-%s@gmail.com", Env.getTestUrl().hashCode());
+    private String bundleTesterUser;
     private List<String> bundleTesterUserRoles = Stream.of("caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
 
     @PostConstruct
@@ -70,18 +74,10 @@ public class ExtendedCcdHelper {
 
     public void importCcdDefinitionFile() throws Exception {
 
-
-        if (Env.isManualCcdDefFileImport()) {
-            return;
-        }
-
-
         ccdDefinitionHelper.importDefinitionFile(
                 bundleTesterUser,
                 "caseworker-publiclaw",
                 getEnvSpecificDefinitionFile());
-
-
 
     }
 
@@ -99,11 +95,11 @@ public class ExtendedCcdHelper {
     }
 
     public String getEnvCcdCaseTypeId() {
-        return String.format("BUND_ASYNC_%d", Env.getTestUrl().hashCode());
+        return String.format("BUND_ASYNC_%d", testUrl.hashCode());
     }
 
     public InputStream getEnvSpecificDefinitionFile() throws Exception {
-        Workbook workbook = new XSSFWorkbook(ClassLoader.getSystemResourceAsStream(Env.getCcdDefFileName()));
+        Workbook workbook = new XSSFWorkbook(ClassLoader.getSystemResourceAsStream("adv_bundling_functional_tests_ccd_def.xlsx"));
         Sheet caseEventSheet = workbook.getSheet("CaseEvent");
 
         caseEventSheet.getRow(5).getCell(11).setCellValue(
@@ -146,14 +142,15 @@ public class ExtendedCcdHelper {
     }
 
     private String getCallbackUrl() {
-        if (Env.getTestUrl().contains("localhost")) {
+        if (testUrl.contains("localhost")) {
             return "http://rpa-em-ccd-orchestrator:8080";
         } else {
-            return Env.getTestUrl().replaceAll("https", "http");
+            return testUrl.replaceAll("https", "http");
         }
     }
 
     public void initBundleTesterUser() throws Exception {
+        bundleTesterUser = String.format("bundle-tester-%d@gmail.com", testUrl.hashCode());
         idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
         importCcdDefinitionFile();
     }

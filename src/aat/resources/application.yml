@@ -32,6 +32,7 @@ ccd-def:
 
 document_management:
   url: ${DM_STORE_APP_URL:http://localhost:4603}
+  docker_url: http://dm-store:8080
 
 core_case_data:
   api:

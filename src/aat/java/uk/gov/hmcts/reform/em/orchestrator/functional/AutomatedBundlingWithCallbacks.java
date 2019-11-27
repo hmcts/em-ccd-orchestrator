@@ -17,7 +17,6 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
         int i = 0;
         while (i < WAIT_SECONDS) {
             JsonNode caseJson = extendedCcdHelper.getCase(caseId);
-            System.out.println(caseJson.toPrettyString());
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("DONE", caseJson.findPath("stitchStatus").asText());
                 Assert.assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
@@ -34,7 +33,7 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
 
     @Test
     public void testUnSuccessfulAsyncStitching() throws Exception {
-        String uploadedUrl = testUtil.uploadDocument("dm-text.txt", "text/plain");
+        String uploadedUrl = testUtil.uploadDocument("dm-text.csv", "text/csv");
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
@@ -43,7 +42,7 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
             JsonNode caseJson = extendedCcdHelper.getCase(caseId);
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
-                Assert.assertEquals("Unknown file type: text/plain", caseJson.findPath("stitchingFailureMessage").asText());
+                Assert.assertEquals("Unknown file type: text/csv", caseJson.findPath("stitchingFailureMessage").asText());
                 break;
             }
             Thread.sleep(1000);

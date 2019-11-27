@@ -23,7 +23,6 @@ services:
       - REFORM_SERVICE_NAME=rpa-em-ccd-orchestrator
       - REFORM_TEAM=em-ccd-orchestrator
       - REFORM_ENVIRONMENT=docker
-      - S2S_NAMES_WHITELIST=sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api,ccd_gw
     ports:
       - 8080:8080
 

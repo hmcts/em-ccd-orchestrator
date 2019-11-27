@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(validJson)
-            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+            .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         assertEquals("New bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
@@ -49,7 +48,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(invalidJson)
-            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+            .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
@@ -60,7 +59,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .body(filenameJson)
-            .request("POST", Env.getTestUrl() + "/api/new-bundle");
+            .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         assertEquals("Bundle with filename", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
@@ -72,7 +71,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(validJson)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
@@ -85,7 +84,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(filenameJson)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
@@ -98,7 +97,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(validJson)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
         Assert.assertNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.folders"));
@@ -113,7 +112,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -133,7 +132,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -151,7 +150,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -174,7 +173,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -195,7 +194,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
     }
@@ -208,7 +207,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Element is an array: /caseDocuments"));
     }
@@ -221,7 +220,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Element is not an array: /singleDocument"));
     }
@@ -234,7 +233,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Could not find element: /typoDocument"));
     }
@@ -247,7 +246,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Could not find element: /quesoDocument"));
     }
@@ -261,7 +260,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Could not find the property /documentLink/document_url in the node"));
     }
@@ -274,7 +273,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
     }
@@ -287,7 +286,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -307,7 +306,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
@@ -330,7 +329,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(json)
-                .request("POST", Env.getTestUrl() + "/api/new-bundle");
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
 
