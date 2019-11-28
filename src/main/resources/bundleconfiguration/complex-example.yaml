@@ -3,6 +3,7 @@ filename: bundle.pdf
 coverpageTemplate: CC-EDM-GOR-ENG-12345.docx
 hasTableOfContents: true
 hasCoversheets: true
+sort: dateAscending
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
