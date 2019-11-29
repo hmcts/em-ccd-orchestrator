@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.S
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 
 @Controller
