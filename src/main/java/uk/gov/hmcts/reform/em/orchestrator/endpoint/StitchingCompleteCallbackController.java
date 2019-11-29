@@ -36,7 +36,7 @@ public class StitchingCompleteCallbackController {
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,
-                                                                       @PathVariable UUID bundleId,
+                                                                       @PathVariable String bundleId,
                                                                        @RequestBody DocumentTaskDTO documentTaskDTO) {
 
         try {
