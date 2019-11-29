@@ -109,8 +109,7 @@ public class BundleFactory {
 
         if (!dateNode.isNull() && !dateNode.isMissingNode()) {
             sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
-        }
-        else {
+        } else {
             sourceDocument.setCreatedDatetime(LocalDateTime.MIN);
         }
 
