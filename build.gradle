@@ -94,12 +94,12 @@ dependencies {
     compile "io.springfox:springfox-swagger2:2.9.2"
     compile "io.springfox:springfox-swagger-ui:2.9.2"
     compile group: "org.apache.commons", name: "commons-lang3", version: "3.9"
-    compile group: "com.microsoft.azure", name: "applicationinsights-core", version: "2.5.1"
     compile group: "commons-validator", name: "commons-validator", version: "1.6"
-    compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
     compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "2.0.1"
-    compile group: "uk.gov.hmcts.reform", name: "java-logging-appinsights", version: "5.0.1"
-    compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
+    compile (group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.4') {
+        exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
+    }
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.1'
     compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
