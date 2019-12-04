@@ -13,6 +13,7 @@ services:
       - DM_STORE_APP_URL=http://dm-store:8080
       - EM_STITCHING_API_URL=http://stitching-api:8080
       - CALLBACK_DOMAIN=rpa-em-ccd-orchestrator
+      - CCD_DATA_API_URL=http://ccd-data-store-api:4452
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       # these environment variables are used by java-logging library

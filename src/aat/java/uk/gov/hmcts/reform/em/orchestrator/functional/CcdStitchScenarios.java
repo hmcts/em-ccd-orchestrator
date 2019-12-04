@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -9,15 +8,10 @@ import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
 import java.io.IOException;
 
-import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
-
-public class CcdStitchScenarios {
-
-    private final ObjectMapper mapper = new ObjectMapper();
+public class CcdStitchScenarios extends BaseTest {
 
     @Test
     public void testPostBundleStitch() throws IOException {
@@ -28,7 +22,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -45,7 +39,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -64,7 +58,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -84,7 +78,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -109,7 +103,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
@@ -127,7 +121,7 @@ public class CcdStitchScenarios {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", Env.getTestUrl() + "/api/stitch-ccd-bundles");
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
