@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -7,12 +8,17 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.Env;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CcdCloneScenarios extends BaseTest {
+import static uk.gov.hmcts.reform.em.orchestrator.functional.TestSuiteInit.*;
+
+public class CcdCloneScenarios {
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testSingleBundleClone() throws IOException {
@@ -26,7 +32,7 @@ public class CcdCloneScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", testUtil.getTestUrl() + "/api/clone-ccd-bundles");
+                .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
 
@@ -57,7 +63,7 @@ public class CcdCloneScenarios extends BaseTest {
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .request("POST", testUtil.getTestUrl() + "/api/clone-ccd-bundles");
+                .request("POST", Env.getTestUrl() + "/api/clone-ccd-bundles");
 
         JsonPath path = response.getBody().jsonPath();
 
