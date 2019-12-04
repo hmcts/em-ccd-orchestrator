@@ -105,13 +105,13 @@ public class BundleFactory {
         sourceDocument.setBinaryUrl(getField(node, "/documentLink/document_binary_url").asText());
         sourceDocument.setFileName(getField(node, "/documentLink/document_filename").asText());
 
-        JsonNode dateNode = node.at("/createdDatetime");
-
-        if (!dateNode.isNull() && !dateNode.isMissingNode()) {
-            sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
-        } else {
+//        JsonNode dateNode = node.at("/createdDatetime");
+//
+//        if (!dateNode.isNull() && !dateNode.isMissingNode()) {
+//            sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
+//        } else {
             sourceDocument.setCreatedDatetime(LocalDateTime.MIN);
-        }
+//        }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
         document.setName(getField(node, "/documentName").asText());
