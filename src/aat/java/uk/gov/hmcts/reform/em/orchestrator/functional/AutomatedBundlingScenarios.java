@@ -120,8 +120,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
         assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.documents[3].value.name"));
+        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
+        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[3].value.name"));
     }
 
     @Test
