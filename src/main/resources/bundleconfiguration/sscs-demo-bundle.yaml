@@ -1,9 +1,12 @@
 title: SSCS Demo Bundle
 filename: bundle.pdf
-coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+coverpageTemplate: CoverPage.docx
 hasTableOfContents: true
 hasCoversheets: true
+sort: dateAscending
 hasFolderCoversheets: true
+paginationStyle: Off
+pageNumberFormat: numberOfPages
 folders:
   - name: DWP
     documents:
