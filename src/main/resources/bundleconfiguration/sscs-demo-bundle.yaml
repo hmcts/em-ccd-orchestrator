@@ -5,7 +5,7 @@ hasTableOfContents: true
 hasCoversheets: true
 sort: dateAscending
 hasFolderCoversheets: true
-paginationStyle: Off
+paginationStyle: topCenter
 pageNumberFormat: numberOfPages
 folders:
   - name: DWP
