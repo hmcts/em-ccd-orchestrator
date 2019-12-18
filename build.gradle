@@ -10,7 +10,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'io.franzbecker.gradle-lombok' version '3.2.0'
-    id 'au.com.dius.pact' version '4.0.3'
+    id 'au.com.dius.pact' version '4.0.4'
 }
 
 apply plugin: 'java'
