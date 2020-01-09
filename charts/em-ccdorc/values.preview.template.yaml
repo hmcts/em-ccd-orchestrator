@@ -2,7 +2,7 @@ java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
   keyVaults:
-    em-ccd-orchestrator:
+    em-ccdorc:
       resourceGroup: em-ccd-orchestrator
       secrets:
         - AppInsightsInstrumentationKey
@@ -10,3 +10,4 @@ java:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  aadIdentityName:
