@@ -36,6 +36,7 @@ public class CcdBundleDTO {
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
     private String stitchingFailureMessage;
+    private CcdBoolean enableEmailNotification;
 
     public String getId() {
         return id;
@@ -216,5 +217,13 @@ public class CcdBundleDTO {
     public void setStitchingFailureMessage(String stitchingFailureMessage) {
         this.stitchingFailureMessage = stitchingFailureMessage;
 
+    }
+
+    public CcdBoolean getEnableEmailNotification() {
+        return enableEmailNotification;
+    }
+
+    public void setEnableEmailNotification(CcdBoolean enableEmailNotification) {
+        this.enableEmailNotification = enableEmailNotification;
     }
 }

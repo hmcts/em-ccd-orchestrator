@@ -44,7 +44,8 @@ public class BundleFactoryTest {
             true,
             new ArrayList<>(),
             new ArrayList<>(),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -72,7 +73,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocument("/folder/document")
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -98,7 +100,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/does not exist"),
                 new BundleConfigurationDocument("/folder/document")
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -121,7 +124,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -148,7 +152,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/does not exist", Collections.emptyList())
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -171,7 +176,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/document1", Collections.emptyList())
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -197,7 +203,8 @@ public class BundleFactoryTest {
                     new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
                 ))
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -224,7 +231,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -255,7 +263,8 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocument("/document1"),
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
-                CcdBundlePaginationStyle.off
+                CcdBundlePaginationStyle.off,
+                false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -285,7 +294,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/document1"),
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
-            CcdBundlePaginationStyle.off
+            CcdBundlePaginationStyle.off,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);

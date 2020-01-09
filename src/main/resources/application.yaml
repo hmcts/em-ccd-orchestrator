@@ -93,3 +93,8 @@ ccd:
 
 endpoint-toggles:
   stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}
+
+notify:
+  apiKey: ${NOTIFY_API_KEY:test_key-86d79f79-5045-4df2-87d1-6b7d87b41f6b-a703ea6c-9869-42a7-aaa8-38c98a0cc044}
+  successTemplateId: ${SUCCESS_EMAIL_TEMPLATE:58f6384c-64f9-4ddc-a409-259fe04d1836}
+  failureTemplateId: ${FAILURE_EMAIL_TEMPLATE:2f133f4e-5adc-418c-9554-b18968db253e}
