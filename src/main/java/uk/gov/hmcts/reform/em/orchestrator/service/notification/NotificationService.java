@@ -48,11 +48,7 @@ public class NotificationService {
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("case_reference", caseId);
         personalisation.put("bundle_name", bundleTitle);
-
-        if (failureMessage != null) {
-            personalisation.put("system_error_message", failureMessage);
-        }
-
+        personalisation.put("system_error_message", failureMessage);
         return personalisation;
     }
 
