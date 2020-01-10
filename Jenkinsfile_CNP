@@ -46,7 +46,6 @@ env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.inter
 
 def vaultOverrides = [
         'preview' : 'aat',
-        'perftest' : 'aat',
         'spreview': 'saat'
 ]
 
