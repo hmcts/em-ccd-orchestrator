@@ -16,10 +16,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.S
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
-import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 
 @Controller
@@ -43,7 +41,8 @@ public class StitchingCompleteCallbackController {
         this.notificationService = notificationService;
     }
 
-    @PostMapping(value = "/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
+    @PostMapping(
+            value = "/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
@@ -69,9 +68,9 @@ public class StitchingCompleteCallbackController {
             if (documentTaskDTO.getBundle().getEnableEmailNotification() && taskState.equals(TaskState.DONE)) {
                 notificationService.sendEmailNotification(
                         successTemplateId,
+                        jwt,
                         caseId,
                         documentTaskDTO.getBundle().getBundleTitle(),
-                        jwt,
                         null
                 );
             }
@@ -82,9 +81,9 @@ public class StitchingCompleteCallbackController {
             if (documentTaskDTO.getBundle().getEnableEmailNotification() && taskState.equals(TaskState.FAILED)) {
                 notificationService.sendEmailNotification(
                         failureTemplateId,
+                        jwt,
                         caseId,
                         documentTaskDTO.getBundle().getBundleTitle(),
-                        jwt,
                         documentTaskDTO.getFailureDescription()
                 );
             }

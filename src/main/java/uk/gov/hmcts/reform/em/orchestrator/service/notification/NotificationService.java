@@ -32,8 +32,8 @@ public class NotificationService {
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private static final String IDAM_USER_DETAILS_ENDPOINT = "/details";
 
-    public void sendEmailNotification(String templateId, String caseId, String bundleTitle,
-                                      String failureMessage, String jwt) {
+    public void sendEmailNotification(String templateId, String jwt,
+                                      String caseId, String bundleTitle, String failureMessage) {
         try {
             notificationClient.sendEmail(
                     templateId,
@@ -48,7 +48,11 @@ public class NotificationService {
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("case_reference", caseId);
         personalisation.put("bundle_name", bundleTitle);
-        personalisation.put("system_error_message", failureMessage);
+
+        if (failureMessage != null) {
+            personalisation.put("system_error_message", failureMessage);
+        }
+
         return personalisation;
     }
 
