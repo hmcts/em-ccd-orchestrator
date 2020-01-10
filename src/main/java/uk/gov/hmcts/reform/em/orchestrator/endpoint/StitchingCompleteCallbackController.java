@@ -65,28 +65,22 @@ public class StitchingCompleteCallbackController {
 
             log.error(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
 
-            if (documentTaskDTO.getBundle().getEnableEmailNotification() && taskState.equals(TaskState.DONE)) {
+            if (documentTaskDTO.getBundle().getEnableEmailNotification() &&
+                    (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
+
                 notificationService.sendEmailNotification(
-                        successTemplateId,
+                        taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
                         jwt,
                         caseId,
                         documentTaskDTO.getBundle().getBundleTitle(),
-                        null
+                        taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
                 );
             }
+
             return ResponseEntity.ok().build();
 
         } catch (CallbackException e) {
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
-            if (documentTaskDTO.getBundle().getEnableEmailNotification() && taskState.equals(TaskState.FAILED)) {
-                notificationService.sendEmailNotification(
-                        failureTemplateId,
-                        jwt,
-                        caseId,
-                        documentTaskDTO.getBundle().getBundleTitle(),
-                        documentTaskDTO.getFailureDescription()
-                );
-            }
             return ResponseEntity.status(e.getHttpStatus()).body(e);
         }
     }
