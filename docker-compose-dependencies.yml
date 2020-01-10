@@ -3,7 +3,6 @@ version: '3'
 
 services:
   rpa-em-ccd-orchestrator:
-    image: hmcts/rpa-em-ccd-orchestrator:latest
     build:
       context: .
     #    image: hmcts/rpa-em-ccd-orchestrator:latest
