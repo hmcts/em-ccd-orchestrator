@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.S
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 
 @Controller
@@ -36,7 +35,7 @@ public class StitchingCompleteCallbackController {
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,
-                                                                       @PathVariable UUID bundleId,
+                                                                       @PathVariable String bundleId,
                                                                        @RequestBody DocumentTaskDTO documentTaskDTO) {
 
         try {

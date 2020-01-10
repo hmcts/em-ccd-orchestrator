@@ -1,27 +1,26 @@
-title: Structured and filtered bundle test
+title: CMC bundle sample
 filename: bundle.pdf
 coverpageTemplate: CC-EDM-GOR-ENG-12345.docx
 hasTableOfContents: true
 hasCoversheets: true
+sort: dateAscending
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
 folders:
-  - name: Claimant Documents
+  - name: Claimant Evidence
     folders:
-      - name: Claimant 1
+      - name: Expert Reports
         folders:
-          - name: Witness Statements
+          - name: Witness Reports
             documents:
               - type: documentSet
                 property: /caseDocuments
                 filters:
                   - property: /documentType
-                    value: Witness Statement
+                    value: Witness Report
                   - property: /ownerCaseRole
                     value: Claimant
-                  - property: /ownerCaseRolePartyId
-                    value: C1
           - name: Medical Reports
             documents:
               - type: documentSet
@@ -31,86 +30,39 @@ folders:
                     value: Medical Report
                   - property: /ownerCaseRole
                     value: Claimant
-                  - property: /ownerCaseRolePartyId
-                    value: C1
-      - name: Claimant 2
-        folders:
-          - name: Witness Statements
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Witness Statement
-                  - property: /ownerCaseRole
-                    value: Claimant
-                  - property: /ownerCaseRolePartyId
-                    value: C2
-          - name: Medical Reports
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Medical Report
-                  - property: /ownerCaseRole
-                    value: Claimant
-                  - property: /ownerCaseRolePartyId
-                    value: C2
-  - name: Defendant Documents
+      - name: Witness Statements
+        documents:
+          - type: documentSet
+            property: /caseDocuments
+            filters:
+              - property: /documentType
+                value: Witness Statement
+              - property: /ownerCaseRole
+                value: Claimant
+  - name: Defendant Evidence
     folders:
-      - name: Defendant 1
-        folders:
-          - name: Witness Statements
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Witness Statement
-                  - property: /ownerCaseRole
-                    value: Defendant
-                  - property: /ownerCaseRolePartyId
-                    value: D1
-          - name: Medical Reports
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Medical Report
-                  - property: /ownerCaseRole
-                    value: Defendant
-                  - property: /ownerCaseRolePartyId
-                    value: D1
-      - name: Defendant 2
-        folders:
-          - name: Witness Statements
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Witness Statement
-                  - property: /ownerCaseRole
-                    value: Defendant
-                  - property: /ownerCaseRolePartyId
-                    value: D2
-          - name: Medical Reports
-            documents:
-              - type: documentSet
-                property: /caseDocuments
-                filters:
-                  - property: /documentType
-                    value: Medical Report
-                  - property: /ownerCaseRole
-                    value: Defendant
-                  - property: /ownerCaseRolePartyId
-                    value: D2
+      - name: Witness Statements
+        documents:
+          - type: documentSet
+            property: /caseDocuments
+            filters:
+              - property: /documentType
+                value: Witness Statement
+              - property: /ownerCaseRole
+                value: Defendant
+      - name: Medical Reports
+        documents:
+          - type: documentSet
+            property: /caseDocuments
+            filters:
+              - property: /documentType
+                value: Medical Report
+              - property: /ownerCaseRole
+                value: Defendant
   - name: Miscellaneous
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-            value: Miscellaneous
+            value: Correspondence

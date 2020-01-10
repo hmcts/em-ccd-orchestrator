@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,18 +26,21 @@ public class BundleFactory {
         bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);
         bundle.setHasTableOfContentsAsBoolean(configuration.hasTableOfContents);
         bundle.setHasFolderCoversheetsAsBoolean(configuration.hasFolderCoversheets);
+        bundle.setPageNumberFormat(configuration.pageNumberFormat);
+        bundle.setPaginationStyle(configuration.paginationStyle);
         bundle.setFileName(configuration.filename);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
 
-        addFolders(configuration.folders, bundle.getFolders(), caseJson);
-        addDocuments(configuration.documents, bundle.getDocuments(), caseJson);
+        addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, caseJson);
+        addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, caseJson);
 
         return bundle;
     }
 
     private void addFolders(List<BundleConfigurationFolder> sourceFolders,
                             List<CcdValue<CcdBundleFolderDTO>> destinationFolders,
+                            BundleConfigurationSortOrder sortOrder,
                             JsonNode caseData) throws DocumentSelectorException {
         int sortIndex = 0;
 
@@ -46,16 +50,17 @@ public class BundleFactory {
             ccdFolder.setSortIndex(sortIndex++);
             destinationFolders.add(new CcdValue<>(ccdFolder));
 
-            addDocuments(folder.documents, ccdFolder.getDocuments(), caseData);
+            addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, caseData);
 
             if (folder.folders != null && !folder.folders.isEmpty()) {
-                addFolders(folder.folders, ccdFolder.getFolders(), caseData);
+                addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, caseData);
             }
         }
     }
 
     private void addDocuments(List<BundleConfigurationDocumentSelector> sourceDocuments,
                               List<CcdValue<CcdBundleDocumentDTO>> destinationDocuments,
+                              BundleConfigurationSortOrder sortOrder,
                               JsonNode caseData) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
@@ -64,6 +69,14 @@ public class BundleFactory {
                 : addDocumentSet((BundleConfigurationDocumentSet) selector, caseData);
 
             destinationDocuments.addAll(documents);
+        }
+
+        if (sortOrder != null) {
+            destinationDocuments.sort(sortOrder);
+
+            for (int i = 0; i < destinationDocuments.size(); i++) {
+                destinationDocuments.get(i).getValue().setSortIndex(i);
+            }
         }
     }
 
@@ -91,6 +104,14 @@ public class BundleFactory {
         sourceDocument.setUrl(getField(node, "/documentLink/document_url").asText());
         sourceDocument.setBinaryUrl(getField(node, "/documentLink/document_binary_url").asText());
         sourceDocument.setFileName(getField(node, "/documentLink/document_filename").asText());
+
+        JsonNode dateNode = node.at("/createdDatetime");
+
+        if (!dateNode.isNull() && !dateNode.isMissingNode()) {
+            sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
+        } else {
+            sourceDocument.setCreatedDatetime(LocalDateTime.MIN);
+        }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
         document.setName(getField(node, "/documentName").asText());
