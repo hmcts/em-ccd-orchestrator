@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
@@ -19,10 +18,7 @@ import java.util.Map;
 @Service
 public class NotificationService {
 
-    @Autowired
     private NotificationClient notificationClient;
-
-    @Autowired
     private OkHttpClient http;
 
     @Value("${auth.idam.client.baseUrl}")
@@ -31,6 +27,11 @@ public class NotificationService {
     private final Logger log = LoggerFactory.getLogger(NotificationService.class);
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private static final String IDAM_USER_DETAILS_ENDPOINT = "/details";
+
+    public NotificationService(NotificationClient notificationClient, OkHttpClient http) {
+        this.notificationClient = notificationClient;
+        this.http = http;
+    }
 
     public void sendEmailNotification(String templateId, String jwt,
                                       String caseId, String bundleTitle, String failureMessage) {
@@ -41,7 +42,8 @@ public class NotificationService {
                     createPersonalisation(caseId, bundleTitle, failureMessage),
                     "Email Notification: " + caseId);
         } catch (NotificationClientException e) {
-            throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));        }
+            throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));
+        }
     }
 
     private Map<String, String> createPersonalisation(String caseId, String bundleTitle, String failureMessage) {

@@ -65,8 +65,8 @@ public class StitchingCompleteCallbackController {
 
             log.error(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
 
-            if (documentTaskDTO.getBundle().getEnableEmailNotification() &&
-                    (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
+            if (documentTaskDTO.getBundle().getEnableEmailNotification()
+                    && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
 
                 notificationService.sendEmailNotification(
                         taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
