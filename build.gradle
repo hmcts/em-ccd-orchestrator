@@ -74,7 +74,7 @@ dependencies {
     aatCompileOnly 'org.projectlombok:lombok:1.18.10'
     aatAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
     compile "com.squareup.okhttp3:okhttp:4.2.2"
-    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.2.2'
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.3.1'
     compile group: "commons-io", name: "commons-io", version: "2.6"
     compile "org.springframework.boot:spring-boot-starter-batch"
     compile "org.springframework.boot:spring-boot-starter-security"
@@ -114,7 +114,7 @@ dependencies {
     testCompile "io.rest-assured:rest-assured:4.1.2"
     testCompile "com.github.gmazzo:okhttp-mock:1.3.1"
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.1.0'
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.2.4'
     testCompile "io.rest-assured:rest-assured:4.0.0"
     testCompile group: "io.rest-assured", name: "json-path", version: "4.0.0"
     testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
@@ -204,12 +204,6 @@ def coverageExclusionList = [
     '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
 ]
 
-//(jacocoTestReport | jacocoTestCoverageVerification)
-jacoco {
-    toolVersion = '0.7.9' // jacocoMavenPluginVersion
-    reportsDir = file("$buildDir/reports/jacoco")
-}
-
 jacocoTestReport {
     executionData(test)
 
@@ -217,18 +211,14 @@ jacocoTestReport {
         xml.enabled = true
         csv.enabled = true
     }
-
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: coverageExclusionList)
-        })
-    }
 }
+
+project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 sonarqube {
     properties {
         property "sonar.projectName", "${rootProject.name}"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
         property "sonar.exclusions", coverageExclusionList.join(", ")
     }
 }
