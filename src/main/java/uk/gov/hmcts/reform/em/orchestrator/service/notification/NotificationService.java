@@ -71,7 +71,6 @@ public class NotificationService {
                 throw new CallbackException(500, response.body().string(), "Unable to retrieve user details");
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
             throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
         }
     }
