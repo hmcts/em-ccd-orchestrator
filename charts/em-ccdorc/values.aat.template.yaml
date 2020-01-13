@@ -2,8 +2,8 @@ java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
   keyVaults:
-    em-ccd-orchestrator:
-      resourceGroup: em-ccd-orchestrator
+    em-ccdorc:
+      resourceGroup: em-ccdorc
       secrets:
         - AppInsightsInstrumentationKey
         - microservicekey-em-ccd-orchestrator

@@ -3,7 +3,7 @@ spring:
     propertiesvolume:
       enabled: true
       prefixed: false
-      paths: /mnt/secrets/em-ccd-orchestrator
+      paths: /mnt/secrets/em-ccdorc
       aliases:
         microservicekey-em-ccd-orchestrator: S2S_KEY
         AppInsightsInstrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
