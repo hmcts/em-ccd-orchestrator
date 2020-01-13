@@ -87,15 +87,7 @@ public class StitchingCompleteCallbackControllerTest {
 
     @Test
     public void stitchingCompleteCallbackWithException() throws Exception {
-        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
-        StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
-        stitchingBundleDTO.setEnableEmailNotification(true);
-        documentTaskDTO.setBundle(stitchingBundleDTO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String body = objectMapper.writeValueAsString(documentTaskDTO);
-
-            Mockito
+        Mockito
                 .when(serviceRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new Service("ccd"));
 

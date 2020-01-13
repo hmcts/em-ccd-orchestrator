@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 
 import okhttp3.*;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,19 +29,14 @@ public class NotificationServiceTest {
 
     private NotificationService notificationService;
 
-    @Before
-    public void setUp() {
-        List<String> responses = new ArrayList<>();
-        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
-        OkHttpClient http = getMockHttp(responses);
-
-        MockitoAnnotations.initMocks(this);
-        notificationService = new NotificationService(notificationClient, http);
-        ReflectionTestUtils.setField(notificationService, "idamBaseUrl", "http://localhost:4501");
-    }
-
     @Test
     public void sendEmailNotificationSuccessful() throws NotificationClientException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
+        OkHttpClient http = getMockHttpSuccess(responses);
+
+        setUpNotificationClient(http);
+
         notificationService.sendEmailNotification(
                 "string",
                 "string",
@@ -60,6 +54,12 @@ public class NotificationServiceTest {
 
     @Test(expected = CallbackException.class)
     public void sendEmailNotificationFailure() throws NotificationClientException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
+        OkHttpClient http = getMockHttpSuccess(responses);
+
+        setUpNotificationClient(http);
+
         when(notificationClient.sendEmail(
                 "string",
                 "email@email.com",
@@ -76,15 +76,30 @@ public class NotificationServiceTest {
         );
     }
 
-    public HashMap<String, String> getPersonalisation() {
-        HashMap<String, String> personalisation = new HashMap<>();
-        personalisation.put("case_reference", "string");
-        personalisation.put("bundle_name", "string");
-        personalisation.put("system_error_message", "string");
-        return personalisation;
+    @Test(expected = CallbackException.class)
+    public void getUserDetailsFailure() throws NotificationClientException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
+        OkHttpClient http = getMockHttpFailures(responses);
+
+        setUpNotificationClient(http);
+
+        notificationService.sendEmailNotification(
+                "string",
+                "string",
+                "string",
+                "string",
+                "string"
+        );
     }
 
-    public OkHttpClient getMockHttp(List<String> body) {
+    public void setUpNotificationClient(OkHttpClient http) {
+        MockitoAnnotations.initMocks(this);
+        notificationService = new NotificationService(notificationClient, http);
+        ReflectionTestUtils.setField(notificationService, "idamBaseUrl", "http://localhost:4501");
+    }
+
+    public OkHttpClient getMockHttpSuccess(List<String> body) {
         Iterator<String> iterator = body.iterator();
 
         return new OkHttpClient
@@ -97,5 +112,28 @@ public class NotificationServiceTest {
                         .protocol(Protocol.HTTP_2)
                         .build())
                 .build();
+    }
+
+    public OkHttpClient getMockHttpFailures(List<String> body) {
+        Iterator<String> iterator = body.iterator();
+
+        return new OkHttpClient
+                .Builder()
+                .addInterceptor(chain -> new Response.Builder()
+                        .body(ResponseBody.create(MediaType.get("application/json"), iterator.next()))
+                        .request(chain.request())
+                        .message("")
+                        .code(500)
+                        .protocol(Protocol.HTTP_2)
+                        .build())
+                .build();
+    }
+
+    public HashMap<String, String> getPersonalisation() {
+        HashMap<String, String> personalisation = new HashMap<>();
+        personalisation.put("case_reference", "string");
+        personalisation.put("bundle_name", "string");
+        personalisation.put("system_error_message", "string");
+        return personalisation;
     }
 }

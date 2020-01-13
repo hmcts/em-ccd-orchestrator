@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
@@ -18,14 +16,14 @@ import java.util.Map;
 @Service
 public class NotificationService {
 
-    private NotificationClient notificationClient;
-    private OkHttpClient http;
-
     @Value("${auth.idam.client.baseUrl}")
     private String idamBaseUrl;
 
-    private final Logger log = LoggerFactory.getLogger(NotificationService.class);
+    private NotificationClient notificationClient;
+    private OkHttpClient http;
+
     private final ObjectMapper jsonMapper = new ObjectMapper();
+
     private static final String IDAM_USER_DETAILS_ENDPOINT = "/details";
 
     public NotificationService(NotificationClient notificationClient, OkHttpClient http) {
