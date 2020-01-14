@@ -226,4 +226,8 @@ public class CcdBundleDTO {
     public void setEnableEmailNotification(CcdBoolean enableEmailNotification) {
         this.enableEmailNotification = enableEmailNotification;
     }
+
+    public void setEnableEmailNotificationAsBoolean(boolean enableEmailNotification) {
+        this.enableEmailNotification = enableEmailNotification ? CcdBoolean.Yes : CcdBoolean.No;
+    }
 }
