@@ -67,7 +67,7 @@ public class StitchingCompleteCallbackController {
 
             if (documentTaskDTO.getBundle().getEnableEmailNotification()
                     && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
-
+                log.info("About to call Notification Service");
                 notificationService.sendEmailNotification(
                         taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
                         jwt,
@@ -75,6 +75,8 @@ public class StitchingCompleteCallbackController {
                         documentTaskDTO.getBundle().getBundleTitle(),
                         taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
                 );
+                log.info("Returned from Notification Service");
+
             }
 
             return ResponseEntity.ok().build();

@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
@@ -26,6 +28,8 @@ public class NotificationService {
 
     private static final String IDAM_USER_DETAILS_ENDPOINT = "/details";
 
+    private final Logger log = LoggerFactory.getLogger(NotificationService.class);
+
     public NotificationService(NotificationClient notificationClient, OkHttpClient http) {
         this.notificationClient = notificationClient;
         this.http = http;
@@ -34,11 +38,15 @@ public class NotificationService {
     public void sendEmailNotification(String templateId, String jwt,
                                       String caseId, String bundleTitle, String failureMessage) {
         try {
+            log.info("About to send email");
+
             notificationClient.sendEmail(
                     templateId,
                     getUserEmail(jwt),
                     createPersonalisation(caseId, bundleTitle, failureMessage),
                     "Email Notification: " + caseId);
+
+            log.info("Have sent email notification using Gov Notify");
         } catch (NotificationClientException e) {
             throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));
         }
