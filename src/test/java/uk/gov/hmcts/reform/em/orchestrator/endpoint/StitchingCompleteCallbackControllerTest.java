@@ -18,10 +18,12 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
+import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -49,6 +51,9 @@ public class StitchingCompleteCallbackControllerTest {
     @MockBean
     private UserRequestAuthorizer userRequestAuthorizer;
 
+    @MockBean
+    private NotificationService notificationService;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -59,6 +64,7 @@ public class StitchingCompleteCallbackControllerTest {
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
         StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
         stitchingBundleDTO.setEnableEmailNotification(true);
+        documentTaskDTO.setTaskState(TaskState.DONE);
         documentTaskDTO.setBundle(stitchingBundleDTO);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -74,6 +80,16 @@ public class StitchingCompleteCallbackControllerTest {
         Mockito
                 .when(userRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new User("john", Stream.of("caseworker").collect(Collectors.toSet())));
+
+        Mockito
+                .doNothing()
+                .when(notificationService)
+                    .sendEmailNotification(
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString());
 
         this.mockMvc
                 .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
