@@ -52,6 +52,7 @@ public class StitchingCompleteCallbackController {
                                                                        @RequestBody DocumentTaskDTO documentTaskDTO) {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
+
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
                     new StitchingCompleteCallbackDto(
@@ -63,10 +64,10 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            log.error(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
+            log.info(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
 
-            if (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED)) {
-                log.info("About to call Notification Service");
+            if (documentTaskDTO.getBundle().getEnableEmailNotification()
+                    && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
                 notificationService.sendEmailNotification(
                         taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
                         jwt,
@@ -74,7 +75,6 @@ public class StitchingCompleteCallbackController {
                         documentTaskDTO.getBundle().getBundleTitle(),
                         taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
                 );
-                log.info("Returned from Notification Service");
             }
 
             return ResponseEntity.ok().build();

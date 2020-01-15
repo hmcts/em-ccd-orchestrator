@@ -38,15 +38,14 @@ public class NotificationService {
     public void sendEmailNotification(String templateId, String jwt,
                                       String caseId, String bundleTitle, String failureMessage) {
         try {
-            log.info("About to send email");
-
             notificationClient.sendEmail(
                     templateId,
                     getUserEmail(jwt),
                     createPersonalisation(caseId, bundleTitle, failureMessage),
                     "Email Notification: " + caseId);
 
-            log.info("Have sent email notification using Gov Notify");
+            log.info(String.format("Notification email sent for caseId: %s", caseId));
+
         } catch (NotificationClientException e) {
             throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));
         }
