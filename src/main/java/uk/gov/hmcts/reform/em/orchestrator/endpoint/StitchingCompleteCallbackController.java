@@ -65,9 +65,7 @@ public class StitchingCompleteCallbackController {
 
             log.error(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
 
-            log.info(String.format("Taskstate: %s, EmailNotifications: %s", taskState, documentTaskDTO.getBundle().getEnableEmailNotification()));
-            if (documentTaskDTO.getBundle().getEnableEmailNotification()
-                    && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
+            if (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED)) {
                 log.info("About to call Notification Service");
                 notificationService.sendEmailNotification(
                         taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
@@ -77,7 +75,6 @@ public class StitchingCompleteCallbackController {
                         taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
                 );
                 log.info("Returned from Notification Service");
-
             }
 
             return ResponseEntity.ok().build();
