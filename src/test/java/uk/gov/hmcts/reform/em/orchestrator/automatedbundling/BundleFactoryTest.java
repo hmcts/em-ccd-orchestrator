@@ -209,6 +209,36 @@ public class BundleFactoryTest {
     }
 
     @Test
+    public void createWithDocumentSetRegex() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                Arrays.asList(
+                        new BundleConfigurationDocument("/document1"),
+                        new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
+                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yes\\w*"),
+                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
+                        ))
+                ),
+                CcdBundlePaginationStyle.off
+        );
+
+        JsonNode json = mapper.readTree(case3Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals("document4.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals(2, bundle.getDocuments().size());
+    }
+
+    @Test
     public void createWithSortOrderAscending() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
