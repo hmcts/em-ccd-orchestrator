@@ -234,7 +234,8 @@ public class BundleFactoryTest {
                                 new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
                         ))
                 ),
-                CcdBundlePaginationStyle.off
+                CcdBundlePaginationStyle.off,
+                false
         );
 
         JsonNode json = mapper.readTree(case3Json);
