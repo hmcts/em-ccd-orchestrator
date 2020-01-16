@@ -11,19 +11,19 @@ folders:
   - name: DWP
     documents:
     - type: documentSet
-      property: /caseDocuments
+      property: /sscsDocument
       filters:
       - property: /documentType
-        value: Evidence
+        value: dwpEvidence
     - type: documentSet
-      property: /caseDocuments
+      property: /sscsDocument
       filters:
       - property: /documentType
-        value: Response
+        value: DWP response
   - name: Further Additions
     documents:
       - type: documentSet
-        property: /caseDocuments
+        property: /sscsDocument
         filters:
         - property: /documentType
-          value: AppellantEvidence
+          value: appellantEvidence
