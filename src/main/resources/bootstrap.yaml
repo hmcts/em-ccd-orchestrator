@@ -7,4 +7,4 @@ spring:
       aliases:
         microservicekey-em-ccd-orchestrator: S2S_KEY
         AppInsightsInstrumentationKey: APPINSIGHTS_INSTRUMENTATIONKEY
-        GovNotifyAPIKey: NOTIFICATION_API_KEY
+        notification-api-key: NOTIFICATION_API_KEY
