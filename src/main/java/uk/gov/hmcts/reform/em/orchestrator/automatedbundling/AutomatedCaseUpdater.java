@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
@@ -44,9 +43,9 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String configurationName = ccdCallbackDto.getCaseData().has(CONFIG_FIELD) ?
-                ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText() :
-                CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
+        String configurationName = ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
+                ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
+                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
 
         BundleConfiguration configuration = configurationLoader.load(configurationName);
         ArrayNode bundles = ccdCallbackDto
