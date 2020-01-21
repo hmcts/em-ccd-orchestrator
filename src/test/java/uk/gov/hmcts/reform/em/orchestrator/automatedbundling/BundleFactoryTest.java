@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationSortOrder;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -254,7 +251,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
-            BundleConfigurationSortOrder.dateAscending,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
             true,
             true,
             true,
@@ -286,7 +283,7 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
-                BundleConfigurationSortOrder.dateAscending,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
                 true,
                 true,
                 true,
@@ -317,7 +314,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
-            BundleConfigurationSortOrder.dateDescending,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
             true,
             true,
             true,
@@ -348,7 +345,7 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
-                BundleConfigurationSortOrder.dateAscending,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
                 true,
                 true,
                 true,

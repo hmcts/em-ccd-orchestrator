@@ -17,7 +17,7 @@ public class BundleConfiguration {
     public final String filename;
     public final String coverpageTemplate;
     public final PageNumberFormat pageNumberFormat;
-    public final BundleConfigurationSortOrder sortOrder;
+    public final BundleConfigurationSort sortOrder;
     public final boolean hasTableOfContents;
     public final boolean hasCoversheets;
     public final boolean hasFolderCoversheets;
@@ -30,7 +30,7 @@ public class BundleConfiguration {
                                @JsonProperty("filename") String filename,
                                @JsonProperty("coverpageTemplate") String coverpageTemplate,
                                @JsonProperty("pageNumberFormat") PageNumberFormat pageNumberFormat,
-                               @JsonProperty("sort") BundleConfigurationSortOrder sortOrder,
+                               @JsonProperty("sort") BundleConfigurationSort sortOrder,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
