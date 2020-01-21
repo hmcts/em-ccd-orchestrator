@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
@@ -32,8 +33,8 @@ public class BundleFactory {
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
 
-        addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, caseJson);
-        addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, caseJson);
+        addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue, caseJson);
+        addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue, caseJson);
 
         return bundle;
     }
@@ -41,6 +42,7 @@ public class BundleFactory {
     private void addFolders(List<BundleConfigurationFolder> sourceFolders,
                             List<CcdValue<CcdBundleFolderDTO>> destinationFolders,
                             BundleConfigurationSortOrder sortOrder,
+                            String documentNameValue,
                             JsonNode caseData) throws DocumentSelectorException {
         int sortIndex = 0;
 
@@ -50,10 +52,10 @@ public class BundleFactory {
             ccdFolder.setSortIndex(sortIndex++);
             destinationFolders.add(new CcdValue<>(ccdFolder));
 
-            addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, caseData);
+            addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, documentNameValue, caseData);
 
             if (folder.folders != null && !folder.folders.isEmpty()) {
-                addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, caseData);
+                addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, documentNameValue, caseData);
             }
         }
     }
@@ -61,12 +63,13 @@ public class BundleFactory {
     private void addDocuments(List<BundleConfigurationDocumentSelector> sourceDocuments,
                               List<CcdValue<CcdBundleDocumentDTO>> destinationDocuments,
                               BundleConfigurationSortOrder sortOrder,
+                              String documentNameValue,
                               JsonNode caseData) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
-                ? addDocument((BundleConfigurationDocument) selector, caseData)
-                : addDocumentSet((BundleConfigurationDocumentSet) selector, caseData);
+                ? addDocument((BundleConfigurationDocument) selector, documentNameValue, caseData)
+                : addDocumentSet((BundleConfigurationDocumentSet) selector, documentNameValue, caseData);
 
             destinationDocuments.addAll(documents);
         }
@@ -81,6 +84,7 @@ public class BundleFactory {
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocument(BundleConfigurationDocument documentSelector,
+                                                             String documentNameValue,
                                                              JsonNode caseData) throws DocumentSelectorException {
         ArrayList<CcdValue<CcdBundleDocumentDTO>> list = new ArrayList<>();
         JsonNode node = caseData.at(documentSelector.property);
@@ -93,12 +97,12 @@ public class BundleFactory {
             throw new DocumentSelectorException("Element is an array: " + documentSelector.property);
         }
 
-        list.add(getDocumentFromNode(node));
+        list.add(getDocumentFromNode(node, documentNameValue));
 
         return list;
     }
 
-    private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node) throws DocumentSelectorException {
+    private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node, String documentNameValue) throws DocumentSelectorException {
         CcdDocument sourceDocument = new CcdDocument();
 
         sourceDocument.setUrl(getField(node, "/documentLink/document_url").asText());
@@ -114,7 +118,7 @@ public class BundleFactory {
         }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
-        document.setName(getField(node, "/documentName").asText());
+        document.setName(getField(node, StringUtils.defaultIfEmpty(documentNameValue,"/documentName")).asText());
         document.setSourceDocument(sourceDocument);
 
         return new CcdValue<>(document);
@@ -129,6 +133,7 @@ public class BundleFactory {
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(BundleConfigurationDocumentSet documentSelector,
+                                                                String documentNameValue,
                                                                 JsonNode caseData) throws DocumentSelectorException {
 
         JsonNode list = caseData.at(documentSelector.property);
@@ -145,7 +150,7 @@ public class BundleFactory {
             .stream(list.spliterator(), true)
             .map(n -> n.at("/value"))
             .filter(n -> anyFilterMatches(documentSelector.filters, n))
-            .map(unchecked(this::getDocumentFromNode))
+            .map(unchecked(node -> this.getDocumentFromNode(node, documentNameValue)))
             .collect(Collectors.toList());
     }
 

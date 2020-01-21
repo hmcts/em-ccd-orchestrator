@@ -3,7 +3,9 @@ filename: bundle.pdf
 coverpageTemplate: CoverPage.docx
 hasTableOfContents: true
 hasCoversheets: true
-sort: dateAscending
+sort:
+  field: /fieldName
+  order: ascending
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
