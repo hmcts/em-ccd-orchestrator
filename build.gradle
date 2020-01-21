@@ -118,9 +118,9 @@ dependencies {
     testCompile group: "io.rest-assured", name: "json-path", version: "4.0.0"
     testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
 
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.5.2"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.5.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
 
     aatCompile group: 'org.apache.poi', name: 'poi', version: '4.1.1'
     aatCompile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.1'
