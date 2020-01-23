@@ -43,7 +43,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String configurationName = ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
+        String configurationName =
+                ccdCallbackDto.getCaseData().has(CONFIG_FIELD) && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")
                 ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
                 : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
 
