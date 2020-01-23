@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
-    private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("Benefit", "sscs-demo-bundle.yaml");
+    private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("Benefit", "sscs-bundle-config.yaml");
     private static final String DEFAULT_CONFIG = "default-config.yaml";
 
     private final ConfigurationLoader configurationLoader;
