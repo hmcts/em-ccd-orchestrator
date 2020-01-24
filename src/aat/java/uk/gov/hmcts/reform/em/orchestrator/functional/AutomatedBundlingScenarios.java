@@ -213,6 +213,23 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    public void testDocumentNotPresent() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        System.out.println(response.getBody().prettyPrint());
+        assertEquals(200, response.getStatusCode());
+        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+    }
+
+    @Test
     public void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");
@@ -236,32 +253,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertTrue(response.prettyPrint().contains("Element is not an array: /singleDocument"));
-    }
-
-    @Test
-    public void testInvalidDocumentProperty() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-9-invalid-doc-property.yaml");
-
-        Response response = testUtil.authRequest()
-                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(json)
-                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
-
-        assertTrue(response.prettyPrint().contains("Could not find element: /typoDocument"));
-    }
-
-    @Test
-    public void testInvalidDocumentSetProperty() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-10-invalid-doc-set-property.yaml");
-
-        Response response = testUtil.authRequest()
-                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .body(json)
-                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
-
-        assertTrue(response.prettyPrint().contains("Could not find element: /quesoDocument"));
     }
 
     @Test
@@ -294,7 +285,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testMultipleFilters() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-11-multiple-filters.yaml");
+        json = json.replaceAll("configurationFile", "f-tests-9-multiple-filters.yaml");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -314,7 +305,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testSortDocumentsAscending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-12-sorting.yaml");
+        json = json.replaceAll("configurationFile", "f-tests-10-sorting.yaml");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -337,7 +328,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testSortDocumentsDescending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-13-sorting.yaml");
+        json = json.replaceAll("configurationFile", "f-tests-11-sorting.yaml");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)

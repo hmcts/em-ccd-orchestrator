@@ -91,7 +91,7 @@ public class BundleFactory {
         JsonNode node = caseData.at(documentSelector.property);
 
         if (node.isMissingNode()) {
-            throw new DocumentSelectorException("Could not find element: " + documentSelector.property);
+            return new ArrayList<>();
         }
 
         if (node.isArray()) {
@@ -110,7 +110,7 @@ public class BundleFactory {
 
         sourceDocument.setUrl(getField(node, "/documentLink/document_url").asText());
         sourceDocument.setBinaryUrl(getField(node, "/documentLink/document_binary_url").asText());
-        sourceDocument.setFileName(getField(node, StringUtils.defaultIfEmpty(documentNameValue,"/documentLink/document_filename")).asText());
+        sourceDocument.setFileName(getField(node, "/documentLink/document_filename").asText());
 
         if (sortOrder != null) {
             JsonNode dateNode = node.at(sortOrder.field);
@@ -122,7 +122,7 @@ public class BundleFactory {
         }
 
         CcdBundleDocumentDTO document = new CcdBundleDocumentDTO();
-        document.setName(getField(node, "/documentName").asText());
+        document.setName(getField(node, StringUtils.defaultIfEmpty(documentNameValue,"/documentName")).asText());
         document.setSourceDocument(sourceDocument);
 
         return new CcdValue<>(document);
@@ -144,7 +144,7 @@ public class BundleFactory {
         JsonNode list = caseData.at(documentSelector.property);
 
         if (list.isMissingNode()) {
-            throw new DocumentSelectorException("Could not find element: " + documentSelector.property);
+            return new ArrayList<>();
         }
 
         if (!list.isArray()) {
