@@ -8,7 +8,6 @@ sort:
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: pageRange
-documentNameValue: /documentLink/documentFilename
 documents:
   - type: documentSet
     property: /caseDocuments
