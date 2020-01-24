@@ -3,16 +3,19 @@ filename: bundle.pdf
 coverpageTemplate: SSCS-cover-page.docx
 hasTableOfContents: true
 hasCoversheets: true
-sort: dateAscending
+sort:
+  field: /documentDateAdded
+  order: ascending
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
+documentNameValue: /documentLink/documentFilename
 folders:
   - name: DWP
     documents:
-      - type: documentSet
+      - type: document
         property: /dwpResponseDocument
-      - type: documentSet
+      - type: document
         property: /dwpEvidenceBundleDocument
   - name: Further Additions
     documents:

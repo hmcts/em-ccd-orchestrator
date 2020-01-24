@@ -116,6 +116,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
+        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
