@@ -261,7 +261,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/ourDocumentNameValue"
+                "/documentLink/documentFilename"
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -385,7 +385,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/ourDocumentNameValue"
+                "/documentLink/documentFilename"
         );
 
         JsonNode json = mapper.readTree(case4Json);

@@ -1,43 +1,43 @@
 {
   "document1": {
-    "ourDocumentNameValue": "Case document 1",
+    "documentName": "Case document 1",
     "documentLink": {
       "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-      "document_filename":"document1.pdf",
+      "documentFilename":"document1.pdf",
       "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
     },
     "customTimeField":"2019-02-02T11:05:20.000"
   },
   "caseDocuments": [{
     "value": {
-      "ourDocumentNameValue": "Case document 2",
+      "documentName": "Case document 2",
       "selectMe": "yesPlease",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-        "document_filename":"document2.pdf",
+        "documentFilename":"document2.pdf",
         "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
       },
       "customTimeField": null
     }
   }, {
     "value": {
-      "ourDocumentNameValue": "Case document 3",
+      "documentName": "Case document 3",
       "selectMe": "noThanksPlease",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-        "document_filename":"document3.pdf",
+        "documentFilename":"document3.pdf",
         "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
       },
       "customTimeField":"2019-02-07T11:05:20.000"
     }
   }, {
     "value": {
-      "ourDocumentNameValue": "Case document 4",
+      "documentName": "Case document 4",
       "selectMe": "yesPlease",
       "alsoSelectMe": "okayThen",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
-        "document_filename":"document4.pdf",
+        "documentFilename":"document4.pdf",
         "document_binary_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088/binary"
       },
       "customTimeField":"2019-02-01T11:05:20.000"
