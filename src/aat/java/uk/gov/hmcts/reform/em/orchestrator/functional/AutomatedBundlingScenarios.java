@@ -200,6 +200,18 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    public void testDefaultFallBackConfigurationFile() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
     public void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");

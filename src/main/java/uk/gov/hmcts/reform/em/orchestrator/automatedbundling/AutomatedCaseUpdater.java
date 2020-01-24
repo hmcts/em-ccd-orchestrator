@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.ImmutableMap;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -11,14 +12,16 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
+    private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("Benefit", "sscs-bundle-config.yaml");
     private static final String DEFAULT_CONFIG = "default-config.yaml";
+
     private final ConfigurationLoader configurationLoader;
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
@@ -40,9 +43,11 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String configurationName = Optional.ofNullable(
-                ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText())
-                .orElse(DEFAULT_CONFIG);
+        String configurationName =
+                ccdCallbackDto.getCaseData().has(CONFIG_FIELD) && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")
+                ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
+                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
+
         BundleConfiguration configuration = configurationLoader.load(configurationName);
         ArrayNode bundles = ccdCallbackDto
             .findCaseProperty(ArrayNode.class)
