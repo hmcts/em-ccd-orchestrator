@@ -223,8 +223,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         JsonPath responsePath = response.jsonPath();
-
-        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
     }
