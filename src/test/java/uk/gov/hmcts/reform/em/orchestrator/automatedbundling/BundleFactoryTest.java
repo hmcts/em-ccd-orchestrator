@@ -82,30 +82,6 @@ public class BundleFactoryTest {
         assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
     }
 
-    @Test(expected = DocumentSelectorException.class)
-    public void createMissingProperty() throws IOException, DocumentSelectorException {
-        BundleConfiguration configuration = new BundleConfiguration(
-            "Bundle title",
-            "filename.pdf",
-            "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            null,
-            true,
-            true,
-            true,
-            new ArrayList<>(),
-            Arrays.asList(
-                new BundleConfigurationDocument("/does not exist"),
-                new BundleConfigurationDocument("/folder/document")
-            ),
-            CcdBundlePaginationStyle.off,
-            null
-        );
-
-        JsonNode json = mapper.readTree(case1Json);
-        factory.create(configuration, json);
-    }
-
     @Test
     public void createWithDocumentSetSelect() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
@@ -132,30 +108,6 @@ public class BundleFactoryTest {
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
         assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
         assertEquals("document3.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
-    }
-
-    @Test(expected = DocumentSelectorException.class)
-    public void createWithDocumentSetDoesNotExist() throws IOException, DocumentSelectorException {
-        BundleConfiguration configuration = new BundleConfiguration(
-            "Bundle title",
-            "filename.pdf",
-            "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            null,
-            true,
-            true,
-            true,
-            new ArrayList<>(),
-            Arrays.asList(
-                new BundleConfigurationDocument("/document1"),
-                new BundleConfigurationDocumentSet("/does not exist", Collections.emptyList())
-            ),
-            CcdBundlePaginationStyle.off,
-            null
-        );
-
-        JsonNode json = mapper.readTree(case2Json);
-        factory.create(configuration, json);
     }
 
     @Test(expected = DocumentSelectorException.class)
@@ -261,7 +213,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentLink/documentFilename"
+                "/documentFileName"
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -385,7 +337,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentLink/documentFilename"
+                "/documentFileName"
         );
 
         JsonNode json = mapper.readTree(case4Json);
