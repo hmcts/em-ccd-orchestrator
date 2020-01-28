@@ -58,6 +58,5 @@ withNightlyPipeline(type, product, component) {
     loadVaultSecrets(secrets)
     overrideVaultEnvironments(vaultOverrides)
     installCharts()
-    enableMutationTest()
     enableSecurityScan()
 }
