@@ -52,6 +52,7 @@ withNightlyPipeline(type, product, component) {
     enableDockerBuild()
     loadVaultSecrets(secrets)
     overrideVaultEnvironments(vaultOverrides)
+    installCharts()
     enableMutationTest()
     enableSecurityScan()
 }
