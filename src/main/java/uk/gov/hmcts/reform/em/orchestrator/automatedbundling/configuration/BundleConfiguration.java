@@ -17,26 +17,28 @@ public class BundleConfiguration {
     public final String filename;
     public final String coverpageTemplate;
     public final PageNumberFormat pageNumberFormat;
-    public final BundleConfigurationSortOrder sortOrder;
+    public final BundleConfigurationSort sortOrder;
     public final boolean hasTableOfContents;
     public final boolean hasCoversheets;
     public final boolean hasFolderCoversheets;
     public final List<BundleConfigurationFolder> folders;
     public final List<BundleConfigurationDocumentSelector> documents;
     public final CcdBundlePaginationStyle paginationStyle;
+    public final String documentNameValue;
     public final boolean enableEmailNotification;
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
                                @JsonProperty("coverpageTemplate") String coverpageTemplate,
                                @JsonProperty("pageNumberFormat") PageNumberFormat pageNumberFormat,
-                               @JsonProperty("sort") BundleConfigurationSortOrder sortOrder,
+                               @JsonProperty("sort") BundleConfigurationSort sortOrder,
                                @JsonProperty("hasTableOfContents") boolean hasTableOfContents,
                                @JsonProperty("hasCoversheets") boolean hasCoversheets,
                                @JsonProperty("hasFolderCoversheets") boolean hasFolderCoversheets,
                                @JsonProperty("folders") List<BundleConfigurationFolder> folders,
                                @JsonProperty("documents") List<BundleConfigurationDocumentSelector> documents,
                                @JsonProperty("paginationStyle") CcdBundlePaginationStyle paginationStyle,
+                               @JsonProperty("documentNameValue") String documentNameValue,
                                @JsonProperty("enableEmailNotification") boolean enableEmailNotification) {
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
@@ -49,6 +51,7 @@ public class BundleConfiguration {
         this.folders = folders == null ? new ArrayList<>() : folders;
         this.documents = documents == null ? new ArrayList<>() : documents;
         this.paginationStyle = paginationStyle;
+        this.documentNameValue = documentNameValue;
         this.enableEmailNotification = enableEmailNotification;
     }
 }

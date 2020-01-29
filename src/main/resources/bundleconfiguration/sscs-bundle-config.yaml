@@ -1,0 +1,26 @@
+title: SSCS Demo Bundle
+filename: bundle.pdf
+coverpageTemplate: SSCS-cover-page.docx
+hasTableOfContents: true
+hasCoversheets: true
+sort:
+  field: /documentDateAdded
+  order: ascending
+hasFolderCoversheets: true
+paginationStyle: topCenter
+pageNumberFormat: numberOfPages
+documentNameValue: /documentFileName
+folders:
+  - name: DWP
+    documents:
+      - type: document
+        property: /dwpResponseDocument
+      - type: document
+        property: /dwpEvidenceBundleDocument
+  - name: Further Additions
+    documents:
+      - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /documentType
+            value: appellantEvidence
