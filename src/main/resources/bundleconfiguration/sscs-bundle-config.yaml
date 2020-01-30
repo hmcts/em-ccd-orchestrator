@@ -22,5 +22,5 @@ folders:
       - type: documentSet
         property: /sscsDocument
         filters:
-          - property: /documentType
-            value: {[A-Za-z0-9]+}
+          - property: /bundleAddition
+            value: \w+
