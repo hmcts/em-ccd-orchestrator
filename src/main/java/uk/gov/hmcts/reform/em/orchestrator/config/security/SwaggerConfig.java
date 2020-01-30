@@ -43,21 +43,6 @@ public class SwaggerConfig {
 
     public SwaggerConfig() { }
 
-    /*@Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Reform IdAM API Service")
-                .ignoredParameterTypes(Authentication.class)
-                .apiInfo(apiInfo())
-                .tags(new Tag(EXAMPLE_ENDPOINTS, ""))
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.reform.idam.oidc.demo1.web"))
-                .paths(PathSelectors.ant("/**"))
-                .build()
-                .securitySchemes(singletonList(securityScheme()))
-                .securityContexts(singletonList(securityContext()));
-    }*/
-
     @Bean
     public SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
