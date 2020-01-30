@@ -1,6 +1,6 @@
 {
   "document1": {
-    "documentName": "Case document 1",
+    "documentFileName": "Case document 1",
     "documentLink": {
       "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
       "document_filename":"document1.pdf",
@@ -10,7 +10,7 @@
   },
   "caseDocuments": [{
     "value": {
-      "documentName": "Case document 2",
+      "documentFileName": "Case document 2",
       "selectMe": "yesPlease",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
@@ -21,7 +21,7 @@
     }
   }, {
     "value": {
-      "documentName": "Case document 3",
+      "documentFileName": "Case document 3",
       "selectMe": "noThanksPlease",
       "documentLink": {
         "document_url":"http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088",
@@ -32,7 +32,7 @@
     }
   }, {
     "value": {
-      "documentName": "Case document 4",
+      "documentFileName": "Case document 4",
       "selectMe": "yesPlease",
       "alsoSelectMe": "okayThen",
       "documentLink": {
