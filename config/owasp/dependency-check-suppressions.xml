@@ -38,5 +38,6 @@
         <cve>CVE-2017-18365</cve>
         <cve>CVE-2019-12418</cve>
         <cve>CVE-2019-17563</cve>
+        <cve>CVE-2019-17195</cve>
     </suppress>
 </suppressions>
