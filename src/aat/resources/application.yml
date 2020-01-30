@@ -5,6 +5,16 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: https://idam-web-public.aat.platform.hmcts.net/o
+        registration:
+          oidc:
+            client-id: microservicekey-em-ccd-orchestrator
+            client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
 test:
   url: ${TEST_URL:http://localhost:8080}
@@ -53,3 +63,6 @@ app-insights:
   request-component: on
   telemetry-component: on
 
+oidc:
+  audience-list: sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api,ia
+  issuer: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
