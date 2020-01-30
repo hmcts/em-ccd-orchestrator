@@ -13,7 +13,7 @@ spring:
             issuer-uri: https://idam-web-public.aat.platform.hmcts.net/o
         registration:
           oidc:
-            client-id: microservicekey-em-ccd-orchestrator
+            client-id: webshow
             client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
 test:
