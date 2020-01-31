@@ -48,9 +48,6 @@ public class DefaultUpdateCallerTest {
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
 
-        when(caseData.get(anyString())).thenReturn(caseData);
-        when(caseData.asText()).thenReturn("json value");
-
         when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
             .thenReturn(ccdCallbackDto);
 
