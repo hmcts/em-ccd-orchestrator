@@ -66,6 +66,7 @@ public class DefaultUpdateCallerTest {
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
         ccdCallbackDto.setCaseData(caseData);
+        ccdCallbackDto.setEnableEmailNotification(true);
 
         when(caseData.has(anyString())).thenReturn(true);
         when(caseData.get(anyString())).thenReturn(caseData);
@@ -94,6 +95,7 @@ public class DefaultUpdateCallerTest {
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
         ccdCallbackDto.setCaseData(caseData);
+        ccdCallbackDto.setEnableEmailNotification(true);
 
         when(caseData.has(anyString())).thenReturn(true);
         when(caseData.get(anyString())).thenReturn(caseData);

@@ -227,7 +227,13 @@ public class CcdBundleDTO {
         this.enableEmailNotification = enableEmailNotification;
     }
 
+    @JsonIgnore
     public void setEnableEmailNotificationAsBoolean(boolean enableEmailNotification) {
         this.enableEmailNotification = enableEmailNotification ? CcdBoolean.Yes : CcdBoolean.No;
+    }
+
+    @JsonIgnore
+    public boolean getEnableEmailNotificationAsBoolean() {
+        return enableEmailNotification == CcdBoolean.Yes ? true : false;
     }
 }
