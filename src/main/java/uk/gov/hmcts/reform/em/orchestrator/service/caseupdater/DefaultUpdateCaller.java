@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,8 +46,9 @@ public class DefaultUpdateCaller {
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
 
-        System.out.println(dto.getCcdPayload().toString());
-        if (ccdCallbackResponseDto.getErrors().size() > 0 && dto.getEnableEmailNotification()) {
+        String ccdEvent = dto.getEventId();
+        if (ccdCallbackResponseDto.getErrors().size() > 0 && dto.getEnableEmailNotification() &&
+                !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),
