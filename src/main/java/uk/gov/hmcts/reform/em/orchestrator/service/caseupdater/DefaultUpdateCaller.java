@@ -53,7 +53,7 @@ public class DefaultUpdateCaller {
                     failureTemplateId,
                     dto.getJwt(),
                     dto.getCaseId(),
-                    dto.getCaseData().has("caseTitle") ? dto.getCaseData().get("caseTitle").asText() : null,
+                    dto.getCaseData().has("caseTitle") ? dto.getCaseData().get("caseTitle").asText() : "Bundle",
                     ccdCallbackResponseDto.getErrors().toString()
             );
         }
