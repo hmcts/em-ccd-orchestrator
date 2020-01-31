@@ -27,58 +27,6 @@ module "app" {
   asp_name = "${var.shared_product_name}-bundling-${var.env}"
   enable_ase                      = false
 
-  app_settings = {
-    # JAVA_OPTS = "${var.java_opts}"
-    # SERVER_PORT = "8080"
-
-    # idam
-#    IDAM_API_BASE_URI = "${var.idam_api_base_uri}"
-#    S2S_BASE_URI = "http://${var.s2s_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-#    S2S_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
-
-    #DM STORE
-    DM_STORE_APP_URL = "http://${var.dm_store_app_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-    #EM ANN API
-    EM_STITCHING_API_URL = "http://${var.em_stitching_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-
-    # logging vars & healthcheck
-    REFORM_SERVICE_NAME = "${local.app_full_name}"
-    REFORM_TEAM = "${var.team_name}"
-    REFORM_SERVICE_TYPE = "${var.app_language}"
-    REFORM_ENVIRONMENT = "${var.env}"
-
-    PACKAGES_NAME = "${local.app_full_name}"
-    PACKAGES_PROJECT = "${var.team_name}"
-    PACKAGES_ENVIRONMENT = "${var.env}"
-
-    JSON_CONSOLE_PRETTY_PRINT = "${var.json_console_pretty_print}"
-    LOG_OUTPUT = "${var.log_output}"
-
-    # addtional log
-    ROOT_LOGGING_LEVEL = "${var.root_logging_level}"
-    LOG_LEVEL_SPRING_WEB = "${var.log_level_spring_web}"
-    LOG_LEVEL_DM = "${var.log_level_dm}"
-    SHOW_SQL = "${var.show_sql}"
-
-    ENDPOINTS_HEALTH_SENSITIVE = "${var.endpoints_health_sensitive}"
-    ENDPOINTS_INFO_SENSITIVE = "${var.endpoints_info_sensitive}"
-
-    # Toggles
-    ENABLE_IDAM_HEALTH_CHECK = "${var.enable_idam_healthcheck}"
-    ENABLE_S2S_HEALTH_CHECK = "${var.enable_s2s_healthcheck}"
-
-    CALLBACK_HTTP_SCHEME = "http"
-    CALLBACK_HTTP_HOST_PORT = "80"
-    CALLBACK_DOMAIN = "em-ccd-orchestrator-${local.local_env}.service.core-compute-${local.local_env}.internal"
-
-    CCD_DATA_API_URL = "http://${var.ccd_data_store_api_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-
-    ENABLE_STITCHING_COMPLETE_CALLBACK="${var.enable_stitching_complete_callback}"
-    managed_identity_object_id = "${var.managed_identity_object_id}"
-
-  }
-}
-
 provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
