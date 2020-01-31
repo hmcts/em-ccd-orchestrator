@@ -59,6 +59,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
         bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
+        ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
 
         automatedStitchingExecutor.startStitching(
                 ccdCallbackDto.getCaseId(),

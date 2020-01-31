@@ -17,6 +17,8 @@ public class CcdCallbackDto {
 
     private String jwt;
 
+    private boolean enableEmailNotification;
+
     public JsonNode getCaseData() {
         return caseData;
     }
@@ -47,6 +49,14 @@ public class CcdCallbackDto {
 
     public void setPropertyName(Optional<String> propertyName) {
         this.propertyName = propertyName;
+    }
+
+    public boolean getEnableEmailNotification() {
+        return enableEmailNotification;
+    }
+
+    public void setEnableEmailNotification(boolean enableEmailNotification) {
+        this.enableEmailNotification = enableEmailNotification;
     }
 
     public Optional<JsonNode> findCaseProperty() {
