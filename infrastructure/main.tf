@@ -26,6 +26,7 @@ module "app" {
   asp_rg = "${var.shared_product_name}-${var.env}"
   asp_name = "${var.shared_product_name}-bundling-${var.env}"
   enable_ase                      = false
+  app_settings = {}
 }
 
 provider "vault" {
