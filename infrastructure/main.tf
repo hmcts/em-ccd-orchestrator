@@ -7,27 +7,6 @@ locals {
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
   shared_vault_name = "${var.shared_product_name}-${local.local_env}"
 }
-# "${local.ase_name}"
-# "${local.app_full_name}"
-# "${local.local_env}"
-
-module "app" {
-  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
-  product = "${local.app_full_name}"
-  location = "${var.location}"
-  env = "${var.env}"
-  ilbIp = "${var.ilbIp}"
-  subscription = "${var.subscription}"
-  capacity     = "${var.capacity}"
-  is_frontend = false
-  additional_host_name = "${local.app_full_name}-${var.env}.service.${var.env}.platform.hmcts.net"
-  https_only="false"
-  common_tags  = "${var.common_tags}"
-  asp_rg = "${var.shared_product_name}-${var.env}"
-  asp_name = "${var.shared_product_name}-bundling-${var.env}"
-  enable_ase                      = false
-  app_settings = {}
-}
 
 provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
