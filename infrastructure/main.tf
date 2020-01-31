@@ -32,9 +32,9 @@ module "app" {
     # SERVER_PORT = "8080"
 
     # idam
-    IDAM_API_BASE_URI = "${var.idam_api_base_uri}"
-    S2S_BASE_URI = "http://${var.s2s_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-    S2S_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
+#    IDAM_API_BASE_URI = "${var.idam_api_base_uri}"
+#    S2S_BASE_URI = "http://${var.s2s_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
+#    S2S_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
 
     #DM STORE
     DM_STORE_APP_URL = "http://${var.dm_store_app_url}-${local.local_env}.service.core-compute-${local.local_env}.internal"
