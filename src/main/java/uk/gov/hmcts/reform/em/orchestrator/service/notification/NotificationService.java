@@ -71,6 +71,7 @@ public class NotificationService {
 
             if (response.isSuccessful()) {
                 JsonNode userDetails = jsonMapper.readValue(response.body().byteStream(), JsonNode.class);
+                System.out.println(userDetails.get("email").asText());
                 return userDetails.get("email").asText();
             } else {
                 throw new CallbackException(500, response.body().string(), "Unable to retrieve user details");

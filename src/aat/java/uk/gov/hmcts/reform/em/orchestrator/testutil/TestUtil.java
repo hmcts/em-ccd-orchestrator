@@ -140,7 +140,6 @@ public class TestUtil {
     }
 
     public String getUsername() {
-        System.out.println("testytesttest" + getTestUrl().hashCode() + "@test.net");
         return "testytesttest" + getTestUrl().hashCode() + "@test.net";
     }
 
