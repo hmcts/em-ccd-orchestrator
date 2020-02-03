@@ -7,7 +7,7 @@ locals {
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
   shared_vault_name = "${var.shared_product_name}-${local.local_env}"
   s2s_key = "${data.azurerm_key_vault_secret.s2s_key.value}"
-  resource_group_name = "${var.shared_product_name}-${var.env}"
+  resource_group_name = "${app_full_name}-${var.env}"
 }
 
 provider "vault" {
