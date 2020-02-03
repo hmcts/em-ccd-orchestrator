@@ -5,9 +5,9 @@ locals {
   app_full_name = "${var.product}-${var.component}"
   ase_name = "core-compute-${var.env}"
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-  shared_vault_name = "${app_full_name}-${local.local_env}"
+  shared_vault_name = "${local.app_full_name}-${local.local_env}"
   s2s_key = "${data.azurerm_key_vault_secret.s2s_key.value}"
-  resource_group_name = "${app_full_name}-${var.env}"
+  resource_group_name = "${local.app_full_name}-${var.env}"
 }
 
 provider "vault" {
