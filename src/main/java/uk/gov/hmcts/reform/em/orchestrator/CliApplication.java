@@ -29,12 +29,12 @@ public class CliApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if (args.containsOption("validate")) {
+        /*if (args.containsOption("validate")) {
             boolean isValid = validateYamlCommand.run();
 
             if (!isValid) {
                 System.exit(-1);
             }
-        }
+        }*/
     }
 }
