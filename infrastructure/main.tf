@@ -37,26 +37,30 @@ data "azurerm_key_vault_secret" "s2s_key" {
 #   resource_group_name = "${local.shared_vault_name}"
 # }
 
-module "local_key_vault" {
-  source                     = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
-  product                    = "${local.app_full_name}"
-  env                        = "${var.env}"
-  tenant_id                  = "${var.tenant_id}"
-  object_id                  = "${var.jenkins_AAD_objectId}"
-  resource_group_name        = "${azurerm_resource_group.rg.name}"
-  product_group_object_id    = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
-  common_tags                = "${var.common_tags}"
-  managed_identity_object_id = "${var.managed_identity_object_id}"
-}
 
-# Copy s2s key from shared to local vault
-data "azurerm_key_vault" "local_key_vault" {
-  name                = "${module.local_key_vault.key_vault_name}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
-}
+# module "local_key_vault" {
+#   source                     = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
+#   product                    = "${local.app_full_name}"
+#   env                        = "${var.env}"
+#   tenant_id                  = "${var.tenant_id}"
+#   object_id                  = "${var.jenkins_AAD_objectId}"
+#   resource_group_name        = "${azurerm_resource_group.rg.name}"
+#   product_group_object_id    = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
+#   common_tags                = "${var.common_tags}"
+#   managed_identity_object_id = "${var.managed_identity_object_id}"
+# }
 
-resource "azurerm_key_vault_secret" "local_s2s_key" {
-  name         = "microservicekey-em-ccd-orchestrator"
-  value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
-  key_vault_id = "${data.azurerm_key_vault.local_key_vault.id}"
-}
+
+# # Copy s2s key from shared to local vault
+# data "azurerm_key_vault" "local_key_vault" {
+#   name                = "${module.local_key_vault.key_vault_name}"
+#   resource_group_name = "${azurerm_resource_group.rg.name}"
+# }
+
+
+# resource "azurerm_key_vault_secret" "local_s2s_key" {
+#   name         = "microservicekey-em-ccd-orchestrator"
+#   value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
+#   key_vault_id = "${data.azurerm_key_vault.local_key_vault.id}"
+# }
+
