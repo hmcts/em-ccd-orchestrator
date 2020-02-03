@@ -55,8 +55,10 @@ module "local_key_vault" {
 #   resource_group_name = "${azurerm_resource_group.rg.name}"
 # }
 
+
 # resource "azurerm_key_vault_secret" "local_s2s_key" {
 #   name         = "microservicekey-em-ccd-orchestrator"
 #   value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
 #   key_vault_id = "${data.azurerm_key_vault.local_key_vault.id}"
 # }
+
