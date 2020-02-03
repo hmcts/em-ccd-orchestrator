@@ -1,12 +1,12 @@
-title: SSCS Demo Bundle
-filename: bundle.pdf
+title: SSCS Bundle
+filename: SscsBundle.pdf
 coverpageTemplate: SSCS-cover-page.docx
 hasTableOfContents: true
 hasCoversheets: true
 sort:
   field: /documentDateAdded
   order: ascending
-hasFolderCoversheets: true
+hasFolderCoversheets: false
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
@@ -22,5 +22,5 @@ folders:
       - type: documentSet
         property: /sscsDocument
         filters:
-          - property: /documentType
-            value: appellantEvidence
+          - property: /bundleAddition
+            value: \w+
