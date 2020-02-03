@@ -15,18 +15,20 @@ provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
-resource "azurerm_resource_group" "main" {
+resource "azurerm_resource_group" "rg" {
   name     = "${local.resource_group_name}"
-  location = "uk south"
+  location = "${var.location}"
+
+  tags = "${var.common_tags}"
 }
 
 data "azurerm_key_vault" "s2s_vault" {
-  name = "s2s-${local.local_env}"
+  name                = "s2s-${local.local_env}"
   resource_group_name = "rpe-service-auth-provider-${local.local_env}"
 }
 
 data "azurerm_key_vault_secret" "s2s_key" {
-  name      = "microservicekey-em-ccd-orchestrator"
+  name         = "microservicekey-em-ccd-orchestrator"
   key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
@@ -41,7 +43,7 @@ module "local_key_vault" {
   env                        = "${var.env}"
   tenant_id                  = "${var.tenant_id}"
   object_id                  = "${var.jenkins_AAD_objectId}"
-  resource_group_name        = "${azurerm_resource_group.main.name}"
+  resource_group_name        = "${azurerm_resource_group.rg.name}"
   product_group_object_id    = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags                = "${var.common_tags}"
   managed_identity_object_id = "${var.managed_identity_object_id}"
@@ -50,7 +52,7 @@ module "local_key_vault" {
 # Copy s2s key from shared to local vault
 data "azurerm_key_vault" "local_key_vault" {
   name                = "${module.local_key_vault.key_vault_name}"
-  resource_group_name = "${module.local_key_vault.key_vault_name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_key_vault_secret" "local_s2s_key" {
