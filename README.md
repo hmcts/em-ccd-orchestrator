@@ -1,4 +1,4 @@
-# Evidence Management CCD Orchestrator
+# EVIDENCE MANAGEMENT CCD Orchestrator
 
 [![Build Status](https://travis-ci.org/hmcts/rpa-em-ccd-orchestrator.svg?branch=master)](https://travis-ci.org/hmcts/rpa-em-ccd-orchestrator)
 [![codecov](https://codecov.io/gh/hmcts/rpa-em-ccd-orchestrator/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/rpa-em-ccd-orchestrator)
