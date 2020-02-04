@@ -4,6 +4,7 @@ hasCoversheets: true
 hasTableOfContents: true
 paginationStyle: topLeft
 pageNumberFormat: numberOfPages
+enableEmailNotification: false
 folders:
   - name: Folder 1
     folders:

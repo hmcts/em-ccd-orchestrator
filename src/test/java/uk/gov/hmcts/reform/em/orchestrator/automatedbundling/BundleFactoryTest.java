@@ -43,7 +43,8 @@ public class BundleFactoryTest {
             new ArrayList<>(),
             new ArrayList<>(),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -72,7 +73,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/folder/document")
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -99,7 +101,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -108,30 +111,6 @@ public class BundleFactoryTest {
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
         assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
         assertEquals("document3.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
-    }
-
-    @Test(expected = DocumentSelectorException.class)
-    public void createWithDocumentSetNotArray() throws IOException, DocumentSelectorException {
-        BundleConfiguration configuration = new BundleConfiguration(
-            "Bundle title",
-            "filename.pdf",
-            "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            null,
-            true,
-            true,
-            true,
-            new ArrayList<>(),
-            Arrays.asList(
-                new BundleConfigurationDocument("/document1"),
-                new BundleConfigurationDocumentSet("/document1", Collections.emptyList())
-            ),
-            CcdBundlePaginationStyle.off,
-            null
-        );
-
-        JsonNode json = mapper.readTree(case2Json);
-        factory.create(configuration, json);
     }
 
     @Test
@@ -154,7 +133,8 @@ public class BundleFactoryTest {
                 ))
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -168,24 +148,25 @@ public class BundleFactoryTest {
     @Test
     public void createWithDocumentSetRegex() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
-                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yes\\w*"),
-                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
-                        ))
-                ),
-                CcdBundlePaginationStyle.off,
-                null
+            "Bundle title",
+            "filename.pdf",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yesPlease"),
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
+                ))
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -213,7 +194,8 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentFileName"
+                "/documentFileName",
+                false
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -244,7 +226,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -275,7 +258,8 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -306,7 +290,8 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                null
+                null,
+                false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -337,7 +322,8 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentFileName"
+                "/documentFileName",
+                false
         );
 
         JsonNode json = mapper.readTree(case4Json);

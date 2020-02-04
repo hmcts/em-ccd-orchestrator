@@ -24,6 +24,7 @@ public class StitchingBundleDTO {
     private boolean hasFolderCoversheets;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+    private boolean enableEmailNotification;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -127,6 +128,14 @@ public class StitchingBundleDTO {
 
     public void setStitchedDocumentURI(String stitchedDocumentURI) {
         this.stitchedDocumentURI = stitchedDocumentURI;
+    }
+
+    public boolean getEnableEmailNotification() {
+        return enableEmailNotification;
+    }
+
+    public void setEnableEmailNotification(boolean enableEmailNotification) {
+        this.enableEmailNotification = enableEmailNotification;
     }
 }
 
