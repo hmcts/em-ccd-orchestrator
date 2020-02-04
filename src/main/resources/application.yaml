@@ -11,7 +11,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: https://idam-web-public.aat.platform.hmcts.net/o
+            issuer-uri: https://idam-api.aat.platform.hmcts.net/o
         registration:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
