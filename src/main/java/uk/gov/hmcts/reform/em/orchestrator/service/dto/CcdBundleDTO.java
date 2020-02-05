@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 
@@ -36,6 +37,8 @@ public class CcdBundleDTO {
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
     private String stitchingFailureMessage;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private CcdBoolean enableEmailNotification;
 
     public String getId() {
@@ -228,12 +231,16 @@ public class CcdBundleDTO {
     }
 
     @JsonIgnore
-    public void setEnableEmailNotificationAsBoolean(boolean enableEmailNotification) {
-        this.enableEmailNotification = enableEmailNotification ? CcdBoolean.Yes : CcdBoolean.No;
+    public void setEnableEmailNotificationAsBoolean(Boolean enableEmailNotification) {
+        if (enableEmailNotification == null) {
+            this.enableEmailNotification = null;
+        } else {
+            this.enableEmailNotification = enableEmailNotification ? CcdBoolean.Yes : CcdBoolean.No;
+        }
     }
 
     @JsonIgnore
-    public boolean getEnableEmailNotificationAsBoolean() {
-        return enableEmailNotification == CcdBoolean.Yes ? true : false;
+    public Boolean getEnableEmailNotificationAsBoolean() {
+        return enableEmailNotification != null ? enableEmailNotification == CcdBoolean.Yes : null;
     }
 }
