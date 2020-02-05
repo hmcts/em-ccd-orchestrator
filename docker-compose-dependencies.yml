@@ -117,6 +117,9 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
       - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+    dns:
+      - 172.16.0.10
+      - 172.16.0.14
     depends_on:
       - stitching-db
       - dm-store
