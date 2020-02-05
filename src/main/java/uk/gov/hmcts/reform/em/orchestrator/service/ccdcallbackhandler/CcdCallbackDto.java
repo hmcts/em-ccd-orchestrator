@@ -47,6 +47,9 @@ public class CcdCallbackDto {
 
     @JsonIgnore
     public Boolean getEnableEmailNotification() {
+        if (enableEmailNotification == null) {
+            return false;
+        }
         return enableEmailNotification;
     }
 
