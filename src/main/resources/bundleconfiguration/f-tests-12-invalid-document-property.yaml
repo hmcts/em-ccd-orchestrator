@@ -8,6 +8,7 @@ sort:
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: pageRange
+enableEmailNotification: false
 folders:
   - name: DWP
     documents:
