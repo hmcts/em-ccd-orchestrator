@@ -6,6 +6,16 @@ spring:
       enabled: false
       jobCronExpression: ${JOB_CRON_EXPRESSION:"* * * * * *"}
     initialize-schema: never
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: https://idam-api.aat.platform.hmcts.net/o
+        registration:
+          oidc:
+            client-id: microservicekey-em-ccd-orchestrator
+            client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
 management:
   endpoint:
