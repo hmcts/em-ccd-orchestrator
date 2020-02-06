@@ -358,7 +358,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println("responsePath" + responsePath.prettyPrint());
         assertEquals(200, response.getStatusCode());
+        assertEquals(null, responsePath.getString("data.caseBundles[0].value.enableEmailNotification"));
+
     }
 }
