@@ -346,4 +346,19 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
 
+    @Test
+    public void testEnableEmailNotificationIsNull() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "example-with-documents.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        System.out.println(responsePath.prettyPrint());
+        assertEquals(200, response.getStatusCode());
+    }
 }
