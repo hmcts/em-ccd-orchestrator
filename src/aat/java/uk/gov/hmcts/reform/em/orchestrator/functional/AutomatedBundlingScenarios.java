@@ -358,7 +358,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println(responsePath.prettyPrint());
+        System.out.println("responsePath" + responsePath.prettyPrint());
         assertEquals(200, response.getStatusCode());
     }
 }
