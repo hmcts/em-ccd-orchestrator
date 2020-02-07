@@ -52,7 +52,6 @@ public class BundleConfiguration {
         this.documents = documents == null ? new ArrayList<>() : documents;
         this.paginationStyle = paginationStyle;
         this.documentNameValue = documentNameValue;
-        System.out.println("enableEmailNotification value: " + enableEmailNotification);
         this.enableEmailNotification = enableEmailNotification;
     }
 }
