@@ -45,16 +45,4 @@ public final class SecurityUtils {
             });
     }
 
-    /**
-     * Check if a user is authenticated and has any roles (authorities).
-     * Change this if you care about specific roles
-     *
-     * @return true if the user is authenticated, false otherwise.
-     */
-    public static boolean isAuthenticated() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Objects.nonNull(authentication);
-        // Will need to implement below method to check authorities or roles. Not required at the moment
-        // getAuthorities(authentication).findAny().isPresent();
-    }
 }
