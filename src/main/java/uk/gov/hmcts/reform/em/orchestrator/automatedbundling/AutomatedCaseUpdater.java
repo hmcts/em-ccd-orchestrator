@@ -68,9 +68,9 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         bundles.add(bundleDtoToBundleJson(bundle));
 
-        System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification +
-                " BundleDTO:" + bundle.getEnableEmailNotification() + " " + bundle.getEnableEmailNotificationAsBoolean());
-        System.out.println("Bundles after convertValue operation " + configurationName + bundles.toPrettyString());
+        if (configurationName.equals("f-tests-12-invalid-document-property.yaml")) {
+            System.out.println("Bundles after convertValue operation " + configurationName + bundles.toPrettyString());
+        }
         return ccdCallbackDto.getCaseData();
     }
 
