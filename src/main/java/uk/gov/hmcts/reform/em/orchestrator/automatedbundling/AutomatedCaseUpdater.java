@@ -70,7 +70,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification +
                 " BundleDTO:" + bundle.getEnableEmailNotification() + " " + bundle.getEnableEmailNotificationAsBoolean());
-
+        System.out.println("Bundles after convertValue operation " + configurationName + bundles.toPrettyString());
         return ccdCallbackDto.getCaseData();
     }
 
