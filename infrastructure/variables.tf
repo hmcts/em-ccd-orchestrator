@@ -67,6 +67,10 @@ variable "idam_api_base_uri" {
   default = "http://betaDevBccidamAppLB.reform.hmcts.net:80"
 }
 
+variable "open_id_api_base_uri" {
+  default = "idam-api"
+}
+
 variable "s2s_url" {
   default = "rpe-service-auth-provider"
 }
