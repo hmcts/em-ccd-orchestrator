@@ -349,7 +349,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testEnableEmailNotificationIsNull() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
 
         Response response = testUtil.authRequest()
                 .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
