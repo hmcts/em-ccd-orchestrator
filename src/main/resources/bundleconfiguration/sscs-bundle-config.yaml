@@ -10,7 +10,6 @@ hasFolderCoversheets: false
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
-enableEmailNotification: false
 folders:
   - name: DWP
     documents:

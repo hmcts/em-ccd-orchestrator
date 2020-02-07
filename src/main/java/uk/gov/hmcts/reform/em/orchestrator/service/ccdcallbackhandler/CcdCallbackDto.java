@@ -19,7 +19,7 @@ public class CcdCallbackDto {
     private String jwt;
 
     @JsonIgnore
-    private boolean enableEmailNotification;
+    private Boolean enableEmailNotification;
 
     public JsonNode getCaseData() {
         return caseData;
@@ -46,12 +46,15 @@ public class CcdCallbackDto {
     }
 
     @JsonIgnore
-    public boolean getEnableEmailNotification() {
+    public Boolean getEnableEmailNotification() {
+        if (enableEmailNotification == null) {
+            return false;
+        }
         return enableEmailNotification;
     }
 
     @JsonIgnore
-    public void setEnableEmailNotification(boolean enableEmailNotification) {
+    public void setEnableEmailNotification(Boolean enableEmailNotification) {
         this.enableEmailNotification = enableEmailNotification;
     }
 
