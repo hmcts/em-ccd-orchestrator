@@ -49,7 +49,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
 
         BundleConfiguration configuration = configurationLoader.load(configurationName);
-        System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification);
         ArrayNode bundles = ccdCallbackDto
             .findCaseProperty(ArrayNode.class)
             .orElseGet(() -> {
@@ -59,6 +58,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             });
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
+        System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification +
+                "BundleDTO:" + bundle.getEnableEmailNotification() + bundle.getEnableEmailNotificationAsBoolean());
         ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
         bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
