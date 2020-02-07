@@ -58,8 +58,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             });
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
-        System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification +
-                "BundleDTO:" + bundle.getEnableEmailNotification() + bundle.getEnableEmailNotificationAsBoolean());
         ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
         bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
@@ -69,6 +67,9 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 bundle);
 
         bundles.add(bundleDtoToBundleJson(bundle));
+
+        System.out.println(configurationName + " enableEmailNotification value: " + configuration.enableEmailNotification +
+                " BundleDTO:" + bundle.getEnableEmailNotification() + " " + bundle.getEnableEmailNotificationAsBoolean());
 
         return ccdCallbackDto.getCaseData();
     }
