@@ -48,8 +48,8 @@ public class DefaultUpdateCaller {
 
         String ccdEvent = dto.getEventId();
         if (ccdCallbackResponseDto.getErrors().size() > 0
-                && dto.getEnableEmailNotification() &&
-                !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
+                && dto.getEnableEmailNotification()
+                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),
