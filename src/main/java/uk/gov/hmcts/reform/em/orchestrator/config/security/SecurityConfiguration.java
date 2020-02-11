@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -17,6 +18,10 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
+import uk.gov.hmcts.reform.auth.checker.core.service.Service;
+import uk.gov.hmcts.reform.auth.checker.core.user.User;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.AuthCheckerServiceAndUserFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -37,7 +42,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthorityExtractor jwtAuthorityExtractor;
 
-    public SecurityConfiguration(final JwtAuthorityExtractor jwtAuthorityExtractor) {
+    private final AuthCheckerServiceAndUserFilter authCheckerFilter;
+
+    public SecurityConfiguration(final RequestAuthorizer<User> userRequestAuthorizer,
+                                 final RequestAuthorizer<Service> serviceRequestAuthorizer,
+                                 final AuthenticationManager authenticationManager,
+                                 final JwtAuthorityExtractor jwtAuthorityExtractor) {
+        this.authCheckerFilter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
+        this.authCheckerFilter.setAuthenticationManager(authenticationManager);
         this.jwtAuthorityExtractor = jwtAuthorityExtractor;
     }
 
@@ -62,6 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler((request, response, exc) -> response.sendError(HttpServletResponse.SC_FORBIDDEN))
                 .authenticationEntryPoint((request, response, exc) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
+                .addFilter(authCheckerFilter)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
