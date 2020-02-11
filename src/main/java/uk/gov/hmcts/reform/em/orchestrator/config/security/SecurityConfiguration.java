@@ -58,11 +58,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf()
                 .disable()
+                .antMatcher("/api/**")
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/testapi/**").authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt()
