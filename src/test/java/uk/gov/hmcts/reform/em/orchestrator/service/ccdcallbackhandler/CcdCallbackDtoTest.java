@@ -15,6 +15,12 @@ public class CcdCallbackDtoTest {
     }
 
     @Test
+    public void getEnableEmailNotificationNull() {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        assertFalse(ccdCallbackDto.getEnableEmailNotification());
+    }
+
+    @Test
     public void getPayloadStaticProperties() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ObjectMapper objectMapper = new ObjectMapper();
