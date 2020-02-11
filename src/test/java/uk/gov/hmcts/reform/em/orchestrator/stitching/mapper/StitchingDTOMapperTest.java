@@ -38,6 +38,7 @@ public class StitchingDTOMapperTest {
         bundleDTO.getDocuments().add(new CcdValue<>(document1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder1DTO));
         bundleDTO.getFolders().add(new CcdValue<>(folder3DTO));
+        bundleDTO.setEnableEmailNotification(CcdBoolean.Yes);
 
         StitchingDTOMapper mapper = new StitchingDTOMapper();
         StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
@@ -48,6 +49,7 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasCoversheets());
         assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes, stitchingBundleDTO.getHasTableOfContents());
         assertEquals(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasFolderCoversheets());
+        assertEquals(bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes, stitchingBundleDTO.getEnableEmailNotification());
 
         assertEquals(
                 bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(),
@@ -99,6 +101,23 @@ public class StitchingDTOMapperTest {
                 bundleDTO.getFolders().get(1).getValue().getDocuments().get(0).getValue().getSortIndex(),
                 stitchingBundleDTO.getFolders().get(1).getDocuments().get(0).getSortIndex());
 
+    }
+
+    @Test
+    public void convertNullEmailNotification() {
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        bundleDTO.setTitle("title");
+        bundleDTO.setDescription("description");
+        bundleDTO.setFileName("a-file.pdf");
+        bundleDTO.setHasCoversheets(CcdBoolean.Yes);
+        bundleDTO.setHasTableOfContents(CcdBoolean.Yes);
+        bundleDTO.setHasFolderCoversheets(CcdBoolean.Yes);
+        bundleDTO.setEnableEmailNotification(null);
+
+        StitchingDTOMapper mapper = new StitchingDTOMapper();
+        StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
+
+        assertEquals(null, stitchingBundleDTO.getEnableEmailNotification());
     }
 
     private CcdBundleFolderDTO getFolder(int index) {
