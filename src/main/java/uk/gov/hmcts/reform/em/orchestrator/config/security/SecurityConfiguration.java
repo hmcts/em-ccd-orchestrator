@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 @Configuration
@@ -57,14 +58,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
 
         http.csrf()
-                .disable()
-                .antMatcher("/api/**")
+                .disable().exceptionHandling()
+                .accessDeniedHandler((request, response, exc) -> response.sendError(HttpServletResponse.SC_FORBIDDEN))
+                .authenticationEntryPoint((request, response, exc) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/api/**").authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt()
