@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -56,6 +57,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+
+        // Don't erase user credentials as this is needed for the user profile
+        final ProviderManager authenticationManager = (ProviderManager) authenticationManager();
+        authenticationManager.setEraseCredentialsAfterAuthentication(false);
 
         http.csrf()
                 .disable().exceptionHandling()

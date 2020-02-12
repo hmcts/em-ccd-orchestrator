@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -10,6 +11,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.hmcts.reform.auth.checker.core.service.Service;
+import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
+import uk.gov.hmcts.reform.auth.checker.core.user.User;
+import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,6 +24,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleCloningS
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
@@ -27,8 +35,26 @@ public class CcdCloneBundleControllerTest {
     @MockBean
     private DefaultUpdateCaller defaultUpdateCaller;
 
+    @MockBean
+    private ServiceRequestAuthorizer serviceRequestAuthorizer;
+
+    @MockBean
+    private UserRequestAuthorizer userRequestAuthorizer;
+
     @Autowired
     private MockMvc mockMvc;
+
+    @Before
+    public void setupMocks() {
+        Mockito
+                .when(serviceRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
+                .thenReturn(new Service("ccd"));
+
+        Mockito
+                .when(userRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
+                .thenReturn(new User("john", Stream.of("caseworker").collect(Collectors.toSet())));
+
+    }
 
     @Test
     public void shouldCallCcdCallbackHandlerService() throws Exception {
