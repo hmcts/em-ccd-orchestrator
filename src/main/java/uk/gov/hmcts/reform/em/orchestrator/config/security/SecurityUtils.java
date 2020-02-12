@@ -51,9 +51,8 @@ public final class SecurityUtils {
     }
 
     /**
-     * Check if a user is authenticated and has any roles (authorities)
+     * Check if a user is authenticated and has any roles (authorities).
      * Change this if you care about specific roles
-     *
      * @return true if the user is authenticated, false otherwise.
      */
     public static boolean isAuthenticated() {
@@ -63,22 +62,20 @@ public final class SecurityUtils {
 
     /**
      * If the current user has a specific authority (security role).
-     * <p>
      * The name of this method comes from the {@code isUserInRole()} method in the Servlet API.
-     *
      * @param authority the authority to check.
      * @return true if the current user has the authority, false otherwise.
      */
     public static boolean isCurrentUserInRole(String authority) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null &&
-                getAuthorities(authentication)
+        return authentication != null
+                && getAuthorities(authentication)
                         .anyMatch(authority::equals);
     }
 
     private static Stream<String> getAuthorities(Authentication authentication) {
-        Collection<? extends GrantedAuthority> authorities = authentication instanceof JwtAuthenticationToken ?
-                extractAuthorityFromClaims(((JwtAuthenticationToken) authentication).getToken().getClaims())
+        Collection<? extends GrantedAuthority> authorities = authentication instanceof JwtAuthenticationToken
+                ? extractAuthorityFromClaims(((JwtAuthenticationToken) authentication).getToken().getClaims())
                 : authentication.getAuthorities();
         return authorities.stream()
                 .map(GrantedAuthority::getAuthority);
