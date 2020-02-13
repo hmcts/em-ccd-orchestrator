@@ -31,6 +31,7 @@ public class StitchingDTOMapper {
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
         bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
         bundle.setEnableEmailNotification(bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes);
+        bundle.setDocumentImage(bundleDTO.getDocumentImage());
 
         return bundle;
     }

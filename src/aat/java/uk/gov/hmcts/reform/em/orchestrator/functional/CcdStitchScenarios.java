@@ -145,5 +145,10 @@ public class CcdStitchScenarios extends BaseTest {
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("schmcts.png", path.getString("data.caseBundles[0].value.documentImage.docmosisAssetId"));
+        Assert.assertEquals("firstPage", path.getString("data.caseBundles[0].value.documentImage.imageRenderingLocation"));
+        Assert.assertEquals("translucent", path.getString("data.caseBundles[0].value.documentImage.imageRendering"));
+        Assert.assertEquals(50, path.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
+        Assert.assertEquals(50, path.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
     }
 }

@@ -359,6 +359,11 @@ public class AutomatedBundlingScenarios extends BaseTest {
         JsonPath responsePath = response.jsonPath();
 
         assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("schmcts.png", responsePath.getString("data.caseBundles[0].value.documentImage.docmosisAssetId"));
+        Assert.assertEquals("allPages", responsePath.getString("data.caseBundles[0].value.documentImage.imageRenderingLocation"));
+        Assert.assertEquals("opaque", responsePath.getString("data.caseBundles[0].value.documentImage.imageRendering"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
     }
 
 }

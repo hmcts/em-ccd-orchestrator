@@ -160,9 +160,8 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundleWithImageRendered() {
         DocumentImage documentImage = new DocumentImage();
-        documentImage.setEnabled(true);
-        documentImage.setImageRendering(ImageRendering.opaque);
-        documentImage.setImageRenderingLocation(ImageRenderingLocation.allPages);
+        documentImage.setImageRendering(ImageRendering.translucent);
+        documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);
         documentImage.setCoordinateX(50);
         documentImage.setCoordinateY(50);
         documentImage.setDocmosisAssetId("schmcts.png");

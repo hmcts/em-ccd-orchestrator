@@ -4,22 +4,13 @@ import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
 
 public class DocumentImage {
-    private boolean enabled;
     private String docmosisAssetId;
     private ImageRenderingLocation imageRenderingLocation;
-    private Integer coordinateX;
-    private Integer coordinateY;
+    private int coordinateX;
+    private int coordinateY;
     private ImageRendering imageRendering;
 
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getDocmosisAssetId() {
+   public String getDocmosisAssetId() {
         return docmosisAssetId;
     }
 
@@ -35,19 +26,19 @@ public class DocumentImage {
         this.imageRenderingLocation = imageRenderingLocation;
     }
 
-    public Integer getCoordinateX() {
+    public int getCoordinateX() {
         return coordinateX;
     }
 
-    public void setCoordinateX(Integer coordinateX) {
+    public void setCoordinateX(int coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public Integer getCoordinateY() {
+    public int getCoordinateY() {
         return coordinateY;
     }
 
-    public void setCoordinateY(Integer coordinateY) {
+    public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
 
