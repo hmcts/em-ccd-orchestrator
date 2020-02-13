@@ -45,6 +45,7 @@ public class BundleFactoryTest {
             new ArrayList<>(),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -75,6 +76,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -102,6 +104,7 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
+            null,
             null,
             false
         );
@@ -135,6 +138,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -167,6 +171,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -196,6 +201,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 "/documentFileName",
+                null,
                 false
         );
 
@@ -227,6 +233,7 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
+            null,
             null,
             false
         );
@@ -260,6 +267,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -291,6 +299,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
+                null,
                 null,
                 false
         );
@@ -324,6 +333,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 null,
+                null,
                 false
         );
 
@@ -356,6 +366,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 "/documentFileName",
+                null,
                 false
         );
 

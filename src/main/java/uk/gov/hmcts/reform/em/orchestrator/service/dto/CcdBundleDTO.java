@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -37,6 +38,7 @@ public class CcdBundleDTO {
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
     private String stitchingFailureMessage;
     private CcdBoolean enableEmailNotification;
+    private DocumentImage documentImage;
 
     public String getId() {
         return id;
@@ -235,5 +237,13 @@ public class CcdBundleDTO {
     @JsonIgnore
     public boolean getEnableEmailNotificationAsBoolean() {
         return enableEmailNotification == CcdBoolean.Yes ? true : false;
+    }
+
+    public DocumentImage getDocumentImage() {
+        return documentImage;
+    }
+
+    public void setDocumentImage(DocumentImage documentImage) {
+        this.documentImage = documentImage;
     }
 }

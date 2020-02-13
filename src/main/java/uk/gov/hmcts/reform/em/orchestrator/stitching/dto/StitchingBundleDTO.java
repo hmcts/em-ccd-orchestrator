@@ -25,6 +25,7 @@ public class StitchingBundleDTO {
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
     private boolean enableEmailNotification;
+    private DocumentImage configureImage;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -136,6 +137,14 @@ public class StitchingBundleDTO {
 
     public void setEnableEmailNotification(boolean enableEmailNotification) {
         this.enableEmailNotification = enableEmailNotification;
+    }
+
+    public DocumentImage getConfigureImage() {
+        return configureImage;
+    }
+
+    public void setConfigureImage(DocumentImage configureImage) {
+        this.configureImage = configureImage;
     }
 }
 
