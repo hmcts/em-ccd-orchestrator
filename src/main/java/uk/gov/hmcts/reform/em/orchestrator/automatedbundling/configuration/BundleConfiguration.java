@@ -26,7 +26,7 @@ public class BundleConfiguration {
     public final List<BundleConfigurationDocumentSelector> documents;
     public final CcdBundlePaginationStyle paginationStyle;
     public final String documentNameValue;
-    public final boolean enableEmailNotification;
+    public final Boolean enableEmailNotification;
     public final DocumentImage documentImage;
 
     public BundleConfiguration(@JsonProperty("title") String title,
@@ -42,7 +42,8 @@ public class BundleConfiguration {
                                @JsonProperty("paginationStyle") CcdBundlePaginationStyle paginationStyle,
                                @JsonProperty("documentNameValue") String documentNameValue,
                                @JsonProperty("documentImage") DocumentImage documentImage,
-                               @JsonProperty("enableEmailNotification") boolean enableEmailNotification) {
+                               @JsonProperty("enableEmailNotification") Boolean enableEmailNotification) {
+
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
         this.coverpageTemplate = coverpageTemplate == null ? "" : coverpageTemplate;

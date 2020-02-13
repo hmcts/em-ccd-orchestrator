@@ -347,6 +347,22 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    public void testEnableEmailNotificationIsNull() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(null, responsePath.getString("data.caseBundles[0].value.enableEmailNotification"));
+
+    }
+
+    @Test
     public void testRenderImageInStitchedDocument() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
@@ -365,5 +381,4 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
         Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
     }
-
 }
