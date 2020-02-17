@@ -45,17 +45,17 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         String configurationName =
                 ccdCallbackDto.getCaseData().has(CONFIG_FIELD) && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")
-                        ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
-                        : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
+                ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
+                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
 
         BundleConfiguration configuration = configurationLoader.load(configurationName);
         ArrayNode bundles = ccdCallbackDto
-                .findCaseProperty(ArrayNode.class)
-                .orElseGet(() -> {
-                    ArrayNode arrayNode = jsonMapper.createArrayNode();
-                    ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
-                    return arrayNode;
-                });
+            .findCaseProperty(ArrayNode.class)
+            .orElseGet(() -> {
+                ArrayNode arrayNode = jsonMapper.createArrayNode();
+                ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                return arrayNode;
+            });
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
         ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());

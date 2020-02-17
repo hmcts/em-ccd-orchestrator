@@ -25,11 +25,10 @@ public class StitchingBundleDTO {
     private boolean hasFolderCoversheets;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+    private DocumentImage documentImage;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean enableEmailNotification;
-  
-    private DocumentImage documentImage;
 
     public String getBundleTitle() {
         return bundleTitle;
