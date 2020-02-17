@@ -150,7 +150,7 @@ public class ExtendedCcdHelper {
     }
 
     public void initBundleTesterUser() {
-        bundleTesterUser = String.format("bundle-tester-%d@outlook.com", testUrl.hashCode());
+        bundleTesterUser = String.format("bundle-tester-12345@outlook.com", testUrl.hashCode());
         System.out.println(bundleTesterUser);
         idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
     }
