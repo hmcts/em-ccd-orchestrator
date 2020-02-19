@@ -8,6 +8,7 @@ sort:
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: pageRange
+enableEmailNotification: false
 documents:
   - type: documentSet
     property: /caseDocuments

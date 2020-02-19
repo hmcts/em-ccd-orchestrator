@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -16,10 +18,15 @@ import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
+import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackService;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,12 +51,28 @@ public class StitchingCompleteCallbackControllerTest {
     @MockBean
     private UserRequestAuthorizer userRequestAuthorizer;
 
+    @MockBean
+    private NotificationService notificationService;
+
     @Autowired
     private MockMvc mockMvc;
 
+    private String requestBody;
+
+    @Before
+    public void setUp() throws IOException {
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+        StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
+        stitchingBundleDTO.setEnableEmailNotification(true);
+        documentTaskDTO.setTaskState(TaskState.DONE);
+        documentTaskDTO.setBundle(stitchingBundleDTO);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        requestBody = objectMapper.writeValueAsString(documentTaskDTO);
+    }
+
     @Test
     public void stitchingCompleteCallback() throws Exception {
-
         Mockito
                 .when(serviceRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new Service("ccd"));
@@ -58,9 +81,19 @@ public class StitchingCompleteCallbackControllerTest {
                 .when(userRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new User("john", Stream.of("caseworker").collect(Collectors.toSet())));
 
+        Mockito
+                .doNothing()
+                .when(notificationService)
+                    .sendEmailNotification(
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString(),
+                            Mockito.anyString());
+
         this.mockMvc
                 .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                        .content("{}")
+                        .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
                         .header("ServiceAuthorization", "xxx"))
@@ -70,7 +103,6 @@ public class StitchingCompleteCallbackControllerTest {
 
     @Test
     public void stitchingCompleteCallbackWithException() throws Exception {
-
         Mockito
                 .when(serviceRequestAuthorizer.authorise(Mockito.any(HttpServletRequest.class)))
                 .thenReturn(new Service("ccd"));
@@ -85,7 +117,7 @@ public class StitchingCompleteCallbackControllerTest {
 
         this.mockMvc
                 .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                        .content("{}")
+                        .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "xxx")
                         .header("ServiceAuthorization", "xxx"))

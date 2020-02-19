@@ -26,7 +26,6 @@ services:
     ports:
       - 8080:8080
 
-
   service-auth-provider-api:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     environment:
@@ -52,6 +51,7 @@ services:
       - PACKAGES_NAME=service-auth-provider-api
       - PACKAGES_VERSION=unkown
       - TESTING_SUPPORT_ENABLED=true
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4502:8489
 
@@ -62,9 +62,9 @@ services:
       timeout: 10s
       retries: 10
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://idam-database:5432/idam
-      SPRING_DATASOURCE_USERNAME: idam-username
-      SPRING_DATASOURCE_PASSWORD: idam-password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/idam
+      SPRING_DATASOURCE_USERNAME: shared
+      SPRING_DATASOURCE_PASSWORD: shared
       SPRING_MAIL_HOST: smtp-server
       IDAM_TESTING_SUPPORT_ENABLED: "true"
       IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_WEBSHOW: AAAAAAAAAAAAAAAA
@@ -77,27 +77,20 @@ services:
       http_proxy:
       https_proxy:
       no_proxy:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4501:8080
-    links:
-      - smtp-server
-      - idam-database
     depends_on:
-      - idam-database
-      - smtp-server
+      - shared-database
 
-  smtp-server:
-    image: mailhog/mailhog
-    ports:
-      - 1025:1025
-      - 8025:8025
-
-  idam-database:
+  shared-database:
     image: postgres
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
     environment:
-      - POSTGRES_USER=idam-username
-      - POSTGRES_PASSWORD=idam-password
-      - POSTGRES_DB=idam
+      - POSTGRES_MULTIPLE_DATABASES=idam,emstitch,evidence,ccd_data,ccd_user_profile,ccd_definition,ccd_definition_designer
+      - POSTGRES_USER=shared
+      - POSTGRES_PASSWORD=shared
     ports:
       - 5434:5432
 
@@ -108,33 +101,23 @@ services:
       timeout: 10s
       retries: 10
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stitching-db:5432/emstitch
-      - SPRING_DATASOURCE_USERNAME=emstitch
-      - SPRING_DATASOURCE_PASSWORD=emstitch
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/emstitch
+      - SPRING_DATASOURCE_USERNAME=shared
+      - SPRING_DATASOURCE_PASSWORD=shared
       - S2S_BASE_URI=http://service-auth-provider-api:8489
       - IDAM_API_BASE_URI=http://idam-api:8080
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
       - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+    dns:
+      - 172.16.0.10
+      - 172.16.0.14
     depends_on:
-      - stitching-db
-      - dm-store
-    links:
-      - stitching-db
+      - shared-database
       - dm-store
     ports:
       - 4630:8080
-
-  stitching-db:
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_DB=emstitch
-      - POSTGRES_USER=emstitch
-      - POSTGRES_PASSWORD=emstitch
-    ports:
-      - 5678:5432
 
   dm-store:
     image: hmctspublic.azurecr.io/dm/store:latest
@@ -143,9 +126,9 @@ services:
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://dm-store-db:5432/evidence
-      - SPRING_DATASOURCE_USERNAME=evidence
-      - SPRING_DATASOURCE_PASSWORD=evidence
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/evidence
+      - SPRING_DATASOURCE_USERNAME=shared
+      - SPRING_DATASOURCE_PASSWORD=shared
       - SPRING_PROFILES_ACTIVE=dev
       - ENABLE_AZURE_STORAGE_CONTAINER=true
       - ENABLE_POSTGRES_BLOB_STORAGE=false
@@ -172,13 +155,10 @@ services:
       - PACKAGES_NAME=dm-store
       - PACKAGES_VERSION=unkown
       #      debug mode
-      - JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
-    links:
-      - dm-store-db
-      - service-auth-provider-api
-      - make-container-call
+      #- JAVA_TOOL_OPTIONS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m -XX:MaxPermSize=512m
     depends_on:
-      - dm-store-db
+      - shared-database
       - service-auth-provider-api
       - make-container-call
     ports:
@@ -201,23 +181,13 @@ services:
     volumes:
       - ccd-docker-azure-blob-data:/opt/azurite/folder
 
-  dm-store-db:
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_DB=evidence
-      - POSTGRES_USER=evidence
-      - POSTGRES_PASSWORD=evidence
-    ports:
-      - 5433:5432
-
   ccd-user-profile-api:
     image: hmctspublic.azurecr.io/ccd/user-profile-api:latest
     environment:
-      USER_PROFILE_DB_HOST: rpa-em-ccd-orchestrator-shared-database
+      USER_PROFILE_DB_HOST: shared-database
       USER_PROFILE_DB_PORT: 5432
-      USER_PROFILE_DB_USERNAME: ccd
-      USER_PROFILE_DB_PASSWORD: ccd
+      USER_PROFILE_DB_USERNAME: shared
+      USER_PROFILE_DB_PASSWORD: shared
       USER_PROFILE_DB_USE_SSL: "false"
       USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_definition,ccd_admin
       IDAM_S2S_URL: http://service-auth-provider-api:8489
@@ -225,21 +195,20 @@ services:
       REFORM_TEAM: ccd
       REFORM_ENVIRONMENT: local
       APPINSIGHTS_INSTRUMENTATIONKEY: key
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4453:4453
     depends_on:
-      - rpa-em-ccd-orchestrator-shared-database
-    links:
-      - rpa-em-ccd-orchestrator-shared-database
+      - shared-database
       - service-auth-provider-api
 
   ccd-definition-store-api:
     image: hmctspublic.azurecr.io/ccd/definition-store-api:latest
     environment:
-      DEFINITION_STORE_DB_HOST: rpa-em-ccd-orchestrator-shared-database
+      DEFINITION_STORE_DB_HOST: shared-database
       DEFINITION_STORE_DB_PORT: 5432
-      DEFINITION_STORE_DB_USERNAME: ccd
-      DEFINITION_STORE_DB_PASSWORD: ccd
+      DEFINITION_STORE_DB_USERNAME: shared
+      DEFINITION_STORE_DB_PASSWORD: shared
       DEFINITION_STORE_DB_USE_SSL: "false"
       DEFINITION_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin
@@ -253,13 +222,11 @@ services:
       ELASTIC_SEARCH_ENABLED: "false"
       ELASTIC_SEARCH_HOST: "ccd-elasticsearch"
       ELASTIC_SEARCH_FAIL_ON_IMPORT: "true"
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4451:4451
     depends_on:
-      - rpa-em-ccd-orchestrator-shared-database
-      - ccd-user-profile-api
-    links:
-      - rpa-em-ccd-orchestrator-shared-database
+      - shared-database
       - ccd-user-profile-api
       - idam-api
       - service-auth-provider-api
@@ -267,10 +234,10 @@ services:
   ccd-data-store-api:
     image: hmctspublic.azurecr.io/ccd/data-store-api:latest
     environment:
-      DATA_STORE_DB_HOST: rpa-em-ccd-orchestrator-shared-database
+      DATA_STORE_DB_HOST: shared-database
       DATA_STORE_DB_PORT: 5432
-      DATA_STORE_DB_USERNAME: ccd
-      DATA_STORE_DB_PASSWORD: ccd
+      DATA_STORE_DB_USERNAME: shared
+      DATA_STORE_DB_PASSWORD: shared
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
@@ -287,32 +254,15 @@ services:
       ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       CCD_DM_DOMAIN: http://dm-store:8080
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4452:4452
     depends_on:
-      - rpa-em-ccd-orchestrator-shared-database
-      - ccd-user-profile-api
-      - ccd-definition-store-api
-    links:
-      - rpa-em-ccd-orchestrator-shared-database
+      - shared-database
       - ccd-user-profile-api
       - ccd-definition-store-api
       - idam-api
       - service-auth-provider-api
-
-  rpa-em-ccd-orchestrator-shared-database:
-    build: ./database
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 10
-    environment:
-      DB_USERNAME:
-      DB_PASSWORD:
-    ports:
-      - 5000:5432
-    volumes:
-      - rpa-em-ccd-orchestrator-shared-database:/var/lib/postgresql/data
 
   ccd-case-management-web:
     image: hmctspublic.azurecr.io/ccd/case-management-web:latest
@@ -374,5 +324,4 @@ services:
       - idam-api
 
 volumes:
-  rpa-em-ccd-orchestrator-shared-database:
   ccd-docker-azure-blob-data:
