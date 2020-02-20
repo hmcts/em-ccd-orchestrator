@@ -10,7 +10,7 @@ public class DocumentImage {
     private int coordinateY;
     private ImageRendering imageRendering;
 
-   public String getDocmosisAssetId() {
+    public String getDocmosisAssetId() {
         return docmosisAssetId;
     }
 
