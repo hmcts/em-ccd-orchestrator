@@ -41,6 +41,7 @@ public class CcdBundleDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private CcdBoolean enableEmailNotification;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private DocumentImage documentImage;
 
     public String getId() {
