@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +51,7 @@ public class StitchingCompleteCallbackController {
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,
                                                                        @PathVariable String bundleId,
-                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) {
+                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) throws JsonProcessingException {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
@@ -81,6 +83,10 @@ public class StitchingCompleteCallbackController {
             return ResponseEntity.ok().build();
 
         } catch (CallbackException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(documentTaskDTO.getBundle());
+            log.error(json);
+
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
             return ResponseEntity.status(e.getHttpStatus()).body(e);
         }
