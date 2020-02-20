@@ -6,12 +6,6 @@ hasCoversheets: false
 hasFolderCoversheets: true
 paginationStyle: topRight
 pageNumberFormat: numberOfPages
-documentImage:
-  docmosisAssetId: schmcts.png
-  imageRenderingLocation: allPages
-  imageRendering: opaque
-  coordinateX: 50
-  coordinateY: 50
 enableEmailNotification: false
 folders:
   - name: Folder 1
