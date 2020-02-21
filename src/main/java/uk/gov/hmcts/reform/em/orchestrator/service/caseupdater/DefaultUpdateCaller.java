@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +43,9 @@ public class DefaultUpdateCaller {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
 
             ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(ccdCallbackResponseDto.getData());
-            log.info("CCD-ORC Response ===== " + json);
+            String json = "CCD-ORC Response ===== "
+                    + objectMapper.writeValueAsString(ccdCallbackResponseDto.getData());
+            log.info(json);
 
         } catch (InputValidationException e) {
             log.error(e.getMessage(), e);
@@ -53,8 +56,8 @@ public class DefaultUpdateCaller {
         }
 
         String ccdEvent = dto.getEventId();
-        if (ccdCallbackResponseDto.getErrors().size() > 0
-                && dto.getEnableEmailNotification()
+        if (CollectionUtils.isNotEmpty(ccdCallbackResponseDto.getErrors())
+                && BooleanUtils.isTrue(dto.getEnableEmailNotification())
                 && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT)
                 && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
