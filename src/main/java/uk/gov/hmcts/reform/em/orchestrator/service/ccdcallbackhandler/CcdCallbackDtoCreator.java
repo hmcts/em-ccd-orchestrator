@@ -40,7 +40,7 @@ public class CcdCallbackDtoCreator {
             JsonNode payload = objectMapper.readTree(reader);
 
             String json = objectMapper.writeValueAsString(payload);
-            log.info("CCD Request ===== "+payload);
+            log.info("CCD Request ===== " + payload);
             if (payload == null) {
                 throw new CantReadCcdPayloadException("Payload from CCD is empty");
             }

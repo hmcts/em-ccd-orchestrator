@@ -42,7 +42,7 @@ public class DefaultUpdateCaller {
 
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(ccdCallbackResponseDto.getData());
-            log.info("CCD-ORC Response ===== "+json);
+            log.info("CCD-ORC Response ===== " + json);
 
         } catch (InputValidationException e) {
             log.error(e.getMessage(), e);
@@ -53,8 +53,10 @@ public class DefaultUpdateCaller {
         }
 
         String ccdEvent = dto.getEventId();
-        if (ccdCallbackResponseDto.getErrors().size() > 0 && dto.getEnableEmailNotification() &&
-                !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
+        if (ccdCallbackResponseDto.getErrors().size() > 0
+                && dto.getEnableEmailNotification()
+                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT)
+                && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),
