@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,11 @@ public class DefaultUpdateCaller {
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(ccdCallbackResponseDto.getData());
+            log.info("CCD-ORC Response ===== "+json);
+
         } catch (InputValidationException e) {
             log.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().addAll(e.getViolations());
@@ -57,6 +63,7 @@ public class DefaultUpdateCaller {
                     ccdCallbackResponseDto.getErrors().toString()
             );
         }
+
         return ccdCallbackResponseDto;
     }
 
