@@ -31,6 +31,13 @@ public class CcdCallbackBundleUpdater {
         ArrayNode bundles = ccdCallbackDto
                 .findCaseProperty(ArrayNode.class)
                 .orElseThrow(() -> new CallbackException(400, null, "Bundle collection could not be found"));
+        try {
+            String json = "Bundle Collection "
+                    + objectMapper.writeValueAsString(bundles);
+            log.info(json);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
 
         JsonNode ccdBundle = StreamSupport.stream(bundles.spliterator(), false)
                 .map(jsonNode -> jsonNode.get("value"))
