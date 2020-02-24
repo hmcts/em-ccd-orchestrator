@@ -2,8 +2,20 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationFolder;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationSort;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,16 +25,18 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static pl.touk.throwing.ThrowingFunction.unchecked;
-
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */
 public class BundleFactory {
 
+    private final Logger log = LoggerFactory.getLogger(BundleFactory.class);
+
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
+        log.debug(String.format("CaseJson inside BundleFactory: %s", caseJson.toString()));
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
+        log.info(String.format("Callback for BundleId: %s ", bundle.getId()));
         bundle.setTitle(configuration.title);
         bundle.setCoverpageTemplate(configuration.coverpageTemplate);
         bundle.setHasCoversheetsAsBoolean(configuration.hasCoversheets);

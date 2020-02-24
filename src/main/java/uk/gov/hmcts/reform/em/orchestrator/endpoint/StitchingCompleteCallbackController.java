@@ -53,6 +53,8 @@ public class StitchingCompleteCallbackController {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
+        log.info(String.format("Callback for CaseId: %s and TriggerId: %s and BundleId: %s ", caseId, triggerId, bundleId));
+
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
                     new StitchingCompleteCallbackDto(
