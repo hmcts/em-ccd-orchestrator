@@ -56,8 +56,8 @@ public class CcdBundleStitchingServiceTest {
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
         assertEquals(2, ((ArrayNode)node.get("cb")).size());
-        assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
-        assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
+        assertNull(node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
+        assertEquals("", node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));

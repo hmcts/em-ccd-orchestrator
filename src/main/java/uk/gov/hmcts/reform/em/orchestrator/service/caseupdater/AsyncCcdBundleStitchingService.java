@@ -52,6 +52,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
+            Collections.reverse(newBundles);
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(newBundles);
         }
