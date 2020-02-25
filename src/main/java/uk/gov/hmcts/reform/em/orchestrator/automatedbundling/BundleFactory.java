@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class BundleFactory {
         bundle.setFileName(configuration.filename);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
+        bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue, caseJson);
         addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue, caseJson);
@@ -115,7 +117,7 @@ public class BundleFactory {
         if (sortOrder != null) {
             JsonNode dateNode = node.at(sortOrder.field);
             if (!dateNode.isNull() && !dateNode.isMissingNode()) {
-                sourceDocument.setCreatedDatetime(LocalDateTime.parse(dateNode.asText()));
+                sourceDocument.setCreatedDatetime(getDate(dateNode.asText()));
             } else {
                 sourceDocument.setCreatedDatetime(LocalDateTime.MIN);
             }
@@ -126,6 +128,10 @@ public class BundleFactory {
         document.setSourceDocument(sourceDocument);
 
         return new CcdValue<>(document);
+    }
+
+    private LocalDateTime getDate(String date) {
+        return date.length() > 10 ? LocalDateTime.parse(date) : LocalDate.parse(date).atStartOfDay();
     }
 
     private JsonNode getField(JsonNode outerNode, String path) throws DocumentSelectorException {
