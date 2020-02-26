@@ -131,10 +131,10 @@ public class CcdBundleCloningServiceTest {
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
         Assert.assertEquals(4, node.get("case_details").get("case_data").get("caseBundles").size());
-        checkIthBundleTitle(updatedBundles, 0, "CLONED_First Bundle");
-        checkIthBundleTitle(updatedBundles, 1, "First Bundle");
-        checkIthBundleTitle(updatedBundles, 2, "CLONED_Second Bundle");
-        checkIthBundleTitle(updatedBundles, 3, "Second Bundle");
+        checkIthBundleTitle(updatedBundles, 0, "CLONED_Second Bundle");
+        checkIthBundleTitle(updatedBundles, 1, "Second Bundle");
+        checkIthBundleTitle(updatedBundles, 2, "CLONED_First Bundle");
+        checkIthBundleTitle(updatedBundles, 3, "First Bundle");
     }
 
     @Test

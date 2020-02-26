@@ -55,13 +55,11 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
 
         CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
         if (originalBundle.getEligibleForCloningAsBoolean()) {
-            originalBundle.setEligibleForCloningAsBoolean(false);
-
             JsonNode originalProcessedJson = bundleDtoToBundleJson(originalBundle);
             JsonNode clonedJson = cloneBundle(originalProcessedJson);
 
             returnList.add(originalProcessedJson);
-            returnList.add(0, clonedJson);
+            returnList.add(clonedJson);
         } else {
             returnList.add(originalJson);
         }
