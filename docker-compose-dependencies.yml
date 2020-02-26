@@ -3,7 +3,9 @@ version: '3'
 
 services:
   rpa-em-ccd-orchestrator:
-    image: hmctspublic.azurecr.io/em/ccdorc:pr-251-30e3dfa1
+    build:
+      context: .
+        image: hmcts/rpa-em-ccd-orchestrator:latest
     environment:
       - SERVER_PORT=8080
       - S2S_BASE_URI=http://service-auth-provider-api:8489
