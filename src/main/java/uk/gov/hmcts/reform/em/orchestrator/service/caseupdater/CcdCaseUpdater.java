@@ -16,21 +16,21 @@ public interface CcdCaseUpdater {
     JsonNode updateCase(CcdCallbackDto ccdCallbackDto);
 
     static List<JsonNode> reorderBundles(List<JsonNode> bundles, ObjectMapper objectMapper, JavaType type) {
-        List<JsonNode> result = new ArrayList<>();
+        List<JsonNode> reorderedBundles = new ArrayList<>();
         for (JsonNode bundle : bundles) {
-            CcdValue<CcdBundleDTO> ccdBundleDTO = null;
+            CcdValue<CcdBundleDTO> ccdBundleDTO;
             try {
                 ccdBundleDTO = objectMapper.readValue(objectMapper.treeAsTokens(bundle), type);
                 if (ccdBundleDTO.getValue().getEligibleForStitchingAsBoolean()) {
                     ccdBundleDTO.getValue().setEligibleForStitchingAsBoolean(false);
-                    result.add(0, objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
+                    reorderedBundles.add(0, objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
                 } else {
-                    result.add(objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
+                    reorderedBundles.add(objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
                 }
             } catch (IOException e) {
                 return bundles;
             }
         }
-        return result;
+        return reorderedBundles;
     }
 }
