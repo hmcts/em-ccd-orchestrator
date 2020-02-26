@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -45,7 +44,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
 
         if (maybeBundles.isPresent() && processedMaybeBundles.isPresent()) {
             maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(reorderBundles(processedMaybeBundles.get()));
+            maybeBundles.get().addAll(processedMaybeBundles.get());
         }
 
         return ccdCallbackDto.getCaseData();
@@ -62,7 +61,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
             JsonNode clonedJson = cloneBundle(originalProcessedJson);
 
             returnList.add(originalProcessedJson);
-            returnList.add(clonedJson);
+            returnList.add(0, clonedJson);
         } else {
             returnList.add(originalJson);
         }
@@ -87,14 +86,5 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         CcdValue<CcdBundleDTO> ccdValue = new CcdValue<>();
         ccdValue.setValue(ccdBundle);
         return objectMapper.convertValue(ccdValue, JsonNode.class);
-    }
-
-    private ArrayNode reorderBundles(ArrayNode bundles) {
-        JsonNodeFactory factory = JsonNodeFactory.instance;
-        ArrayNode reorderedBundles = new ArrayNode(factory);
-        bundles.forEach(bundle -> {
-            reorderedBundles.insert(0, bundle);
-        });
-        return reorderedBundles;
     }
 }
