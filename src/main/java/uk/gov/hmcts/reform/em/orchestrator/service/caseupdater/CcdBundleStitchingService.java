@@ -55,7 +55,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .collect(Collectors.toList());
 
             maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(reorderBundles(newBundles));
+            maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
 
         return ccdCallbackDto.getCaseData();
@@ -83,24 +83,5 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) throws IOException {
         return objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
-    }
-
-    private List<JsonNode> reorderBundles(List<JsonNode> bundles) {
-        List<JsonNode> result = new ArrayList<>();
-        for (JsonNode bundle : bundles) {
-            CcdValue<CcdBundleDTO> ccdBundleDTO = null;
-            try {
-                ccdBundleDTO = bundleJsonToBundleValue(bundle);
-                if (ccdBundleDTO.getValue().getEligibleForStitchingAsBoolean()) {
-                    ccdBundleDTO.getValue().setEligibleForStitchingAsBoolean(false);
-                    result.add(0, objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
-                } else {
-                    result.add(objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
-                }
-            } catch (IOException e) {
-                return bundles;
-            }
-        }
-        return result;
     }
 }
