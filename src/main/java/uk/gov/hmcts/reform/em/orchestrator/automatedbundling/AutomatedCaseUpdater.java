@@ -66,7 +66,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 ccdCallbackDto.getJwt(),
                 bundle);
 
-        bundles.add(bundleDtoToBundleJson(bundle));
+        bundles.insert(0, bundleDtoToBundleJson(bundle));
 
         return ccdCallbackDto.getCaseData();
     }
