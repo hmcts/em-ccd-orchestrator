@@ -53,7 +53,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .collect(Collectors.toList());
 
             maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(newBundles);
+            maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
 
         return ccdCallbackDto.getCaseData();
@@ -69,7 +69,6 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         automatedStitchingExecutor.startStitching(caseId, ccdCallbackDto.getJwt(), bundle.getValue());
-        bundle.getValue().setEligibleForStitchingAsBoolean(false);
 
         return bundle;
     }
