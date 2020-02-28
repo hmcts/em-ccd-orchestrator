@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,9 +19,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
+import uk.gov.hmcts.reform.auth.checker.core.service.Service;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,15 +31,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-    @Value("${oidc.audience-list}")
-    private String[] allowedAudiences;
-
     @Value("${oidc.issuer}")
     private String issuerOverride;
 
     private final JwtAuthorityExtractor jwtAuthorityExtractor;
 
-    public SecurityConfiguration(final JwtAuthorityExtractor jwtAuthorityExtractor) {
+    private final AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
+
+    public SecurityConfiguration(final RequestAuthorizer<Service> serviceRequestAuthorizer,
+                                 final AuthenticationManager authenticationManager,
+                                 final JwtAuthorityExtractor jwtAuthorityExtractor) {
+        this.authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
+        this.authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
         this.jwtAuthorityExtractor = jwtAuthorityExtractor;
     }
 
@@ -63,10 +67,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationManager.setEraseCredentialsAfterAuthentication(false);
 
         http.csrf()
-                .disable().exceptionHandling()
-                .accessDeniedHandler((request, response, exc) -> response.sendError(HttpServletResponse.SC_FORBIDDEN))
-                .authenticationEntryPoint((request, response, exc) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                .and()
+                .disable()
+                .addFilter(authCheckerServiceOnlyFilter)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -86,15 +88,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
                 JwtDecoders.fromOidcIssuerLocation(issuerUri);
 
-        OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(Arrays.asList(allowedAudiences));
         // We are using issuerOverride instead of issuerUri as SIDAM has the wrong issuer at the moment
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
         OAuth2TokenValidator<Jwt> withIssuer = new JwtIssuerValidator(issuerOverride);
-        OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withTimestamp,
-                withIssuer,
-                audienceValidator);
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp,
+                withIssuer);
 
-        jwtDecoder.setJwtValidator(withAudience);
+        jwtDecoder.setJwtValidator(validator);
 
         return jwtDecoder;
     }
