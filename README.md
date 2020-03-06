@@ -6,7 +6,7 @@
 
 CCD Orchestrator is a backend service that facilitates interactions between CCD, the EM Stitching service, and a calling service.
 
-# Setup
+# Setup...
 
 ```
 az login
