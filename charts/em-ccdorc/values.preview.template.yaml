@@ -56,13 +56,13 @@ ccd:
     idamClientSecret:
       value: ${API_GATEWAY_IDAM_SECRET}
   userProfileApi:
-    authorisedServices: em_ccd_orchestrator,ccd_admin,ccd_data,ccd_definition,cmc_claim_store
+    authorisedServices: em_gw,em_ccd_orchestrator,ccd_admin,ccd_data,ccd_definition,cmc_claim_store
   dataStoreApi:
     s2sKey: ${DATA_STORE_S2S_KEY}
-    s2sAuthorisedServices: em_ccd_orchestrator,cmc_claim_store,ccd_gw
+    s2sAuthorisedServices: em_gw,em_ccd_orchestrator,cmc_claim_store,ccd_gw
   definitionStoreApi:
     s2sKey: ${DEFINITION_STORE_S2S_KEY}
-    s2sAuthorisedServices: em_ccd_orchestrator,ccd_admin,ccd_data,cmc_claim_store,ccd_gw
+    s2sAuthorisedServices: em_gw,em_ccd_orchestrator,ccd_admin,ccd_data,cmc_claim_store,ccd_gw
   caseManagementWeb:
     enabled: true
     environment:
