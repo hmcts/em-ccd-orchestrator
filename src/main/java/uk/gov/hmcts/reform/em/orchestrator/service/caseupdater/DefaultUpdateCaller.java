@@ -23,7 +23,6 @@ public class DefaultUpdateCaller {
     @Value("${notify.failureTemplateId}")
     private String failureTemplateId;
 
-    private static final String EVENT_ID = "event_id";
     private static final String CLONE_BUNDLE_EVENT = "cloneBundle";
     private static final String ASYNC_STITCHING_COMPLETE_EVENT = "asyncStitchingComplete";
 

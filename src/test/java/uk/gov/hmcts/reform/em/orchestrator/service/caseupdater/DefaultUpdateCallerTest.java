@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -17,10 +20,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationServ
 import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUpdateCallerTest {
@@ -101,6 +100,29 @@ public class DefaultUpdateCallerTest {
         when(caseData.get(anyString())).thenReturn(caseData);
         when(caseData.asText()).thenReturn("json value");
 
+        when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
+                .thenReturn(ccdCallbackDto);
+
+        when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .thenThrow(new RuntimeException("x"));
+
+        CcdCallbackResponseDto ccdCallbackResponseDto =
+                defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+
+        Assert.assertEquals("x", ccdCallbackResponseDto.getErrors().get(0));
+    }
+
+    @Test
+    public void executeUpdateExceptionWithNoEmailNotification() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode caseData = mock(JsonNode.class);
+        ccdCallbackDto.setCcdPayload(caseData);
+        ccdCallbackDto.setCaseData(caseData);
+        ccdCallbackDto.setEnableEmailNotification(false);
+
+        when(caseData.has(anyString())).thenReturn(true);
+        when(caseData.get(anyString())).thenReturn(caseData);
+        when(caseData.asText()).thenReturn("json value");
         when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
                 .thenReturn(ccdCallbackDto);
 
