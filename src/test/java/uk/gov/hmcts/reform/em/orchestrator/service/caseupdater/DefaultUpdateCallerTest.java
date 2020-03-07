@@ -120,9 +120,6 @@ public class DefaultUpdateCallerTest {
         ccdCallbackDto.setCaseData(caseData);
         ccdCallbackDto.setEnableEmailNotification(false);
 
-        when(caseData.has(anyString())).thenReturn(true);
-        when(caseData.get(anyString())).thenReturn(caseData);
-        when(caseData.asText()).thenReturn("json value");
         when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
                 .thenReturn(ccdCallbackDto);
 
