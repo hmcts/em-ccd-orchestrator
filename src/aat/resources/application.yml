@@ -26,6 +26,8 @@ idam:
     id: ${OAUTH_CLIENT:webshow}
     secret: ${FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET:AAAAAAAAAAAAAAAA}
     redirect_uri: ${IDAM_WEBSHOW_WHITELIST:http://localhost:8080/oauth2redirect}
+    grant_type: 'password'
+    scope: 'openid roles profile'
 
 s2s:
   api:

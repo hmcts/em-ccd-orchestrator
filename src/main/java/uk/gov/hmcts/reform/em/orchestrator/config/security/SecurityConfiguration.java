@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.em.orchestrator.config.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,9 +17,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
-import uk.gov.hmcts.reform.auth.checker.core.service.Service;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
+import uk.gov.hmcts.reform.authorisation.filters.ServiceAuthFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,12 +31,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${oidc.issuer}")
     private String issuerOverride;
 
-    private final AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
+    private final ServiceAuthFilter serviceAuthFilter;
 
-    public SecurityConfiguration(final RequestAuthorizer<Service> serviceRequestAuthorizer,
-                                 final AuthenticationManager authenticationManager) {
-        this.authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
-        this.authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
+    public SecurityConfiguration(final ServiceAuthFilter serviceAuthFilter) {
+        this.serviceAuthFilter = serviceAuthFilter;
     }
 
     @Override
@@ -58,13 +53,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
 
-        // Don't erase user credentials as this is needed for the user profile
-        final ProviderManager authenticationManager = (ProviderManager) authenticationManager();
-        authenticationManager.setEraseCredentialsAfterAuthentication(false);
-
-        http.csrf()
-                .disable()
-                .addFilter(authCheckerServiceOnlyFilter)
+        http.csrf().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .addFilterBefore(serviceAuthFilter, BearerTokenAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

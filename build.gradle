@@ -102,6 +102,7 @@ dependencies {
     compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
     compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
+    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.1.1'
 
     compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
@@ -197,18 +198,18 @@ bootJar {
 }
 
 def coverageExclusionList = [
-    '**uk/gov/hmcts/reform/em/orchestrator/Application*',
-    '**uk/gov/hmcts/reform/em/orchestrator/CliApplication*',
-    '**uk/gov/hmcts/reform/em/orchestrator/appinsights/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/config/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/config/logging/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/info/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/config/security/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/endpoint/*',
-    '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
+        '**uk/gov/hmcts/reform/em/orchestrator/Application*',
+        '**uk/gov/hmcts/reform/em/orchestrator/CliApplication*',
+        '**uk/gov/hmcts/reform/em/orchestrator/appinsights/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/config/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/config/logging/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/info/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/config/security/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/endpoint/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
 ]
 
 jacocoTestReport {
