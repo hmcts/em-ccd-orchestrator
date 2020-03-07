@@ -34,16 +34,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${oidc.issuer}")
     private String issuerOverride;
 
-    private final JwtAuthorityExtractor jwtAuthorityExtractor;
-
     private final AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
 
     public SecurityConfiguration(final RequestAuthorizer<Service> serviceRequestAuthorizer,
-                                 final AuthenticationManager authenticationManager,
-                                 final JwtAuthorityExtractor jwtAuthorityExtractor) {
+                                 final AuthenticationManager authenticationManager) {
         this.authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
         this.authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
-        this.jwtAuthorityExtractor = jwtAuthorityExtractor;
     }
 
     @Override
@@ -77,7 +73,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(jwtAuthorityExtractor)
                 .and()
                 .and()
                 .oauth2Client();
