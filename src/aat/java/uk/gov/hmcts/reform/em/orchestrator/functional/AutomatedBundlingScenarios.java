@@ -346,4 +346,39 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
 
+    @Test
+    public void testEnableEmailNotificationIsNull() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(null, responsePath.getString("data.caseBundles[0].value.enableEmailNotification"));
+
+    }
+
+    @Test
+    public void testRenderImageInStitchedDocument() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("schmcts.png", responsePath.getString("data.caseBundles[0].value.documentImage.docmosisAssetId"));
+        Assert.assertEquals("allPages", responsePath.getString("data.caseBundles[0].value.documentImage.imageRenderingLocation"));
+        Assert.assertEquals("opaque", responsePath.getString("data.caseBundles[0].value.documentImage.imageRendering"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
+    }
 }

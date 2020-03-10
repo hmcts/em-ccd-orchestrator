@@ -48,4 +48,11 @@ public class LocalConfigurationLoaderTest {
         assertEquals(0, config.folders.get(0).documents.size());
         assertEquals(2, config.folders.get(1).documents.size());
     }
+
+    @Test
+    public void enableEmailNotificationNull() {
+        BundleConfiguration config = loader.load("example-with-documents.yaml");
+
+        assertEquals(null, config.enableEmailNotification);
+    }
 }

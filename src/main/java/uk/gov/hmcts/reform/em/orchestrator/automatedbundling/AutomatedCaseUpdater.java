@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private static final String CONFIG_FIELD = "bundleConfiguration";
-    private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("Benefit", "sscs-bundle-config.yaml");
+    private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("SSCS", "sscs-bundle-config.yaml");
     private static final String DEFAULT_CONFIG = "default-config.yaml";
 
     private final ConfigurationLoader configurationLoader;
@@ -46,7 +46,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         String configurationName =
                 ccdCallbackDto.getCaseData().has(CONFIG_FIELD) && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")
                 ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
-                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getCaseTypeId(), DEFAULT_CONFIG);
+                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG);
 
         BundleConfiguration configuration = configurationLoader.load(configurationName);
         ArrayNode bundles = ccdCallbackDto
@@ -58,6 +58,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             });
 
         CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
+        ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
         bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
         automatedStitchingExecutor.startStitching(
@@ -65,7 +66,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 ccdCallbackDto.getJwt(),
                 bundle);
 
-        bundles.add(bundleDtoToBundleJson(bundle));
+        bundles.insert(0, bundleDtoToBundleJson(bundle));
 
         return ccdCallbackDto.getCaseData();
     }

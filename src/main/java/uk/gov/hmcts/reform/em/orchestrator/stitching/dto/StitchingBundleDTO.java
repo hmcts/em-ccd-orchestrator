@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
@@ -24,6 +25,12 @@ public class StitchingBundleDTO {
     private boolean hasFolderCoversheets;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private DocumentImage documentImage;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean enableEmailNotification;
 
     public String getBundleTitle() {
         return bundleTitle;
@@ -127,6 +134,22 @@ public class StitchingBundleDTO {
 
     public void setStitchedDocumentURI(String stitchedDocumentURI) {
         this.stitchedDocumentURI = stitchedDocumentURI;
+    }
+
+    public Boolean getEnableEmailNotification() {
+        return enableEmailNotification;
+    }
+
+    public void setEnableEmailNotification(Boolean enableEmailNotification) {
+        this.enableEmailNotification = enableEmailNotification;
+    }
+
+    public DocumentImage getDocumentImage() {
+        return documentImage;
+    }
+
+    public void setDocumentImage(DocumentImage documentImage) {
+        this.documentImage = documentImage;
     }
 }
 

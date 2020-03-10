@@ -50,9 +50,8 @@ def vaultOverrides = [
         'spreview': 'saat'
 ]
 
-#breaking the build for safety.  withPipeline(type , product, component) {
+withPipeline(type , product, component) {
     overrideVaultEnvironments(vaultOverrides)
-    enableDockerBuild()
     loadVaultSecrets(secrets)
     installCharts()
     enableAksStagingDeployment()

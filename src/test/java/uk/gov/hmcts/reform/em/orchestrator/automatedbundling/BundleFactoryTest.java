@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class BundleFactoryTest {
     private final File case2Json = new File(ClassLoader.getSystemResource("case-data2.json").getPath());
     private final File case3Json = new File(ClassLoader.getSystemResource("case-data3.json").getPath());
     private final File case4Json = new File(ClassLoader.getSystemResource("case-data4.json").getPath());
+    private final File case5Json = new File(ClassLoader.getSystemResource("case-data5.json").getPath());
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -43,7 +45,9 @@ public class BundleFactoryTest {
             new ArrayList<>(),
             new ArrayList<>(),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -72,7 +76,9 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocument("/folder/document")
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -99,7 +105,9 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -108,30 +116,6 @@ public class BundleFactoryTest {
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
         assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
         assertEquals("document3.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
-    }
-
-    @Test(expected = DocumentSelectorException.class)
-    public void createWithDocumentSetNotArray() throws IOException, DocumentSelectorException {
-        BundleConfiguration configuration = new BundleConfiguration(
-            "Bundle title",
-            "filename.pdf",
-            "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            null,
-            true,
-            true,
-            true,
-            new ArrayList<>(),
-            Arrays.asList(
-                new BundleConfigurationDocument("/document1"),
-                new BundleConfigurationDocumentSet("/document1", Collections.emptyList())
-            ),
-            CcdBundlePaginationStyle.off,
-            null
-        );
-
-        JsonNode json = mapper.readTree(case2Json);
-        factory.create(configuration, json);
     }
 
     @Test
@@ -154,7 +138,9 @@ public class BundleFactoryTest {
                 ))
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -168,24 +154,26 @@ public class BundleFactoryTest {
     @Test
     public void createWithDocumentSetRegex() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
-                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yes\\w*"),
-                                new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
-                        ))
-                ),
-                CcdBundlePaginationStyle.off,
-                null
+            "Bundle title",
+            "filename.pdf",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Arrays.asList(
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/selectMe", "yesPlease"),
+                    new BundleConfigurationDocumentSet.BundleConfigurationFilter("/alsoSelectMe", "okayThen")
+                ))
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -213,7 +201,9 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentFileName"
+                "/documentFileName",
+                null,
+                false
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -244,7 +234,9 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -275,10 +267,45 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
-            null
+            null,
+            null,
+            false
         );
 
         JsonNode json = mapper.readTree(case2Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals(0, bundle.getDocuments().get(0).getValue().getSortIndex());
+        assertEquals("document3.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+        assertEquals(1, bundle.getDocuments().get(1).getValue().getSortIndex());
+        assertEquals("document2.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
+        assertEquals(2, bundle.getDocuments().get(2).getValue().getSortIndex());
+    }
+
+    @Test
+    public void createWithSortOrderDescendingAndMixOfDateTypes() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                Arrays.asList(
+                        new BundleConfigurationDocument("/document1"),
+                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+                ),
+                CcdBundlePaginationStyle.off,
+                null,
+                null,
+                false
+        );
+
+        JsonNode json = mapper.readTree(case5Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
 
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
@@ -306,7 +333,9 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                null
+                null,
+                null,
+                false
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -337,7 +366,9 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
-                "/documentFileName"
+                "/documentFileName",
+                null,
+                false
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -351,5 +382,47 @@ public class BundleFactoryTest {
         assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
         assertEquals("document4.pdf", bundle.getDocuments().get(3).getValue().getSourceDocument().getFileName());
         assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
+    }
+
+    @Test
+    public void createWithImageRenderingDefined() throws IOException, DocumentSelectorException {
+        DocumentImage docImg = new DocumentImage();
+        docImg.setImageRendering(ImageRendering.opaque);
+        docImg.setImageRenderingLocation(ImageRenderingLocation.allPages);
+        docImg.setCoordinateX(40);
+        docImg.setCoordinateY(50);
+        docImg.setDocmosisAssetId("schmcts.png");
+
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                Arrays.asList(
+                        new BundleConfigurationDocument("/document1"),
+                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+                ),
+                CcdBundlePaginationStyle.off,
+                "/documentFileName",
+                docImg,
+                false
+        );
+
+        JsonNode json = mapper.readTree(case4Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document4.pdf", bundle.getDocuments().get(3).getValue().getSourceDocument().getFileName());
+        assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
+        assertEquals("schmcts.png", bundle.getDocumentImage().getDocmosisAssetId());
+        assertEquals(ImageRenderingLocation.allPages, bundle.getDocumentImage().getImageRenderingLocation());
+        assertEquals(ImageRendering.opaque, bundle.getDocumentImage().getImageRendering());
+        assertEquals(40, bundle.getDocumentImage().getCoordinateX());
+        assertEquals(50, bundle.getDocumentImage().getCoordinateY());
+
     }
 }

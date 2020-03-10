@@ -1,7 +1,7 @@
 
 plugins {
     id 'application'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.springframework.boot' version '2.2.4.RELEASE'
     id 'org.owasp.dependencycheck' version '5.3.0'
     id 'com.github.ben-manes.versions' version '0.27.0'
@@ -102,6 +102,7 @@ dependencies {
     compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
     compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
+    compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.15.1-RELEASE'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: "com.vaadin.external.google", module: "android-json"
@@ -116,7 +117,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.2.4'
     testCompile "io.rest-assured:rest-assured:4.0.0"
     testCompile group: "io.rest-assured", name: "json-path", version: "4.2.0"
-    testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
+    testCompile group: "io.rest-assured", name: "xml-path", version: "4.2.0"
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.6.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.5.2"
