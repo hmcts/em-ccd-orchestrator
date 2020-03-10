@@ -5,7 +5,7 @@ services:
   rpa-em-ccd-orchestrator:
     build:
       context: .
-        image: hmcts/rpa-em-ccd-orchestrator:latest
+#        image: hmcts/rpa-em-ccd-orchestrator:latest
     environment:
       - SERVER_PORT=8080
       - S2S_BASE_URI=http://service-auth-provider-api:8489
