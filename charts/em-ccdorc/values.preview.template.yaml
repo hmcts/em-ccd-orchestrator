@@ -1,5 +1,5 @@
 tags:
-  cmc-ccd-stack: true
+  cmc-ccd-stack: false
   ccd-idam-pr: true
   postgresql-pod: false  # stop any subcharts starting their own postgres instance
 
