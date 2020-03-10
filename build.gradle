@@ -117,7 +117,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.2.4'
     testCompile "io.rest-assured:rest-assured:4.0.0"
     testCompile group: "io.rest-assured", name: "json-path", version: "4.0.0"
-    testCompile group: "io.rest-assured", name: "xml-path", version: "4.0.0"
+    testCompile group: "io.rest-assured", name: "xml-path", version: "4.2.0"
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.6.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.5.2"
