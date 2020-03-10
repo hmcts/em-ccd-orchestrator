@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -40,6 +41,8 @@ public class CcdBundleDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private CcdBoolean enableEmailNotification;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private DocumentImage documentImage;
 
     public String getId() {
         return id;
@@ -242,5 +245,13 @@ public class CcdBundleDTO {
     @JsonIgnore
     public Boolean getEnableEmailNotificationAsBoolean() {
         return enableEmailNotification != null ? enableEmailNotification == CcdBoolean.Yes : null;
+    }
+
+    public DocumentImage getDocumentImage() {
+        return documentImage;
+    }
+
+    public void setDocumentImage(DocumentImage documentImage) {
+        this.documentImage = documentImage;
     }
 }

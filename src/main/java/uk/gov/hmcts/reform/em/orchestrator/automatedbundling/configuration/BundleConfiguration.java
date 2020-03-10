@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class BundleConfiguration {
     public final CcdBundlePaginationStyle paginationStyle;
     public final String documentNameValue;
     public final Boolean enableEmailNotification;
+    public final DocumentImage documentImage;
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
@@ -39,7 +41,9 @@ public class BundleConfiguration {
                                @JsonProperty("documents") List<BundleConfigurationDocumentSelector> documents,
                                @JsonProperty("paginationStyle") CcdBundlePaginationStyle paginationStyle,
                                @JsonProperty("documentNameValue") String documentNameValue,
+                               @JsonProperty("documentImage") DocumentImage documentImage,
                                @JsonProperty("enableEmailNotification") Boolean enableEmailNotification) {
+
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
         this.coverpageTemplate = coverpageTemplate == null ? "" : coverpageTemplate;
@@ -52,6 +56,7 @@ public class BundleConfiguration {
         this.documents = documents == null ? new ArrayList<>() : documents;
         this.paginationStyle = paginationStyle;
         this.documentNameValue = documentNameValue;
+        this.documentImage = documentImage;
         this.enableEmailNotification = enableEmailNotification;
     }
 }

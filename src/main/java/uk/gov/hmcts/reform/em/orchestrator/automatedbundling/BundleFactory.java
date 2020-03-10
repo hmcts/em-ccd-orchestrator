@@ -34,6 +34,7 @@ public class BundleFactory {
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
+        bundle.setDocumentImage(configuration.documentImage);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue, caseJson);
         addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue, caseJson);

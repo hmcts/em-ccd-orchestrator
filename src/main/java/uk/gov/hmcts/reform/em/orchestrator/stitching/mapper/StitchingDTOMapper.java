@@ -31,10 +31,11 @@ public class StitchingDTOMapper {
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
         bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
         bundle.setEnableEmailNotification(
-                bundleDTO.getEnableEmailNotification() != null ?
-                bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes :
-                null
+                bundleDTO.getEnableEmailNotification() != null
+                        ? bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes
+                        : null
         );
+        bundle.setDocumentImage(bundleDTO.getDocumentImage());
 
         return bundle;
     }
