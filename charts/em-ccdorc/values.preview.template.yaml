@@ -17,7 +17,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
 
 postgresql:
-  enabled: false
+  enabled: true
   image:
     tag: '11.3.0'
   resources:
@@ -38,7 +38,7 @@ postgresql:
 
 
 ccd:
-  enabled: false
+  enabled: true
   ingressHost: ${SERVICE_FQDN}
   ingressIP: ${INGRESS_IP}
   consulIP: ${CONSUL_LB_IP}
@@ -52,7 +52,7 @@ ccd:
       CCD Admin:
         - https://admin-web-${SERVICE_FQDN}/oauth2redirect
   apiGateway:
-    s2sKey: ${API_GATEWAY_S2S_KEY}
+    s2sKey: ${FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET}
     idamClientSecret:
       value: ${API_GATEWAY_IDAM_SECRET}
   userProfileApi:
