@@ -31,6 +31,7 @@ public class BundleFactory {
         bundle.setPageNumberFormat(configuration.pageNumberFormat);
         bundle.setPaginationStyle(configuration.paginationStyle);
         bundle.setFileName(configuration.filename);
+        bundle.setFileNameIdentifier(configuration.filenameIdentifier);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setEligibleForStitchingAsBoolean(false);
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);

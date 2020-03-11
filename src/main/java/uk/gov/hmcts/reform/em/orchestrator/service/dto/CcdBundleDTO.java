@@ -28,6 +28,7 @@ public class CcdBundleDTO {
     @Size(min = 2, max = 30)
     @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
+    private String fileNameIdentifier;
     private String coverpageTemplate;
     @JsonIgnore
     private JsonNode coverpageTemplateData;
@@ -138,6 +139,14 @@ public class CcdBundleDTO {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileNameIdentifier() {
+        return fileNameIdentifier;
+    }
+
+    public void setFileNameIdentifier(String fileNameIdentifier) {
+        this.fileNameIdentifier = fileNameIdentifier;
     }
 
     public String getCoverpageTemplate() {
