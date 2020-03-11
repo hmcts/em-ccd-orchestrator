@@ -5,7 +5,7 @@ services:
   rpa-em-ccd-orchestrator:
     build:
       context: .
-    #    image: hmcts/rpa-em-ccd-orchestrator:latest
+#        image: hmcts/rpa-em-ccd-orchestrator:latest
     environment:
       - SERVER_PORT=8080
       - S2S_BASE_URI=http://service-auth-provider-api:8489
@@ -199,7 +199,7 @@ services:
 
   make-container-call:
     image: byrnedo/alpine-curl
-    command: -XPUT --verbose http://azure-storage-emulator-azurite:10000/devstoreaccount1/hmctstestcontainer?restype=container
+    command: --retry 10 --retry-connrefused -XPUT --verbose http://azure-storage-emulator-azurite:10000/devstoreaccount1/hmctstestcontainer?restype=container
     links:
       - azure-storage-emulator-azurite
     depends_on:

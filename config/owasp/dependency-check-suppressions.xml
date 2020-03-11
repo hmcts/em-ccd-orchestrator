@@ -42,9 +42,9 @@
         <cve>CVE-2019-20445</cve>
         <cve>CVE-2019-20444</cve>
         <cve>CVE-2019-10782</cve>
-        <cve>CVE-2020-1938</cve>
         <cve>CVE-2019-10797</cve>
         <cve>CVE-2019-17569</cve>
         <cve>CVE-2020-1935</cve>
+        <cve>CVE-2020-1938</cve>
     </suppress>
 </suppressions>

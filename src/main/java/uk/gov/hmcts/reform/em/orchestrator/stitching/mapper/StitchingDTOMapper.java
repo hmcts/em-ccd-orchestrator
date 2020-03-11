@@ -35,6 +35,7 @@ public class StitchingDTOMapper {
                         ? bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes
                         : null
         );
+        bundle.setDocumentImage(bundleDTO.getDocumentImage());
 
         return bundle;
     }

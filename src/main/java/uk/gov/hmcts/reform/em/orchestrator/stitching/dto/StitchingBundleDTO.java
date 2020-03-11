@@ -27,6 +27,9 @@ public class StitchingBundleDTO {
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private DocumentImage documentImage;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean enableEmailNotification;
 
     public String getBundleTitle() {
@@ -139,6 +142,14 @@ public class StitchingBundleDTO {
 
     public void setEnableEmailNotification(Boolean enableEmailNotification) {
         this.enableEmailNotification = enableEmailNotification;
+    }
+
+    public DocumentImage getDocumentImage() {
+        return documentImage;
+    }
+
+    public void setDocumentImage(DocumentImage documentImage) {
+        this.documentImage = documentImage;
     }
 }
 

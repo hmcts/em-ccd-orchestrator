@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class BundleFactoryTest {
             new ArrayList<>(),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -75,6 +77,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -102,6 +105,7 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
+            null,
             null,
             false
         );
@@ -135,6 +139,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -167,6 +172,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -196,6 +202,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 "/documentFileName",
+                null,
                 false
         );
 
@@ -227,6 +234,7 @@ public class BundleFactoryTest {
                 new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
+            null,
             null,
             false
         );
@@ -260,6 +268,7 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
             false
         );
 
@@ -291,6 +300,7 @@ public class BundleFactoryTest {
                         new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
                 ),
                 CcdBundlePaginationStyle.off,
+                null,
                 null,
                 false
         );
@@ -324,6 +334,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 null,
+                null,
                 false
         );
 
@@ -356,6 +367,7 @@ public class BundleFactoryTest {
                 ),
                 CcdBundlePaginationStyle.off,
                 "/documentFileName",
+                null,
                 false
         );
 
@@ -370,5 +382,47 @@ public class BundleFactoryTest {
         assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
         assertEquals("document4.pdf", bundle.getDocuments().get(3).getValue().getSourceDocument().getFileName());
         assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
+    }
+
+    @Test
+    public void createWithImageRenderingDefined() throws IOException, DocumentSelectorException {
+        DocumentImage docImg = new DocumentImage();
+        docImg.setImageRendering(ImageRendering.opaque);
+        docImg.setImageRenderingLocation(ImageRenderingLocation.allPages);
+        docImg.setCoordinateX(40);
+        docImg.setCoordinateY(50);
+        docImg.setDocmosisAssetId("schmcts.png");
+
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                Arrays.asList(
+                        new BundleConfigurationDocument("/document1"),
+                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+                ),
+                CcdBundlePaginationStyle.off,
+                "/documentFileName",
+                docImg,
+                false
+        );
+
+        JsonNode json = mapper.readTree(case4Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document4.pdf", bundle.getDocuments().get(3).getValue().getSourceDocument().getFileName());
+        assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
+        assertEquals("schmcts.png", bundle.getDocumentImage().getDocmosisAssetId());
+        assertEquals(ImageRenderingLocation.allPages, bundle.getDocumentImage().getImageRenderingLocation());
+        assertEquals(ImageRendering.opaque, bundle.getDocumentImage().getImageRendering());
+        assertEquals(40, bundle.getDocumentImage().getCoordinateX());
+        assertEquals(50, bundle.getDocumentImage().getCoordinateY());
+
     }
 }
