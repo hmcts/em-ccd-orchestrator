@@ -20,12 +20,12 @@ def component = "ccdorc"
 def secrets = [
         's2s-${env}': [
                 secret('microservicekey-em-gw', 'FUNCTIONAL_TEST_CLIENT_S2S_TOKEN'),
-                secret('microservicekey-ccd-gw', 'FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET'),
-                secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
-                secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
+                secret('microservicekey-ccd-gw', 'FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET')
+//                secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
+//                secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
 //                secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
-                secret('microservicekey-ccd-admin', 'ADMIN_S2S_KEY'),
-                secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
+//                secret('microservicekey-ccd-admin', 'ADMIN_S2S_KEY'),
+//                secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
         ],
         'rpa-${env}': [
                 secret('show-oauth2-token', 'FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET')
