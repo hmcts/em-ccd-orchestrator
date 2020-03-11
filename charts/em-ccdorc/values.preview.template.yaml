@@ -17,7 +17,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
 
 postgresql:
-  enabled: true
+  enabled: false
   image:
     tag: '11.3.0'
   resources:
@@ -38,7 +38,7 @@ postgresql:
 
 
 ccd:
-  enabled: true
+  enabled: false
   ingressHost: ${SERVICE_FQDN}
   ingressIP: ${INGRESS_IP}
   consulIP: ${CONSUL_LB_IP}
