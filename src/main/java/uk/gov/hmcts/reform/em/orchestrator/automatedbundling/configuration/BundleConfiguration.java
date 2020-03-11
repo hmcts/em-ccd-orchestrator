@@ -48,7 +48,7 @@ public class BundleConfiguration {
 
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
-        this.filenameIdentifier = filenameIdentifier == null ? "" : filenameIdentifier;
+        this.filenameIdentifier = filenameIdentifier;
         this.coverpageTemplate = coverpageTemplate == null ? "" : coverpageTemplate;
         this.pageNumberFormat = pageNumberFormat;
         this.sortOrder = sortOrder;

@@ -1,5 +1,6 @@
 title: SSCS Bundle
 filename: SscsBundle.pdf
+filenameIdentifier: /case_details/id
 coverpageTemplate: SSCS-cover-page.docx
 hasTableOfContents: true
 hasCoversheets: true
