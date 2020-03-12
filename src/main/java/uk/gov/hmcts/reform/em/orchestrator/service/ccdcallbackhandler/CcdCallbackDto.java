@@ -110,7 +110,7 @@ public class CcdCallbackDto {
     public String getIdentifierFromCcdPayload(String identifier) {
         if (identifier != null) {
             JsonNode value = ccdPayload.at(identifier);
-            return value.isMissingNode() ? "" : value.asText() + "-";
+            return value.isMissingNode() ? "" : value.asText();
         }
         return "";
     }

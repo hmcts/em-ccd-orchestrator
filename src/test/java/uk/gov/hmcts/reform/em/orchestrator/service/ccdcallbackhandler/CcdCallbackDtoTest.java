@@ -33,5 +33,6 @@ public class CcdCallbackDtoTest {
         assertEquals("c", ccdCallbackDto.getCaseTypeId());
         assertEquals("t", ccdCallbackDto.getEventToken());
         assertEquals("e", ccdCallbackDto.getEventId());
+        assertEquals("1", ccdCallbackDto.getIdentifierFromCcdPayload("/ccdPayload/id"));
     }
 }
