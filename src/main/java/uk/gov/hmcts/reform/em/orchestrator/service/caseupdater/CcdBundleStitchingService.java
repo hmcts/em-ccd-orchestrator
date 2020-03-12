@@ -67,6 +67,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
 
         if (!violations.isEmpty()) {
+            violations.forEach(System.out::println);
             throw new InputValidationException(violations);
         }
 
