@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
 @AutoConfigureMockMvc
-public class CcdStitchBundleCallbackControllerTest extends BaseTest {
+public class CcdStitchBundleCallbackController extends Base {
 
     @Test
     public void shouldCallCcdCallbackHandlerService() throws Exception {

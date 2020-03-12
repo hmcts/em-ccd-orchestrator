@@ -30,7 +30,7 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
 @AutoConfigureMockMvc
-public class StitchingCompleteCallbackControllerTest extends BaseTest {
+public class StitchingCompleteCallbackController extends Base {
 
     @MockBean
     private StitchingCompleteCallbackService stitchingCompleteCallbackService;
