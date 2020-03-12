@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         final ProviderManager authenticationManager = (ProviderManager) authenticationManager();
         authenticationManager.setEraseCredentialsAfterAuthentication(false);
         authCheckerFilter.setAuthenticationManager(authenticationManager());
-
+        // This is existing filter for Service and user
         http.antMatcher("/api/**")
             .addFilter(authCheckerFilter)
             .sessionManagement().sessionCreationPolicy(STATELESS).and()
