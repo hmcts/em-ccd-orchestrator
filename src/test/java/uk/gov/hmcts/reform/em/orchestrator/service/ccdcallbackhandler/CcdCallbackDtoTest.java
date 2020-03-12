@@ -35,4 +35,26 @@ public class CcdCallbackDtoTest {
         assertEquals("e", ccdCallbackDto.getEventId());
         assertEquals("1", ccdCallbackDto.getIdentifierFromCcdPayload("/ccdPayload/id"));
     }
+
+    @Test
+    public void getInvalidIdentifier() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": { \"id\": \"1\", "
+                + "\"jurisdiction\": \"j\", \"case_type_id\": \"c\", \"token\": \"t\", \"event_id\":\"e\" }}");
+        ccdCallbackDto.setCcdPayload(ccdPayload);
+        assertEquals("", ccdCallbackDto.getIdentifierFromCcdPayload("/ccdPayload/idea"));
+    }
+
+    @Test
+    public void returnEmptyForNullIdentifier() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": { \"id\": \"1\", "
+                + "\"jurisdiction\": \"j\", \"case_type_id\": \"c\", \"token\": \"t\", \"event_id\":\"e\" }}");
+        ccdCallbackDto.setCcdPayload(ccdPayload);
+        assertEquals("", ccdCallbackDto.getIdentifierFromCcdPayload(null));
+    }
 }
