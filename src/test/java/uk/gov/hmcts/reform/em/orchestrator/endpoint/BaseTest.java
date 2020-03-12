@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class BaseTest {
+public class BaseTest {
 
     @MockBean
     protected DefaultUpdateCaller defaultUpdateCaller;
