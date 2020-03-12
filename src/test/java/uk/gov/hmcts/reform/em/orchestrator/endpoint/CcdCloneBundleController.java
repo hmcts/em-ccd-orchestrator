@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
-public class CcdCloneBundleController extends Base {
+public class CcdCloneBundleController extends BaseTest {
 
     @Test
     public void shouldCallCcdCallbackHandlerService() throws Exception {
