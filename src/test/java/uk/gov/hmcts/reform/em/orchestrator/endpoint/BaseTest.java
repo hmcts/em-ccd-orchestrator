@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
 public class BaseTest {
