@@ -24,9 +24,9 @@ public class OpenIdConnectScenarios extends BaseTest {
         String wrappedJson = caseBundleJsonPayload();
 
         Response response = testUtil.authRequest()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST",testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST",testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
 
         assertEquals(201,response.getStatusCode());
 
@@ -38,9 +38,9 @@ public class OpenIdConnectScenarios extends BaseTest {
         String wrappedJson = caseBundleJsonPayload();
 
         Response response = testUtil.invalidS2SAuth()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST",testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST",testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
 
         assertEquals(response.getStatusCode(),401);
     }
@@ -51,9 +51,9 @@ public class OpenIdConnectScenarios extends BaseTest {
         String wrappedJson = caseBundleJsonPayload();
 
         Response response = testUtil.invalidS2SAuth()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
 
         assertEquals(response.getStatusCode(),401);
     }
@@ -65,10 +65,10 @@ public class OpenIdConnectScenarios extends BaseTest {
 
         exceptionThrown.expect(IllegalArgumentException.class);
 
-        Response response = testUtil.invalidS2SAuth()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
+        Response response = testUtil.validS2SAuthWithEmptyIdamAuth()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST", testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
     }
 
@@ -79,10 +79,10 @@ public class OpenIdConnectScenarios extends BaseTest {
 
         exceptionThrown.expect(IllegalArgumentException.class);
 
-        Response response = testUtil.invalidS2SAuth()
-            .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-            .body(wrappedJson)
-            .request("POST",testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
+        Response response = testUtil.emptyIdamAuthAndEmptyS2SAuth()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(wrappedJson)
+                .request("POST",testUtil.getTestUrl() + "/api/stitch-ccd-bundles");
 
     }
 
