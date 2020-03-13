@@ -28,7 +28,7 @@ public class OpenIdConnectScenarios extends BaseTest {
                 .body(wrappedJson)
                 .request("POST",testUtil.getTestUrl() + API_STITCH_CCD_BUNDLES);
 
-        assertEquals(201,response.getStatusCode());
+        assertEquals(200,response.getStatusCode());
 
     }
 

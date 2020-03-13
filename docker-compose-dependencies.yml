@@ -10,6 +10,8 @@ services:
       - SERVER_PORT=8080
       - S2S_BASE_URI=http://service-auth-provider-api:8489
       - IDAM_API_BASE_URI=http://idam-api:8080
+      - OPEN_ID_API_BASE_URI=http://idam-api:5000/o
+      - OIDC_ISSUER_BASE_URI=http://fr-am:8080/openam/oauth2/hmcts
       - DM_STORE_APP_URL=http://dm-store:8080
       - EM_STITCHING_API_URL=http://stitching-api:8080
       - CALLBACK_DOMAIN=rpa-em-ccd-orchestrator
@@ -25,6 +27,8 @@ services:
       - REFORM_ENVIRONMENT=docker
     ports:
       - 8080:8080
+    depends_on:
+      - idam-api
 
   service-auth-provider-api:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
@@ -139,6 +143,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=shared
       - S2S_BASE_URI=http://service-auth-provider-api:8489
       - IDAM_API_BASE_URI=http://idam-api:5000
+      - OPEN_ID_API_BASE_URI=http://idam-api:5000/o
+      - OIDC_ISSUER_BASE_URI=http://fr-am:8080/openam/oauth2/hmcts
       - ENABLE_LIQUIBASE=true
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
@@ -149,6 +155,7 @@ services:
     depends_on:
       - shared-database
       - dm-store
+      - idam-api
     ports:
       - 4630:8080
 
@@ -297,20 +304,6 @@ services:
       - idam-api
       - service-auth-provider-api
 
-  rpa-em-ccd-orchestrator-shared-database:
-    build: ./database
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 10
-    environment:
-      DB_USERNAME:
-      DB_PASSWORD:
-    ports:
-      - 5001:5432
-    volumes:
-      - rpa-em-ccd-orchestrator-shared-database:/var/lib/postgresql/data
-
   ccd-case-management-web:
     image: hmctspublic.azurecr.io/ccd/case-management-web:latest
     container_name: ccd-case-management-web
@@ -355,28 +348,13 @@ services:
       - ccd-data-store-api
       - dm-store
 
-#  authentication-web:
-#    image: hmctsprivate.azurecr.io/tidam/authentication-web:latest
-#    environment:
-#      IDAM_API_URL: http://idam-api:5000
-#      IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS: "false"
-#      REFORM_SERVICE_NAME: idam-api
-#      REFORM_TEAM: idam
-#      REFORM_ENVIRONMENT: local
-#    ports:
-#      - 3501:8000
-#    links:
-#      - idam-api
-#    depends_on:
-#      - idam-api
-
   fr-am:
     image: hmctsprivate.azurecr.io/idam/idam-fr-am:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m -XX:MaxPermSize=512m
     hostname: localam
     ports:
-      - 8080:8080
+      - 9080:8080
       - 1389:1389
     depends_on:
       - shared-db
