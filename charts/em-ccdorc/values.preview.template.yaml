@@ -17,7 +17,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
 
 postgresql:
-  enabled: true
+  enabled: false
   image:
     tag: '11.3.0'
   resources:
