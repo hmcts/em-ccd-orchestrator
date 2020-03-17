@@ -28,6 +28,7 @@ public class CcdBundleDTO {
     @Size(min = 2, max = 30)
     @Pattern(regexp = "^[-._A-Za-z0-9]*$")
     private String fileName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String fileNameIdentifier;
     private String coverpageTemplate;
     @JsonIgnore

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -32,8 +30,6 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     private final JavaType type;
     private final Validator validator;
     private final StitchingService stitchingService;
-
-    private final Logger log = LoggerFactory.getLogger(CcdBundleStitchingService.class);
 
     public CcdBundleStitchingService(ObjectMapper objectMapper,
                                      StitchingService stitchingService,
