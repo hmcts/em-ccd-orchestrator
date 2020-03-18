@@ -86,7 +86,7 @@ dependencies {
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.2"
     compile "com.fasterxml.jackson.core:jackson-core:2.10.3"
     compile "com.fasterxml.jackson.core:jackson-annotations:2.10.3"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.10.2"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.10.3"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.3"
     compile "pl.touk:throwing-function:1.3"
     compile "com.jayway.jsonpath:json-path:2.4.0"
