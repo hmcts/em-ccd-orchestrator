@@ -15,6 +15,12 @@ az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up --build
 ```
 
+To set up IDAM data run: `./idam-client-setup.sh`.
+To check the data you can log into IDAM-web-admin `http://localhost:8082` with:
+Username `idamOwner@hmcts.net`
+Password `Ref0rmIsFun`
+
+
 Note that unlike other Evidence Management projects the ccd-orchestrator-api is included in the docker-compose-dependencies.yaml and will run via docker for local functional testing. This is to work around [an issue with Linux docker container networking](https://github.com/docker/for-linux/issues/264).
 
 ### Tech
