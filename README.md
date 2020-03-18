@@ -7,14 +7,19 @@
 CCD Orchestrator is a backend service that facilitates interactions between CCD, the EM Stitching service, and a calling service.
 
 # Setup
+Install `https://stedolan.github.io/jq/`
+For linux: `sudo apt-get install jq`. 
+For mac: `brew install jq`.
 
+Then run:
 ```
 az login
-az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
+az acr login --name hmctspublic --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
+az acr login --name hmctsprivate --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 ./gradlew assemble
- ./bin/start-local-environment.sh <DOCMOSIS_ACCESS_KEY>
+./bin/start-local-environment.sh <DOCMOSIS_ACCESS_KEY>
 ```
-
+e
 To set up IDAM data run: `./idam-client-setup.sh`.
 To check the data you can log into IDAM-web-admin `http://localhost:8082` with:
 Username `idamOwner@hmcts.net`
