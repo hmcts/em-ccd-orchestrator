@@ -49,7 +49,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 : CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG);
 
         BundleConfiguration configuration = configurationLoader.load(configurationName);
-        ArrayNode bundles = ccdCallbackDto
+        final ArrayNode bundles = ccdCallbackDto
             .findCaseProperty(ArrayNode.class)
             .orElseGet(() -> {
                 ArrayNode arrayNode = jsonMapper.createArrayNode();

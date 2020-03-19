@@ -166,8 +166,7 @@ public class AutomatedCaseUpdaterTest {
                                         + "\"stitchingFailureMessage\": null\n"
                                         + "}\n"
                                         + "}]}}}")
-                        )
-                );
+                        ));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
         updater.updateCase(ccdCallbackDto);
