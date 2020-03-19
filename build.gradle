@@ -143,7 +143,7 @@ dependencies {
     contractTestCompile sourceSets.main.runtimeClasspath
     contractTestCompile sourceSets.test.runtimeClasspath
 
-    aatCompile "uk.gov.hmcts.reform:em-test-helper:1.17.1"
+    aatCompile "uk.gov.hmcts.reform:em-test-helper:1.17.4"
 }
 
 checkstyle {
