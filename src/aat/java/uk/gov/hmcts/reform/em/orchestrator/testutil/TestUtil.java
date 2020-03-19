@@ -76,13 +76,13 @@ public class TestUtil {
 
     public RequestSpecification s2sAuthRequest() {
         return RestAssured
-            .given()
-            .header("ServiceAuthorization", s2sAuth);
+                .given()
+                .header("ServiceAuthorization", s2sAuth);
     }
 
     public RequestSpecification authRequest() {
         return s2sAuthRequest()
-            .header("Authorization", idamAuth);
+                .header("Authorization", idamAuth);
     }
 
     public CcdBundleDTO getTestBundle() {
@@ -189,6 +189,42 @@ public class TestUtil {
         bundle.setStitchStatus("");
         bundle.setDocumentImage(documentImage);
         return bundle;
+    }
+
+    public RequestSpecification emptyIdamAuthRequest() {
+        return s2sAuthRequest()
+                .header("Authorization", null);
+    }
+
+    public RequestSpecification emptyIdamAuthAndEmptyS2SAuth() {
+        return RestAssured
+                .given()
+                .header("ServiceAuthorization", null)
+                .header("Authorization", null);
+    }
+
+    public RequestSpecification validAuthRequestWithEmptyS2SAuth() {
+        return emptyS2sAuthRequest().header("Authorization", idamAuth);
+    }
+
+    public RequestSpecification validS2SAuthWithEmptyIdamAuth() {
+        return s2sAuthRequest().header("Authorization", null);
+    }
+
+    private RequestSpecification emptyS2sAuthRequest() {
+        return RestAssured.given().header("ServiceAuthorization", null);
+    }
+
+    public RequestSpecification invalidIdamAuthrequest() {
+        return s2sAuthRequest().header("Authorization", "invalidIDAMAuthRequest");
+    }
+
+    public RequestSpecification invalidS2SAuth() {
+        return invalidS2sAuthRequest().header("Authorization", idamAuth);
+    }
+
+    private RequestSpecification invalidS2sAuthRequest() {
+        return RestAssured.given().header("ServiceAuthorization", "invalidS2SAuthorization");
     }
 
 }

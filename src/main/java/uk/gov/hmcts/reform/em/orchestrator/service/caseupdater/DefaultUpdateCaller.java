@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,6 @@ public class DefaultUpdateCaller {
     @Value("${notify.failureTemplateId}")
     private String failureTemplateId;
 
-    private static final String EVENT_ID = "event_id";
     private static final String CLONE_BUNDLE_EVENT = "cloneBundle";
     private static final String ASYNC_STITCHING_COMPLETE_EVENT = "asyncStitchingComplete";
 
@@ -47,8 +48,9 @@ public class DefaultUpdateCaller {
         }
 
         String ccdEvent = dto.getEventId();
-        if (ccdCallbackResponseDto.getErrors().size() > 0 && dto.getEnableEmailNotification() &&
-                !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
+        if (CollectionUtils.isNotEmpty(ccdCallbackResponseDto.getErrors())
+                && BooleanUtils.isTrue(dto.getEnableEmailNotification())
+                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),

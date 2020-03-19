@@ -1,13 +1,18 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
-
-import static org.junit.Assert.assertEquals;
 
 public class StitchingDTOMapperTest {
 
@@ -133,6 +138,23 @@ public class StitchingDTOMapperTest {
         StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
 
         assertEquals(null, stitchingBundleDTO.getEnableEmailNotification());
+    }
+
+    @Test
+    public void convertNoEmailNotification() {
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        bundleDTO.setTitle("title");
+        bundleDTO.setDescription("description");
+        bundleDTO.setFileName("a-file.pdf");
+        bundleDTO.setHasCoversheets(CcdBoolean.Yes);
+        bundleDTO.setHasTableOfContents(CcdBoolean.Yes);
+        bundleDTO.setHasFolderCoversheets(CcdBoolean.Yes);
+        bundleDTO.setEnableEmailNotification(CcdBoolean.No);
+
+        StitchingDTOMapper mapper = new StitchingDTOMapper();
+        StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
+
+        assertEquals(false, stitchingBundleDTO.getEnableEmailNotification());
     }
 
     private CcdBundleFolderDTO getFolder(int index) {
