@@ -2,7 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,6 +26,8 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.filename, "stitched.pdf");
     }
 
+
+
     @Test(expected = BundleConfigurationException.class)
     public void loadMissingConfig() {
         loader.load("does-not-exist.yaml");
@@ -38,6 +42,23 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.hasTableOfContents, false);
         assertEquals(config.hasCoversheets, false);
         assertEquals(config.hasFolderCoversheets, true);
+    }
+
+
+    @Test(expected = BundleConfigurationException.class)
+    public void fileContainsIncorrectFieldname() {
+        loader.load("example-incorrect-key-configfile.yaml");
+    }
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void fileContainsIncorrectValueForField() {
+        thrown.expect(BundleConfigurationException.class);
+        thrown.expectMessage("Invalid configuration file entry in:");
+        loader.load("example-incorrect-value-for-key.yaml");
+
     }
 
     @Test
