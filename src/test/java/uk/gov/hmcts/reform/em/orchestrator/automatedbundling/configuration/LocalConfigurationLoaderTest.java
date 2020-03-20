@@ -26,8 +26,6 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.filename, "stitched.pdf");
     }
 
-
-
     @Test(expected = BundleConfigurationException.class)
     public void loadMissingConfig() {
         loader.load("does-not-exist.yaml");
@@ -44,10 +42,9 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.hasFolderCoversheets, true);
     }
 
-
     @Test(expected = BundleConfigurationException.class)
     public void fileContainsIncorrectFieldname() {
-        loader.load("example-incorrect-key-configfile.yaml");
+        loader.load("example-incorrect-key.yaml");
     }
 
     @Rule
@@ -56,9 +53,9 @@ public class LocalConfigurationLoaderTest {
     @Test
     public void fileContainsIncorrectValueForField() {
         thrown.expect(BundleConfigurationException.class);
-        thrown.expectMessage("Invalid configuration file entry in:");
+        thrown.expectMessage("Invalid configuration file entry in: example-incorrect-value-for-key.yaml"
+                + "\nConfiguration file parameter(s) and/or parameter value(s)");
         loader.load("example-incorrect-value-for-key.yaml");
-
     }
 
     @Test

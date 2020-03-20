@@ -65,7 +65,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals("Invalid configuration file entry in: example-incorrect-key-configfile.yaml" + "\nConfiguration file parameter(s) and/or parameter value(s)",
+        assertEquals("Invalid configuration file entry in: example-incorrect-key.yaml" + "\nConfiguration file parameter(s) and/or parameter value(s)",
                 response.getBody().jsonPath().getString("errors[0]"));
     }
 
