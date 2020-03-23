@@ -40,6 +40,7 @@ done
 # Set up IDAM client with services and roles
 echo "Setting up IDAM client..."
 (./bin/idam-client-setup.sh ${IDAM_URI} services ${token} '{"description": "em", "label": "em", "oauth2ClientId": "webshow", "oauth2ClientSecret": "AAAAAAAAAAAAAAAA", "oauth2RedirectUris": ["http://localhost:8080/oauth2redirect"], "selfRegistrationAllowed": true}')
+(./bin/idam-client-setup.sh ${IDAM_URI} services ${token} '{"description": "ccd gateway", "label": "ccd gateway", "oauth2ClientId": "ccd_gateway", "oauth2ClientSecret": "AAAAAAAAAAAAAAAA", "oauth2RedirectUris": ["http://localhost:3451/oauth2redirect"], "selfRegistrationAllowed": true}')
 (./bin/idam-client-setup-roles.sh ${IDAM_URI} ${token} caseworker)
 (./bin/idam-client-setup-roles.sh ${IDAM_URI} ${token} caseworker-publiclaw)
 (./bin/idam-client-setup-roles.sh ${IDAM_URI} ${token} ccd-import)
