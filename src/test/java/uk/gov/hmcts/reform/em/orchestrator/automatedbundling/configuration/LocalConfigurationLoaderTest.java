@@ -54,7 +54,7 @@ public class LocalConfigurationLoaderTest {
     public void fileContainsIncorrectValueForField() {
         thrown.expect(BundleConfigurationException.class);
         thrown.expectMessage("Invalid configuration file entry in: example-incorrect-value-for-key.yaml"
-                + "\nConfiguration file parameter(s) and/or parameter value(s)");
+                + "; Configuration file parameter(s) and/or parameter value(s)");
         loader.load("example-incorrect-value-for-key.yaml");
     }
 

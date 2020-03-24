@@ -31,7 +31,7 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
             return mapper.readValue(input, BundleConfiguration.class);
         } catch (Exception e) {
             throw new BundleConfigurationException(
-                    "Invalid configuration file entry in: " + filename + "\nConfiguration file parameter(s) and/or parameter value(s)", e);
+                    "Invalid configuration file entry in: " + filename + "; Configuration file parameter(s) and/or parameter value(s)", e);
         }
     }
 }
