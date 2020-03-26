@@ -19,12 +19,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode validJson;
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
+    private static JsonNode invalidConfigJson;
 
     @Before
     public void setup() throws Exception {
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
+        invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
     }
 
     @Test
@@ -51,7 +53,20 @@ public class AutomatedBundlingScenarios extends BaseTest {
             .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
+        assertEquals("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
+                response.getBody().jsonPath().getString("errors[0]"));
+    }
+
+    @Test
+    public void testCorruptConfig() {
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(invalidConfigJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Invalid configuration file entry in: example-incorrect-key.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
+                response.getBody().jsonPath().getString("errors[0]"));
     }
 
     @Test
@@ -277,7 +292,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body(json)
                 .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
+        assertTrue(response.getBody().print().contains("Invalid configuration file entry in: nonexistent.yaml"));
     }
 
     @Test
