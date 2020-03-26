@@ -10,7 +10,7 @@ paginationStyle: topCenter
 pageNumberFormat: pageRange
 enableEmailNotification: false
 documentImage:
-  docmosisAssetId: schmcts.png
+  docmosisAssetId: hmcts.png
   imageRenderingLocation: allPages
   coordinateX: 50
   coordinateY: 50

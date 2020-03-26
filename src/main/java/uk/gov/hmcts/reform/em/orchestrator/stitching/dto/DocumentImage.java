@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DocumentImage {
     private String docmosisAssetId;
     private ImageRenderingLocation imageRenderingLocation;
