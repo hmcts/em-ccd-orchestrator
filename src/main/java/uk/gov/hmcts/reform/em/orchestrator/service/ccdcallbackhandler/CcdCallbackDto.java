@@ -106,4 +106,12 @@ public class CcdCallbackDto {
         return ccdPayload != null && ccdPayload.findValue("event_id") != null
                 ? ccdPayload.findValue("event_id").asText() : null;
     }
+
+    public String getIdentifierFromCcdPayload(String identifier) {
+        if (identifier != null) {
+            JsonNode value = ccdPayload.at(identifier);
+            return value.isMissingNode() ? "" : value.asText();
+        }
+        return "";
+    }
 }

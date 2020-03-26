@@ -18,6 +18,7 @@ public class StitchingBundleDTO {
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
+    private String fileNameIdentifier;
     private String coverpageTemplate;
     private JsonNode coverpageTemplateData;
     private boolean hasTableOfContents;
@@ -70,6 +71,14 @@ public class StitchingBundleDTO {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileNameIdentifier() {
+        return fileNameIdentifier;
+    }
+
+    public void setFileNameIdentifier(String fileNameIdentifier) {
+        this.fileNameIdentifier = fileNameIdentifier;
     }
 
     public String getCoverpageTemplate() {

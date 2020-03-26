@@ -16,6 +16,7 @@ public class BundleConfiguration {
 
     public final String title;
     public final String filename;
+    public final String filenameIdentifier;
     public final String coverpageTemplate;
     public final PageNumberFormat pageNumberFormat;
     public final BundleConfigurationSort sortOrder;
@@ -31,6 +32,7 @@ public class BundleConfiguration {
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
+                               @JsonProperty("filenameIdentifier") String filenameIdentifier,
                                @JsonProperty("coverpageTemplate") String coverpageTemplate,
                                @JsonProperty("pageNumberFormat") PageNumberFormat pageNumberFormat,
                                @JsonProperty("sort") BundleConfigurationSort sortOrder,
@@ -46,6 +48,7 @@ public class BundleConfiguration {
 
         this.title = title;
         this.filename = filename == null ? "stitched.pdf" : filename;
+        this.filenameIdentifier = filenameIdentifier;
         this.coverpageTemplate = coverpageTemplate == null ? "" : coverpageTemplate;
         this.pageNumberFormat = pageNumberFormat;
         this.sortOrder = sortOrder;

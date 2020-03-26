@@ -36,6 +36,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             null,
@@ -60,10 +61,86 @@ public class BundleFactoryTest {
     }
 
     @Test
+    public void createWithFileNameIdentifierAndDefinedFileName() throws DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "/case_details/id",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                CcdBundlePaginationStyle.off,
+                null,
+                null,
+                false
+        );
+
+        CcdBundleDTO bundle = factory.create(configuration, emptyJson);
+
+        assertEquals(configuration.filename, bundle.getFileName());
+    }
+
+    @Test
+    public void createWithFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                null,
+                null,
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                CcdBundlePaginationStyle.off,
+                null,
+                null,
+                false
+        );
+
+        CcdBundleDTO bundle = factory.create(configuration, emptyJson);
+
+        assertEquals(configuration.filename, bundle.getFileName());
+    }
+
+    @Test
+    public void createWithoutFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                null,
+                null,
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                new ArrayList<>(),
+                CcdBundlePaginationStyle.off,
+                null,
+                null,
+                false
+        );
+
+        CcdBundleDTO bundle = factory.create(configuration, emptyJson);
+
+        assertEquals(configuration.filename, bundle.getFileName());
+    }
+
+    @Test
     public void createWithDocumentSelect() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             null,
@@ -93,6 +170,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             null,
@@ -123,6 +201,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             null,
@@ -156,6 +235,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             null,
@@ -189,6 +269,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
+                "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
                 new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
@@ -222,6 +303,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
             new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
@@ -255,16 +337,17 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
+            "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
             PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
             true,
             true,
             true,
             new ArrayList<>(),
             Arrays.asList(
-                new BundleConfigurationDocument("/document1"),
-                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            new BundleConfigurationDocument("/document1"),
+            new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
             null,
@@ -288,6 +371,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
+                "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
                 new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
@@ -321,6 +405,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
+                "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
                 new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
@@ -354,6 +439,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
+                "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
                 null,
@@ -396,6 +482,7 @@ public class BundleFactoryTest {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
+                "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
                 PageNumberFormat.numberOfPages,
                 null,
