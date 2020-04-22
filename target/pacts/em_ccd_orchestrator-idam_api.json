@@ -7,62 +7,12 @@
     },
     "interactions": [
         {
-            "description": "Provider receives a GET /details request from an CCD Orchestrator API",
-            "request": {
-                "method": "GET",
-                "path": "/details",
-                "headers": {
-                    "Authorization": "111"
-                }
-            },
-            "response": {
-                "status": 200,
-                "headers": {
-                    "Content-Type": "application/json; charset=UTF-8"
-                },
-                "body": {
-                    "forename": "Case",
-                    "surname": "Officer",
-                    "roles": "[\"caseofficer-ia\"]",
-                    "id": "123",
-                    "email": "ia-caseofficer@fake.hmcts.net"
-                },
-                "matchingRules": {
-                    "header": {
-                        "Content-Type": {
-                            "matchers": [
-                                {
-                                    "match": "regex",
-                                    "regex": "application/json;\\s?charset=(utf|UTF)-8"
-                                }
-                            ],
-                            "combine": "AND"
-                        }
-                    }
-                }
-            },
-            "providerStates": [
-                {
-                    "name": "Idam successfully returns user details"
-                }
-            ]
-        },
-        {
             "description": "Provider receives a POST /o/token request from CCD Orchestrator API",
             "request": {
                 "method": "POST",
                 "path": "/o/token",
                 "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                "body": {
-                    "grant_type": "password",
-                    "client_id": "stitching-api",
-                    "client_secret": "some-secret",
-                    "redirect_uri": "/oauth2redirect",
-                    "scope": "openid roles profile",
-                    "username": "stitchingusername",
-                    "password": "stitchingpwd"
+                    "Content-Type": "application/json"
                 }
             },
             "response": {
@@ -145,6 +95,89 @@
             "providerStates": [
                 {
                     "name": "Idam successfully returns access token"
+                }
+            ]
+        },
+        {
+            "description": "Provider receives a GET /details request from an CCD Orchestrator API",
+            "request": {
+                "method": "GET",
+                "path": "/details",
+                "headers": {
+                    "Authorization": "111"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                "body": {
+                    "forename": "Case",
+                    "surname": "Officer",
+                    "roles": "[\"caseofficer-ia\"]",
+                    "id": "123",
+                    "email": "ia-caseofficer@fake.hmcts.net"
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.id": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.email": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.forename": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.surname": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.roles": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    },
+                    "header": {
+                        "Content-Type": {
+                            "matchers": [
+                                {
+                                    "match": "regex",
+                                    "regex": "application/json;\\s?charset=(utf|UTF)-8"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "Idam successfully returns user details"
                 }
             ]
         }

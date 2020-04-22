@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
@@ -14,8 +12,6 @@ import com.google.common.collect.Maps;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.parsing.Parser;
-import java.util.Map;
-
 import net.serenitybdd.rest.SerenityRest;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +26,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
@@ -72,7 +72,7 @@ public class IdamConsumerTest {
         headers.put(HttpHeaders.AUTHORIZATION, ACCESS_TOKEN);
 
         String actualResponseBody =
-                RestAssured
+                SerenityRest
                 .given()
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -105,7 +105,7 @@ public class IdamConsumerTest {
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
 
         Map<String, String> headers = Maps.newHashMap();
-        headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
         return builder
             .given("Idam successfully returns access token")
@@ -113,7 +113,6 @@ public class IdamConsumerTest {
             .path(IDAM_OPENID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
             .headers(headers)
-            .body(createAuthRequest())
             .willRespondWith()
             .status(HttpStatus.OK.value())
             .body(createAuthResponse())
@@ -126,17 +125,19 @@ public class IdamConsumerTest {
         throws JSONException {
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("code", "some-code");
-        body.add("grant_type", "authorization_code");
-        body.add("redirect_uri", CLIENT_REDIRECT_URI);
+        body.add("grant_type", "password");
         body.add("client_id", "ia");
-        body.add("client_secret", "some-client-secret");
+        body.add("client_secret", "some_client_secret");
+        body.add("redirect_uri", CLIENT_REDIRECT_URI);
+        body.add("scope","openid roles profile");
+        body.add("username","ccdorcusername");
+        body.add("password","ccdorcpwd");
 
         String actualResponseBody =
 
             SerenityRest
                 .given()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .formParams(body)
                 .log().all(true)
                 .when()
@@ -144,7 +145,7 @@ public class IdamConsumerTest {
                 .then()
                 .statusCode(200)
                 .and()
-                .extract().response().body()
+                .extract()
                 .asString();
 
         JSONObject response = new JSONObject(actualResponseBody);
@@ -159,27 +160,15 @@ public class IdamConsumerTest {
 
     }
 
-    private JSONObject createAuthRequest() throws JSONException {
-
-        return new JSONObject().put("grant_type","password")
-            .put("client_id","stitching-api")
-            .put("client_secret","some-secret")
-            .put("redirect_uri",CLIENT_REDIRECT_URI)
-            .put("scope","openid roles profile")
-            .put("username","stitchingusername")
-            .put("password","stitchingpwd");
-
-    }
-
     private PactDslJsonBody createAuthResponse() {
 
         return new PactDslJsonBody()
-            .stringValue("access_token", "some-long-value")
-            .stringValue("refresh_token", "another-long-value")
-            .stringValue("scope", "openid roles profile")
-            .stringValue("id_token", "saome-value")
-            .stringValue("token_type", "Bearer")
-            .stringValue("expires_in","12345");
+            .stringType("access_token", "some-long-value")
+            .stringType("refresh_token", "another-long-value")
+            .stringType("scope", "openid roles profile")
+            .stringType("id_token", "saome-value")
+            .stringType("token_type", "Bearer")
+            .stringType("expires_in","12345");
 
     }
 
@@ -187,11 +176,11 @@ public class IdamConsumerTest {
         PactDslJsonArray array = new PactDslJsonArray().stringValue("caseofficer-ia");
 
         return new PactDslJsonBody()
-            .stringValue("id", "123")
-            .stringValue("email", "ia-caseofficer@fake.hmcts.net")
-            .stringValue("forename", "Case")
-            .stringValue("surname", "Officer")
-            .stringValue("roles", array.toString());
+            .stringType("id", "123")
+            .stringType("email", "ia-caseofficer@fake.hmcts.net")
+            .stringType("forename", "Case")
+            .stringType("surname", "Officer")
+            .stringType("roles", array.toString());
 
     }
 
