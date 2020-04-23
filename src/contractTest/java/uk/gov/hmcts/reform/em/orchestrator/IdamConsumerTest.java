@@ -9,14 +9,10 @@ import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.google.common.collect.Maps;
-import io.restassured.RestAssured;
-import io.restassured.config.EncoderConfig;
-import io.restassured.parsing.Parser;
 import net.serenitybdd.rest.SerenityRest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.HttpHeaders;
@@ -39,12 +35,6 @@ public class IdamConsumerTest {
     private static final String IDAM_OPENID_TOKEN_URL = "/o/token";
     private static final String CLIENT_REDIRECT_URI = "/oauth2redirect";
     private static final String ACCESS_TOKEN = "111";
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.defaultParser = Parser.JSON;
-        RestAssured.config().encoderConfig(new EncoderConfig("UTF-8", "UTF-8"));
-    }
 
     @Pact(provider = "idam_api", consumer = "em_ccd_orchestrator")
     public RequestResponsePact executeGetUserDetailsAndGet200(PactDslWithProvider builder) {
@@ -105,7 +95,7 @@ public class IdamConsumerTest {
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
 
         Map<String, String> headers = Maps.newHashMap();
-        headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
         return builder
             .given("Idam successfully returns access token")
@@ -137,7 +127,7 @@ public class IdamConsumerTest {
 
             SerenityRest
                 .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .formParams(body)
                 .log().all(true)
                 .when()
@@ -166,7 +156,7 @@ public class IdamConsumerTest {
             .stringType("access_token", "some-long-value")
             .stringType("refresh_token", "another-long-value")
             .stringType("scope", "openid roles profile")
-            .stringType("id_token", "saome-value")
+            .stringType("id_token", "some-value")
             .stringType("token_type", "Bearer")
             .stringType("expires_in","12345");
 
