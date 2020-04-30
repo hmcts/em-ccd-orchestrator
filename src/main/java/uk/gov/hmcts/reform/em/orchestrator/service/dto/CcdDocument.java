@@ -21,13 +21,13 @@ public class CcdDocument {
 
     public CcdDocument(String url, String fileName, String binaryUrl) {
         this.url = url;
-        this.fileName = fileName.endsWith(".pdf") ? fileName : fileName.concat(".pdf");
+        this.fileName = ensurePdfExtension(fileName);
         this.binaryUrl = binaryUrl;
     }
 
     public CcdDocument(String url, String fileName, String binaryUrl, LocalDateTime createdDatetime) {
         this.url = url;
-        this.fileName = fileName.endsWith(".pdf") ? fileName : fileName.concat(".pdf");
+        this.fileName = ensurePdfExtension(fileName);
         this.binaryUrl = binaryUrl;
         this.createdDatetime = createdDatetime;
     }
@@ -45,7 +45,7 @@ public class CcdDocument {
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName.endsWith(".pdf") ? fileName : fileName.concat(".pdf");
+        this.fileName = ensurePdfExtension(fileName);
     }
 
     public String getBinaryUrl() {
@@ -62,5 +62,9 @@ public class CcdDocument {
 
     public void setCreatedDatetime(LocalDateTime createdDatetime) {
         this.createdDatetime = createdDatetime;
+    }
+
+    private String ensurePdfExtension(String fileName) {
+        return fileName.endsWith(".pdf") ? fileName : fileName.concat(".pdf");
     }
 }
