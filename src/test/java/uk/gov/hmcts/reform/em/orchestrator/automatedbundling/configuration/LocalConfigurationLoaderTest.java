@@ -42,6 +42,14 @@ public class LocalConfigurationLoaderTest {
         assertEquals(config.hasFolderCoversheets, true);
     }
 
+    @Test
+    public void bundleWithNoFileName() {
+        BundleConfiguration config = loader.load("example.yaml");
+
+        assertEquals(config.title, "New bundle");
+        assertEquals(config.filename, "stitched.pdf");
+    }
+
     @Test(expected = BundleConfigurationException.class)
     public void fileContainsIncorrectFieldname() {
         loader.load("example-incorrect-key.yaml");

@@ -64,6 +64,39 @@ public class StitchingServiceTest {
         Assert.assertEquals(docId.getFileName(), "a.pdf");
     }
 
+    @Test
+    public void stitchSuccessfulWithFileNameWithoutSuffix() throws StitchingServiceException, InterruptedException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"DummyBundle\" } }");
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
+
+        Assert.assertEquals(docId.getUrl(), "AAAAAA");
+        Assert.assertEquals(docId.getFileName(), "DummyBundle.pdf");
+    }
+
+    @Test
+    public void stitchSuccessfulWithEmptyFileName() throws StitchingServiceException, InterruptedException {
+        List<String> responses = new ArrayList<>();
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"\" } }");
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
+
+        Assert.assertEquals(docId.getUrl(), "AAAAAA");
+        Assert.assertEquals(docId.getFileName(), "stitched.pdf");
+    }
+
     @Test(expected = StitchingServiceException.class)
     public void stitchFailure() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();

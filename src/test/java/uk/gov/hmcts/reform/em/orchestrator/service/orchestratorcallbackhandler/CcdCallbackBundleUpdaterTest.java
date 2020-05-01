@@ -54,6 +54,65 @@ public class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
+    public void updateBundleWhereFileNameHasNoSuffix() throws Exception {
+
+        ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
+
+        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
+
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
+        ccdCallbackDto.setCaseData(jsonNode);
+
+
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+        documentTaskDTO.setTaskState(TaskState.DONE);
+        StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
+        stitchingBundleDTO.setFileName("dummyFileName");
+        stitchingBundleDTO.setStitchedDocumentURI("https://aaa.com/pdf");
+        documentTaskDTO.setBundle(stitchingBundleDTO);
+
+        StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
+                new StitchingCompleteCallbackDto("1", "1", "1",
+                        "922639a4-9b06-4574-b329-ce7ecf845d6b",
+                        documentTaskDTO);
+
+        ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
+
+        assertEquals("DONE", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchStatus").asText());
+        assertEquals("dummyFileName.pdf", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("document_filename").asText());
+    }
+
+    @Test
+    public void updateBundleWhereFileNameIsEmpty() throws Exception {
+
+        ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
+
+        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
+
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
+        ccdCallbackDto.setCaseData(jsonNode);
+
+
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+        documentTaskDTO.setTaskState(TaskState.DONE);
+        StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
+        stitchingBundleDTO.setStitchedDocumentURI("https://aaa.com/pdf");
+        documentTaskDTO.setBundle(stitchingBundleDTO);
+
+        StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
+                new StitchingCompleteCallbackDto("1", "1", "1",
+                        "922639a4-9b06-4574-b329-ce7ecf845d6b",
+                        documentTaskDTO);
+
+        ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
+
+        assertEquals("DONE", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchStatus").asText());
+        assertEquals("stitched.pdf", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("document_filename").asText());
+    }
+
+    @Test
     public void updateBundleTaskFailed() throws Exception {
 
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);

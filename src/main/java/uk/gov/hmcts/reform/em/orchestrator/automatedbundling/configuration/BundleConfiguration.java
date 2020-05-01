@@ -66,7 +66,7 @@ public class BundleConfiguration {
     }
 
     private static String ensurePdfExtension(String fileName) {
-        if (Objects.nonNull(fileName)) {
+        if (Objects.nonNull(fileName) && !StringUtils.isEmpty(fileName)) {
             if (StringUtils.getFilenameExtension(fileName) != null) {
                 return fileName;
             } else {
