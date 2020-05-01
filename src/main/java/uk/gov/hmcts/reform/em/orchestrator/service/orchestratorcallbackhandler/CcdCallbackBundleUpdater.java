@@ -8,11 +8,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -61,8 +63,7 @@ public class CcdCallbackBundleUpdater {
 
                 ccdBundleDTO.setStitchedDocument(new CcdDocument(
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
-                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() != null
-                                ? stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName() : "stitched.pdf",
+                        ensurePdfExtension(stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName()),
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
 
             }
@@ -77,6 +78,18 @@ public class CcdCallbackBundleUpdater {
         } catch (JsonProcessingException e) {
             throw new CallbackException(400, null, String.format("Error processing JSON %s", e.getMessage()));
         }
+
+    }
+
+    private static String ensurePdfExtension(String fileName) {
+        if (Objects.nonNull(fileName)) {
+            if (StringUtils.getFilenameExtension(fileName) != null) {
+                return fileName;
+            } else {
+                return fileName.concat(".pdf");
+            }
+        } else {
+            return "stitched.pdf"; }
 
     }
 

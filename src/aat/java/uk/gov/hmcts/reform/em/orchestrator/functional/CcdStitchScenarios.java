@@ -44,7 +44,7 @@ public class CcdStitchScenarios extends BaseTest {
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertNotNull(path.getString("data.caseBundles[0].value.documents.value.sourceDocument.document_url"));
+        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
     }
 
     @Test
