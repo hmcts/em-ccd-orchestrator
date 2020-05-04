@@ -86,31 +86,6 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithFileNameAsEmpty() throws DocumentSelectorException {
-        BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                new ArrayList<>(),
-                CcdBundlePaginationStyle.off,
-                null,
-                null,
-                false
-        );
-
-        CcdBundleDTO bundle = factory.create(configuration, emptyJson);
-
-        assertEquals(configuration.filename, bundle.getFileName());
-    }
-
-    @Test
     public void createWithFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",

@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.io.IOException;
 
-import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
+import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
@@ -85,8 +85,6 @@ public class StitchingService {
     private static String uriWithBinarySuffix(String s) {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
-
-
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
         final String json = jsonMapper.writeValueAsString(documentTask);

@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
 import java.util.stream.StreamSupport;
 
-import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
+import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
 @Service
 public class CcdCallbackBundleUpdater {

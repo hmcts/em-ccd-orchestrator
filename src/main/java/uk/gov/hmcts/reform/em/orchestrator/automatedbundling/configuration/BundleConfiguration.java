@@ -8,7 +8,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
+import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
 /**
  * Parsed configuration file for automated bundles.
