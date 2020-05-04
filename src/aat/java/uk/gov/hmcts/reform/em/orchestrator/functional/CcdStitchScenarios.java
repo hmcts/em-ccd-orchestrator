@@ -68,9 +68,9 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilenameWithOutExtension() throws IOException {
+    public void testFilenameWithoutExtension() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
-        bundle.setFileName("doc file-name");
+        bundle.setFileName("doc-file-name");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
@@ -82,8 +82,8 @@ public class CcdStitchScenarios extends BaseTest {
 
         JsonPath path = response.getBody().jsonPath();
         Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("doc file-name.pdf", path.getString("data.caseBundles[0].value.stitchedDocument.document_filename"));
-        Assert.assertNotNull(path.getString("data.caseBundles[0].value.stitchedDocument.document_url"));
+        Assert.assertEquals("doc-file-name.pdf", path.getString("data.caseBundles[0].value.stitchedDocument.document_filename"));
+        Assert.assertEquals("doc-file-name", path.getString("data.caseBundles[0].value.fileName"));
     }
 
     @Test
