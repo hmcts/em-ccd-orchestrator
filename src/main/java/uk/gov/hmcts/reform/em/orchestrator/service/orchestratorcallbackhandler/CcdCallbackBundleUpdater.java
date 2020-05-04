@@ -8,14 +8,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
-import java.util.Objects;
 import java.util.stream.StreamSupport;
+
+import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
 
 @Service
 public class CcdCallbackBundleUpdater {
@@ -77,19 +77,6 @@ public class CcdCallbackBundleUpdater {
             return ccdBundle;
         } catch (JsonProcessingException e) {
             throw new CallbackException(400, null, String.format("Error processing JSON %s", e.getMessage()));
-        }
-
-    }
-
-    private static String ensurePdfExtension(String fileName) {
-        if (Objects.nonNull(fileName) && !StringUtils.isEmpty(fileName)) {
-            if (StringUtils.getFilenameExtension(fileName) != null) {
-                return fileName;
-            } else {
-                return fileName.concat(".pdf");
-            }
-        } else {
-            return "stitched.pdf";
         }
 
     }

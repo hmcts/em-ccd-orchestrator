@@ -6,7 +6,6 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 import okhttp3.*;
-import org.springframework.util.StringUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -16,7 +15,8 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.io.IOException;
-import java.util.Objects;
+
+import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
 
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
@@ -86,18 +86,7 @@ public class StitchingService {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 
-    private static String ensurePdfExtension(String fileName) {
-        if (Objects.nonNull(fileName) && !StringUtils.isEmpty(fileName)) {
-            if (StringUtils.getFilenameExtension(fileName) != null) {
-                return fileName;
-            } else {
-                return fileName.concat(".pdf");
-            }
-        } else {
-            return "stitched.pdf";
-        }
 
-    }
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
         final String json = jsonMapper.writeValueAsString(documentTask);

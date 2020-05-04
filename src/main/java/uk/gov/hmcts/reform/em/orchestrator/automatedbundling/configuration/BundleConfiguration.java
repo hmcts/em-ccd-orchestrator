@@ -1,14 +1,14 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.util.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import static uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingStringUtil.ensurePdfExtension;
 
 /**
  * Parsed configuration file for automated bundles.
@@ -63,18 +63,5 @@ public class BundleConfiguration {
         this.documentNameValue = documentNameValue;
         this.documentImage = documentImage;
         this.enableEmailNotification = enableEmailNotification;
-    }
-
-    private static String ensurePdfExtension(String fileName) {
-        if (Objects.nonNull(fileName) && !StringUtils.isEmpty(fileName)) {
-            if (StringUtils.getFilenameExtension(fileName) != null) {
-                return fileName;
-            } else {
-                return fileName.concat(".pdf");
-            }
-        } else {
-            return "stitched.pdf";
-        }
-
     }
 }
