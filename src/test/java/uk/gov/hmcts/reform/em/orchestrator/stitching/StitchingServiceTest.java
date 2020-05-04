@@ -42,8 +42,8 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
-        Assert.assertEquals(docId.getUrl(), "AAAAAA");
-        Assert.assertEquals(docId.getFileName(), "stitched.pdf");
+        Assert.assertEquals("AAAAAA", docId.getUrl());
+        Assert.assertEquals("stitched.pdf", docId.getFileName());
     }
 
     @Test
@@ -60,8 +60,8 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
-        Assert.assertEquals(docId.getUrl(), "AAAAAA");
-        Assert.assertEquals(docId.getFileName(), "a.pdf");
+        Assert.assertEquals("AAAAAA", docId.getUrl());
+        Assert.assertEquals("a.pdf", docId.getFileName());
     }
 
     @Test
@@ -78,8 +78,8 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
-        Assert.assertEquals(docId.getUrl(), "AAAAAA");
-        Assert.assertEquals(docId.getFileName(), "DummyBundle.pdf");
+        Assert.assertEquals("AAAAAA", docId.getUrl());
+        Assert.assertEquals("DummyBundle.pdf", docId.getFileName());
     }
 
     @Test
@@ -93,8 +93,8 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), "token");
 
-        Assert.assertEquals(docId.getUrl(), "AAAAAA");
-        Assert.assertEquals(docId.getFileName(), "stitched.pdf");
+        Assert.assertEquals("AAAAAA", docId.getUrl());
+        Assert.assertEquals("stitched.pdf", docId.getFileName());
     }
 
     @Test(expected = StitchingServiceException.class)

@@ -46,8 +46,8 @@ public class LocalConfigurationLoaderTest {
     public void bundleWithNoFileName() {
         BundleConfiguration config = loader.load("example.yaml");
 
-        assertEquals(config.title, "New bundle");
-        assertEquals(config.filename, "stitched.pdf");
+        assertEquals("New bundle", config.title);
+        assertEquals("stitched.pdf", config.filename);
     }
 
     @Test(expected = BundleConfigurationException.class)
