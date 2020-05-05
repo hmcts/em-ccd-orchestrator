@@ -1,9 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.util;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import java.util.Objects;
 
 public class StringUtilities {
 
@@ -11,7 +10,7 @@ public class StringUtilities {
     }
 
     public static String ensurePdfExtension(String fileName) {
-        if (Objects.nonNull(fileName) && !StringUtils.isEmpty(fileName)) {
+        if (StringUtils.isNoneBlank(fileName)) {
             if (!FilenameUtils.getExtension(fileName).isEmpty()) {
                 return fileName;
             } else {
