@@ -64,4 +64,12 @@ curl https://raw.githubusercontent.com/hmcts/reform-api-docs/master/bin/publish-
 sh ./publish-swagger-docs.sh
 '''
     }
+
+    after('functionalTest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('functionalTest:aat') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
 }
