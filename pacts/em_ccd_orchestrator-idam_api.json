@@ -1,6 +1,6 @@
 {
     "provider": {
-        "name": "idam_api"
+        "name": "Idam_api"
     },
     "consumer": {
         "name": "em_ccd_orchestrator"

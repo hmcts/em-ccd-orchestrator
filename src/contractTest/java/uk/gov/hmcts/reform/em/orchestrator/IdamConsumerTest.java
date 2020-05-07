@@ -36,7 +36,7 @@ public class IdamConsumerTest {
     private static final String CLIENT_REDIRECT_URI = "/oauth2redirect";
     private static final String ACCESS_TOKEN = "111";
 
-    @Pact(provider = "idam_api", consumer = "em_ccd_orchestrator")
+    @Pact(provider = "Idam_api", consumer = "em_ccd_orchestrator")
     public RequestResponsePact executeGetUserDetailsAndGet200(PactDslWithProvider builder) {
 
         Map<String, String> headers = Maps.newHashMap();
@@ -91,7 +91,7 @@ public class IdamConsumerTest {
 
     }
 
-    @Pact(provider = "idam_api", consumer = "em_ccd_orchestrator")
+    @Pact(provider = "Idam_api", consumer = "em_ccd_orchestrator")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
 
         Map<String, String> headers = Maps.newHashMap();
