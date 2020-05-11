@@ -272,6 +272,9 @@ task functional(type: Test) {
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
 
+// Serenity Single page Reports
+functional.finalizedBy(aggregate)
+
 task smoke(type: Test) {
     group = 'Delivery pipeline'
     description = 'Executes non-destructive smoke tests'
