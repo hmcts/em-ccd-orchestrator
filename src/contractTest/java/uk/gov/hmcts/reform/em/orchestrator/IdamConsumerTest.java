@@ -10,6 +10,7 @@ import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.google.common.collect.Maps;
 import net.serenitybdd.rest.SerenityRest;
+import org.apache.http.entity.ContentType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.Map;
 
@@ -102,6 +101,7 @@ public class IdamConsumerTest {
             .uponReceiving("Provider receives a POST /o/token request from CCD Orchestrator API")
             .path(IDAM_OPENID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
+            .body(createRequestBody(), ContentType.APPLICATION_FORM_URLENCODED)
             .headers(headers)
             .willRespondWith()
             .status(HttpStatus.OK.value())
@@ -114,21 +114,12 @@ public class IdamConsumerTest {
     public void should_post_to_token_endpoint_and_receive_access_token_with_200_response(MockServer mockServer)
         throws JSONException {
 
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "password");
-        body.add("client_id", "ia");
-        body.add("client_secret", "some_client_secret");
-        body.add("redirect_uri", CLIENT_REDIRECT_URI);
-        body.add("scope","openid roles profile");
-        body.add("username","ccdorcusername");
-        body.add("password","ccdorcpwd");
-
         String actualResponseBody =
 
             SerenityRest
                 .given()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .formParams(body)
+                .body(createRequestBody())
                 .log().all(true)
                 .when()
                 .post(mockServer.getUrl() + IDAM_OPENID_TOKEN_URL)
@@ -163,15 +154,27 @@ public class IdamConsumerTest {
     }
 
     private PactDslJsonBody createUserDetailsResponse() {
-        PactDslJsonArray array = new PactDslJsonArray().stringValue("caseofficer-ia");
+        PactDslJsonArray array = new PactDslJsonArray().stringValue("caseofficer-em");
 
         return new PactDslJsonBody()
             .stringType("id", "123")
-            .stringType("email", "ia-caseofficer@fake.hmcts.net")
+            .stringType("email", "em-caseofficer@fake.hmcts.net")
             .stringType("forename", "Case")
             .stringType("surname", "Officer")
             .stringType("roles", array.toString());
 
+    }
+
+    private static String createRequestBody() {
+
+        return "{\"grant_type\": \"password\","
+                + " \"client_id\": \"em\","
+                + " \"client_secret\": \"some_client_secret\","
+                + " \"redirect_uri\": \"/oauth2redirect\","
+                + " \"scope\": \"openid roles profile\","
+                + " \"username\": \"ccdorcusername\","
+                + " \"password\": \"ccdorcpwd\""
+                + " }";
     }
 
 }
