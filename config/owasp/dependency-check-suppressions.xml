@@ -2,6 +2,8 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
         <notes>Using latest version, no fix yet</notes>
+        <cve>CVE-2020-5407</cve>
+        <cve>CVE-2020-5408</cve>
         <cve>CVE-2019-16869</cve>
         <cve>CVE-2019-14540</cve>
         <cve>CVE-2019-16335</cve>
