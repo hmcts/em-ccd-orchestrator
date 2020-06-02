@@ -107,7 +107,7 @@ dependencies {
     compile "io.springfox:springfox-swagger2:2.9.2"
     compile "io.springfox:springfox-swagger-ui:2.9.2"
     compile group: "org.apache.commons", name: "commons-lang3", version: "3.9"
-    compile group: "com.microsoft.azure", name: "applicationinsights-core", version: "2.5.1"
+    compile group: "com.microsoft.azure", name: "applicationinsights-core", version: "2.6.1"
     compile group: "commons-validator", name: "commons-validator", version: "1.6"
     compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
     compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "3.1.1"
