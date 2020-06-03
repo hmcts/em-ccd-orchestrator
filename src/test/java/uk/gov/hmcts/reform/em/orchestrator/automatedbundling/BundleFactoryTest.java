@@ -80,7 +80,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-            null
+                null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -106,7 +106,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-            null
+                null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -132,7 +132,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-            null
+                null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -294,7 +294,7 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 null,
                 false,
-            null
+                null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -399,7 +399,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-            null
+                null
         );
 
         JsonNode json = mapper.readTree(case5Json);
@@ -434,7 +434,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-            null
+                null
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -469,7 +469,7 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 null,
                 false,
-            null
+                null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -513,7 +513,7 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 docImg,
                 false,
-            null
+                null
         );
 
         JsonNode json = mapper.readTree(case4Json);
