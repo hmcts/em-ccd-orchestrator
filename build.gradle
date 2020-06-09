@@ -16,7 +16,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'io.franzbecker.gradle-lombok' version '3.3.0'
-    id 'au.com.dius.pact' version '4.0.4'
+    id 'au.com.dius.pact' version '4.1.1'
 }
 
 apply plugin: 'java'
