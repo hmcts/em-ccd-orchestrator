@@ -1,0 +1,30 @@
+title: IAC Hearing Bundle
+filename: hearing-bundle.pdf
+filenameIdentifier: /case_details/case_data/bundleFileNamePrefix
+hasTableOfContents: true
+hasCoversheets: true
+documentNameValue: /document/document_filename
+documentLinkValue: /document
+sort:
+  field: /dateUploaded
+  order: ascending
+hasFolderCoversheets: true
+paginationStyle: topCenter
+pageNumberFormat: numberOfPages
+documents:
+  - type: documentSet
+    property: /legalRepresentativeDocuments
+    filters:
+      - property: /tag
+        value: caseArgument
+  - type: documentSet
+    property: /legalRepresentativeDocuments
+    filters:
+      - property: /tag
+        value: appealSubmission
+  - type: documentSet
+    property: /respondentDocuments
+  - type: documentSet
+    property: /hearingDocuments
+  - type: documentSet
+    property: /additionalEvidenceDocuments
