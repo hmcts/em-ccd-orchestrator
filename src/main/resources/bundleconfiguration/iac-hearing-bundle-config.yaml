@@ -11,20 +11,28 @@ sort:
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: numberOfPages
-documents:
-  - type: documentSet
-    property: /legalRepresentativeDocuments
-    filters:
-      - property: /tag
-        value: caseArgument
-  - type: documentSet
-    property: /legalRepresentativeDocuments
-    filters:
-      - property: /tag
-        value: appealSubmission
-  - type: documentSet
-    property: /respondentDocuments
-  - type: documentSet
-    property: /hearingDocuments
-  - type: documentSet
-    property: /additionalEvidenceDocuments
+folders:
+  - name: Hearing documents
+    documents:
+      - type: documentSet
+        property: /hearingDocuments
+  - name: Legal representative documents
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: caseArgument
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: appealSubmission
+  - name: Additional evidence from appellant
+    documents:
+      - type: documentSet
+        property: /additionalEvidenceDocuments
+  - name: Respondent documents
+    documents:
+      - type: documentSet
+        property: /respondentDocuments
