@@ -97,7 +97,7 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-hppc:2.10.3"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.3"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.3"
-    compile "com.fasterxml.jackson.core:jackson-core:2.10.3"
+    compile "com.fasterxml.jackson.core:jackson-core:2.11.1"
     compile "com.fasterxml.jackson.core:jackson-annotations:2.10.3"
     compile "com.fasterxml.jackson.core:jackson-databind:2.10.3"
     compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.3"
