@@ -57,7 +57,8 @@ repositories {
 def versions = [
         serenity           : '2.0.23',
         serenityreporter   : '2.1.4',
-        pact_version       : '3.5.24'
+        pact_version       : '3.5.24',
+        logging            : '5.1.5'
 ]
 sourceSets {
     aat {
@@ -107,12 +108,12 @@ dependencies {
     compile "io.springfox:springfox-swagger2:2.9.2"
     compile "io.springfox:springfox-swagger-ui:2.9.2"
     compile group: "org.apache.commons", name: "commons-lang3", version: "3.9"
-    compile group: "com.microsoft.azure", name: "applicationinsights-core", version: "2.5.1"
     compile group: "commons-validator", name: "commons-validator", version: "1.6"
     compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
     compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "3.1.1"
-    compile group: "uk.gov.hmcts.reform", name: "java-logging-appinsights", version: "5.0.1"
-    compile group: "uk.gov.hmcts.reform", name: "java-logging-spring", version: "5.0.1"
+    compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
     compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
     compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.1.1'
@@ -269,6 +270,9 @@ task functional(type: Test) {
     setClasspath(sourceSets.aat.runtimeClasspath)
     include "uk/gov/hmcts/reform/em/orchestrator/functional/**"
 
+    testLogging {
+        exceptionFormat = 'full'
+    }
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
 
