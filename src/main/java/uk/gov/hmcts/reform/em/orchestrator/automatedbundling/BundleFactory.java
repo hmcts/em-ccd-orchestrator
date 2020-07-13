@@ -37,8 +37,10 @@ public class BundleFactory {
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
         bundle.setDocumentImage(configuration.documentImage);
 
-        addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue, caseJson, configuration.documentLinkValue);
-        addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue, caseJson, configuration.documentLinkValue);
+        addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue,
+            caseJson, configuration.documentLinkValue);
+        addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue,
+            caseJson, configuration.documentLinkValue);
 
         return bundle;
     }
