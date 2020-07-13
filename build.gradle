@@ -84,6 +84,16 @@ sourceSets {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group in ['org.apache.tomcat.embed']) {
+                details.useVersion '9.0.36'
+            }
+        }
+    }
+}
+
 dependencies {
     aatCompileOnly 'org.projectlombok:lombok:1.18.12'
     aatAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
