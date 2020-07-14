@@ -1,6 +1,7 @@
 title: IAC Hearing Bundle
 filename: hearing-bundle.pdf
 filenameIdentifier: /case_details/case_data/bundleFileNamePrefix
+coverpageTemplate: TB-IAC-HRN-ENG-00514.docx
 hasTableOfContents: true
 hasCoversheets: true
 documentNameValue: /document/document_filename
