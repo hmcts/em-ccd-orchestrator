@@ -74,8 +74,6 @@ sh ./publish-swagger-docs.sh
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 
-    onMaster()
-    {
-        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
-    }
+    enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+
 }
