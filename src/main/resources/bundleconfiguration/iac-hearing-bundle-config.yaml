@@ -10,7 +10,6 @@ sort:
   field: /dateUploaded
   order: ascending
 hasFolderCoversheets: true
-paginationStyle: off
 pageNumberFormat: numberOfPages
 folders:
   - name: Hearing documents
