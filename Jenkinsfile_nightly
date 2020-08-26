@@ -42,5 +42,7 @@ def vaultOverrides = [
 withNightlyPipeline(type, product, component) {
     enableDockerBuild()
     loadVaultSecrets(secrets)
+    enableMutationTest()
+
     overrideVaultEnvironments(vaultOverrides)
 }
