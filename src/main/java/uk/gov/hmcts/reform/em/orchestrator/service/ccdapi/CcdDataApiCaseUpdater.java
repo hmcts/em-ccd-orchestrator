@@ -55,7 +55,7 @@ public class CcdDataApiCaseUpdater {
                     .method("POST", body)
                     .build();
 
-            log.info(String.format("Ccd Update URL :  ", updateRequest.url()));
+            log.info(String.format("Ccd Update URL :  %s", updateRequest.url()));
 
             final Response updateResponse = http.newCall(updateRequest).execute();
 
