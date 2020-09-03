@@ -52,7 +52,7 @@ public class CcdDataApiEventCreator {
                 .get()
                 .build();
 
-        log.info("Ccd Event Trigger URL : " + request.url());
+        log.info(String.format("Ccd Event Trigger URL : ", request.url()));
 
         try {
             final Response response = http.newCall(request).execute();
