@@ -58,8 +58,8 @@ withNightlyPipeline(type, product, component) {
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-    //enableMutationTest()
-    //enableFullFunctionalTest()
+    enableMutationTest()
+    enableFullFunctionalTest()
     enableSecurityScan()
 
     enableSlackNotifications('#em-dev-chat')
