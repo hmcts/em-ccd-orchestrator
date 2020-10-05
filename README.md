@@ -7,15 +7,21 @@
 CCD Orchestrator is a backend service that facilitates interactions between CCD, the EM Stitching service, and a calling service.
 
 # Setup
+Install `https://stedolan.github.io/jq/`
+For linux: `sudo apt-get install jq`. 
+For mac: `brew install jq`.
 
+Then run:
 ```
 az login
-az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
+az acr login --name hmctspublic && az acr login --name hmctsprivate
 ./gradlew assemble
-DOCMOSIS_ACCESS_KEY=xxx docker-compose -f docker-compose-dependencies.yml up --build
+./bin/start-local-environment.sh <DOCMOSIS_ACCESS_KEY>
 ```
 
-Note that unlike other Evidence Management projects the ccd-orchestrator-api is included in the docker-compose-dependencies.yaml and will run via docker for local functional testing. This is to work around [an issue with Linux docker container networking](https://github.com/docker/for-linux/issues/264).
+
+Note that unlike other Evidence Management projects the ccd-orchestrator-api is included in the docker-compose-dependencies.yaml and will run via docker for local functional testing.
+This is to work around [an issue with Linux docker container networking](https://github.com/docker/for-linux/issues/264).
 
 ### Tech
 
@@ -275,3 +281,28 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+### Check the build
+
+### Running contract or pact tests:
+
+You can run contract or pact tests as follows:
+```
+./gradlew clean
+```
+
+```
+./gradlew contract
+```
+
+You can then publish your pact tests locally by first running the pact docker-compose:
+
+```
+docker-compose -f docker-pactbroker-compose.yml up
+```
+
+and then using it to publish your tests:
+
+```
+./gradlew pactPublish
+```

@@ -19,12 +19,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode validJson;
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
+    private static JsonNode invalidConfigJson;
 
     @Before
     public void setup() throws Exception {
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
+        invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
     }
 
     @Test
@@ -51,7 +53,20 @@ public class AutomatedBundlingScenarios extends BaseTest {
             .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
         assertEquals(200, response.getStatusCode());
-        assertEquals("Unable to load configuration: does-not-exist.yaml", response.getBody().jsonPath().getString("errors[0]"));
+        assertEquals("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
+                response.getBody().jsonPath().getString("errors[0]"));
+    }
+
+    @Test
+    public void testCorruptConfig() {
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(invalidConfigJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Invalid configuration file entry in: example-incorrect-key.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
+                response.getBody().jsonPath().getString("errors[0]"));
     }
 
     @Test
@@ -277,7 +292,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body(json)
                 .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
 
-        assertTrue(response.getBody().print().contains("Unable to load configuration: nonexistent.yaml"));
+        assertTrue(response.getBody().print().contains("Invalid configuration file entry in: nonexistent.yaml"));
     }
 
     @Test
@@ -346,4 +361,39 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
     }
 
+    @Test
+    public void testEnableEmailNotificationIsNull() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(validJson)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(null, responsePath.getString("data.caseBundles[0].value.enableEmailNotification"));
+
+    }
+
+    @Test
+    public void testRenderImageInStitchedDocument() throws IOException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
+
+        Response response = testUtil.authRequest()
+                .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .body(json)
+                .request("POST", testUtil.getTestUrl() + "/api/new-bundle");
+
+        JsonPath responsePath = response.jsonPath();
+
+        assertEquals(200, response.getStatusCode());
+        Assert.assertEquals("hmcts.png", responsePath.getString("data.caseBundles[0].value.documentImage.docmosisAssetId"));
+        Assert.assertEquals("allPages", responsePath.getString("data.caseBundles[0].value.documentImage.imageRenderingLocation"));
+        Assert.assertEquals("opaque", responsePath.getString("data.caseBundles[0].value.documentImage.imageRendering"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
+        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
+    }
 }
