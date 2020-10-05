@@ -32,11 +32,6 @@ data "azurerm_key_vault_secret" "s2s_key" {
   key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
-# data "azurerm_key_vault" "shared_key_vault" {
-#   name = "${local.shared_vault_name}"
-#   resource_group_name = "${local.shared_vault_name}"
-# }
-
 module "local_key_vault" {
   source                     = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
   product                    = "${local.app_full_name}"
