@@ -27,7 +27,7 @@ This is to work around [an issue with Linux docker container networking](https:/
 
 It uses:
 
-* Java8
+* Java11
 * Spring boot
 * Junit, Mockito and SpringBootTest and Powermockito
 * Gradle
