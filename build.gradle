@@ -15,7 +15,7 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id 'pmd'
-    id 'io.franzbecker.gradle-lombok' version '3.3.0'
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
     id 'au.com.dius.pact' version '4.1.2'
     id "info.solidsoft.pitest" version '1.5.1'
 }
@@ -34,7 +34,7 @@ if (!project.hasProperty('runList')) {
 }
 
 group 'uk.gov.hmcts.reform.em.orchestrator'
-version '0.0.1'
+version '1.0.0'
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -139,7 +139,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
-    compile "io.github.openfeign:feign-httpclient:10.7.0"
+    compile "io.github.openfeign:feign-httpclient:11.0"
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.0-RELEASE'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
