@@ -138,7 +138,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
     compile "io.github.openfeign:feign-httpclient:10.7.0"
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.1-RELEASE'
+    compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.0-RELEASE'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: "com.vaadin.external.google", module: "android-json"
