@@ -133,9 +133,8 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    compile group: "uk.gov.hmcts.reform", name: "health-spring-boot-starter", version: "0.0.5"
+    compile "org.hibernate.validator:hibernate-validator"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.0.4"
-    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.1.1'
 
     compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
@@ -224,7 +223,7 @@ dependencyUpdates.resolutionStrategy = {
 }
 
 dependencyCheck {
-    suppressionFile = 'config/owasp/dependency-check-suppressions.xml'    
+    suppressionFile = 'config/owasp/dependency-check-suppressions.xml'
 }
 
 bootJar {
