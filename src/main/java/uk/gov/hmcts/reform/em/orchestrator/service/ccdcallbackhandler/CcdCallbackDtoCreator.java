@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,8 @@ import java.util.Optional;
 
 @Service
 public class CcdCallbackDtoCreator {
+
+    private final Logger log = LoggerFactory.getLogger(CcdCallbackDtoCreator.class);
 
     private final ObjectMapper objectMapper;
 
@@ -38,6 +42,8 @@ public class CcdCallbackDtoCreator {
                 throw new CantReadCcdPayloadException("Payload from CCD is empty");
             }
             dto.setCcdPayload(payload);
+            log.info(String.format("Request payload : %s", payload.toPrettyString()));
+
         } catch (IOException e) {
             throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
         }
