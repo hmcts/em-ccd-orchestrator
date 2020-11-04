@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
-        classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.5")
+        classpath("net.serenity-bdd:serenity-single-page-report:2.3.5")
     }
 }
 
@@ -58,8 +58,9 @@ repositories {
 }
 
 def versions = [
-        serenity           : '2.0.23',
-        serenityreporter   : '2.1.4',
+        serenity           : '2.3.5',
+        serenityreporter   : '2.3.5',
+        serenityRestAssured: '2.3.4',
         pact_version       : '4.0.10',
         logging            : '5.1.5',
         pitest             : '1.5.1',
@@ -153,7 +154,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.1'
 
-    testCompile (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity) {
+    testCompile (group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured) {
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
     }
     testCompile (group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity) {
