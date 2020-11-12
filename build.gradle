@@ -60,7 +60,7 @@ def versions = [
         serenity           : '2.3.6',
         serenityreporter   : '2.3.6',
         serenityRestAssured: '2.3.4',
-        springfoxSwagger   : '3.0.0',
+        springfoxSwagger   : '2.9.2',
         pact_version       : '4.0.10',
         logging            : '5.1.7',
         pitest             : '1.5.1',
