@@ -15,11 +15,11 @@ folders:
   - name: Appellant additional evidence following FTPA
     documents:
     - type: documentSet
-      property: /ftpaAppellantEvidenceDocuments
+      property: /appAdditionalEvidenceDocs
   - name: Respondent additional evidence following FTPA
     documents:
     - type: documentSet
-      property: /ftpaRespondentEvidenceDocuments
+      property: /respAdditionalEvidenceDocs
   - name: Appellant FTPA documents
     documents:
     - type: documentSet
