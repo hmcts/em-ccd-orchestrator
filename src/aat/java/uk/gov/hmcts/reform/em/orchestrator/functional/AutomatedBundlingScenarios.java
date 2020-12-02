@@ -5,7 +5,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.retry.RetryRule;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
@@ -19,6 +21,9 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
+
+    @Rule
+    public RetryRule retryRule = new RetryRule(3);
 
     @Before
     public void setup() throws Exception {
