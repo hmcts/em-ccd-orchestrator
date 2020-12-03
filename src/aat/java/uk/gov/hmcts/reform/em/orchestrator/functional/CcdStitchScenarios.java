@@ -8,7 +8,7 @@ import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.orchestrator.retry.RetryRule;
+import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 

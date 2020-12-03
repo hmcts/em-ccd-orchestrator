@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.retry.RetryRule;
+import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.File;
 import java.io.IOException;
