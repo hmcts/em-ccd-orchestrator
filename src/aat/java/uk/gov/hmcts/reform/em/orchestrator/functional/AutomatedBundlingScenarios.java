@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.retry.RetryRule;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
+import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 

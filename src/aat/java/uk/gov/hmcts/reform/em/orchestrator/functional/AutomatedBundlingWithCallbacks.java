@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.retry.RetryRule;
+import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 public class AutomatedBundlingWithCallbacks extends BaseTest {
 
