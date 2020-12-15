@@ -96,7 +96,7 @@ configurations.all {
     resolutionStrategy {
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group in ['org.apache.tomcat.embed']) {
-                details.useVersion '9.0.37'
+                details.useVersion '9.0.40'
             }
             if (details.requested.name in ['spring-boot-actuator, spring-boot-actuator-autoconfigure, ' +
                                                    'spring-boot-autoconfigure, spring-data-commons']) {
@@ -116,6 +116,8 @@ dependencies {
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-test'
     }
+
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
     
     aatCompileOnly 'org.projectlombok:lombok:1.18.16'
     aatAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
