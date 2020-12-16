@@ -118,6 +118,7 @@ dependencies {
     }
 
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
+    compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
     
     aatCompileOnly 'org.projectlombok:lombok:1.18.16'
     aatAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
