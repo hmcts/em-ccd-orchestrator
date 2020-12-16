@@ -7,5 +7,6 @@
         <cve>CVE-2007-5615</cve>
         <cve>CVE-2018-1258</cve>
         <cve>CVE-2020-13956</cve>
+        <cve>CVE-2020-8908</cve>
     </suppress>
 </suppressions>
