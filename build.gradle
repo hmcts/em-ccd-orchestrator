@@ -181,7 +181,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
 
     aatCompile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
-    aatCompile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+    aatCompile group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
 
     //pact contract testing
     contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version
