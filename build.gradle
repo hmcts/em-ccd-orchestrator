@@ -158,6 +158,9 @@ dependencies {
     compile "org.hibernate.validator:hibernate-validator:6.1.6.Final"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.1.0"
 
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.13'
+
     compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
     compile "io.github.openfeign:feign-httpclient:11.0"
