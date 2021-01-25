@@ -109,17 +109,21 @@ public class CcdBundleStitchingServiceTest {
         assertNull(node.get(0));
     }
 
-    @Test(expected = InputValidationException.class)
+    @Test
     public void testUpdateCaseFileNameOneChar() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", "
-            + "\"fileName\":\"a\"}}]}");
-        ccdCallbackDto.setPropertyName(Optional.of("cb"));
-        ccdCallbackDto.setCaseData(node);
-        ccdCallbackDto.setJwt("jwt");
 
-        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        try {
+            CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+            JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", "
+                + "\"fileName\":\"a\"}}]}");
+            ccdCallbackDto.setPropertyName(Optional.of("cb"));
+            ccdCallbackDto.setCaseData(node);
+            ccdCallbackDto.setJwt("jwt");
 
+            ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        } catch (InputValidationException exc) {
+            assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG,exc.getViolations().get(0));
+        }
     }
 
     @Test
