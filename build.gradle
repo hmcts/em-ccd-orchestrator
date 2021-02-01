@@ -124,7 +124,7 @@ dependencies {
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.0'
     compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
     
-    aatCompileOnly 'org.projectlombok:lombok:1.18.16'
+    aatCompileOnly 'org.projectlombok:lombok:1.18.18'
     aatAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
     compile "com.squareup.okhttp3:okhttp:4.9.1"
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.1'
