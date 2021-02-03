@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -81,6 +82,38 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
+    public void testPostBundleStitchFileNameOneChar() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setFileName("a");
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+
+        Response response = postStitchCCDBundle(wrappedJson);
+
+        JsonPath path = response.getBody().jsonPath();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertNotNull(path.getString("errors[0]"));
+        Assert.assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, path.getString("errors[0]"));
+    }
+
+    @Test
+    public void testPostBundleStitchFileName51Char() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setFileName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+
+        Response response = postStitchCCDBundle(wrappedJson);
+
+        JsonPath path = response.getBody().jsonPath();
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertNotNull(path.getString("errors[0]"));
+        Assert.assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, path.getString("errors[0]"));
+    }
+
+    @Test
     public void testNoFileNameButBundleTitleOnly() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
 
@@ -110,7 +143,6 @@ public class CcdStitchScenarios extends BaseTest {
         Assert.assertEquals("Bundle title", path.getString("data.caseBundles[0].value.title"));
         Assert.assertEquals("1234567890123456789012345678901%.pdf", path.getString("data.caseBundles[0].value.fileName"));
         Assert.assertNotNull(path.getString("errors[0]"));
-        Assert.assertNotNull(path.getString("errors[1]"));
     }
 
     @Test
