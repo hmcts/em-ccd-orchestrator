@@ -18,12 +18,12 @@ folders:
         property: /dwpDocuments
         filters:
           - property: /documentType
-            value: dwpEvidenceBundle
+            value: dwpResponse
       - type: documentSet
         property: /dwpDocuments
         filters:
           - property: /documentType
-            value: dwpResponse
+            value: dwpEvidenceBundle
   - name: Original Documents
     documents:
       - type: documentSet
