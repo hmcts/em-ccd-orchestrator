@@ -14,16 +14,10 @@ documentLinkValue: /editedDocumentLink
 folders:
   - name: DWP
     documents:
-      - type: documentSet
-        property: /dwpDocuments
-        filters:
-          - property: /documentType
-            value: dwpResponse
-      - type: documentSet
-        property: /dwpDocuments
-        filters:
-          - property: /documentType
-            value: dwpEvidenceBundle
+      - type: document
+        property: /dwpResponseDocument
+      - type: document
+        property: /dwpEvidenceBundleDocument
   - name: Further Additions
     documents:
       - type: documentSet
