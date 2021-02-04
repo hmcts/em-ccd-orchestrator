@@ -10,13 +10,20 @@ sort:
 hasFolderCoversheets: true
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
+documentLinkValue: /editedDocumentLink
 folders:
   - name: DWP
     documents:
-      - type: document
-        property: /dwpEditedResponseDocument
-      - type: document
-        property: /dwpEditedEvidenceBundleDocument
+      - type: documentSet
+        property: /dwpDocuments
+        filters:
+          - property: /documentType
+            value: dwpEvidenceBundle
+      - type: documentSet
+        property: /dwpDocuments
+        filters:
+          - property: /documentType
+            value: dwpResponse
   - name: Original Documents
     documents:
       - type: documentSet
