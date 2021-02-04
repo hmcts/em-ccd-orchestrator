@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
@@ -21,6 +22,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
+    private static JsonNode filenameWith51CharsJson;
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
@@ -31,6 +33,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
         invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
+        filenameWith51CharsJson = extendedCcdHelper.loadCaseFromFile("filename-with-51-chars.json");
     }
 
     @Test
@@ -53,6 +56,15 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals(200, response.getStatusCode());
         assertEquals("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
                 response.getBody().jsonPath().getString("errors[0]"));
+    }
+
+    @Test
+    public void test51CharsFileName() {
+        Response response = postNewBundle(filenameWith51CharsJson);
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, response.getBody().jsonPath().getString(
+            "errors[0]"));
     }
 
     @Test

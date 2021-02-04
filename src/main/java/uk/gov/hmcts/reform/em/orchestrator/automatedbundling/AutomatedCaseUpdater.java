@@ -8,11 +8,15 @@ import com.google.common.collect.ImmutableMap;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
+import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
@@ -26,15 +30,18 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
+    private final Validator validator;
 
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
                                 BundleFactory bundleFactory,
-                                AutomatedStitchingExecutor automatedStitchingExecutor) {
+                                AutomatedStitchingExecutor automatedStitchingExecutor,
+                                Validator validator) {
         this.configurationLoader = configurationLoader;
         this.jsonMapper = jsonMapper;
         this.bundleFactory = bundleFactory;
         this.automatedStitchingExecutor = automatedStitchingExecutor;
+        this.validator = validator;
     }
 
     /**
@@ -63,6 +70,12 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
         }
         bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
+
+        Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle);
+
+        if (!violations.isEmpty()) {
+            throw new InputValidationException(violations);
+        }
 
         automatedStitchingExecutor.startStitching(
                 ccdCallbackDto.getCaseId(),

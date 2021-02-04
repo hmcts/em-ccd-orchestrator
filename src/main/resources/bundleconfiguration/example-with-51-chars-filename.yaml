@@ -1,0 +1,13 @@
+title: New bundle
+filename: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+hasCoversheets: true
+hasTableOfContents: true
+paginationStyle: topLeft
+pageNumberFormat: numberOfPages
+folders:
+  - name: Folder 1
+    folders:
+      - name: Folder 1.a
+      - name: Folder 1.b
+  - name: Folder 2
