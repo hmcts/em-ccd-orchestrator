@@ -14,9 +14,9 @@ folders:
   - name: DWP
     documents:
       - type: document
-        property: /dwpResponseDocument
+        property: /dwpEditedResponseDocument
       - type: document
-        property: /dwpEvidenceBundleDocument
+        property: /dwpEditedEvidenceBundleDocument
   - name: Original Documents
     documents:
       - type: documentSet
