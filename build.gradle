@@ -152,7 +152,7 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    compile "org.hibernate.validator:hibernate-validator:6.1.6.Final"
+    compile "org.hibernate.validator:hibernate-validator:7.0.1.Final"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.1.0"
 
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
