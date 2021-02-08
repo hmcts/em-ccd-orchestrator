@@ -9,4 +9,8 @@
         <cve>CVE-2020-29245</cve>
         <cve>CVE-2020-29244</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[False Positive]]></notes>
+        <cpe regex="true">cpe:/a:jetbrains:kotlin:1.4.0:*.*$</cpe>
+    </suppress>
 </suppressions>
