@@ -130,7 +130,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
-
+    compile 'org.springframework.boot:spring-boot-starter-validation'
+    
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.fasterXmlJackson
@@ -152,7 +153,6 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    compile "org.hibernate.validator:hibernate-validator:6.1.6.Final"
     compile group: "uk.gov.hmcts.reform", name: "properties-volume-spring-boot-starter", version:"0.1.0"
 
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
