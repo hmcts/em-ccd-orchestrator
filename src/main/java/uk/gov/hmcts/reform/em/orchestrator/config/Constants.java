@@ -5,12 +5,11 @@ package uk.gov.hmcts.reform.em.orchestrator.config;
  */
 public final class Constants {
 
-    public static final String SYSTEM_ACCOUNT = "system";
-    public static final String ANONYMOUS_USER = "anonymoususer";
-    public static final String DEFAULT_LANGUAGE = "en";
     public static final String STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG = "File Name should contain at least 2 and "
         + "not more than 50 Chars";
     public static final String FILE_NAME_WITH_51_CHARS_LENGTH = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    public static final String BUNDLE_DESCRIPTION_FIELD_LENGTH_ERROR_MSG = "Bundle Description should not contain "
+        + "more than 255 Chars";
 
     private Constants() {
     }

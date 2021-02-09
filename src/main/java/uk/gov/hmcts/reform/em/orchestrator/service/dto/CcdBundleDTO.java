@@ -18,7 +18,7 @@ public class CcdBundleDTO {
 
     private String id;
     private String title;
-    @Size(max = 255)
+    @Size(max = 255, message = Constants.BUNDLE_DESCRIPTION_FIELD_LENGTH_ERROR_MSG)
     private String description;
     private String eligibleForStitching;
     private String eligibleForCloning;
