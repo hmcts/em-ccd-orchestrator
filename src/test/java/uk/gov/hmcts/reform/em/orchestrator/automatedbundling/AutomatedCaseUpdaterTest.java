@@ -85,6 +85,73 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
+    public void updateCaseWithArrayBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":[\"example.yaml\"], " +
+                        "\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
+    }
+
+    @Test
+    public void updateCaseWithEmptyArrayBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":[], " +
+                        "\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
+
+    @Test
+    public void updateCaseWithOutBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
+
+    @Test
     public void updateCaseWithFileIdentifier() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
