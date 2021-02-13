@@ -36,6 +36,8 @@ public class DefaultUpdateCaller {
 
     public CcdCallbackResponseDto executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
+
+        log.info(String.format("Received payload for /new-bundle endpoint : %s", dto.getCcdPayload().toPrettyString()));
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
