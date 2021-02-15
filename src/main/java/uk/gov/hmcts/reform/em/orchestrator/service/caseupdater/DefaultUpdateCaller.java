@@ -61,6 +61,7 @@ public class DefaultUpdateCaller {
                     ccdCallbackResponseDto.getErrors().toString()
             );
         }
+        log.info(String.format("Response payload for /new-bundle endpoint : %s", ccdCallbackResponseDto.toString()));
         return ccdCallbackResponseDto;
     }
 

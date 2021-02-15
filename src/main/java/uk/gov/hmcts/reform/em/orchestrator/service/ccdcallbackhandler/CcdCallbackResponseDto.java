@@ -2,11 +2,13 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.ToString;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 public class CcdCallbackResponseDto {
 
     @JsonIgnore
