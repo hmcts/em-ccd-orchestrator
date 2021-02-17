@@ -61,21 +61,34 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
-        List<String> bundleConfigurations = new ArrayList<String>();
+        List<String> bundleConfigurations = prepareBundleConfigs(ccdCallbackDto);
 
-        populateBundleConfigs(ccdCallbackDto, bundleConfigurations);
+        List<CcdBundleDTO>  ccdBundleDtos = populateBundleConfigs(ccdCallbackDto, bundleConfigurations);
 
-        // Need to validate all BundleConfigs before invoking the stitching call.
+        for (CcdBundleDTO bundle : ccdBundleDtos) {
+            final ArrayNode bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class).orElseGet(() -> {
+                ArrayNode arrayNode = jsonMapper.createArrayNode();
+                ((ObjectNode) ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                return arrayNode;
+            });
+
+            automatedStitchingExecutor.startStitching(
+                ccdCallbackDto.getCaseId(),
+                ccdCallbackDto.getJwt(),
+                bundle);
+
+            bundles.insert(0, bundleDtoToBundleJson(bundle));
+        }
+
+        return ccdCallbackDto.getCaseData();
+    }
+
+    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations) {
+        List<CcdBundleDTO>  ccdBundleDtos = new ArrayList<>();
         for (String bundleConfig : bundleConfigurations) {
 
             BundleConfiguration configuration = configurationLoader.load(bundleConfig);
-            final ArrayNode bundles = ccdCallbackDto
-                .findCaseProperty(ArrayNode.class)
-                .orElseGet(() -> {
-                    ArrayNode arrayNode = jsonMapper.createArrayNode();
-                    ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
-                    return arrayNode;
-                });
+
 
             CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
             ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
@@ -90,19 +103,14 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 throw new InputValidationException(violations);
             }
 
-            automatedStitchingExecutor.startStitching(
-                ccdCallbackDto.getCaseId(),
-                ccdCallbackDto.getJwt(),
-                bundle);
-
-            bundles.insert(0, bundleDtoToBundleJson(bundle));
+            ccdBundleDtos.add(bundle);
         }
-
-        return ccdCallbackDto.getCaseData();
+        return ccdBundleDtos;
     }
 
-    private void populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations) {
+    private List<String> prepareBundleConfigs(CcdCallbackDto ccdCallbackDto) {
 
+        List<String> bundleConfigurations = new ArrayList<String>();
         try {
             if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)) {
                 if (ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isArray()) {
@@ -120,6 +128,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         if (CollectionUtils.isEmpty(bundleConfigurations)) {
             bundleConfigurations.add(CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG));
         }
+        return bundleConfigurations;
     }
 
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
