@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,9 +39,9 @@ public class BundleFactory {
         bundle.setDocumentImage(configuration.documentImage);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue,
-            caseJson, configuration.documentLinkValue);
+            caseJson, configuration.documentLinkValue, configuration.redacted);
         addDocuments(configuration.documents, bundle.getDocuments(), configuration.sortOrder, configuration.documentNameValue,
-            caseJson, configuration.documentLinkValue);
+            caseJson, configuration.documentLinkValue, configuration.redacted);
 
         return bundle;
     }
@@ -49,7 +50,7 @@ public class BundleFactory {
                             List<CcdValue<CcdBundleFolderDTO>> destinationFolders,
                             BundleConfigurationSort sortOrder,
                             String documentNameValue,
-                            JsonNode caseData, String documentLinkValue) throws DocumentSelectorException {
+                            JsonNode caseData, String documentLinkValue, boolean redacted) throws DocumentSelectorException {
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : sourceFolders) {
@@ -58,10 +59,12 @@ public class BundleFactory {
             ccdFolder.setSortIndex(sortIndex++);
             destinationFolders.add(new CcdValue<>(ccdFolder));
 
-            addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, documentNameValue, caseData, documentLinkValue);
+            addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, documentNameValue, caseData,
+                documentLinkValue, redacted);
 
             if (folder.folders != null && !folder.folders.isEmpty()) {
-                addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, documentNameValue, caseData, documentLinkValue);
+                addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, documentNameValue, caseData,
+                    documentLinkValue, redacted);
             }
         }
     }
@@ -70,12 +73,15 @@ public class BundleFactory {
                               List<CcdValue<CcdBundleDocumentDTO>> destinationDocuments,
                               BundleConfigurationSort sortOrder,
                               String documentNameValue,
-                              JsonNode caseData, String documentLinkValue) throws DocumentSelectorException {
+                              JsonNode caseData, String documentLinkValue,
+                              boolean redacted) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
-                ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData, documentLinkValue)
-                : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData, documentLinkValue);
+                ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData,
+                documentLinkValue, redacted)
+                : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
+                documentLinkValue, redacted);
 
             destinationDocuments.addAll(documents);
         }
@@ -92,7 +98,8 @@ public class BundleFactory {
     private List<CcdValue<CcdBundleDocumentDTO>> addDocument(BundleConfigurationDocument documentSelector,
                                                              BundleConfigurationSort sortOrder,
                                                              String documentNameValue,
-                                                             JsonNode caseData, String documentLinkValue) throws DocumentSelectorException {
+                                                             JsonNode caseData, String documentLinkValue,
+                                                             boolean redacted) throws DocumentSelectorException {
         ArrayList<CcdValue<CcdBundleDocumentDTO>> list = new ArrayList<>();
         JsonNode node = caseData.at(documentSelector.property);
 
@@ -104,21 +111,30 @@ public class BundleFactory {
             throw new DocumentSelectorException("Element is an array: " + documentSelector.property);
         }
 
-        list.add(getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue));
+        list.add(getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue, redacted));
 
         return list;
     }
 
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node,
                                                                BundleConfigurationSort sortOrder,
-                                                               String documentNameValue, String documentLinkValue) throws DocumentSelectorException {
+                                                               String documentNameValue, String documentLinkValue,
+                                                               boolean redacted) throws DocumentSelectorException {
         CcdDocument sourceDocument = new CcdDocument();
 
         String documentPath = StringUtils.defaultIfEmpty(documentLinkValue,"/documentLink");
 
-        sourceDocument.setUrl(getField(node, documentPath + "/document_url").asText());
-        sourceDocument.setBinaryUrl(getField(node, documentPath + "/document_binary_url").asText());
-        sourceDocument.setFileName(getField(node, documentPath + "/document_filename").asText());
+        if (redacted && getChildNode(node, "redactedDocumentLink")) {
+            documentPath = "/redactedDocumentLink";
+            sourceDocument.setUrl(getField(node, documentPath + "/document_url").asText());
+            sourceDocument.setBinaryUrl(getField(node, documentPath + "/document_binary_url").asText());
+            sourceDocument.setFileName(getField(node, documentPath + "/document_filename").asText());
+        } else {
+            sourceDocument.setUrl(getField(node, documentPath + "/document_url").asText());
+            sourceDocument.setBinaryUrl(getField(node, documentPath + "/document_binary_url").asText());
+            sourceDocument.setFileName(getField(node, documentPath + "/document_filename").asText());
+        }
+
 
         if (sortOrder != null) {
             JsonNode dateNode = node.at(sortOrder.field);
@@ -148,10 +164,21 @@ public class BundleFactory {
         return innerNode;
     }
 
+    private boolean getChildNode(JsonNode outerNode, String path) throws DocumentSelectorException {
+        Iterator<String> innerNodes = outerNode.fieldNames();
+        while (innerNodes.hasNext()) {
+            if (innerNodes.next().equalsIgnoreCase(path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(BundleConfigurationDocumentSet documentSelector,
                                                                 BundleConfigurationSort sortOrder,
                                                                 String documentNameValue,
-                                                                JsonNode caseData, String documentLinkValue) throws DocumentSelectorException {
+                                                                JsonNode caseData, String documentLinkValue,
+                                                                boolean redacted) throws DocumentSelectorException {
 
         JsonNode list = caseData.at(documentSelector.property);
 
@@ -167,7 +194,7 @@ public class BundleFactory {
             .stream(list.spliterator(), true)
             .map(n -> n.at("/value"))
             .filter(n -> anyFilterMatches(documentSelector.filters, n))
-            .map(unchecked(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue)))
+            .map(unchecked(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue, redacted)))
             .collect(Collectors.toList());
     }
 

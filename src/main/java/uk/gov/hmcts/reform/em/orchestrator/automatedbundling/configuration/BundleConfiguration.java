@@ -32,6 +32,7 @@ public class BundleConfiguration {
     public final Boolean enableEmailNotification;
     public final DocumentImage documentImage;
     public final String documentLinkValue;
+    public final boolean redacted;
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
@@ -48,7 +49,8 @@ public class BundleConfiguration {
                                @JsonProperty("documentNameValue") String documentNameValue,
                                @JsonProperty("documentImage") DocumentImage documentImage,
                                @JsonProperty("enableEmailNotification") Boolean enableEmailNotification,
-                               @JsonProperty("documentLinkValue") String documentLinkValue) {
+                               @JsonProperty("documentLinkValue") String documentLinkValue,
+                               @JsonProperty("redacted") boolean redacted) {
 
         this.title = title;
         this.filename = ensurePdfExtension(filename);
@@ -66,5 +68,6 @@ public class BundleConfiguration {
         this.documentImage = documentImage;
         this.enableEmailNotification = enableEmailNotification;
         this.documentLinkValue = documentLinkValue;
+        this.redacted = redacted;
     }
 }
