@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
-        classpath("net.serenity-bdd:serenity-single-page-report:2.3.12")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.13")
+        classpath("net.serenity-bdd:serenity-single-page-report:2.3.13")
     }
 }
 
@@ -9,7 +9,7 @@ plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
-    id 'uk.gov.hmcts.java' version '0.12.4'
+    id 'uk.gov.hmcts.java' version '0.12.5'
     id 'com.github.ben-manes.versions' version '0.36.0'
     id 'org.sonarqube' version '3.1.1'
     id 'jacoco'
@@ -52,8 +52,8 @@ repositories {
 }
 
 def versions = [
-        serenity           : '2.3.12',
-        serenityreporter   : '2.3.12',
+        serenity           : '2.3.13',
+        serenityreporter   : '2.3.13',
         serenityRestAssured: '2.3.4',
         springfoxSwagger   : '2.9.2',
         pact_version       : '4.0.10',
@@ -174,9 +174,9 @@ dependencies {
     testCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
 
 
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.2"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.3"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.3"
 
     aatCompile group: 'org.apache.poi', name: 'poi', version: '5.0.0'
     aatCompile group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
@@ -187,9 +187,9 @@ dependencies {
     contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutAlpnApi
     compile group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutAlpnApi
 
-    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
-    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
-    contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.6.3")
+    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.3")
+    contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.6.3')
 
     contractTestCompile sourceSets.main.runtimeClasspath
     contractTestCompile sourceSets.test.runtimeClasspath
