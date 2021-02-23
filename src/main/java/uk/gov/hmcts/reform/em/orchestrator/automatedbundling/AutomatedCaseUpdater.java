@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
@@ -65,6 +66,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         List<CcdBundleDTO>  ccdBundleDtos = populateBundleConfigs(ccdCallbackDto, bundleConfigurations);
 
+        //Make call for Stitching only after the validation is completed for the Bundles and have no validation error.
         for (CcdBundleDTO bundle : ccdBundleDtos) {
             final ArrayNode bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class).orElseGet(() -> {
                 ArrayNode arrayNode = jsonMapper.createArrayNode();
@@ -92,7 +94,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
             CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
             ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
-            if (bundle.getFileNameIdentifier() != null && !bundle.getFileNameIdentifier().isEmpty()) {
+            if (StringUtils.isNotBlank(bundle.getFileNameIdentifier())) {
                 bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
             }
             bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
