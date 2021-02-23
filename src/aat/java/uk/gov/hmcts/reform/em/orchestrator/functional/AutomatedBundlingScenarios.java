@@ -23,6 +23,9 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
     private static JsonNode filenameWith51CharsJson;
+    private static JsonNode redactedDocumentsJson;
+    private static JsonNode nonRedactedDocumentsJson;
+    private static JsonNode multiBundleDocumentsJson;
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
@@ -34,6 +37,9 @@ public class AutomatedBundlingScenarios extends BaseTest {
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
         invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
         filenameWith51CharsJson = extendedCcdHelper.loadCaseFromFile("filename-with-51-chars.json");
+        redactedDocumentsJson = extendedCcdHelper.loadCaseFromFile("redacted-documents-case.json");
+        nonRedactedDocumentsJson = extendedCcdHelper.loadCaseFromFile("non-redacted-documents-case.json");
+        multiBundleDocumentsJson = extendedCcdHelper.loadCaseFromFile("multi-bundle-case.json");
     }
 
     @Test
@@ -342,6 +348,56 @@ public class AutomatedBundlingScenarios extends BaseTest {
         Assert.assertEquals("opaque", responsePath.getString("data.caseBundles[0].value.documentImage.imageRendering"));
         Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
         Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
+    }
+
+    @Test
+    public void testRedactedDocuments() throws IOException {
+
+        Response response = postNewBundle(redactedDocumentsJson);
+
+        JsonPath responsePath = response.jsonPath();
+
+        System.out.println(response.getBody().prettyPrint());
+        assertEquals(200, response.getStatusCode());
+        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[0].value.name"));
+        assertEquals("Redacted Doc2.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[1].value.name"));
+        assertEquals("Redacted Doc3.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[2].value.name"));
+        assertEquals("AT38.png", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3]"
+            + ".value.name"));
+    }
+
+    @Test
+    public void testNonRedactedDocuments() throws IOException {
+
+        Response response = postNewBundle(nonRedactedDocumentsJson);
+
+        JsonPath responsePath = response.jsonPath();
+
+        System.out.println(response.getBody().prettyPrint());
+        assertEquals(200, response.getStatusCode());
+        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[0].value.name"));
+        assertEquals("DWP response.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[1].value.name"));
+        assertEquals("DWP evidence.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
+            + ".documents[2].value.name"));
+    }
+
+    @Test
+    public void testMultiBundleDocuments() throws IOException {
+
+        Response response = postNewBundle(multiBundleDocumentsJson);
+
+        JsonPath responsePath = response.jsonPath();
+
+        System.out.println(response.getBody().prettyPrint());
+        assertEquals(200, response.getStatusCode());
+        assertEquals(2, responsePath.getList("data.caseBundles").size());
     }
 
     private Response postNewBundle(Object requestBody) {
