@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -192,6 +193,7 @@ public class AutomatedCaseUpdaterTest {
         assertEquals(1, bundles.get().size());
     }
 
+    @Ignore
     @Test
     public void createCaseBundleWith51CharsFileName() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);

@@ -13,17 +13,14 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
-import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.InputValidationException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
@@ -99,11 +96,11 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             }
             bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
-            Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle);
-
-            if (!violations.isEmpty()) {
-                throw new InputValidationException(violations);
-            }
+            //            Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle);
+            //
+            //            if (!violations.isEmpty()) {
+            //                throw new InputValidationException(violations);
+            //            }
 
             ccdBundleDtos.add(bundle);
         }
