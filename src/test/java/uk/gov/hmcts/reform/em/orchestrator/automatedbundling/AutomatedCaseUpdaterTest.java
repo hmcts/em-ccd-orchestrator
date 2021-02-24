@@ -157,11 +157,11 @@ public class AutomatedCaseUpdaterTest {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{ \"id\": \"1\", \"case_data\": "
-                        + "{\"bundleConfiguration\":\"sscs-bundle-config.yaml\", \"caseBundles\": []}}}"))
-            );
+                .thenReturn(
+                        new BufferedReader(
+                                new StringReader("{\"case_details\":{ \"id\": \"1\", \"case_data\": "
+                                    + "{\"bundleConfiguration\":\"sscs-bundle-config.yaml\", \"caseBundles\": []}}}"))
+                            );
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
         updater.updateCase(ccdCallbackDto);
@@ -218,45 +218,45 @@ public class AutomatedCaseUpdaterTest {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\","
-                        + "\"caseBundles\": "
-                        + "[{\n"
-                        + "\"value\": {\n"
-                        + "\"id\": \"19c9f411-e9a0-43f4-af13-e3d7ee98a50b\",\n"
-                        + "\"title\": \"New bundle\",\n"
-                        + "\"description\": null,\n"
-                        + "\"eligibleForStitching\": \"no\",\n"
-                        + "\"eligibleForCloning\": \"no\",\n"
-                        + "\"stitchedDocument\": null,\n"
-                        + "\"documents\": [],\n"
-                        + "\"folders\": [{\n"
-                        + "\"value\": {\n"
-                        + "\"name\": \"Folder 1 Original\",\n"
-                        + "\"documents\": [],\n"
-                        + "\"folders\": [{\n"
-                        + "\"value\": {\n"
-                        + "\"name\": \"Folder 1.a Original\",\n"
-                        + "\"documents\": [],\n"
-                        + "\"sortIndex\": 0\n"
-                        + "}\n"
-                        + "}],\n"
-                        + "\"sortIndex\": 0\n"
-                        + "}\n"
-                        + "}],\n"
-                        + "\"fileName\": \"original_bundle.pdf\",\n"
-                        + "\"coverpageTemplate\": \"FL-FRM-APP-ENG-00002.docx\",\n"
-                        + "\"hasTableOfContents\": \"Yes\",\n"
-                        + "\"hasCoversheets\": \"Yes\",\n"
-                        + "\"hasFolderCoversheets\": \"No\",\n"
-                        + "\"stitchStatus\": null,\n"
-                        + "\"paginationStyle\": \"topLeft\",\n"
-                        + "\"pageNumberFormat\": \"numberOfPages\",\n"
-                        + "\"stitchingFailureMessage\": null\n"
-                        + "}\n"
-                        + "}]}}}")
-                ));
+                .thenReturn(
+                        new BufferedReader(
+                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\","
+                                        + "\"caseBundles\": "
+                                        + "[{\n"
+                                        + "\"value\": {\n"
+                                        + "\"id\": \"19c9f411-e9a0-43f4-af13-e3d7ee98a50b\",\n"
+                                        + "\"title\": \"New bundle\",\n"
+                                        + "\"description\": null,\n"
+                                        + "\"eligibleForStitching\": \"no\",\n"
+                                        + "\"eligibleForCloning\": \"no\",\n"
+                                        + "\"stitchedDocument\": null,\n"
+                                        + "\"documents\": [],\n"
+                                        + "\"folders\": [{\n"
+                                        + "\"value\": {\n"
+                                        + "\"name\": \"Folder 1 Original\",\n"
+                                        + "\"documents\": [],\n"
+                                        + "\"folders\": [{\n"
+                                        + "\"value\": {\n"
+                                        + "\"name\": \"Folder 1.a Original\",\n"
+                                        + "\"documents\": [],\n"
+                                        + "\"sortIndex\": 0\n"
+                                        + "}\n"
+                                        + "}],\n"
+                                        + "\"sortIndex\": 0\n"
+                                        + "}\n"
+                                        + "}],\n"
+                                        + "\"fileName\": \"original_bundle.pdf\",\n"
+                                        + "\"coverpageTemplate\": \"FL-FRM-APP-ENG-00002.docx\",\n"
+                                        + "\"hasTableOfContents\": \"Yes\",\n"
+                                        + "\"hasCoversheets\": \"Yes\",\n"
+                                        + "\"hasFolderCoversheets\": \"No\",\n"
+                                        + "\"stitchStatus\": null,\n"
+                                        + "\"paginationStyle\": \"topLeft\",\n"
+                                        + "\"pageNumberFormat\": \"numberOfPages\",\n"
+                                        + "\"stitchingFailureMessage\": null\n"
+                                        + "}\n"
+                                        + "}]}}}")
+                        ));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
         updater.updateCase(ccdCallbackDto);

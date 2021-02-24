@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
@@ -64,6 +65,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 response.getBody().jsonPath().getString("errors[0]"));
     }
 
+    @Ignore
     @Test
     public void test51CharsFileName() {
         Response response = postNewBundle(filenameWith51CharsJson);
