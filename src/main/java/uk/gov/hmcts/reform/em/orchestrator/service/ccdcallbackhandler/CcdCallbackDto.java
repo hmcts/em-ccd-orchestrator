@@ -2,10 +2,12 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.ToString;
 import pl.touk.throwing.ThrowingFunction;
 
 import java.util.Optional;
 
+@ToString
 public class CcdCallbackDto {
 
     private Optional<String> propertyName = Optional.empty();
