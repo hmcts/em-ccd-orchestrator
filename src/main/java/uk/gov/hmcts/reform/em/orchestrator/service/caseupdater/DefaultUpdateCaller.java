@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,8 +36,6 @@ public class DefaultUpdateCaller {
 
     public CcdCallbackResponseDto executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        Preconditions.checkNotNull(dto);
-        log.info(String.format("Request payload :  %s", dto.toString()));
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
