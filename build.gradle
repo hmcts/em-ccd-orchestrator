@@ -21,10 +21,6 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'idea'
 apply plugin: 'net.serenity-bdd.aggregator'
 
@@ -66,7 +62,8 @@ def versions = [
         pitest             : '1.5.1',
         gradlePitest       : '1.3.0',
         fasterXmlJackson   : '2.11.3',
-        sonarPitest        : '0.5'
+        sonarPitest        : '0.5',
+        mockito            : '3.8.0'
 ]
 sourceSets {
     aat {
@@ -169,8 +166,8 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test", withoutStuff
     testCompile "com.github.gmazzo:okhttp-mock:1.3.2"
     testCompile "com.github.gmazzo:okhttp-mock:1.3.1"
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.8.0'
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.6.28'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: versions.mockito
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
 
     testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured, withoutStuff
     testCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, withoutStuff
