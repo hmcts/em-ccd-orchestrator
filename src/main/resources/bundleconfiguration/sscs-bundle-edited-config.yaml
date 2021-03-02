@@ -33,3 +33,8 @@ folders:
             value: \w+
       - type: document
         property: /audioVideoEvidenceBundleDocument
+      - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /documentType
+            value: rip1
