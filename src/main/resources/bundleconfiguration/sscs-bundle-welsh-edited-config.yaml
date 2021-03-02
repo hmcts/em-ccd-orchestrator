@@ -38,3 +38,5 @@ folders:
         filters:
           - property: /bundleAddition
             value: \w+
+      - type: document
+        property: /audioVideoEvidenceBundleDocument
