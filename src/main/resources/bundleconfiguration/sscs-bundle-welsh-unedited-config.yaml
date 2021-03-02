@@ -30,6 +30,15 @@ folders:
         filters:
           - property: /bundleAddition
             value: \w+
+  - name: Audio/video evidence
+    documents:
+      - type: document
+        property: /audioVideoEvidenceBundleDocument
+      - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /documentType
+            value: rip1
   - name: Translated Documents
     documents:
       - type: documentSet
@@ -37,12 +46,8 @@ folders:
         filters:
           - property: /bundleAddition
             value: \w+
-  - name: Further Additions
-    documents:
-      - type: document
-        property: /audioVideoEvidenceBundleDocument
       - type: documentSet
-        property: /sscsDocument
+        property: /sscsWelshDocuments
         filters:
           - property: /documentType
             value: rip1
