@@ -24,15 +24,13 @@ folders:
         filters:
           - property: /documentType
             value: dwpEvidenceBundle
-  - name: Original Documents
+  - name: Further additions
     documents:
       - type: documentSet
         property: /sscsDocument
         filters:
           - property: /bundleAddition
             value: \w+
-  - name: Audio/video evidence
-    documents:
       - type: document
         property: /audioVideoEvidenceBundleDocument
       - type: documentSet
@@ -40,7 +38,7 @@ folders:
         filters:
           - property: /documentType
             value: rip1
-  - name: Translated Documents
+  - name: Translated documents
     documents:
       - type: documentSet
         property: /sscsWelshDocuments
