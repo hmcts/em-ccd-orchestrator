@@ -30,8 +30,6 @@ folders:
         filters:
           - property: /bundleAddition
             value: \w+
-  - name: Audio/video evidence
-    documents:
       - type: document
         property: /audioVideoEvidenceBundleDocument
       - type: documentSet
