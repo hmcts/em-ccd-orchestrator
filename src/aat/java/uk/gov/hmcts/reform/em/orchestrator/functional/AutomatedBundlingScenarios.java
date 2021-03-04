@@ -24,8 +24,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
     private static JsonNode filenameWith51CharsJson;
-    private static JsonNode redactedDocumentsJson;
-    private static JsonNode nonRedactedDocumentsJson;
+    private static JsonNode customDocumentsJson;
+    private static JsonNode nonCustomDocumentsJson;
     private static JsonNode multiBundleDocumentsJson;
 
     @Rule
@@ -38,8 +38,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
         invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
         filenameWith51CharsJson = extendedCcdHelper.loadCaseFromFile("filename-with-51-chars.json");
-        redactedDocumentsJson = extendedCcdHelper.loadCaseFromFile("redacted-documents-case.json");
-        nonRedactedDocumentsJson = extendedCcdHelper.loadCaseFromFile("non-redacted-documents-case.json");
+        customDocumentsJson = extendedCcdHelper.loadCaseFromFile("custom-documents-case.json");
+        nonCustomDocumentsJson = extendedCcdHelper.loadCaseFromFile("non-custom-documents-case.json");
         multiBundleDocumentsJson = extendedCcdHelper.loadCaseFromFile("multi-bundle-case.json");
     }
 
@@ -355,7 +355,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testRedactedDocuments() throws IOException {
 
-        Response response = postNewBundle(redactedDocumentsJson);
+        Response response = postNewBundle(customDocumentsJson);
 
         JsonPath responsePath = response.jsonPath();
 
@@ -375,7 +375,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testNonRedactedDocuments() throws IOException {
 
-        Response response = postNewBundle(nonRedactedDocumentsJson);
+        Response response = postNewBundle(nonCustomDocumentsJson);
 
         JsonPath responsePath = response.jsonPath();
 

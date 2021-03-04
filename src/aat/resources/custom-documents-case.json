@@ -1,7 +1,7 @@
 {
   "case_details": {
     "case_data": {
-      "bundleConfiguration": ["non-redacted-bundle-config.yaml"],
+      "bundleConfiguration": ["custom-bundle-config.yaml"],
       "dwpDocuments": [
         {
           "value": {
@@ -18,7 +18,7 @@
         {
           "value": {
             "documentDateAdded": "2021-02-12",
-            "documentFileName": "DWP response.pdf",
+            "documentFileName": "Redacted Doc2.pdf",
             "documentLink": {
               "document_binary_url": "http://dm-store:8080/documents/e6bdae57-3227-444e-8117-657285ecb849/binary",
               "document_filename": "DWP response received on 12-02-2021.pdf",
@@ -26,7 +26,7 @@
             },
             "documentType": "dwpResponse",
             "dwpEditedEvidenceReason": "phme",
-            "redactedDocumentLink": {
+            "customDocumentLink": {
               "document_binary_url": "http://dm-store:8080/documents/d4f19467-f440-4235-8884-9feeb9dab944/binary",
               "document_filename": "Redacted Doc2.pdf",
               "document_url": "http://dm-store:8080/documents/d4f19467-f440-4235-8884-9feeb9dab944"
@@ -36,7 +36,7 @@
         {
           "value": {
             "documentDateAdded": "2021-02-12",
-            "documentFileName": "DWP evidence.pdf",
+            "documentFileName": "Redacted Doc3.pdf",
             "documentLink": {
               "document_binary_url": "http://dm-store:8080/documents/ac5c2471-0c37-4754-a034-8c4a0bdc9073/binary",
               "document_filename": "DWP evidence received on 12-02-2021.pdf",
@@ -44,11 +44,23 @@
             },
             "documentType": "dwpEvidenceBundle",
             "dwpEditedEvidenceReason": "phme",
-            "redactedDocumentLink": {
+            "customDocumentLink": {
               "document_binary_url": "http://dm-store:8080/documents/a05ca916-28aa-40df-a7cd-7a38adaef68a/binary",
               "document_filename": "Redacted Doc3.pdf",
               "document_url": "http://dm-store:8080/documents/a05ca916-28aa-40df-a7cd-7a38adaef68a"
             }
+          }
+        },
+        {
+          "value": {
+            "documentDateAdded": "2021-02-08",
+            "documentFileName": "AT38.png",
+            "documentLink": {
+              "document_binary_url": "http://dm-store:8080/documents/e1d5c661-eca9-4625-b46f-5370257848eb/binary",
+              "document_filename": "AT38.png",
+              "document_url": "http://dm-store:8080/documents/e1d5c661-eca9-4625-b46f-5370257848eb"
+            },
+            "documentType": "at38"
           }
         }
       ],

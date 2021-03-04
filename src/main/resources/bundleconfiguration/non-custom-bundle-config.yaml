@@ -12,4 +12,4 @@ folders:
     documents:
       - type: documentSet
         property: /dwpDocuments
-# redacted attribute value is not set to true. Default value is false.
+# customDocument attribute value is not set to true. Default value is false.

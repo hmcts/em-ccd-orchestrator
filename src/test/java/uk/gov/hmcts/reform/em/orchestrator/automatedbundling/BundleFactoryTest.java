@@ -30,7 +30,7 @@ public class BundleFactoryTest {
     private final File case4Json = new File(ClassLoader.getSystemResource("case-data4.json").getPath());
     private final File case5Json = new File(ClassLoader.getSystemResource("case-data5.json").getPath());
     private final File case6Json = new File(ClassLoader.getSystemResource("case-data6.json").getPath());
-    private final File redactedCaseJson = new File(ClassLoader.getSystemResource("case-data-redacted.json").getPath());
+    private final File customCaseJson = new File(ClassLoader.getSystemResource("case-data-custom.json").getPath());
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -52,7 +52,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -83,7 +84,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -110,7 +112,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -137,7 +140,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -167,7 +171,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -200,10 +205,11 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            true
+            true,
+            "/customDocumentLink"
         );
 
-        JsonNode json = mapper.readTree(redactedCaseJson);
+        JsonNode json = mapper.readTree(customCaseJson);
         CcdBundleDTO bundle = factory.create(configuration, json);
 
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
@@ -235,11 +241,12 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         try {
-            JsonNode json = mapper.readTree(redactedCaseJson);
+            JsonNode json = mapper.readTree(customCaseJson);
             CcdBundleDTO bundle = factory.create(configuration, json);
         } catch (DocumentSelectorException docExp) {
             assertTrue(docExp.getMessage().equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
@@ -269,7 +276,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            true
+            true,
+            "/customDocumentLink"
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -301,7 +309,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -337,7 +346,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -373,7 +383,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -406,7 +417,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -442,7 +454,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -478,7 +491,8 @@ public class BundleFactoryTest {
             null,
             false,
             null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case2Json);
@@ -514,7 +528,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case5Json);
@@ -550,7 +565,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -586,7 +602,8 @@ public class BundleFactoryTest {
                 null,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -631,7 +648,8 @@ public class BundleFactoryTest {
                 docImg,
                 false,
                 null,
-            false
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -669,7 +687,8 @@ public class BundleFactoryTest {
             null,
             false,
             "/document",
-            false
+            false,
+            null
         );
 
 
