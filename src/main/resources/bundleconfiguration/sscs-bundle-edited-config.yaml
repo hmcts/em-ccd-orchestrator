@@ -37,4 +37,4 @@ folders:
         property: /dwpDocuments
         filters:
           - property: /rip1DocumentLink
-              value: \w+
+            value: \w+
