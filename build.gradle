@@ -304,7 +304,9 @@ jacocoTestReport {
 
     reports {
         xml.enabled = true
-        csv.enabled = true
+        csv.enabled = false
+
+        xml.destination file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -339,8 +341,7 @@ pitest {
 
 project.tasks['sonarqube'].group = "Verification"
 
-
-project.tasks['sonarqube'].dependsOn jacocoTestReport
+project.tasks['sonarqube'].dependsOn test, jacocoTestReport
 
 sonarqube {
     properties {
@@ -365,6 +366,10 @@ idea {
         testSourceDirs += project.sourceSets.contractTest.java.srcDirs
         testResourceDirs += project.sourceSets.contractTest.resources.srcDirs
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task functional(type: Test) {
@@ -405,7 +410,6 @@ compileJava.dependsOn processResources
 task contract(type: Test) {
     group = 'Delivery pipeline'
     description = 'Runs the consumer Pact tests'
-    useJUnitPlatform()
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
     include "uk/gov/hmcts/reform/em/orchestrator/**"
