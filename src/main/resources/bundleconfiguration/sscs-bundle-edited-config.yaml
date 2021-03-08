@@ -24,7 +24,7 @@ folders:
         filters:
           - property: /documentType
             value: dwpEvidenceBundle
-  - name: Further Additions
+  - name: Further additions
     documents:
       - type: documentSet
         property: /sscsDocument
@@ -33,3 +33,8 @@ folders:
             value: \w+
       - type: document
         property: /audioVideoEvidenceBundleDocument
+      - type: documentSet
+        property: /dwpDocuments
+        filters:
+          - property: /rip1DocumentLink
+            value: \w+
