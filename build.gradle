@@ -143,7 +143,7 @@ dependencies {
     compile "org.zalando:problem-spring-web:0.26.2"
     compile("io.springfox:springfox-swagger2:${versions.springfoxSwagger}")
     compile("io.springfox:springfox-swagger-ui:${versions.springfoxSwagger}")
-    compile group: "org.apache.commons", name: "commons-lang3", version: "3.11"
+    compile group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
     compile group: "commons-validator", name: "commons-validator", version: "1.7"
     compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
     compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "3.1.4"
