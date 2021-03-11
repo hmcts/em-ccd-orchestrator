@@ -92,7 +92,7 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
             .thenReturn(
                 new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":[\"example.yaml\"], "
+                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":[\"example.yaml\"], "
                         + "\"caseBundles\": []}}}")
                 )
             );
@@ -118,7 +118,7 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
             .thenReturn(
                 new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":[], "
+                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":[], "
                         + "\"caseBundles\": []}}}")
                 )
             );

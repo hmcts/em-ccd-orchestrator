@@ -61,7 +61,7 @@ public class BundleFactory {
                             BundleConfigurationSort sortOrder,
                             String documentNameValue,
                             JsonNode caseData, String documentLinkValue,
-                            String customDocumentLinkValue, boolean redacted) throws DocumentSelectorException {
+                            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : sourceFolders) {
@@ -71,11 +71,11 @@ public class BundleFactory {
             destinationFolders.add(new CcdValue<>(ccdFolder));
 
             addDocuments(folder.documents, ccdFolder.getDocuments(), sortOrder, documentNameValue, caseData,
-                documentLinkValue, customDocumentLinkValue, redacted);
+                documentLinkValue, customDocumentLinkValue, customDocument);
 
             if (folder.folders != null && !folder.folders.isEmpty()) {
                 addFolders(folder.folders, ccdFolder.getFolders(), sortOrder, documentNameValue, caseData,
-                    documentLinkValue, customDocumentLinkValue, redacted);
+                    documentLinkValue, customDocumentLinkValue, customDocument);
             }
         }
     }
@@ -85,14 +85,14 @@ public class BundleFactory {
                               BundleConfigurationSort sortOrder,
                               String documentNameValue,
                               JsonNode caseData, String documentLinkValue,
-                              String customDocumentLinkValue, boolean redacted) throws DocumentSelectorException {
+                              String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
                 ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData,
-                documentLinkValue, customDocumentLinkValue, redacted)
+                documentLinkValue, customDocumentLinkValue, customDocument)
                 : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
-                documentLinkValue, customDocumentLinkValue, redacted);
+                documentLinkValue, customDocumentLinkValue, customDocument);
 
             destinationDocuments.addAll(documents);
         }
@@ -110,7 +110,7 @@ public class BundleFactory {
                                                              BundleConfigurationSort sortOrder,
                                                              String documentNameValue,
                                                              JsonNode caseData, String documentLinkValue,
-                                                             String customDocumentLinkValue, boolean redacted) throws DocumentSelectorException {
+                                                             String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
         ArrayList<CcdValue<CcdBundleDocumentDTO>> list = new ArrayList<>();
         JsonNode node = caseData.at(documentSelector.property);
 
@@ -123,7 +123,7 @@ public class BundleFactory {
         }
 
         list.add(getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue, customDocumentLinkValue,
-            redacted));
+            customDocument));
 
         return list;
     }
@@ -131,12 +131,12 @@ public class BundleFactory {
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(JsonNode node,
                                                                BundleConfigurationSort sortOrder,
                                                                String documentNameValue, String documentLinkValue,
-                                                               String customDocumentLinkValue, boolean redacted) throws DocumentSelectorException {
+                                                               String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
         CcdDocument sourceDocument = new CcdDocument();
 
         String documentPath = StringUtils.defaultIfEmpty(documentLinkValue,"/documentLink");
 
-        if (redacted && getChildNode(node, customDocumentLinkValue)) {
+        if (customDocument && getChildNode(node, customDocumentLinkValue)) {
             documentPath = customDocumentLinkValue;
             sourceDocument.setUrl(getField(node, documentPath + "/document_url").asText());
             sourceDocument.setBinaryUrl(getField(node, documentPath + "/document_binary_url").asText());
@@ -188,7 +188,7 @@ public class BundleFactory {
                                                                 BundleConfigurationSort sortOrder,
                                                                 String documentNameValue,
                                                                 JsonNode caseData, String documentLinkValue,
-                                                                String customDocumentLinkValue, boolean redacted) throws DocumentSelectorException {
+                                                                String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         JsonNode list = caseData.at(documentSelector.property);
 
@@ -205,7 +205,7 @@ public class BundleFactory {
             .map(n -> n.at("/value"))
             .filter(n -> anyFilterMatches(documentSelector.filters, n))
             .map(unchecked(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
-                customDocumentLinkValue, redacted)))
+                customDocumentLinkValue, customDocument)))
             .collect(Collectors.toList());
     }
 

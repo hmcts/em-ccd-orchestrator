@@ -30,6 +30,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final Logger log = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
 
     private static final String CONFIG_FIELD = "bundleConfiguration";
+    private static final String MULTI_BUNDLE_CONFIG_FIELD = "multiBundleConfiguration";
     private static final String CASE_ID = "id";
     private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("SSCS", "sscs-bundle-config.yaml");
     private static final String DEFAULT_CONFIG = "default-config.yaml";
@@ -96,12 +97,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             }
             bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
-            //            Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle);
-            //
-            //            if (!violations.isEmpty()) {
-            //                throw new InputValidationException(violations);
-            //            }
-
             ccdBundleDtos.add(bundle);
         }
         return ccdBundleDtos;
@@ -111,16 +106,18 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         List<String> bundleConfigurations = new ArrayList<String>();
         try {
-            if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)) {
-                if (ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isArray()) {
-                    if (!ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isEmpty()) {
-                        bundleConfigurations.addAll(jsonMapper.readValue(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).toString(),
-                                List.class));
-                    }
-                } else {
-                    bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
-                }
+            if (ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
+                && !ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD).isEmpty()) {
+
+                bundleConfigurations.addAll(jsonMapper.readValue(ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD).toString(),
+                        List.class));
+
+            } else if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
+                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")) {
+
+                bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
             }
+
         } catch (JsonProcessingException jexp) {
             log.error(String.format("Error parsing request for Case-Id  : %s",ccdCallbackDto.getCaseDetails().get(CASE_ID)));
         }
