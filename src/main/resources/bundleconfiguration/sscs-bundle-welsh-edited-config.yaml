@@ -10,7 +10,8 @@ sort:
 hasFolderCoversheets: true
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
-documentLinkValue: /editedDocumentLink
+customDocument: true
+customDocumentLinkValue: /editedDocumentLink
 folders:
   - name: DWP
     documents:
