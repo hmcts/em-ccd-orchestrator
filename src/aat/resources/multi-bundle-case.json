@@ -1,7 +1,7 @@
 {
   "case_details": {
     "case_data": {
-      "multiBundleConfiguration" : ["custom-bundle-config.yaml", "non-custom-bundle-config.yaml"],
+      "multiBundleConfiguration" : [{"value": "custom-bundle-config.yaml"}, {"value": "non-custom-bundle-config.yaml"}],
       "dwpDocuments": [
         {
           "value": {
