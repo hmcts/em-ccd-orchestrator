@@ -5,16 +5,16 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AutomatedBundlingScenarios extends BaseTest {
@@ -63,16 +63,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
         assertEquals(200, response.getStatusCode());
         assertEquals("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
                 response.getBody().jsonPath().getString("errors[0]"));
-    }
-
-    @Ignore
-    @Test
-    public void test51CharsFileName() {
-        Response response = postNewBundle(filenameWith51CharsJson);
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, response.getBody().jsonPath().getString(
-            "errors[0]"));
     }
 
     @Test
@@ -131,7 +121,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
         assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
@@ -359,7 +348,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
         assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
@@ -379,7 +367,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
         assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
@@ -397,7 +384,6 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         JsonPath responsePath = response.jsonPath();
 
-        System.out.println(response.getBody().prettyPrint());
         assertEquals(200, response.getStatusCode());
         assertEquals(2, responsePath.getList("data.caseBundles").size());
     }
