@@ -127,7 +127,7 @@ sh ./publish-swagger-docs.sh
          ]
     }
 
-    after('smokeTest:preview') {
+    after('smoketest:preview') {
         publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
@@ -138,7 +138,7 @@ sh ./publish-swagger-docs.sh
         ]
     }
 
-    after('smokeTest:aat') {
+    after('smoketest:aat') {
         publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
