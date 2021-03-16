@@ -71,7 +71,6 @@ sh ./publish-swagger-docs.sh
     }
 
     after('test') {
-          sh '''
 
            publishHTML target: [
               allowMissing         : true,
