@@ -65,16 +65,132 @@ sh ./publish-swagger-docs.sh
 '''
     }
 
-    after('functionalTest:preview') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
-
-    after('functionalTest:aat') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
-
     onMaster()
     {
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    }
+
+    after('test') {
+          sh '''
+
+           publishHTML target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : "build/reports/checkstyle",
+              reportFiles          : "main.html",
+              reportName           : "CCD Orchestrator API Checkstyle Main Report"
+          ]
+
+          publishHTML target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : "build/reports/checkstyle",
+              reportFiles          : "test.html",
+              reportName           : "CCD Orchestrator API Checkstyle Test Report"
+          ]
+
+         publishHTML target: [
+                allowMissing         : true,
+                alwaysLinkToLastBuild: true,
+                keepAll              : true,
+                reportDir            : "build/reports/checkstyle",
+                reportFiles          : "aat.html",
+                reportName           : "CCD Orchestrator API Checkstyle AAT Report"
+         ]
+
+         publishHTML target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : "build/reports/pmd",
+              reportFiles          : "main.html",
+              reportName           : "CCD Orchestrator API PMD Main Report"
+         ]
+
+         publishHTML target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : "build/reports/pmd",
+              reportFiles          : "test.html",
+              reportName           : "CCD Orchestrator API PMD Test Report"
+         ]
+
+         publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/test",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Unit Tests Report"
+         ]
+    }
+
+    after('smokeTest:preview') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/smoke",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Smoke Test Report"
+        ]
+    }
+
+    after('smokeTest:aat') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/smoke",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Smoke Test Report"
+        ]
+    }
+
+    after('functionalTest:preview') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/functional",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Functional Test Report"
+        ]
+    }
+
+    after('functionalTest:aat') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/functional",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Functional Test Report"
+        ]
+    }
+
+    after('contractTest:preview') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/contract",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Contract Test Report"
+        ]
+    }
+
+    after('contractTest:aat') {
+        publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/contract",
+            reportFiles          : "index.html",
+            reportName           : "CCD Orchestrator API Contract Test Report"
+        ]
     }
 }
