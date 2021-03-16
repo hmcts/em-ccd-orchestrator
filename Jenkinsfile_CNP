@@ -65,6 +65,14 @@ sh ./publish-swagger-docs.sh
 '''
     }
 
+    after('functionalTest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('functionalTest:aat') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
     onMaster()
     {
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
