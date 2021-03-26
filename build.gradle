@@ -211,8 +211,8 @@ dependencyManagement {
             entry 'kotlin-stdlib-jdk8'
         }
 
-        //CVE-2021-21290
-        dependencySet(group: 'io.netty', version: '4.1.59.Final') {
+        //CVE-2021-21295
+        dependencySet(group: 'io.netty', version: '4.1.60.Final') {
             entry 'netty-buffer'
             entry 'netty-codec'
             entry 'netty-common'
