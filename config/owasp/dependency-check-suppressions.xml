@@ -3,8 +3,4 @@
     <suppress>
         <cve>CVE-2018-1258</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[False Positive]]></notes>
-        <cpe regex="true">cpe:/a:jetbrains:kotlin:1.4.0:*.*$</cpe>
-    </suppress>
 </suppressions>
