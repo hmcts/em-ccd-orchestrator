@@ -30,6 +30,7 @@ public class BundleFactoryTest {
     private final File case4Json = new File(ClassLoader.getSystemResource("case-data4.json").getPath());
     private final File case5Json = new File(ClassLoader.getSystemResource("case-data5.json").getPath());
     private final File case6Json = new File(ClassLoader.getSystemResource("case-data6.json").getPath());
+    private final File customCaseJson = new File(ClassLoader.getSystemResource("case-data-custom.json").getPath());
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
@@ -48,6 +49,8 @@ public class BundleFactoryTest {
             new ArrayList<>(),
             CcdBundlePaginationStyle.off,
             null,
+            null,
+            false,
             null,
             false,
             null
@@ -80,7 +83,9 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -106,7 +111,9 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -132,7 +139,9 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
@@ -161,7 +170,114 @@ public class BundleFactoryTest {
             null,
             null,
             false,
+            null,
+            false,
             null
+        );
+
+        JsonNode json = mapper.readTree(case1Json);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+    }
+
+    @Test
+    public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException,
+        DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocument("/folder/document")
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            true,
+            "/customDocumentLink"
+        );
+
+        JsonNode json = mapper.readTree(customCaseJson);
+        CcdBundleDTO bundle = factory.create(configuration, json);
+
+        assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
+        assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
+    }
+
+    @Test
+    public void createWithDocWithRedactedFalseAndRedactedDocNode() throws IOException, DocumentSelectorException {
+        //Redacted flag is set to false. We should have "/documentLink" node. In this case, we have
+        // "/redactedDocumentLink" node
+        // but the corresponding "/documentLink" node is missing
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocument("/folder/document")
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            false,
+            null
+        );
+
+        try {
+            JsonNode json = mapper.readTree(customCaseJson);
+            CcdBundleDTO bundle = factory.create(configuration, json);
+        } catch (DocumentSelectorException docExp) {
+            assertTrue(docExp.getMessage().equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
+        }
+
+    }
+
+    @Test
+    public void createWithDocWithRedactedTrueAndWithoutRedactedDocNode() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocument("/folder/document")
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            true,
+            "/customDocumentLink"
         );
 
         JsonNode json = mapper.readTree(case1Json);
@@ -190,6 +306,8 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
+            false,
             null,
             false,
             null
@@ -227,6 +345,8 @@ public class BundleFactoryTest {
             null,
             null,
             false,
+            null,
+            false,
             null
         );
 
@@ -262,6 +382,8 @@ public class BundleFactoryTest {
             null,
             null,
             false,
+            null,
+            false,
             null
         );
 
@@ -294,7 +416,9 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -327,6 +451,8 @@ public class BundleFactoryTest {
             ),
             CcdBundlePaginationStyle.off,
             null,
+            null,
+            false,
             null,
             false,
             null
@@ -364,6 +490,8 @@ public class BundleFactoryTest {
             null,
             null,
             false,
+            null,
+            false,
             null
         );
 
@@ -399,7 +527,9 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case5Json);
@@ -434,7 +564,9 @@ public class BundleFactoryTest {
                 null,
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case3Json);
@@ -469,7 +601,9 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 null,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -513,7 +647,9 @@ public class BundleFactoryTest {
                 "/documentFileName",
                 docImg,
                 false,
-                null
+                null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case4Json);
@@ -550,7 +686,9 @@ public class BundleFactoryTest {
             "/documentFileName",
             null,
             false,
-            "/document"
+            "/document",
+            false,
+            null
         );
 
 

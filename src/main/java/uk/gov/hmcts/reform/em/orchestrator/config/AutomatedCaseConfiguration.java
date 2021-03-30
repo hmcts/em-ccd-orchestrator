@@ -10,11 +10,16 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingE
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.BundleFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 
+import javax.validation.Validator;
+
 @Configuration
 public class AutomatedCaseConfiguration {
 
     @Autowired
     AutomatedStitchingExecutor automatedStitchingExecutor;
+
+    @Autowired
+    Validator validator;
 
     @Bean
     AutomatedCaseUpdater automatedCaseUpdater() {
@@ -22,7 +27,8 @@ public class AutomatedCaseConfiguration {
             localConfigurationLoader(),
             new ObjectMapper(),
             new BundleFactory(),
-            automatedStitchingExecutor
+            automatedStitchingExecutor,
+            validator
         );
     }
 

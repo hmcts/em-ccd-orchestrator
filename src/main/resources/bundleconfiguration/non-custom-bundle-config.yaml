@@ -1,0 +1,15 @@
+title: Redacted Bundle
+filename: RedactedBundle
+filenameIdentifier: /case_details/id
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: false
+pageNumberFormat: numberOfPages
+documentNameValue: /documentFileName
+folders:
+  - name: DWP
+    documents:
+      - type: documentSet
+        property: /dwpDocuments
+# customDocument attribute value is not set to true. Default value is false.

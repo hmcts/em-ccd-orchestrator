@@ -100,7 +100,7 @@ public class CcdStitchScenarios extends BaseTest {
     @Test
     public void testPostBundleStitchFileName51Char() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
-        bundle.setFileName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        bundle.setFileName(Constants.FILE_NAME_WITH_51_CHARS_LENGTH);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);

@@ -1,0 +1,16 @@
+title: Redacted Bundle
+filename: RedactedBundle
+filenameIdentifier: /case_details/id
+coverpageTemplate: FL-FRM-APP-ENG-00002.docx
+hasTableOfContents: true
+hasCoversheets: true
+customDocument: true
+hasFolderCoversheets: false
+pageNumberFormat: numberOfPages
+documentNameValue: /documentFileName
+customDocumentLinkValue: /customDocumentLink
+folders:
+  - name: DWP
+    documents:
+      - type: documentSet
+        property: /dwpDocuments

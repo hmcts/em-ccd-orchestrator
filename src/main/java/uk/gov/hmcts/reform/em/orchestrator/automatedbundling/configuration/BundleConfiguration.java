@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
@@ -32,6 +33,8 @@ public class BundleConfiguration {
     public final Boolean enableEmailNotification;
     public final DocumentImage documentImage;
     public final String documentLinkValue;
+    public final boolean customDocument;
+    public final String customDocumentLinkValue;
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
@@ -48,7 +51,9 @@ public class BundleConfiguration {
                                @JsonProperty("documentNameValue") String documentNameValue,
                                @JsonProperty("documentImage") DocumentImage documentImage,
                                @JsonProperty("enableEmailNotification") Boolean enableEmailNotification,
-                               @JsonProperty("documentLinkValue") String documentLinkValue) {
+                               @JsonProperty("documentLinkValue") String documentLinkValue,
+                               @JsonProperty("customDocument") boolean customDocument,
+                               @JsonProperty("customDocumentLinkValue") String customDocumentLinkValue) {
 
         this.title = title;
         this.filename = ensurePdfExtension(filename);
@@ -66,5 +71,13 @@ public class BundleConfiguration {
         this.documentImage = documentImage;
         this.enableEmailNotification = enableEmailNotification;
         this.documentLinkValue = documentLinkValue;
+        this.customDocument = customDocument;
+        this.customDocumentLinkValue = customDocumentLinkValue;
+    }
+
+    public boolean validate (){
+
+        return customDocument == StringUtils.isNoneBlank(customDocumentLinkValue);
+
     }
 }

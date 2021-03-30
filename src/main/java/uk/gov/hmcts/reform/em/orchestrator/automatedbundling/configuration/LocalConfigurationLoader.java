@@ -28,7 +28,15 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
             .getResourceAsStream("bundleconfiguration/" + filename);
 
         try {
-            return mapper.readValue(input, BundleConfiguration.class);
+            BundleConfiguration bundleConfiguration = mapper.readValue(input, BundleConfiguration.class);
+            if (!bundleConfiguration.validate()) {
+                throw new BundleConfigurationException(
+                    "customDocumentLinkValue should be provided in " + filename + " when customDocument is set to "
+                        + "true.");
+            }
+            return bundleConfiguration;
+        } catch (BundleConfigurationException bundleConfigExp) {
+            throw bundleConfigExp;
         } catch (Exception e) {
             throw new BundleConfigurationException(
                     "Invalid configuration file entry in: " + filename + "; Configuration file parameter(s) and/or parameter value(s)", e);

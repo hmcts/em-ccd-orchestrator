@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,6 +11,9 @@ import static org.junit.Assert.assertEquals;
 
 public class LocalConfigurationLoaderTest {
     private final LocalConfigurationLoader loader = new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
+
+    private static final String CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG =
+        "customDocumentLinkValue should be provided in custom-bundle-wrong-config.yaml when customDocument is set to true.";
 
     @Test
     public void load() {
@@ -29,6 +33,15 @@ public class LocalConfigurationLoaderTest {
     @Test(expected = BundleConfigurationException.class)
     public void loadMissingConfig() {
         loader.load("does-not-exist.yaml");
+    }
+
+    @Test
+    public void loadMissingCustomDocumentLinkValue() {
+        try {
+            loader.load("custom-bundle-wrong-config.yaml");
+        }  catch (BundleConfigurationException exp) {
+            Assert.assertTrue(CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG.equalsIgnoreCase(exp.getMessage()));
+        }
     }
 
     @Test

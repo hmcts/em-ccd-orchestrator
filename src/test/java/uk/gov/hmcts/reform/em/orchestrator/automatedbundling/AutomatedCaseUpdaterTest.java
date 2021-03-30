@@ -14,12 +14,16 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AutomatedCaseUpdaterTest {
@@ -27,16 +31,7 @@ public class AutomatedCaseUpdaterTest {
     @Mock
     private AutomatedStitchingExecutor automatedStitchingExecutor;
 
-    private AutomatedCaseUpdater updater = new AutomatedCaseUpdater(
-        new LocalConfigurationLoader(
-            new ObjectMapper(
-                new YAMLFactory()
-            )
-        ),
-        new ObjectMapper(),
-        new BundleFactory(),
-        automatedStitchingExecutor
-    );
+    private AutomatedCaseUpdater updater;
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(
         new ObjectMapper()
@@ -44,15 +39,20 @@ public class AutomatedCaseUpdaterTest {
 
     @Before
     public void setup() {
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
         updater = new AutomatedCaseUpdater(
             new LocalConfigurationLoader(
-                    new ObjectMapper(
-                            new YAMLFactory()
-                    )
+                new ObjectMapper(
+                    new YAMLFactory()
+                )
             ),
             new ObjectMapper(),
             new BundleFactory(),
-            automatedStitchingExecutor
+            automatedStitchingExecutor,
+            validator
         );
     }
 
@@ -80,6 +80,73 @@ public class AutomatedCaseUpdaterTest {
         assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
         assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
         assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
+    }
+
+    @Test
+    public void updateCaseWithArrayBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":[{\"value\":\"example.yaml\"}], "
+                        + "\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
+    }
+
+    @Test
+    public void updateCaseWithEmptyArrayBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":[], "
+                        + "\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
+
+    @Test
+    public void updateCaseWithOutBundleConfig() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
     }
 
     @Test

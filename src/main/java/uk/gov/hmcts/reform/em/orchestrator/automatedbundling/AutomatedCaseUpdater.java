@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -12,13 +16,21 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
  */
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
+
+    private final Logger log = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
+
     private static final String CONFIG_FIELD = "bundleConfiguration";
+    private static final String MULTI_BUNDLE_CONFIG_FIELD = "multiBundleConfiguration";
+    private static final String VALUE = "value";
     private static final Map<String, String> CONFIG_MAP = ImmutableMap.of("SSCS", "sscs-bundle-config.yaml");
     private static final String DEFAULT_CONFIG = "default-config.yaml";
 
@@ -26,15 +38,18 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
+    private final Validator validator;
 
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
                                 BundleFactory bundleFactory,
-                                AutomatedStitchingExecutor automatedStitchingExecutor) {
+                                AutomatedStitchingExecutor automatedStitchingExecutor,
+                                Validator validator) {
         this.configurationLoader = configurationLoader;
         this.jsonMapper = jsonMapper;
         this.bundleFactory = bundleFactory;
         this.automatedStitchingExecutor = automatedStitchingExecutor;
+        this.validator = validator;
     }
 
     /**
@@ -43,35 +58,71 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        String configurationName =
-                ccdCallbackDto.getCaseData().has(CONFIG_FIELD) && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")
-                ? ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText()
-                : CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG);
 
-        BundleConfiguration configuration = configurationLoader.load(configurationName);
-        final ArrayNode bundles = ccdCallbackDto
-            .findCaseProperty(ArrayNode.class)
-            .orElseGet(() -> {
+        List<String> bundleConfigurations = prepareBundleConfigs(ccdCallbackDto);
+
+        List<CcdBundleDTO>  ccdBundleDtos = populateBundleConfigs(ccdCallbackDto, bundleConfigurations);
+
+        //Make call for Stitching only after the validation is completed for the Bundles and have no validation error.
+        for (CcdBundleDTO bundle : ccdBundleDtos) {
+            final ArrayNode bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class).orElseGet(() -> {
                 ArrayNode arrayNode = jsonMapper.createArrayNode();
-                ((ObjectNode)ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                ((ObjectNode) ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
                 return arrayNode;
             });
 
-        CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
-        ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
-        if (bundle.getFileNameIdentifier() != null && !bundle.getFileNameIdentifier().isEmpty()) {
-            bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
-        }
-        bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
-
-        automatedStitchingExecutor.startStitching(
+            automatedStitchingExecutor.startStitching(
                 ccdCallbackDto.getCaseId(),
                 ccdCallbackDto.getJwt(),
                 bundle);
 
-        bundles.insert(0, bundleDtoToBundleJson(bundle));
+            bundles.insert(0, bundleDtoToBundleJson(bundle));
+        }
 
         return ccdCallbackDto.getCaseData();
+    }
+
+    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations) {
+        List<CcdBundleDTO>  ccdBundleDtos = new ArrayList<>();
+        for (String bundleConfig : bundleConfigurations) {
+
+            BundleConfiguration configuration = configurationLoader.load(bundleConfig);
+
+
+            CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
+            ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
+            if (StringUtils.isNotBlank(bundle.getFileNameIdentifier())) {
+                bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
+            }
+            bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
+
+            ccdBundleDtos.add(bundle);
+        }
+        return ccdBundleDtos;
+    }
+
+    private List<String> prepareBundleConfigs(CcdCallbackDto ccdCallbackDto) {
+
+        List<String> bundleConfigurations = new ArrayList<String>();
+
+        if (ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
+            && !ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD).isEmpty()) {
+
+
+            ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD)
+                .forEach(bundleConfig -> bundleConfigurations.add(bundleConfig.get(VALUE).textValue()));
+
+
+        } else if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
+            && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")) {
+
+            bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
+        }
+
+        if (CollectionUtils.isEmpty(bundleConfigurations)) {
+            bundleConfigurations.add(CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG));
+        }
+        return bundleConfigurations;
     }
 
     private JsonNode bundleDtoToBundleJson(CcdBundleDTO ccdBundle) {
