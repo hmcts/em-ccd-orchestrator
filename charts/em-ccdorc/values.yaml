@@ -1,6 +1,6 @@
 java:
   applicationPort: 8080
-  image: hmcts.azurecr.io/hmcts/em-ccd-orchestrator:latest
+  image: 'hmctspublic.azurecr.io/em/ccdorc:latest'
   ingressHost: em-ccd-orchestrator-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   aadIdentityName: em
   keyVaults:
