@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import org.junit.Assert;
+import io.restassured.response.ValidatableResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -13,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class CcdCloneScenarios extends BaseTest {
@@ -29,15 +29,15 @@ public class CcdCloneScenarios extends BaseTest {
         String json = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
 
-        Response response = postCloneCCDBundle(wrappedJson);
+        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
 
-        JsonPath path = response.getBody().jsonPath();
-
-        Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("CLONED_Bundle title", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertEquals("no", path.getString("data.caseBundles[0].value.eligibleForCloning"));
-        Assert.assertEquals("Bundle title", path.getString("data.caseBundles[1].value.title"));
-        Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
+        response
+                .assertThat()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle title"))
+                .body("data.caseBundles[0].value.eligibleForCloning", equalTo("no"))
+                .body("data.caseBundles[1].value.title", equalTo("Bundle title"))
+                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"));
     }
 
     @Test
@@ -57,25 +57,26 @@ public class CcdCloneScenarios extends BaseTest {
         String jsonList = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s  } } }", jsonList);
 
-        Response response = postCloneCCDBundle(wrappedJson);
+        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
 
-        JsonPath path = response.getBody().jsonPath();
-
-        Assert.assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("CLONED_Bundle 2", path.getString("data.caseBundles[0].value.title"));
-        Assert.assertEquals("Bundle 2", path.getString("data.caseBundles[1].value.title"));
-        Assert.assertEquals("Bundle 1", path.getString("data.caseBundles[2].value.title"));
-        Assert.assertEquals("no", path.getString("data.caseBundles[1].value.eligibleForCloning"));
-        Assert.assertEquals("CLONED_FilenameBundle2", path.getString("data.caseBundles[0].value.fileName"));
+        response
+                .assertThat()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle 2"))
+                .body("data.caseBundles[1].value.title", equalTo("Bundle 2"))
+                .body("data.caseBundles[2].value.title", equalTo("Bundle 1"))
+                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"))
+                .body("data.caseBundles[0].value.fileName", equalTo("CLONED_FilenameBundle2"));
     }
 
-    private Response postCloneCCDBundle(String wrappedJson) {
+    private ValidatableResponse postCloneCCDBundle(String wrappedJson) {
         return testUtil
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .post("/api/clone-ccd-bundles");
+                .post("/api/clone-ccd-bundles")
+                .then();
     }
 
 }
