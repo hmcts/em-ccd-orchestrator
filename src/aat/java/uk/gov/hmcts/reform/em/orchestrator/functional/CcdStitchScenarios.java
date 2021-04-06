@@ -98,7 +98,7 @@ public class CcdStitchScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(200) //FIXME should be 400
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
