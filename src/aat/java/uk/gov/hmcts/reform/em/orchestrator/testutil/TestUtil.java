@@ -81,6 +81,10 @@ public class TestUtil {
                 .header("Authorization", idamAuth);
     }
 
+    public RequestSpecification unauthenticatedRequest() {
+        return SerenityRest.given();
+    }
+
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());

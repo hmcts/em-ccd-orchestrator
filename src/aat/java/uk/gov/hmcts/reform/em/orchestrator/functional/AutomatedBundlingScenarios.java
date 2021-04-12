@@ -1,9 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import org.junit.Assert;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,9 +11,9 @@ import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AutomatedBundlingScenarios extends BaseTest {
@@ -31,6 +30,9 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
+    private RequestSpecification request;
+    private RequestSpecification unAuthenticatedRequest;
+
     @Before
     public void setup() throws Exception {
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
@@ -41,75 +43,87 @@ public class AutomatedBundlingScenarios extends BaseTest {
         customDocumentsJson = extendedCcdHelper.loadCaseFromFile("custom-documents-case.json");
         nonCustomDocumentsJson = extendedCcdHelper.loadCaseFromFile("non-custom-documents-case.json");
         multiBundleDocumentsJson = extendedCcdHelper.loadCaseFromFile("multi-bundle-case.json");
+        setupRequests();
     }
 
     @Test
     public void testCreateBundle() {
-        Response response = postNewBundle(validJson);
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals("New bundle", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
-        assertEquals("Folder 1", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.name"));
-        assertEquals("Folder 1.a", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.name"));
-        assertEquals("Folder 1.b", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[1].value.name"));
-        assertEquals("Folder 2", response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[1].value.name"));
-        assertEquals("stitched.pdf", response.getBody().jsonPath().getString("data.caseBundles[0].value.fileName"));
+        final ValidatableResponse response = postNewBundle(validJson);
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("New bundle"))
+                .body("data.caseBundles[0].value.folders[0].value.name", equalTo("Folder 1"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.name", equalTo("Folder 1.a"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[1].value.name", equalTo("Folder 1.b"))
+                .body("data.caseBundles[0].value.folders[1].value.name", equalTo("Folder 2"))
+                .body("data.caseBundles[0].value.fileName", equalTo("stitched.pdf"));
     }
 
     @Test
     public void testInvalidConfig() {
-        Response response = postNewBundle(invalidJson);
+        final ValidatableResponse response = postNewBundle(invalidJson);
+        response
+                .assertThat().log().all()
+                .statusCode(200) //FIXME should be 400
+                .body("errors[0]", equalTo("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)"));
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
-                response.getBody().jsonPath().getString("errors[0]"));
     }
 
     @Test
     public void testCorruptConfig() {
-        Response response = postNewBundle(invalidConfigJson);
+        final ValidatableResponse response = postNewBundle(invalidConfigJson);
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals("Invalid configuration file entry in: example-incorrect-key.yaml" + "; Configuration file parameter(s) and/or parameter value(s)",
-                response.getBody().jsonPath().getString("errors[0]"));
+        response
+                .assertThat().log().all()
+                .statusCode(200) //FIXME should be 400
+                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml" + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
     public void testFilename() {
-        Response response = postNewBundle(filenameJson);
+        final ValidatableResponse response = postNewBundle(filenameJson);
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals("Bundle with filename", response.getBody().jsonPath().getString("data.caseBundles[0].value.title"));
-        assertEquals("bundle.pdf", response.getBody().jsonPath().getString("data.caseBundles[0].value.fileName"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("Bundle with filename"))
+                .body("data.caseBundles[0].value.fileName", equalTo("bundle.pdf"));
     }
 
     @Test
     public void testTableOfContentsAndCoversheet() {
-        Response response = postNewBundle(validJson);
+        final ValidatableResponse response = postNewBundle(validJson);
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
-        assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasTableOfContents"));
-        assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasFolderCoversheets"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.hasCoversheets", equalTo("Yes"))
+                .body("data.caseBundles[0].value.hasTableOfContents", equalTo("Yes"))
+                .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("No"));
     }
 
     @Test
     public void testFolderCoversheets() {
-        Response response = postNewBundle(filenameJson);
+        final ValidatableResponse response = postNewBundle(filenameJson);
 
-        assertEquals(200, response.getStatusCode());
-        assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasCoversheets"));
-        assertEquals("No", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasTableOfContents"));
-        assertEquals("Yes", response.getBody().jsonPath().getString("data.caseBundles[0].value.hasFolderCoversheets"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
+                .body("data.caseBundles[0].value.hasTableOfContents", equalTo("No"))
+                .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("Yes"));
     }
 
     @Test
     public void testSubSubfolders() {
-        Response response = postNewBundle(validJson);
+        final ValidatableResponse response = postNewBundle(validJson);
 
-        assertEquals(200, response.getStatusCode());
-        Assert.assertNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.folders"));
-        Assert.assertNotNull(response.getBody().jsonPath().getString("data.caseBundles[0].value.folders[0].value.folders[0].value.documents"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.folders", nullValue())
+                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.documents", notNullValue());
     }
 
     @Test
@@ -117,16 +131,16 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(4, responsePath.getList("data.caseBundles[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.documents[2].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.documents[3].value.name"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.documents[2].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.documents[3].value.name", equalTo("Defendant doc 1"));
     }
 
     @Test
@@ -134,14 +148,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-2-filter-flat-docs.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.documents[1].value.name"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.documents", hasSize(2))
+                .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"));
     }
 
     @Test
@@ -149,19 +163,19 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-3-foldered-docs.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3].value.name"));
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
-        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
     }
 
     @Test
@@ -169,17 +183,18 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-4-filtered-foldered-docs.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
-        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
     }
 
     @Test
@@ -187,18 +202,24 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-6-has-typo.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertEquals(200, response.getStatusCode());
+        response.assertThat()
+                .log().all()
+                .statusCode(200) //FIXME should be 400
+                .body("errors", contains("Invalid configuration file entry in: f-tests-6-has-typo.yaml; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
     public void testDefaultFallBackConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertEquals(200, response.getStatusCode());
+        response.assertThat()
+                .log().all()
+                .statusCode(200)  //FIXME should be 400
+                .body("errors", contains("Invalid configuration file entry in: configurationFile; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -206,11 +227,12 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2));
     }
 
     @Test
@@ -218,9 +240,12 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertTrue(response.prettyPrint().contains("Element is an array: /caseDocuments"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)   //FIXME should be 400
+                .body("errors", contains("Element is an array: /caseDocuments"));
     }
 
     @Test
@@ -228,9 +253,12 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-8-not-an-array.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertTrue(response.prettyPrint().contains("Element is not an array: /singleDocument"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)  //FIXME should be 400
+                .body("errors", contains("Element is not an array: /singleDocument"));
     }
 
     @Test
@@ -239,9 +267,12 @@ public class AutomatedBundlingScenarios extends BaseTest {
         json = json.replaceAll("document_url", "incorrect_property_name");
         json = json.replaceAll("configurationFile", "f-tests-5-invalid-url.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertTrue(response.prettyPrint().contains("Could not find the property /documentLink/document_url in the node"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)  //FIXME should be 400
+                .body("errors", contains("Could not find the property /documentLink/document_url in the node: "));
     }
 
     @Test
@@ -249,9 +280,12 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "nonexistent.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        assertTrue(response.getBody().print().contains("Invalid configuration file entry in: nonexistent.yaml"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)  //FIXME should be 400
+                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -259,16 +293,16 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-9-multiple-filters.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders", hasSize(1))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Evidence doc"));
     }
 
     @Test
@@ -276,19 +310,19 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-10-sorting.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3].value.name"));
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
-        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
     }
 
     @Test
@@ -296,32 +330,29 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-11-sorting.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles[0].value.folders").size());
-        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Defendant doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[0].value.name"));
-        assertEquals("Evidence doc", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[1].value.name"));
-        assertEquals("Prosecution doc 2", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[2].value.name"));
-        assertEquals("Prosecution doc 1", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3].value.name"));
-        assertEquals(1, responsePath.getList("data.caseBundles[0].value.folders[1].value.documents").size());
-        assertEquals("Single doc 1", responsePath.getString("data.caseBundles[0].value.folders[1].value.documents[0].value.name"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders", hasSize(2))
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
     }
 
     @Test
     public void testEnableEmailNotificationIsNull() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        final ValidatableResponse response = postNewBundle(validJson);
 
-        Response response = postNewBundle(validJson);
-
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertNull(responsePath.getString("data.caseBundles[0].value.enableEmailNotification"));
-
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.enableEmailNotification", nullValue());
     }
 
     @Test
@@ -329,71 +360,84 @@ public class AutomatedBundlingScenarios extends BaseTest {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
 
-        Response response = postNewBundle(json);
+        final ValidatableResponse response = postNewBundle(json);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        Assert.assertEquals("hmcts.png", responsePath.getString("data.caseBundles[0].value.documentImage.docmosisAssetId"));
-        Assert.assertEquals("allPages", responsePath.getString("data.caseBundles[0].value.documentImage.imageRenderingLocation"));
-        Assert.assertEquals("opaque", responsePath.getString("data.caseBundles[0].value.documentImage.imageRendering"));
-        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateX"));
-        Assert.assertEquals(50, responsePath.getInt("data.caseBundles[0].value.documentImage.coordinateY"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("hmcts.png"))
+                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("allPages"))
+                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("opaque"))
+                .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
+                .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
     }
 
     @Test
     public void testRedactedDocuments() throws IOException {
 
-        Response response = postNewBundle(customDocumentsJson);
+        final ValidatableResponse response = postNewBundle(customDocumentsJson);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(4, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[0].value.name"));
-        assertEquals("Redacted Doc2.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[1].value.name"));
-        assertEquals("Redacted Doc3.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[2].value.name"));
-        assertEquals("AT38.png", responsePath.getString("data.caseBundles[0].value.folders[0].value.documents[3]"
-            + ".value.name"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Non Redacted Doc1.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Redacted Doc2.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Redacted Doc3.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("AT38.png"));
     }
 
     @Test
-    public void testNonRedactedDocuments() throws IOException {
+    public void testNonRedactedDocuments() {
 
-        Response response = postNewBundle(nonCustomDocumentsJson);
+        final ValidatableResponse response = postNewBundle(nonCustomDocumentsJson);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(3, responsePath.getList("data.caseBundles[0].value.folders[0].value.documents").size());
-        assertEquals("Non Redacted Doc1.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[0].value.name"));
-        assertEquals("DWP response.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[1].value.name"));
-        assertEquals("DWP evidence.pdf", responsePath.getString("data.caseBundles[0].value.folders[0].value"
-            + ".documents[2].value.name"));
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Non Redacted Doc1.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("DWP response.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("DWP evidence.pdf"));
     }
 
     @Test
-    public void testMultiBundleDocuments() throws IOException {
+    public void testMultiBundleDocuments() {
 
-        Response response = postNewBundle(multiBundleDocumentsJson);
+        final ValidatableResponse response = postNewBundle(multiBundleDocumentsJson);
 
-        JsonPath responsePath = response.jsonPath();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, responsePath.getList("data.caseBundles").size());
+        response.assertThat()
+                .log().all()
+                .statusCode(200)
+                .body("data.caseBundles", hasSize(2));
     }
 
-    private Response postNewBundle(Object requestBody) {
-        return testUtil
+    @Test
+    public void shouldReturn401WhenUnAuthenticatedUserCreateBundle() {
+        unAuthenticatedRequest
+                .body(validJson)
+                .post("/api/new-bundle")
+                .then()
+                .log().all()
+                .statusCode(401);
+    }
+
+    private ValidatableResponse postNewBundle(Object requestBody) {
+        return request
+                .body(requestBody)
+                .post("/api/new-bundle")
+                .then();
+    }
+
+    private void setupRequests() {
+        request = testUtil
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(requestBody)
-                .post("/api/new-bundle");
+                .contentType(APPLICATION_JSON_VALUE);
+
+        unAuthenticatedRequest = testUtil
+                .unauthenticatedRequest()
+                .baseUri(testUtil.getTestUrl())
+                .contentType(APPLICATION_JSON_VALUE);
     }
 }
