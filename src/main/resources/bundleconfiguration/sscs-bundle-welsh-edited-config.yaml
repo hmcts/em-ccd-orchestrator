@@ -4,7 +4,7 @@ filenameIdentifier: /case_details/id
 coverpageTemplate: SSCS-cover-page.docx
 hasTableOfContents: true
 hasCoversheets: true
-hasFolderCoversheets: true
+hasFolderCoversheets: false
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
 customDocument: true
