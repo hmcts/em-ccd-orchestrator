@@ -175,7 +175,7 @@ dependencies {
     testCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
 
 
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.3"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.7.2"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.3"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.3"
 
