@@ -114,7 +114,7 @@ dependencies {
         exclude group: 'org.eclipse.jetty.alpn', module: 'alpn-api'
     }
     
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.5'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.6'
     compile group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     
     compile group:'org.projectlombok', name: 'lombok', version: '1.18.20'
