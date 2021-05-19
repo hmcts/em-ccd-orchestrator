@@ -100,24 +100,6 @@ sh ./publish-swagger-docs.sh
          ]
 
          publishHTML target: [
-              allowMissing         : true,
-              alwaysLinkToLastBuild: true,
-              keepAll              : true,
-              reportDir            : "build/reports/pmd",
-              reportFiles          : "main.html",
-              reportName           : "CCD Orchestrator API PMD Main Report"
-         ]
-
-         publishHTML target: [
-              allowMissing         : true,
-              alwaysLinkToLastBuild: true,
-              keepAll              : true,
-              reportDir            : "build/reports/pmd",
-              reportFiles          : "test.html",
-              reportName           : "CCD Orchestrator API PMD Test Report"
-         ]
-
-         publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,

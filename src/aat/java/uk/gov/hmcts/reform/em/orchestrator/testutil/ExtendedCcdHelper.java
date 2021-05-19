@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,7 +42,7 @@ public class ExtendedCcdHelper {
     @Autowired
     private CcdDefinitionHelper ccdDefinitionHelper;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public final String createAutomatedBundlingCaseTemplate = "{\n"
             + "    \"caseTitle\": null,\n"

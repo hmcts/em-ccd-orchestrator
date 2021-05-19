@@ -1,6 +1,8 @@
 spring:
   application:
     name: EM CCD Orchestrator
+  config:
+    import: "optional:configtree:/mnt/secrets/em-ccdorc/"
   batch:
     job:
       enabled: false
