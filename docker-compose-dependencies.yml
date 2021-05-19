@@ -34,8 +34,6 @@ services:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     container_name: ccdorc-service-auth-provider-api
     environment:
-      - jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-#      - Add key for any microservice that will be used: orchestrator, stitching api, doc store
       - microserviceKeys_em_gw=AAAAAAAAAAAAAAAA
       - microserviceKeys_em_stitching_api=AAAAAAAAAAAAAAAA
       - microserviceKeys_em_ccd_orchestrator=AAAAAAAAAAAAAAAA
