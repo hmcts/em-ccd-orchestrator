@@ -44,9 +44,13 @@ public class BuildInfo implements InfoContributor {
         Properties prop = new Properties();
         URL buildInfoUrl = (versionPath == null) ? null : this.getClass().getClassLoader().getResource(versionPath);
         if (buildInfoUrl != null) {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(versionPath);
-            prop.load(inputStream);
-            inputStream.close();
+            InputStream inputStream = null;
+            try {
+                this.getClass().getClassLoader().getResourceAsStream(versionPath);
+                prop.load(inputStream);
+            }finally {
+                inputStream.close();
+            }
         }
 
         this.environment = environment;
