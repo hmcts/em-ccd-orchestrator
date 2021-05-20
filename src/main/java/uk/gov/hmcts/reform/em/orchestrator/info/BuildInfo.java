@@ -48,7 +48,7 @@ public class BuildInfo implements InfoContributor {
             try {
                 this.getClass().getClassLoader().getResourceAsStream(versionPath);
                 prop.load(inputStream);
-            }finally {
+            } finally {
                 inputStream.close();
             }
         }
