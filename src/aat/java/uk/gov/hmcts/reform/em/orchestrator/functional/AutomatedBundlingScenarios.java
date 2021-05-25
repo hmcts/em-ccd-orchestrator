@@ -66,7 +66,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200) //FIXME should be 400
-                .body("errors[0]", equalTo("Invalid configuration file entry in: does-not-exist.yaml" + "; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors[0]", equalTo("Invalid configuration file entry in: does-not-exist.yaml"
+                    + "; Configuration file parameter(s) and/or parameter value(s)"));
 
     }
 
@@ -77,7 +78,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200) //FIXME should be 400
-                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml" + "; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml"
+                    + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -207,7 +209,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200) //FIXME should be 400
-                .body("errors", contains("Invalid configuration file entry in: f-tests-6-has-typo.yaml; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors", contains("Invalid configuration file entry in: f-tests-6-has-typo.yaml; "
+                    + "Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test

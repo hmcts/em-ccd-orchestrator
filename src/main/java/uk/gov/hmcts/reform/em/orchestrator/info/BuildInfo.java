@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 @Component
@@ -44,9 +45,15 @@ public class BuildInfo implements InfoContributor {
         Properties prop = new Properties();
         URL buildInfoUrl = (versionPath == null) ? null : this.getClass().getClassLoader().getResource(versionPath);
         if (buildInfoUrl != null) {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(versionPath);
-            prop.load(inputStream);
-            inputStream.close();
+            InputStream inputStream = null;
+            try {
+                inputStream = this.getClass().getClassLoader().getResourceAsStream(versionPath);
+                prop.load(inputStream);
+            } finally {
+                if (Objects.nonNull(inputStream)) {
+                    inputStream.close();
+                }
+            }
         }
 
         this.environment = environment;
