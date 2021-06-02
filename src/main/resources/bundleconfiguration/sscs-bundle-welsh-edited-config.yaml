@@ -32,6 +32,11 @@ folders:
       - type: document
         property: /audioVideoEvidenceBundleDocument
       - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /statementOfEvidencePdf
+            value: \w+
+      - type: documentSet
         property: /dwpDocuments
         filters:
           - property: /rip1DocumentLink
