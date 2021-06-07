@@ -32,7 +32,7 @@ folders:
       - type: documentSet
         property: /sscsDocument
         filters:
-          - property: /statementOfEvidencePdf
+          - property: /isAvEvidenceDocumentLinkPresent
             value: \w+
       - type: documentSet
         property: /dwpDocuments
