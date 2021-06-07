@@ -215,6 +215,11 @@ dependencyManagement {
             entry 'byte-buddy-agent'
         }
         // Do not change - END
+
+        //CVE-2021-27568
+        dependencySet(group: 'net.minidev', version: '2.3.1') {
+            entry 'json-smart'
+        }
     }
 }
 
