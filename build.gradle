@@ -48,6 +48,7 @@ repositories {
     maven {
         url 'https://repo.spring.io/libs-snapshot'
     }
+    maven { url 'https://jitpack.io' }
 }
 
 def versions = [
@@ -178,7 +179,7 @@ dependencies {
     contractTestCompile sourceSets.main.runtimeClasspath
     contractTestCompile sourceSets.test.runtimeClasspath
 
-    aatCompile "uk.gov.hmcts.reform:em-test-helper:1.18.1", withoutStuff
+    aatCompile 'com.github.hmcts:em-test-helper:1.18.2'
 }
 
 dependencyManagement {
