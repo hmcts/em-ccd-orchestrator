@@ -32,10 +32,10 @@ folders:
       - type: documentSet
         property: /sscsDocument
         filters:
-          - property: /isAvEvidenceDocumentLinkPresent
+          - property: /isAvDocumentLinkPresent
             value: \w+
       - type: documentSet
         property: /dwpDocuments
         filters:
-          - property: /rip1DocumentLink
+          - property: /isAvDocumentLinkPresent
             value: \w+
