@@ -32,13 +32,13 @@ folders:
       - type: documentSet
         property: /sscsDocument
         filters:
-          - property: /isAvDocumentLinkPresent
-            value: \w+
+          - property: /shouldBundleIncludeDocLink
+            value: Yes
       - type: documentSet
         property: /dwpDocuments
         filters:
-          - property: /isAvDocumentLinkPresent
-            value: \w+
+          - property: /shouldBundleIncludeDocLink
+            value: Yes
   - name: Translated documents
     documents:
       - type: documentSet
