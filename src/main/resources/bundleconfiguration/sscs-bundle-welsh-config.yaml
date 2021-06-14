@@ -30,10 +30,15 @@ folders:
       - type: document
         property: /audioVideoEvidenceBundleDocument
       - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /shouldBundleIncludeDocLink
+            value: Yes
+      - type: documentSet
         property: /dwpDocuments
         filters:
-          - property: /rip1DocumentLink
-            value: \w+
+          - property: /shouldBundleIncludeDocLink
+            value: Yes
   - name: Translated documents
     documents:
       - type: documentSet
