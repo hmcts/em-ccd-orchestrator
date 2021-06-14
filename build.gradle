@@ -106,7 +106,7 @@ dependencies {
 
     compile "com.squareup.okhttp3:okhttp:4.9.1"
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.1'
-    compile group: "commons-io", name: "commons-io", version: "2.9.0"
+    compile group: "commons-io", name: "commons-io", version: "2.10.0"
     compile "org.springframework.boot:spring-boot-starter-batch"
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.boot:spring-boot-starter-web"
