@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -22,7 +22,6 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
      * Load the file from the file system and then pass it to Jackson for parsing. If an exception returns the Optional will
      * be empty.
      */
-    @SneakyThrows
     @Override
     public BundleConfiguration load(String filename) {
         InputStream input = Thread
@@ -45,7 +44,7 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
                     "Invalid configuration file entry in: " + filename + "; Configuration file parameter(s) and/or parameter value(s)", e);
         } finally {
             if (Objects.nonNull(input)) {
-                input.close();
+                IOUtils.closeQuietly(input);
             }
         }
     }
