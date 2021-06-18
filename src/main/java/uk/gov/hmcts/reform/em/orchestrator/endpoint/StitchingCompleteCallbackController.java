@@ -65,7 +65,7 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            log.info(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
+            log.info("Successful callback for caseId: {} and triggerId {}", caseId, triggerId);
 
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                     && documentTaskDTO.getBundle().getEnableEmailNotification())
