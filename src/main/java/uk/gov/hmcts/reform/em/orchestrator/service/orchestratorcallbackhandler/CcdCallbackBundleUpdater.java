@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.util.stream.StreamSupport;
 
@@ -45,15 +46,15 @@ public class CcdCallbackBundleUpdater {
                         String.format("Bundle#%s could not be found",
                                 stitchingCompleteCallbackDto.getCcdBundleId())));
 
-        log.debug("Updated ccdBundle: {}", ccdBundle.toString());
+        log.debug("Updated ccdBundle: {}", StringUtilities.convertValidLog(ccdBundle.toString()));
     }
 
     private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
         try {
             CcdBundleDTO ccdBundleDTO = this.objectMapper.treeToValue(ccdBundle, CcdBundleDTO.class);
             log.info("Updating bundle# {} with {}",
-                    stitchingCompleteCallbackDto.getCcdBundleId(),
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO());
+                StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
+                    StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
             ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()

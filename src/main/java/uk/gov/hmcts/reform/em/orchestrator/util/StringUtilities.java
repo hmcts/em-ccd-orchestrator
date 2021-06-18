@@ -3,6 +3,10 @@ package uk.gov.hmcts.reform.em.orchestrator.util;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class StringUtilities {
 
@@ -21,4 +25,16 @@ public class StringUtilities {
         }
 
     }
+
+    public static String convertValidLog(String log) {
+        List<String> list = Arrays.asList("%0d", "\r", "%0a", "\n");
+
+        // normalize the log content
+        String encode = Normalizer.normalize(log, Normalizer.Form.NFKC);
+        for (String toReplaceStr : list) {
+            encode = encode.replace(toReplaceStr, "");
+        }
+        return encode;
+    }
+
 }
