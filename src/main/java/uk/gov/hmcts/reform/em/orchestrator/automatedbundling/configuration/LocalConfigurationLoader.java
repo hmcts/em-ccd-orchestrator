@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
-import java.util.Objects;
 
 /**
  * This loading strategy takes a file from the local filesystem and converts it to a BundleConfiguration object. The local
@@ -43,9 +42,7 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
             throw new BundleConfigurationException(
                     "Invalid configuration file entry in: " + filename + "; Configuration file parameter(s) and/or parameter value(s)", e);
         } finally {
-            if (Objects.nonNull(input)) {
-                IOUtils.closeQuietly(input);
-            }
+            IOUtils.closeQuietly(input);
         }
     }
 }
