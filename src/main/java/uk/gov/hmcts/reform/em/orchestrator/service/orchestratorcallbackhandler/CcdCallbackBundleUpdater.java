@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.util.stream.StreamSupport;
 
@@ -38,22 +39,22 @@ public class CcdCallbackBundleUpdater {
                 .map(jsonNode -> jsonNode.get("value"))
                 .filter(ccdBundleJson ->
                         ccdBundleJson.get("id").asText()
-                            .equals(stitchingCompleteCallbackDto.getCcdBundleId().toString()))
+                            .equals(stitchingCompleteCallbackDto.getCcdBundleId()))
                 .findFirst()
                 .map(ccdBundleJson -> this.updateCcdBundle(ccdBundleJson, stitchingCompleteCallbackDto))
                 .orElseThrow(() -> new CallbackException(400, null,
                         String.format("Bundle#%s could not be found",
-                                stitchingCompleteCallbackDto.getCcdBundleId().toString())));
+                                stitchingCompleteCallbackDto.getCcdBundleId())));
 
-        log.debug(String.format("Updated ccdBundle: %s", ccdBundle.toString()));
+        log.debug("Updated ccdBundle: {}", StringUtilities.convertValidLog(ccdBundle.toString()));
     }
 
     private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
         try {
             CcdBundleDTO ccdBundleDTO = this.objectMapper.treeToValue(ccdBundle, CcdBundleDTO.class);
-            log.info(String.format("Updating bundle#%s with %s",
-                    stitchingCompleteCallbackDto.getCcdBundleId().toString(),
-                    stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
+            log.info("Updating bundle# {} with {}",
+                StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
+                    StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
             ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()

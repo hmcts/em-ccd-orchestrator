@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -44,7 +45,7 @@ public class NotificationService {
                     createPersonalisation(caseId, bundleTitle, failureMessage),
                     "Email Notification: " + caseId);
 
-            log.info(String.format("Notification email sent for caseId: %s", caseId));
+            log.info("Notification email sent for caseId: {}", StringUtilities.convertValidLog(caseId));
 
         } catch (NotificationClientException e) {
             throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));

@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.S
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,7 +66,8 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            log.info(String.format("Successful callback for caseId: %s and triggerId %s", caseId, triggerId));
+            log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
+                StringUtilities.convertValidLog(triggerId));
 
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                     && documentTaskDTO.getBundle().getEnableEmailNotification())
