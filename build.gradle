@@ -178,7 +178,7 @@ dependencies {
     contractTestCompile sourceSets.main.runtimeClasspath
     contractTestCompile sourceSets.test.runtimeClasspath
 
-    aatCompile 'com.github.hmcts:em-test-helper:1.19'
+    aatCompile 'com.github.hmcts:em-test-helper:1.19.1'
 }
 
 dependencyManagement {
