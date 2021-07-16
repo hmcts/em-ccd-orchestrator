@@ -87,6 +87,10 @@ sourceSets {
     }
 }
 
+configurations.all {
+    exclude module: 'com.vaadin.external.google'
+}
+
 dependencies {
 
     def withoutStuff = {
@@ -98,6 +102,9 @@ dependencies {
     def withoutAlpnApi = {
         exclude group: 'org.eclipse.jetty.alpn', module: 'alpn-api'
     }
+
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.0'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.0'
     
     compile group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     
