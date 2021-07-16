@@ -32,6 +32,7 @@
     <logger name="sun.rmi" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
 
+    <logger name="uk.gov.hmcts.fortifyclient" level="INFO" />
     <root level="WARN">
         <appender-ref ref="CONSOLE"/>
     </root>
