@@ -103,8 +103,8 @@ dependencies {
         exclude group: 'org.eclipse.jetty.alpn', module: 'alpn-api'
     }
 
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.48'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.48'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.8'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.8'
 
     compile group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     
@@ -243,7 +243,7 @@ dependencyManagement {
         }
 
         //CVE-2021-33037
-        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.48') {
+        dependencySet(group: 'org.apache.tomcat.embed', version: '10.0.8') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-websocket'
         }
