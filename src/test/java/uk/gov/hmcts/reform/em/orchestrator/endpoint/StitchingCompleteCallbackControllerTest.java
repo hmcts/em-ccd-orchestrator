@@ -89,8 +89,7 @@ public class StitchingCompleteCallbackControllerTest extends BaseTest {
                 .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk());
 
     }
@@ -105,8 +104,7 @@ public class StitchingCompleteCallbackControllerTest extends BaseTest {
                 .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print())
                 .andExpect(status().is(456))
                 .andExpect(jsonPath("$.message", Matchers.is("error message")))

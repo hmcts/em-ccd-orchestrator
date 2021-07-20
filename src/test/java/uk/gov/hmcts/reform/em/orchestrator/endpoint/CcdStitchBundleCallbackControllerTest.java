@@ -34,8 +34,7 @@ public class CcdStitchBundleCallbackControllerTest extends BaseTest {
                 .perform(post("/api/stitch-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
@@ -50,8 +49,7 @@ public class CcdStitchBundleCallbackControllerTest extends BaseTest {
                 .perform(post("/api/async-stitch-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito

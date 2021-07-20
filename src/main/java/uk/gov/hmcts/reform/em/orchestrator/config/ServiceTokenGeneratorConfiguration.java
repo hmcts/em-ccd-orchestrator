@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
+import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
+import uk.gov.hmcts.reform.authorisation.validators.ServiceAuthTokenValidator;
 
 @Configuration
 public class ServiceTokenGeneratorConfiguration {
@@ -19,4 +21,9 @@ public class ServiceTokenGeneratorConfiguration {
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
 
+    @Bean
+    public AuthTokenValidator authTokenValidator(final ServiceAuthorisationApi serviceAuthorisationApi) {
+
+        return new ServiceAuthTokenValidator(serviceAuthorisationApi);
+    }
 }
