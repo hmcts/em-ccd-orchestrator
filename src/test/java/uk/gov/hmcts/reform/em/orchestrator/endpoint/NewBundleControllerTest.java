@@ -32,8 +32,7 @@ public class NewBundleControllerTest extends BaseTest {
         mockMvc
                 .perform(post("/api/new-bundle")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito

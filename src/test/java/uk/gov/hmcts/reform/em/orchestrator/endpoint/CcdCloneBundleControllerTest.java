@@ -31,8 +31,7 @@ public class CcdCloneBundleControllerTest extends BaseTest {
                 .perform(post("/api/clone-ccd-bundles")
                         .content("[]")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx")
-                        .header("ServiceAuthorization", "xxx"))
+                        .header("Authorization", "xxx"))
                 .andDo(print()).andExpect(status().isOk());
 
         Mockito
