@@ -42,7 +42,7 @@ public class ServiceNameAspect {
                 } else {
                     serviceName = securityUtils.getServiceName(BEARER + s2sToken);
                 }
-                log.info("Endpoint : {}  for : {} method is accessed by {} ", request.getRequestURI(),
+                log.info("em-ccdorc : Endpoint : {}  for : {} method is accessed by {} ", request.getRequestURI(),
                     request.getMethod(), serviceName);
             }
         }
