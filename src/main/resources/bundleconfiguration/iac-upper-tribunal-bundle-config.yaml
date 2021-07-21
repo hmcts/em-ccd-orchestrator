@@ -41,7 +41,7 @@ folders:
         filters:
           - property: /tag
             value: hearingNotice
-  - name: Legal representative documents
+  - name: Appellant documents
     documents:
       - type: documentSet
         property: /legalRepresentativeDocuments
