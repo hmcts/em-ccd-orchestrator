@@ -12,11 +12,11 @@ sort:
 hasFolderCoversheets: true
 pageNumberFormat: numberOfPages
 folders:
-  - name: Appellant FTPA documents
+  - name: FTPA Appellant documents
     documents:
       - type: documentSet
         property: /ftpaAppellantDocuments
-  - name: Respondent FTPA documents
+  - name: FTPA Respondent documents
     documents:
       - type: documentSet
         property: /ftpaRespondentDocuments
@@ -57,10 +57,6 @@ folders:
     documents:
       - type: documentSet
         property: /respondentDocuments
-  - name: Additional evidence from appellant
-    documents:
-      - type: documentSet
-        property: /additionalEvidenceDocuments
   - name: Appellant evidence after the hearing bundle
     documents:
       - type: documentSet
