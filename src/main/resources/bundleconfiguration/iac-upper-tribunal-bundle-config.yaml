@@ -52,6 +52,11 @@ folders:
         property: /legalRepresentativeDocuments
         filters:
           - property: /tag
+            value: homeOfficeDecisionLetter
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
             value: appealSubmission
   - name: Respondent documents
     documents:
