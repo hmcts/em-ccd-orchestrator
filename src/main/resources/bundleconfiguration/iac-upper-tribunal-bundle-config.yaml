@@ -65,12 +65,4 @@ folders:
   - name: Evidence supplied after the hearing bundle documents
     documents:
       - type: documentSet
-        property: /appellantAddendumEvidenceDocs
-        filters:
-          - property: /tag
-            value: addendumEvidence
-      - type: documentSet
-        property: /respondentAddendumEvidenceDocs
-        filters:
-          - property: /tag
-            value: addendumEvidence
+        property: /addendumEvidenceDocuments
