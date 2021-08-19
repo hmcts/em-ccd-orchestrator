@@ -85,6 +85,7 @@ sourceSets {
 configurations.all {
     exclude module: 'com.vaadin.external.google'
     exclude group: 'org.glassfish', module: 'jakarta.el'
+    exclude group: 'com.nimbusds', module: 'lang-tag'
 }
 
 dependencies {
