@@ -178,4 +178,5 @@ sh ./publish-swagger-docs.sh
         ]
     }
 
+    syncBranchesWithMaster(['demo', 'perftest', 'ithc'])
 }
