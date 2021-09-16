@@ -151,6 +151,7 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
       - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+      - CDAM_URL=http://ccd-case-document-am-api:4455
     dns:
       - 172.16.0.10
       - 172.16.0.14
