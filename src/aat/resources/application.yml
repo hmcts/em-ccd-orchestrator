@@ -36,7 +36,8 @@ s2s:
     serviceName: ${S2S_SERVICE_NAME:em_gw}
     ccdGwSecret: ${FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
     ccdGwServiceName: ${CCD_GW_SERVICE_NAME:ccd_gw}
-
+    xuiWebappSecret: ${FUNCTIONAL_TEST_XUI_WEBAPP_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
+    xuiWebappServiceName: ${XUI_WEBAPP_SERVICE_NAME:xui_webapp}
 
 ccd-def:
   api:

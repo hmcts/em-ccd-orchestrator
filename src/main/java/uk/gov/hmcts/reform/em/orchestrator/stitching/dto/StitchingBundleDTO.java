@@ -15,6 +15,7 @@ public class StitchingBundleDTO {
     private String bundleTitle;
     private String description;
     private String stitchedDocumentURI;
+    private String hashToken;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
@@ -159,6 +160,14 @@ public class StitchingBundleDTO {
 
     public void setDocumentImage(DocumentImage documentImage) {
         this.documentImage = documentImage;
+    }
+
+    public String getHashToken() {
+        return hashToken;
+    }
+
+    public void setHashToken(String hashToken) {
+        this.hashToken = hashToken;
     }
 }
 

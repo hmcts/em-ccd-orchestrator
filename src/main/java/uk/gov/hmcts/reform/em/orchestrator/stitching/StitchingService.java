@@ -6,6 +6,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 import okhttp3.*;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -67,11 +68,21 @@ public class StitchingService {
             if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
                 final String fileName = json.read("$.bundle.fileName");
 
-                return new CcdDocument(
-                    json.read("$.bundle.stitchedDocumentURI"),
-                    ensurePdfExtension(fileName),
-                    uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI"))
-                );
+                final String hashToken = json.read("$.bundle.hashToken");
+
+                if (StringUtils.isNotBlank(hashToken)) {
+                    return new CcdDocument(
+                        json.read("$.bundle.stitchedDocumentURI"),
+                        ensurePdfExtension(fileName),
+                        uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI")),
+                        hashToken);
+                } else {
+                    return new CcdDocument(
+                        json.read("$.bundle.stitchedDocumentURI"),
+                        ensurePdfExtension(fileName),
+                        uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI")));
+                }
+
             } else {
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));

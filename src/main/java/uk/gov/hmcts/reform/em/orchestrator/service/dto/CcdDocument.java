@@ -13,6 +13,9 @@ public class CcdDocument {
     private String fileName;
     @JsonProperty("document_binary_url")
     private String binaryUrl;
+    @JsonProperty("document_hash")
+    private String hash;
+
     @JsonIgnore
     private LocalDateTime createdDatetime;
 
@@ -25,11 +28,26 @@ public class CcdDocument {
         this.binaryUrl = binaryUrl;
     }
 
+    public CcdDocument(String url, String fileName, String binaryUrl, String hash) {
+        this.url = url;
+        this.fileName = fileName;
+        this.binaryUrl = binaryUrl;
+        this.hash = hash;
+    }
+
     public CcdDocument(String url, String fileName, String binaryUrl, LocalDateTime createdDatetime) {
         this.url = url;
         this.fileName = fileName;
         this.binaryUrl = binaryUrl;
         this.createdDatetime = createdDatetime;
+    }
+
+    public CcdDocument(String url, String fileName, String binaryUrl, LocalDateTime createdDatetime, String hash) {
+        this.url = url;
+        this.fileName = fileName;
+        this.binaryUrl = binaryUrl;
+        this.createdDatetime = createdDatetime;
+        this.hash = hash;
     }
 
     public String getUrl() {
@@ -62,5 +80,13 @@ public class CcdDocument {
 
     public void setCreatedDatetime(LocalDateTime createdDatetime) {
         this.createdDatetime = createdDatetime;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }
