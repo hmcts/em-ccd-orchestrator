@@ -16,12 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 @Aspect
 @Component
 public class CdamAspect {
 
     private final Logger log = LoggerFactory.getLogger(CdamAspect.class);
+
+    private static final String CASE_TYPE_ID = "case_type_id";
+    private static final String JURISDICTION_ID = "jurisdiction";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -33,18 +37,21 @@ public class CdamAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         try {
             JsonNode payload = objectMapper.readTree(request.getReader());
-            if (Objects.nonNull(payload) && Objects.nonNull(payload.findValue("case_type_id"))
-                && Objects.nonNull(payload.findValue("jurisdiction"))) {
+            if (Objects.nonNull(payload) && Objects.nonNull(payload.findValue(CASE_TYPE_ID))
+                && Objects.nonNull(payload.findValue(JURISDICTION_ID))) {
 
-                DocumentTaskDTO documentTaskDTO = (DocumentTaskDTO) Arrays.stream(joinPoint.getArgs())
+                Optional<DocumentTaskDTO> optDocumentTaskDto = Arrays.stream(joinPoint.getArgs())
                     .filter(DocumentTaskDTO.class::isInstance)
-                    .findFirst()
-                    .get();
+                    .map(DocumentTaskDTO.class::cast)
+                    .findFirst();
 
-                documentTaskDTO.setServiceAuth(request.getHeader("serviceauthorization"));
-                documentTaskDTO.setCaseTypeId(payload.findValue("case_type_id").asText());
-                documentTaskDTO.setJurisdictionId(payload.findValue("jurisdiction").asText());
-                log.info("Cdam details populated");
+                if (optDocumentTaskDto.isPresent()) {
+                    DocumentTaskDTO documentTaskDTO = optDocumentTaskDto.get();
+                    documentTaskDTO.setServiceAuth(request.getHeader("serviceauthorization"));
+                    documentTaskDTO.setCaseTypeId(payload.findValue(CASE_TYPE_ID).asText());
+                    documentTaskDTO.setJurisdictionId(payload.findValue(JURISDICTION_ID).asText());
+                    log.info("Cdam details populated");
+                }
             }
         } catch (IOException e) {
             log.warn(String.format("Could not get the CaseTypeId , Jurisdiction : %s", e.getMessage()));
