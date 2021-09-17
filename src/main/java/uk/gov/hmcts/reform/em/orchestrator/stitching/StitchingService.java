@@ -5,7 +5,11 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -32,6 +36,9 @@ public class StitchingService {
     private final String documentTaskEndpoint;
     private final AuthTokenGenerator authTokenGenerator;
     private final int maxRetries;
+
+    private static final String STITCHED_DOC_URI = "$.bundle.stitchedDocumentURI";
+    private static final String TASK_STATE = "$.taskState";
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
                             AuthTokenGenerator authTokenGenerator) {
@@ -65,22 +72,22 @@ public class StitchingService {
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
 
-            if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
+            if (JsonPath.read(response, TASK_STATE).equals(TaskState.DONE.toString())) {
                 final String fileName = json.read("$.bundle.fileName");
 
                 final String hashToken = json.read("$.bundle.hashToken");
 
                 if (StringUtils.isNotBlank(hashToken)) {
                     return new CcdDocument(
-                        json.read("$.bundle.stitchedDocumentURI"),
+                        json.read(STITCHED_DOC_URI),
                         ensurePdfExtension(fileName),
-                        uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI")),
+                        uriWithBinarySuffix(json.read(STITCHED_DOC_URI)),
                         hashToken);
                 } else {
                     return new CcdDocument(
-                        json.read("$.bundle.stitchedDocumentURI"),
+                        json.read(STITCHED_DOC_URI),
                         ensurePdfExtension(fileName),
-                        uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI")));
+                        uriWithBinarySuffix(json.read(STITCHED_DOC_URI)));
                 }
 
             } else {
@@ -128,7 +135,7 @@ public class StitchingService {
         for (int i = 0; i < maxRetries; i++) {
             final Response response = http.newCall(request).execute();
             final String responseBody = response.body().string();
-            final String taskState = JsonPath.read(responseBody, "$.taskState");
+            final String taskState = JsonPath.read(responseBody, TASK_STATE);
 
             if (!taskState.equals(TaskState.NEW.toString())) {
                 return responseBody;
