@@ -42,7 +42,7 @@ public class CcdDocument {
         this.createdDatetime = createdDatetime;
     }
 
-    public CcdDocument(String url, String fileName, String binaryUrl, LocalDateTime createdDatetime, String hash) {
+    public CcdDocument(String url, String fileName, String binaryUrl, String hash, LocalDateTime createdDatetime) {
         this.url = url;
         this.fileName = fileName;
         this.binaryUrl = binaryUrl;

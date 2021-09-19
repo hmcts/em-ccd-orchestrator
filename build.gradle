@@ -83,14 +83,13 @@ sourceSets {
 }
 
 configurations.all {
-    exclude module: 'com.vaadin.external.google'
+    exclude group: 'com.vaadin.external.google', module: 'android-json'
     exclude group: 'org.glassfish', module: 'jakarta.el'
 }
 
 dependencies {
 
     def withoutStuff = {
-        exclude group: 'com.vaadin.external.google', module: 'android-json'
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-test'
     }
@@ -105,6 +104,7 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     
     compile group:'org.projectlombok', name: 'lombok', version: '1.18.20'
+    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.20'
 
     compile "com.squareup.okhttp3:okhttp:4.9.1"
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.1'
@@ -114,7 +114,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile 'org.springframework.boot:spring-boot-starter-validation'
-    
+    compile 'org.springframework.data:spring-data-commons:2.4.8'
+
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
     compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.fasterXmlJackson
@@ -136,7 +137,7 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    
+    compile 'com.github.hmcts:ccd-case-document-am-client:1.7.1'
 
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
@@ -183,7 +184,7 @@ dependencies {
     contractTestCompile sourceSets.main.runtimeClasspath
     contractTestCompile sourceSets.test.runtimeClasspath
 
-    aatCompile 'com.github.hmcts:em-test-helper:1.19.1'
+    aatCompile 'com.github.hmcts:em-test-helper:1.20.2'
 }
 
 dependencyManagement {

@@ -1,14 +1,30 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
+import uk.gov.hmcts.reform.ccd.document.am.model.Document;
+import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
+import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
+import uk.gov.hmcts.reform.em.orchestrator.functional.dto.CcdTestBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.functional.dto.CcdTestDocument;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
+import uk.gov.hmcts.reform.em.test.cdam.CdamHelper;
 import uk.gov.hmcts.reform.em.test.dm.DmHelper;
 import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
 import uk.gov.hmcts.reform.em.test.s2s.S2sHelper;
@@ -24,6 +40,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 @Service
 public class TestUtil {
 
@@ -36,12 +54,29 @@ public class TestUtil {
     private S2sHelper s2sHelper;
     @Autowired
     private DmHelper dmHelper;
+
+
+    @Autowired
+    private CdamHelper cdamHelper;
+
     @Value("${test.url}")
     private String testUrl;
     @Value("${document_management.url}")
     private String dmApiUrl;
     @Value("${document_management.docker_url}")
     private String dmDocumentApiUrl;
+
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    public final String createAutomatedBundlingCaseTemplate = "{\n"
+        + "    \"caseTitle\": null,\n"
+        + "    \"caseOwner\": null,\n"
+        + "    \"caseCreationDate\": null,\n"
+        + "    \"caseDescription\": null,\n"
+        + "    \"caseComments\": null,\n"
+        + "    \"caseDocuments\": [%s],\n"
+        + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
+        + "  }";
 
     @PostConstruct
     public void init() {
@@ -225,6 +260,50 @@ public class TestUtil {
 
     private RequestSpecification invalidS2sAuthRequest() {
         return SerenityRest.given().header("ServiceAuthorization", "invalidS2SAuthorization");
+    }
+
+    //////////// CDAM //////////////////
+
+
+    public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws Exception {
+
+        List<MultipartFile> multipartFiles = fileDetails.stream()
+            .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
+            .collect(Collectors.toList());
+
+        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
+            "PUBLICLAW", multipartFiles);
+
+        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
+
+        List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
+            .map(this::createBundleDocument)
+            .collect(Collectors.toList());
+        return objectMapper.writeValueAsString(bundleDocuments);
+    }
+
+    private MultipartFile createMultipartFile(String fileName, String contentType) throws IOException {
+        return new MockMultipartFile(fileName, fileName, contentType,
+            ClassLoader.getSystemResourceAsStream(fileName));
+    }
+
+
+    public CcdValue<CcdTestBundleDocumentDTO> createBundleDocument(Document document) {
+        CcdTestDocument ccdTestDocument = CcdTestDocument.builder()
+            .url(document.links.self.href)
+            .binaryUrl(document.links.binary.href)
+            .hash(document.hashToken)
+            .fileName(document.originalDocumentName)
+            .build();
+        CcdTestBundleDocumentDTO ccdTestBundleDocumentDTO = CcdTestBundleDocumentDTO.builder()
+            .documentLink(ccdTestDocument)
+            .documentName(document.originalDocumentName)
+            .build();
+        return new CcdValue<>(ccdTestBundleDocumentDTO);
+    }
+
+    public String getEnvCcdCaseTypeId() {
+        return String.format("BUND_ASYNC_%d", testUrl.hashCode());
     }
 
 }
