@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
 import uk.gov.hmcts.reform.em.test.s2s.S2sHelper;
 
 @Configuration
+@FeignClient(configuration = CaseDocumentClientApi.class)
 public class TestConfig {
 
     @Autowired
