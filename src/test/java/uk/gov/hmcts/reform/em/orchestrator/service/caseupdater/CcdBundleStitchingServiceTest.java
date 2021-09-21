@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
@@ -61,7 +62,7 @@ public class CcdBundleStitchingServiceTest {
         assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
+                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDetailsDto.class));
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -72,7 +73,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new StitchingServiceException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDetailsDto.class))).thenThrow(new StitchingServiceException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
@@ -96,7 +97,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new InterruptedException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDetailsDto.class))).thenThrow(new InterruptedException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }

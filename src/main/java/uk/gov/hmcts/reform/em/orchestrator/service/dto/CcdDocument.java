@@ -2,9 +2,11 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public class CcdDocument {
 
     @JsonProperty("document_url")

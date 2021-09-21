@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CallbackDto;
@@ -30,11 +31,11 @@ public class AutomatedStitchingExecutor {
         this.callbackUrlCreator = callbackUrlCreator;
     }
 
-    public void startStitching(String caseId, String jwt, CcdBundleDTO ccdBundleDTO) {
-        startStitching(caseId, DEFAULT_TRIGGER_NAME, jwt, ccdBundleDTO);
+    public void startStitching(CdamDetailsDto cdamDetailsDto, CcdBundleDTO ccdBundleDTO) {
+        startStitching(cdamDetailsDto, DEFAULT_TRIGGER_NAME, ccdBundleDTO);
     }
 
-    public void startStitching(String caseId, String triggerId, String jwt, CcdBundleDTO ccdBundleDTO) {
+    public void startStitching(CdamDetailsDto cdamDetailsDto, String triggerId, CcdBundleDTO ccdBundleDTO) {
 
         if (StringUtils.isEmpty(ccdBundleDTO.getId())) {
             ccdBundleDTO.setId(UUID.randomUUID().toString());
@@ -42,14 +43,19 @@ public class AutomatedStitchingExecutor {
 
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(stitchingDTOMapper.toStitchingDTO(ccdBundleDTO));
+        documentTask.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
+        documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
+        documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
 
         CallbackDto callbackDto = new CallbackDto();
-        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(caseId, triggerId, ccdBundleDTO.getId()));
+        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(cdamDetailsDto.getCaseId(), triggerId,
+            ccdBundleDTO.getId()));
         documentTask.setCallback(callbackDto);
 
         try {
             log.info("Creating new stitching task {}", documentTask.toString());
-            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask, jwt);
+            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask,
+                cdamDetailsDto.getJwt());
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
             log.info("Created new stitching task {}", createdDocumentTaskDTO.toString());
         } catch (IOException e) {

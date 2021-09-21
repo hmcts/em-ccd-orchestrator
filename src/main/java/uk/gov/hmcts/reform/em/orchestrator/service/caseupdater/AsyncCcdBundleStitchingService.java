@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
@@ -48,7 +49,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
                     .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
+                            ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -59,7 +60,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
+    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
@@ -68,7 +69,15 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        automatedStitchingExecutor.startStitching(caseId, ccdCallbackDto.getJwt(), bundle.getValue());
+        CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
+            .caseId(ccdCallbackDto.getCaseId())
+            .jwt(ccdCallbackDto.getJwt())
+            .caseTypeId(ccdCallbackDto.getCaseTypeId())
+            .jurisdictionId(ccdCallbackDto.getJurisdictionId())
+            .serviceAuth(ccdCallbackDto.getServiceAuth())
+            .build();
+
+        automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle.getValue());
 
         return bundle;
     }

@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.Bundl
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
@@ -67,10 +68,15 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 return arrayNode;
             });
 
-            automatedStitchingExecutor.startStitching(
-                ccdCallbackDto.getCaseId(),
-                ccdCallbackDto.getJwt(),
-                bundle);
+            CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
+                .caseId(ccdCallbackDto.getCaseId())
+                .jwt(ccdCallbackDto.getJwt())
+                .caseTypeId(ccdCallbackDto.getCaseTypeId())
+                .jurisdictionId(ccdCallbackDto.getJurisdictionId())
+                .serviceAuth(ccdCallbackDto.getServiceAuth())
+                .build();
+
+            automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle);
 
             bundles.insert(0, bundleDtoToBundleJson(bundle));
         }

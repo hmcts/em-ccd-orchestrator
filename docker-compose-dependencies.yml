@@ -364,7 +364,7 @@ services:
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
     environment:
       CASE_DOCUMENT_AM_API_S2S_SECRET: AAAAAAAAAAAAAAAA
-      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_gw
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_gw,em_stitching_api
       IDAM_API_URL: http://idam-api:5000
       IDAM_OIDC_URL: http://idam-api:5000
       S2S_URL: http://service-auth-provider-api:8489

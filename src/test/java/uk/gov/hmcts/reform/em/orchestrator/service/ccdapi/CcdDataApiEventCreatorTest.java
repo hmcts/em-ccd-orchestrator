@@ -26,7 +26,7 @@ public class CcdDataApiEventCreatorTest {
         ccdDataApiEventCreator = buildTestedService(200, "OK");
         Mockito.when(ccdCallbackDtoCreator.createDto(
                 ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(), ArgumentMatchers.anyString(),
                 Mockito.any())).thenReturn(new CcdCallbackDto());
         ccdDataApiEventCreator.executeTrigger("1", "triggerId", "jwt");
         assertTrue(true, "No exceptions");

@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
@@ -59,15 +60,18 @@ public class StitchingService {
      * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, CdamDetailsDto cdamDetailsDto) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
-        documentTask.setJwt(jwt);
+        documentTask.setJwt(cdamDetailsDto.getJwt());
+        documentTask.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
+        documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
+        documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
 
         try {
-            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt);
-            final String response = poll(createdDocumentTaskDTO.getId(), jwt);
+            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
+            final String response = poll(createdDocumentTaskDTO.getId(), cdamDetailsDto.getJwt());
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);

@@ -48,7 +48,7 @@ public class AsyncCcdBundleStitchingServiceTest {
         asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
 
         Mockito.verify(automatedStitchingExecutor, Mockito.times(1))
-                .startStitching(Mockito.any(), Mockito.any(), Mockito.any());
+                .startStitching(Mockito.any(), Mockito.any());
     }
 
     @Test(expected = InputValidationException.class)
@@ -72,7 +72,7 @@ public class AsyncCcdBundleStitchingServiceTest {
 
         Mockito.doThrow(new StitchingServiceException("x"))
                 .when(automatedStitchingExecutor)
-                .startStitching(Mockito.any(), Mockito.any(), Mockito.any());
+                .startStitching(Mockito.any(), Mockito.any());
 
         asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
     }
