@@ -69,13 +69,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
-            .caseId(ccdCallbackDto.getCaseId())
-            .jwt(ccdCallbackDto.getJwt())
-            .caseTypeId(ccdCallbackDto.getCaseTypeId())
-            .jurisdictionId(ccdCallbackDto.getJurisdictionId())
-            .serviceAuth(ccdCallbackDto.getServiceAuth())
-            .build();
+        CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
 
         automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle.getValue());
 

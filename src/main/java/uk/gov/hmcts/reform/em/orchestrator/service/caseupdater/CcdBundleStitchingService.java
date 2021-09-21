@@ -71,13 +71,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
-            .caseId(ccdCallbackDto.getCaseId())
-            .jwt(ccdCallbackDto.getJwt())
-            .caseTypeId(ccdCallbackDto.getCaseTypeId())
-            .jurisdictionId(ccdCallbackDto.getJurisdictionId())
-            .serviceAuth(ccdCallbackDto.getServiceAuth())
-            .build();
+        CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
 
         try {
             CcdDocument stitchedDocument = stitchingService.stitch(bundle.getValue(), cdamDetailsDto);
