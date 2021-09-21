@@ -61,6 +61,27 @@ public class StitchingServiceTest {
     }
 
     @Test
+    public void stitchCdamSuccessful() throws StitchingServiceException, InterruptedException {
+        List<String> responses = new ArrayList<>();
+
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", "
+            + "\"hashToken\": \"2355678kggkhghgjhvhmgv345678\" } }");
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDetailsDto);
+
+        Assert.assertEquals("AAAAAA", docId.getUrl());
+        Assert.assertEquals("2355678kggkhghgjhvhmgv345678", docId.getHash());
+        Assert.assertEquals("stitched.pdf", docId.getFileName());
+    }
+
+    @Test
     public void stitchSuccessfulWithFileName() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
