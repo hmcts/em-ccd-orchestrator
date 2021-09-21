@@ -23,7 +23,8 @@ def component = "ccdorc"
 def secrets = [
         's2s-${env}': [
                 secret('microservicekey-em-gw', 'FUNCTIONAL_TEST_CLIENT_S2S_TOKEN'),
-                secret('microservicekey-ccd-gw', 'FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET')
+                secret('microservicekey-ccd-gw', 'FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET'),
+                secret('microservicekey-xui-webapp', 'FUNCTIONAL_TEST_XUI_WEBAPP_SERVICE_SECRET')
         ],
         'rpa-${env}': [
                 secret('show-oauth2-token', 'FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET')
@@ -53,6 +54,7 @@ withNightlyPipeline(type, product, component) {
     env.DM_STORE_APP_URL = 'http://dm-store-aat.service.core-compute-aat.internal'
     env.CCD_DEF_API = 'http://ccd-definition-store-api-aat.service.core-compute-aat.internal'
     env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.internal'
+    env.CDAM_URL = 'http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
 
     env.TEST_URL = "http://em-ccd-orchestrator-aat.service.core-compute-aat.internal"
 
