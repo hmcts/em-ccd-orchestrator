@@ -73,7 +73,7 @@ public class StitchingService {
         documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
         documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
 
-        log.debug(String.format("documentTask values : %s", documentTask.toString()));
+        log.debug(String.format("documentTask values : {}", documentTask.toString()));
 
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
