@@ -1,6 +1,6 @@
 {
-  "case_type_id":"CCD_BUNDLE_MVP_TYPE",
-  "jurisdiction":"BENEFIT",
+  "caseTypeId":"CCD_BUNDLE_MVP_TYPE",
+  "jurisdictionId":"BENEFIT",
   "case_details":{
     "id":1549470518926374,
     "jurisdiction":"PUBLICLAW",
