@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
@@ -30,8 +28,6 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 @Transactional
 public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
-
-    private final Logger log = LoggerFactory.getLogger(AsyncCcdBundleStitchingService.class);
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -78,8 +74,6 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
-
-        log.debug(String.format("CdamDetailsDto values : {}", cdamDetailsDto.toString()));
 
         automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle.getValue());
 
