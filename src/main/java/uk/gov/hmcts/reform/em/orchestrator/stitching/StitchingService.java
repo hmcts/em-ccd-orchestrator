@@ -78,7 +78,7 @@ public class StitchingService {
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
             final String response = poll(createdDocumentTaskDTO.getId(), cdamDetailsDto.getJwt());
-            log.debug(String.format("stitching response contains : %s", response));
+            log.debug(String.format("stitching response contains : {}", response));
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
