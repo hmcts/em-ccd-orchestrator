@@ -11,6 +11,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -28,6 +30,8 @@ import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdf
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */
 public class StitchingService {
+
+    private final Logger log = LoggerFactory.getLogger(StitchingService.class);
 
     private static final int DEFAULT_MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
@@ -69,9 +73,12 @@ public class StitchingService {
         documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
         documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
 
+        log.info(String.format("documentTask values : %s", documentTask.toString()));
+
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
             final String response = poll(createdDocumentTaskDTO.getId(), cdamDetailsDto.getJwt());
+            log.info(String.format("response contains : %s", response));
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);

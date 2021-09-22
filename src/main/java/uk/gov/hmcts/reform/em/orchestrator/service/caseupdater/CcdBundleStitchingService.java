@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -17,7 +19,11 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -26,6 +32,8 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 @Transactional
 public class CcdBundleStitchingService implements CcdCaseUpdater {
+
+    private final Logger log = LoggerFactory.getLogger(CcdBundleStitchingService.class);
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -72,6 +80,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
+
+        log.info(String.format("CdamDetailsDto values : %s", cdamDetailsDto.toString()));
 
         try {
             CcdDocument stitchedDocument = stitchingService.stitch(bundle.getValue(), cdamDetailsDto);
