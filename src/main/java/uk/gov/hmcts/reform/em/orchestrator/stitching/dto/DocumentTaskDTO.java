@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Objects;
  * A DTO for the DocumentTask entity.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class DocumentTaskDTO implements Serializable {
 
     private Long id;
@@ -126,10 +128,4 @@ public class DocumentTaskDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-
-    public String toString() {
-        return "DocumentTaskDTO(id=" + this.getId() + ", bundle=" + this.getBundle()
-                + ", taskState=" + this.getTaskState() + ", failureDescription=" + this.getFailureDescription()
-                + ", callback=" + this.getCallback() + ", jwt=" + this.getJwt() + ")";
-    }
 }

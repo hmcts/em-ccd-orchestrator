@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
@@ -15,7 +16,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
+@Ignore
 public class AutomatedBundlingScenarios extends BaseTest {
 
     private static JsonNode validJson;

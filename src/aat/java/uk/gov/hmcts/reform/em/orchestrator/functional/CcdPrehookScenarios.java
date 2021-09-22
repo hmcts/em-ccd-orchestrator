@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Ignore
 public class CcdPrehookScenarios extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());

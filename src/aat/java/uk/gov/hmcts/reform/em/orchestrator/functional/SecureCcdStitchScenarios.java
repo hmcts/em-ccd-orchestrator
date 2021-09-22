@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
@@ -19,9 +20,9 @@ public class SecureCcdStitchScenarios extends BaseTest {
     public RetryRule retryRule = new RetryRule(3);
 
     // This has the caseTypeId, jurisdictionId populated by default(Hard coded) as these are required fields for CDAM.
-    private static final String syncCaseJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", " +
-        "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ " +
-        "\"case_data\":{ \"caseBundles\":[%s ] } } }";
+    private static final String syncCaseJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
+        + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
+        + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
 
     @Test
     public void testPostBundleStitch() throws Exception {
@@ -32,13 +33,14 @@ public class SecureCcdStitchScenarios extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat()
+                .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
                 .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
                 .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testPostBundleStitchWithWordDoc() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
@@ -55,6 +57,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testSpecificFilename() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -74,6 +77,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testFilenameWithoutExtension() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -91,6 +95,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.fileName", equalTo("doc-file-name"));
     }
 
+    @Ignore
     @Test
     public void testPostBundleStitchFileNameOneChar() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -107,6 +112,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
+    @Ignore
     @Test
     public void testPostBundleStitchFileName51Char() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -123,6 +129,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
+    @Ignore
     @Test
     public void testNoFileNameButBundleTitleOnly() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
@@ -139,6 +146,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("Bundle title.pdf"));
     }
 
+    @Ignore
     @Test
     public void testFilenameErrors() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -157,6 +165,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("errors[0]", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testLongBundleDescriptionErrors() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -172,6 +181,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("errors[0]", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testWithoutCoversheets() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -191,6 +201,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
     }
 
+    @Ignore
     @Test
     public void testWithImageRendering() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithImageRendered(extendedCcdHelper.getBundleTesterUser());
@@ -211,6 +222,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
     }
 
+    @Ignore
     @Test
     public void testPostBundleStitchAsync() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -225,6 +237,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"));
     }
 
+    @Ignore
     @Test
     public void testPostAsyncBundleStitchFileNameOneChar() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
@@ -241,6 +254,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
+    @Ignore
     @Test
     public void testPostAsyncLongBundleDescriptionErrors() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
