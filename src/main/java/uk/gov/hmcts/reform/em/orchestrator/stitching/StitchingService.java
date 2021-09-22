@@ -73,12 +73,12 @@ public class StitchingService {
         documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
         documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
 
-        log.info(String.format("documentTask values : %s", documentTask.toString()));
+        log.debug(String.format("documentTask values : %s", documentTask.toString()));
 
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
             final String response = poll(createdDocumentTaskDTO.getId(), cdamDetailsDto.getJwt());
-            log.info(String.format("response contains : %s", response));
+            log.debug(String.format("stitching response contains : %s", response));
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);

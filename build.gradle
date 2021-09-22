@@ -255,7 +255,6 @@ dependencyManagement {
 }
 
 checkstyle {
-    ignoreFailures = true
     maxWarnings = 10
     toolVersion = '8.12'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
