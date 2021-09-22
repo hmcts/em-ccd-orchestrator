@@ -81,7 +81,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
         CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
 
-        log.debug(String.format("CdamDetailsDto values : %s", cdamDetailsDto.toString()));
+        log.debug(String.format("CdamDetailsDto values : {}", cdamDetailsDto.toString()));
 
         try {
             CcdDocument stitchedDocument = stitchingService.stitch(bundle.getValue(), cdamDetailsDto);

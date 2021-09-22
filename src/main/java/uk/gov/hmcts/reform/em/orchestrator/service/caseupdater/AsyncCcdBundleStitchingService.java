@@ -79,7 +79,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
 
         CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
 
-        log.debug(String.format("CdamDetailsDto values : %s", cdamDetailsDto.toString()));
+        log.debug(String.format("CdamDetailsDto values : {}", cdamDetailsDto.toString()));
 
         automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle.getValue());
 
