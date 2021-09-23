@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
@@ -33,15 +32,5 @@ public interface CcdCaseUpdater {
             }
         }
         return reorderedBundles;
-    }
-
-    static CdamDetailsDto populateCdamDetails(CcdCallbackDto ccdCallbackDto) {
-        return CdamDetailsDto.builder()
-            .caseId(ccdCallbackDto.getCaseId())
-            .jwt(ccdCallbackDto.getJwt())
-            .caseTypeId(ccdCallbackDto.getCaseTypeId())
-            .jurisdictionId(ccdCallbackDto.getJurisdictionId())
-            .serviceAuth(ccdCallbackDto.getServiceAuth())
-            .build();
     }
 }

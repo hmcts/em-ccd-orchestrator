@@ -8,18 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,7 +48,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
                     .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                            ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
+                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
@@ -64,7 +59,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
+    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
@@ -73,9 +68,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
-
-        automatedStitchingExecutor.startStitching(cdamDetailsDto, bundle.getValue());
+        automatedStitchingExecutor.startStitching(caseId, ccdCallbackDto.getJwt(), bundle.getValue());
 
         return bundle;
     }

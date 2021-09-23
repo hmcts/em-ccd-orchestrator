@@ -42,11 +42,10 @@ public class CcdDataApiEventCreator {
      * @return - DTO with CCD case
      */
     public CcdCallbackDto executeTrigger(String caseId, String triggerId, String jwt) {
-        String serviceAuth = authTokenGenerator.generate();
         final Request request = new Request.Builder()
                 .addHeader("Authorization", jwt)
                 .addHeader("experimental", "true")
-                .addHeader("ServiceAuthorization", serviceAuth)
+                .addHeader("ServiceAuthorization", authTokenGenerator.generate())
                 .url(String.format(ccdDataBaseUrl + ccdTriggerPath,
                         caseId,
                         triggerId))
@@ -64,7 +63,7 @@ public class CcdDataApiEventCreator {
 
             return ccdCallbackDtoCreator.createDto(
                     "caseBundles",
-                    jwt, serviceAuth,
+                    jwt,
                     response.body().charStream());
         } catch (IOException e) {
             throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));

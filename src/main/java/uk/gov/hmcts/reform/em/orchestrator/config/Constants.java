@@ -14,6 +14,7 @@ public final class Constants {
     public static final String JURISDICTION_ID = "jurisdictionId";
     public static final String CASE_ID = "caseId";
     public static final String SERVICE_AUTH = "serviceauthorization";
+    public static final String CDAM_DEATILS = "cdamDetails";
 
     private Constants() {
     }

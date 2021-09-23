@@ -10,9 +10,7 @@ import lombok.ToString;
 public class CdamDetailsDto {
 
     private String caseTypeId;
-    private String caseId;
     private String jurisdictionId;
-    private String jwt;
     private String serviceAuth;
 
 }

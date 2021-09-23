@@ -24,14 +24,13 @@ public class CcdCallbackDtoCreator {
 
     public CcdCallbackDto createDto(HttpServletRequest request, String propertyName) {
         try {
-            return this.createDto(propertyName, request.getHeader("Authorization"),
-                request.getHeader("ServiceAuthorization"),request.getReader());
+            return this.createDto(propertyName, request.getHeader("Authorization"), request.getReader());
         } catch (IOException e) {
             throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
         }
     }
 
-    public CcdCallbackDto createDto(String propertyName, String jwt, String serviceAuth, Reader reader) {
+    public CcdCallbackDto createDto(String propertyName, String jwt, Reader reader) {
         CcdCallbackDto dto = new CcdCallbackDto();
         try {
             JsonNode payload = objectMapper.readTree(reader);
@@ -46,7 +45,6 @@ public class CcdCallbackDtoCreator {
         dto.setCaseDetails(dto.getCcdPayload().findValue("case_details"));
         dto.setPropertyName(Optional.of(propertyName));
         dto.setJwt(jwt);
-        dto.setServiceAuth(serviceAuth);
         return dto;
     }
 

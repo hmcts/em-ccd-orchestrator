@@ -19,8 +19,6 @@ public class CcdCallbackDto {
 
     private String jwt;
 
-    private String serviceAuth;
-
     @JsonIgnore
     private Boolean enableEmailNotification;
 
@@ -121,13 +119,5 @@ public class CcdCallbackDto {
             return value.isMissingNode() ? "" : value.asText();
         }
         return "";
-    }
-
-    public String getServiceAuth() {
-        return serviceAuth;
-    }
-
-    public void setServiceAuth(String serviceAuth) {
-        this.serviceAuth = serviceAuth;
     }
 }

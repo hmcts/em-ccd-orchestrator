@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
@@ -36,12 +35,7 @@ public class AutomatedStitchingExecutorTest {
         Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.any()))
                 .thenReturn(documentTaskDTO);
 
-        CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
-            .caseId("1")
-            .jwt("jwt")
-            .build();
-
-        automatedStitchingExecutor.startStitching(cdamDetailsDto, "2", ccdBundleDTO);
+        automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO);
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))
                 .toStitchingDTO(Mockito.any(CcdBundleDTO.class));
@@ -61,13 +55,8 @@ public class AutomatedStitchingExecutorTest {
 
         Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString())).thenThrow(new IOException("x"));
 
-        CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
-            .caseId("1")
-            .jwt("jwt")
-            .build();
-
         assertThrows(StartStitchingException.class, () ->
-            automatedStitchingExecutor.startStitching(cdamDetailsDto, ccdBundleDTO)
+            automatedStitchingExecutor.startStitching("1", "jwt", ccdBundleDTO)
         );
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))

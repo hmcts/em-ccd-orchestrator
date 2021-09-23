@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -17,11 +16,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -75,11 +70,9 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        CdamDetailsDto cdamDetailsDto = CcdCaseUpdater.populateCdamDetails(ccdCallbackDto);
-
         try {
-            CcdDocument stitchedDocument = stitchingService.stitch(bundle.getValue(), cdamDetailsDto);
-            bundle.getValue().setStitchedDocument(stitchedDocument);
+            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), ccdCallbackDto.getJwt());
+            bundle.getValue().setStitchedDocument(stitchedDocumentURI);
 
             return bundle;
         } catch (InterruptedException e) {

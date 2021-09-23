@@ -13,7 +13,10 @@ import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -22,7 +25,9 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
@@ -31,7 +36,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdf
  */
 public class StitchingService {
 
-    private final Logger log = LoggerFactory.getLogger(StitchingService.class);
+    private final Logger logger = LoggerFactory.getLogger(StitchingService.class);
 
     private static final int DEFAULT_MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
@@ -64,21 +69,15 @@ public class StitchingService {
      * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, CdamDetailsDto cdamDetailsDto) throws InterruptedException  {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
-        documentTask.setJwt(cdamDetailsDto.getJwt());
-        documentTask.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
-        documentTask.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
-        documentTask.setServiceAuth(cdamDetailsDto.getServiceAuth());
-
-        log.debug(String.format("documentTask values : {}", documentTask.toString()));
+        documentTask.setJwt(jwt);
 
         try {
-            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, cdamDetailsDto.getJwt());
-            final String response = poll(createdDocumentTaskDTO.getId(), cdamDetailsDto.getJwt());
-            log.debug(String.format("stitching response contains : {}", response));
+            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt);
+            final String response = poll(createdDocumentTaskDTO.getId(), jwt);
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
@@ -116,6 +115,7 @@ public class StitchingService {
     }
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
+        populateCdamDetails(documentTask);
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
         final Request request = new Request.Builder()
@@ -156,5 +156,23 @@ public class StitchingService {
         }
 
         throw new IOException("Task not complete after maximum number of retries");
+    }
+
+    private void populateCdamDetails(DocumentTaskDTO documentTaskDto) {
+
+        logger.info("CdamAspect invoked");
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        if (Objects.nonNull(request) && Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
+            CdamDetailsDto cdamDetailsDto = (CdamDetailsDto) request.getSession().getAttribute(Constants.CDAM_DEATILS);
+            documentTaskDto.setServiceAuth(cdamDetailsDto.getServiceAuth());
+            documentTaskDto.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
+            documentTaskDto.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
+            request.getSession().removeAttribute(Constants.CDAM_DEATILS);
+
+            logger.info("Cdam details populated");
+        }
+        logger.info("CdamAspect completed");
     }
 }
