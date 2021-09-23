@@ -4,10 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Builder
 @Data
 @ToString
-public class CdamDetailsDto {
+public class CdamDetailsDto implements Serializable {
 
     private String caseTypeId;
     private String jurisdictionId;

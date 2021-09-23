@@ -164,7 +164,7 @@ public class StitchingService {
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-        if (Objects.nonNull(request) && Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
+        if (Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
             CdamDetailsDto cdamDetailsDto = (CdamDetailsDto) request.getSession().getAttribute(Constants.CDAM_DEATILS);
             documentTaskDto.setServiceAuth(cdamDetailsDto.getServiceAuth());
             documentTaskDto.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
