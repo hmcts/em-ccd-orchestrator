@@ -163,7 +163,7 @@ dependencies {
     testCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
 
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.3"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.8.1"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.3"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.3"
 
@@ -205,7 +205,7 @@ dependencyManagement {
             entry 'junit'
         }
 
-        dependencySet(group: 'org.junit.jupiter', version: '5.6.3') {
+        dependencySet(group: 'org.junit.jupiter', version: '5.8.1') {
             entry 'junit-jupiter'
             entry 'junit-jupiter-api'
             entry 'junit-jupiter-params'
