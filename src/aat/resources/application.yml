@@ -16,6 +16,17 @@ spring:
             client-id: webshow
             client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: '/'
+      exposure:
+        include:
+          - health
+          - info
 test:
   url: ${TEST_URL:http://localhost:8080}
 
