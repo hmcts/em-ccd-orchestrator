@@ -398,7 +398,7 @@ task smoke(type: Test) {
 
 task validateYaml(type: JavaExec){
     description = "Validate the automated bundling YAML configuration"
-    main = 'uk.gov.hmcts.reform.em.orchestrator.CliApplication'
+    mainClass.set("uk.gov.hmcts.reform.em.orchestrator.CliApplication")
     classpath = sourceSets.main.runtimeClasspath
     args '--validate'
 }
@@ -423,7 +423,7 @@ task runAndPublishConsumerPactTests(type: Test){
 }
 
 task fortifyScan(type: JavaExec)  {
-    main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+    mainClass.set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
     classpath += sourceSets.test.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
@@ -436,7 +436,7 @@ project.ext {
     pactVersion = getCheckedOutGitCommitHash()
 }
 
-def getCheckedOutGitCommitHash() {
+static def getCheckedOutGitCommitHash() {
     'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
 
