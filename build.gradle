@@ -87,7 +87,6 @@ dependencies {
     def withoutStuff = {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-test'
     }
     
     def withoutAlpnApi = {
@@ -131,7 +130,6 @@ dependencies {
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
@@ -139,6 +137,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client'
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
@@ -379,7 +378,7 @@ task functional(type: Test) {
 }
 
 // Serenity Single page Reports
-functional.finalizedBy(aggregate)
+// functional.finalizedBy(aggregate)
 
 task smoke(type: Test) {
     group = 'Delivery pipeline'
