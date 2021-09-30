@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class DefaultUpdateCaller {
 
-    private final Logger log = LoggerFactory.getLogger(DefaultUpdateCaller.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultUpdateCaller.class);
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator;
     private final NotificationService notificationService;
@@ -43,10 +43,10 @@ public class DefaultUpdateCaller {
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
         } catch (InputValidationException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().addAll(e.getViolations());
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().add(e.getMessage());
         }
 
@@ -73,6 +73,7 @@ public class DefaultUpdateCaller {
                 .serviceAuth(request.getHeader("ServiceAuthorization"))
                 .build();
             request.getSession().setAttribute(Constants.CDAM_DEATILS, cdamDetailsDto);
+            logger.debug("Cdam Details : {} for caseId : {} ", cdamDetailsDto, dto.getCaseId());
         }
     }
 

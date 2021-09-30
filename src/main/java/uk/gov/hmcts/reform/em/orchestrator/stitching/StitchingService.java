@@ -160,8 +160,6 @@ public class StitchingService {
 
     private void populateCdamDetails(DocumentTaskDTO documentTaskDto) {
 
-        logger.info("CdamAspect invoked");
-
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
         if (Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
@@ -171,8 +169,7 @@ public class StitchingService {
             documentTaskDto.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
             request.getSession().removeAttribute(Constants.CDAM_DEATILS);
 
-            logger.info("Cdam details populated");
+            logger.debug("Cdam details populated");
         }
-        logger.info("CdamAspect completed");
     }
 }
