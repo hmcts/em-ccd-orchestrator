@@ -47,9 +47,9 @@ repositories {
 }
 
 def versions = [
-        serenity           : '2.3.13',
-        serenityreporter   : '2.3.13',
-        serenityRestAssured: '2.3.4',
+        serenity           : '2.6.0',
+        serenityreporter   : '2.6.0',
+        serenityRestAssured: '2.6.0',
         springfoxSwagger   : '2.9.2',
         pact_version       : '4.0.10',
         logging            : '5.1.7',
@@ -274,9 +274,10 @@ dependencyCheck {
 }
 
 bootJar {
-    baseName 'rpa-em-ccd-orchestrator'
-    archiveName = "$baseName"+".jar"
-    destinationDir = file("$rootDir/build/libs")
+    getArchiveFileName().set(provider {
+        'rpa-em-ccd-orchestrator.jar'
+    })
+    destinationDirectory = file("$rootDir/build/libs")
     manifest {
         attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
     }
@@ -301,10 +302,10 @@ jacocoTestReport {
     executionData(test)
 
     reports {
-        xml.enabled = true
-        csv.enabled = false
+        xml.required = true
+        csv.required = false
 
-        xml.destination file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+        xml.outputLocation = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
