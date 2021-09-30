@@ -155,9 +155,9 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
 
-    testRuntimeOnly group: 'org.junit.vintage', name :'junit-vintage-engine', version: '5.8.0'
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.8.0'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.0'
+    testRuntimeOnly group: 'org.junit.vintage', name :'junit-vintage-engine', version: '5.7.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.7.2'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.2'
 
     aatImplementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
     aatImplementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
@@ -168,8 +168,8 @@ dependencies {
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutAlpnApi
     implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutAlpnApi
 
-    contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.8.0'
-    contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.0'
+    contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.7.2'
+    contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.2'
 
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
