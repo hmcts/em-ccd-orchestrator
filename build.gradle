@@ -35,13 +35,14 @@ targetCompatibility = 11
 mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 
 configurations {
-    aatCompile.extendsFrom(testCompile)
-    aatRuntime.extendsFrom(testRuntime)
+    aatImplementation.extendsFrom(testImplementation)
+    aatRuntimeOnly.extendsFrom(testRuntimeOnly)
 }
 
 repositories {
     jcenter()
     mavenLocal()
+    mavenCentral()
     maven { url 'https://jitpack.io' }
 }
 
@@ -63,10 +64,6 @@ sourceSets {
         java {
             compileClasspath += main.output
             runtimeClasspath += main.output
-            srcDir('src/aat/java')
-        }
-        resources {
-            srcDir('src/aat/resources')
         }
     }
     test {
@@ -76,9 +73,7 @@ sourceSets {
         java {
             compileClasspath += main.output
             runtimeClasspath += main.output
-            srcDir file('src/contractTest/java')
         }
-        resources.srcDir file('src/contactTest/resources')
     }
 }
 
@@ -101,90 +96,89 @@ dependencies {
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.48'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.48'
 
-    compile group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
     
-    compile group:'org.projectlombok', name: 'lombok', version: '1.18.20'
+    implementation group:'org.projectlombok', name: 'lombok', version: '1.18.20'
     aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.20'
 
-    compile "com.squareup.okhttp3:okhttp:4.9.1"
-    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.1'
-    compile group: "commons-io", name: "commons-io", version: "2.11.0"
-    compile "org.springframework.boot:spring-boot-starter-batch"
-    compile "org.springframework.boot:spring-boot-starter-security"
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile 'org.springframework.boot:spring-boot-starter-validation'
-    compile 'org.springframework.data:spring-data-commons:2.4.8'
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.1'
+    implementation group: "commons-io", name: "commons-io", version: "2.11.0"
+    implementation "org.springframework.boot:spring-boot-starter-batch"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.data:spring-data-commons:2.4.8'
 
-    compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.fasterXmlJackson
-    compile group:'com.fasterxml.jackson.module', name: 'jackson-module-afterburner', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.fasterXmlJackson
+    implementation group:'com.fasterxml.jackson.module', name: 'jackson-module-afterburner', version: versions.fasterXmlJackson
     
-    compile "pl.touk:throwing-function:1.3"
-    compile "com.jayway.jsonpath:json-path:2.6.0"
-    compile "org.zalando:problem-spring-web:0.26.2"
-    compile("io.springfox:springfox-swagger2:${versions.springfoxSwagger}")
-    compile("io.springfox:springfox-swagger-ui:${versions.springfoxSwagger}")
-    compile group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
-    compile group: "commons-validator", name: "commons-validator", version: "1.7"
-    compile group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
-    compile group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "4.0.0"
-    compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
-    compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
-    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    compile 'com.github.hmcts:ccd-case-document-am-client:1.7.1'
+    implementation "pl.touk:throwing-function:1.3"
+    implementation "com.jayway.jsonpath:json-path:2.6.0"
+    implementation "org.zalando:problem-spring-web:0.26.2"
+    implementation("io.springfox:springfox-swagger2:${versions.springfoxSwagger}")
+    implementation("io.springfox:springfox-swagger-ui:${versions.springfoxSwagger}")
+    implementation group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
+    implementation group: "commons-validator", name: "commons-validator", version: "1.7"
+    implementation group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
+    implementation group: "uk.gov.hmcts.reform", name: "service-auth-provider-client", version: "4.0.0"
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
+    implementation 'com.github.hmcts:ccd-case-document-am-client:1.7.1'
 
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
-    compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
-    compile "org.springframework.boot:spring-boot-starter-oauth2-client"
-    compile "io.github.openfeign:feign-httpclient:11.6"
-    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+    implementation "io.github.openfeign:feign-httpclient:11.6"
+    implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor", withoutStuff
 
-    testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
+    testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
     
-    testCompile "org.springframework.boot:spring-boot-starter-test", withoutStuff
-    testCompile "com.github.gmazzo:okhttp-mock:1.4.1"
-    testCompile "com.github.gmazzo:okhttp-mock:1.4.1"
-    testCompile group: 'org.mockito', name: 'mockito-core', version: versions.mockito
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
+    testImplementation "org.springframework.boot:spring-boot-starter-test", withoutStuff
+    testImplementation "com.github.gmazzo:okhttp-mock:1.4.1"
+    testImplementation "com.github.gmazzo:okhttp-mock:1.4.1"
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: versions.mockito
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
 
-    testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured, withoutStuff
-    testCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, withoutStuff
-    testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-    testCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    testCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured, withoutStuff
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, withoutStuff
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
 
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.6.3"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.3"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.3"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.3"
 
-    aatCompile group: 'org.apache.poi', name: 'poi', version: '5.0.0'
-    aatCompile group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
+    aatImplementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
+    aatImplementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
 
     //pact contract testing
-    contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutAlpnApi
-    contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutAlpnApi
-    contractTestCompile group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutAlpnApi
-    compile group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutAlpnApi
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutAlpnApi
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutAlpnApi
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutAlpnApi
+    implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutAlpnApi
 
-    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.6.3")
-    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.3")
+    contractTestImplementation("org.junit.jupiter:junit-jupiter-api:5.6.3")
+    contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.3")
     contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.6.3')
 
-    contractTestCompile sourceSets.main.runtimeClasspath
-    contractTestCompile sourceSets.test.runtimeClasspath
+    contractTestImplementation sourceSets.main.runtimeClasspath
+    contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatCompile 'com.github.hmcts:em-test-helper:1.20.2'
+    aatImplementation 'com.github.hmcts:em-test-helper:1.20.2'
 }
 
 dependencyManagement {
@@ -256,10 +250,13 @@ dependencyManagement {
 
 checkstyle {
     maxWarnings = 10
+    ignoreFailures = true
     toolVersion = '8.12'
+    reportsDir = file("$project.buildDir/reports/checkstyle")
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-    configDir = new File(rootDir, 'config/checkstyle')
+    getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
+
 
 checkstyleMain.shouldRunAfter(compileJava)
 test.shouldRunAfter(checkstyleTest)
@@ -361,8 +358,8 @@ sonarqube {
 }
 
 configurations {
-    contractTestCompile.extendsFrom testCompile
-    contractTestRuntime.extendsFrom testRuntime
+    contractTestImplementation.extendsFrom testImplementation
+    contractTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 
