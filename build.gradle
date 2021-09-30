@@ -378,7 +378,7 @@ task functional(type: Test) {
 }
 
 // Serenity Single page Reports
-functional.finalizedBy(aggregate)
+// functional.finalizedBy(aggregate)
 
 task smoke(type: Test) {
     group = 'Delivery pipeline'
