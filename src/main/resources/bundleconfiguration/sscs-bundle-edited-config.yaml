@@ -31,13 +31,3 @@ folders:
             value: \w+
       - type: document
         property: /audioVideoEvidenceBundleDocument
-      - type: documentSet
-        property: /sscsDocument
-        filters:
-          - property: /shouldBundleIncludeDocLink
-            value: Yes
-      - type: documentSet
-        property: /dwpDocuments
-        filters:
-          - property: /shouldBundleIncludeDocLink
-            value: Yes

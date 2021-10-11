@@ -15,6 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
@@ -117,7 +122,7 @@ public class StitchingService {
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
         populateCdamDetails(documentTask);
         final String json = jsonMapper.writeValueAsString(documentTask);
-        final RequestBody body = RequestBody.create(MediaType.get("application/json"), json);
+        final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
             .addHeader("ServiceAuthorization", authTokenGenerator.generate())
