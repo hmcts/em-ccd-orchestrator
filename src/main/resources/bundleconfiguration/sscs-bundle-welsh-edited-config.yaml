@@ -38,8 +38,3 @@ folders:
         filters:
           - property: /bundleAddition
             value: \w+
-      - type: documentSet
-        property: /sscsWelshDocuments
-        filters:
-          - property: /documentType
-            value: rip1Document
