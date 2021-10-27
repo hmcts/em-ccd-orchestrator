@@ -37,4 +37,4 @@ folders:
         property: /sscsWelshDocuments
         filters:
           - property: /bundleAddition
-            value: \w+-?\w+?
+            value: \w+-?\w*
