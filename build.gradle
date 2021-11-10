@@ -137,7 +137,7 @@ dependencies {
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client'
-    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.7'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.2-RELEASE'
@@ -219,8 +219,8 @@ dependencyManagement {
             entry 'json-smart'
         }
 
-        //CVE-2021-22118
-        dependencySet(group: 'org.springframework', version: '5.3.9') {
+        //CVE-2021-22118, CVE-2021-22096
+        dependencySet(group: 'org.springframework', version: '5.3.12') {
             entry 'spring-aop'
             entry 'spring-beans'
             entry 'spring-context'
@@ -236,6 +236,12 @@ dependencyManagement {
         //CVE-2021-22119
         dependencySet(group: 'org.springframework.security', version: '5.4.7') {
             entry 'spring-security-core'
+        }
+
+        //CVE-2021-22044
+        dependencySet(group: 'org.springframework.cloud', version: '3.0.5') {
+            entry 'spring-cloud-openfeign-core'
+            entry 'spring-cloud-starter-openfeign'
         }
     }
 }
