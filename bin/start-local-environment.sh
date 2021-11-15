@@ -60,7 +60,8 @@ docker-compose ${COMPOSE_FILE} up -d shared-database \
                                      ccd-case-management-web \
                                      smtp-server \
                                      stitching-api \
-                                     rpa-em-ccd-orchestrator
+                                     rpa-em-ccd-orchestrator \
+                                     ccd-case-document-am-api
 
 
 echo "LOCAL ENVIRONMENT SUCCESSFULLY STARTED"

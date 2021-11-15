@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Getter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,6 +43,7 @@ public class ExtendedCcdHelper {
     @Autowired
     private CcdDefinitionHelper ccdDefinitionHelper;
 
+
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public final String createAutomatedBundlingCaseTemplate = "{\n"
@@ -53,6 +55,15 @@ public class ExtendedCcdHelper {
             + "    \"caseDocuments\": [%s],\n"
             + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
             + "  }";
+    public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
+        + "    \"caseTitle\": null,\n"
+        + "    \"caseOwner\": null,\n"
+        + "    \"caseCreationDate\": null,\n"
+        + "    \"caseDescription\": null,\n"
+        + "    \"caseComments\": null,\n"
+        + "    \"caseDocuments\": %s,\n"
+        + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
+        + "  }";
     public final String documentTemplate = "{\n"
                     + "        \"value\": {\n"
                     + "          \"documentName\": \"%s\",\n"
@@ -63,6 +74,7 @@ public class ExtendedCcdHelper {
                     + "          }\n"
                     + "        }\n"
                     + "      }";
+    @Getter
     private String bundleTesterUser;
     private List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
 
@@ -85,6 +97,11 @@ public class ExtendedCcdHelper {
     public CaseDetails createCase(String documents) throws Exception {
         return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
                 objectMapper.readTree(String.format(createAutomatedBundlingCaseTemplate, documents)));
+    }
+
+    public CaseDetails createCdamCase(String documents) throws Exception {
+        return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
+            objectMapper.readTree(String.format(createCdamAutomatedBundlingCaseTemplate, documents)));
     }
 
     public JsonNode triggerEvent(String caseId, String eventId) throws Exception {
@@ -168,6 +185,8 @@ public class ExtendedCcdHelper {
         return assignEnvCcdCaseTypeIdToCase(
                 objectMapper.readTree(ClassLoader.getSystemResource(file)));
     }
+
+    //////// CDAM //////////
 
 }
 

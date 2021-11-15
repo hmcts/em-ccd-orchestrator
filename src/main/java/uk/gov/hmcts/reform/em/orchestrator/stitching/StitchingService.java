@@ -10,7 +10,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
@@ -18,7 +30,9 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
@@ -26,6 +40,8 @@ import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdf
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */
 public class StitchingService {
+
+    private final Logger logger = LoggerFactory.getLogger(StitchingService.class);
 
     private static final int DEFAULT_MAX_RETRIES = 200;
     private static final int SLEEP_TIME = 500;
@@ -35,6 +51,9 @@ public class StitchingService {
     private final String documentTaskEndpoint;
     private final AuthTokenGenerator authTokenGenerator;
     private final int maxRetries;
+
+    private static final String STITCHED_DOC_URI = "$.bundle.stitchedDocumentURI";
+    private static final String TASK_STATE = "$.taskState";
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
                             AuthTokenGenerator authTokenGenerator) {
@@ -68,14 +87,24 @@ public class StitchingService {
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
 
-            if (JsonPath.read(response, "$.taskState").equals(TaskState.DONE.toString())) {
+            if (JsonPath.read(response, TASK_STATE).equals(TaskState.DONE.toString())) {
                 final String fileName = json.read("$.bundle.fileName");
 
-                return new CcdDocument(
-                    json.read("$.bundle.stitchedDocumentURI"),
-                    ensurePdfExtension(fileName),
-                    uriWithBinarySuffix(json.read("$.bundle.stitchedDocumentURI"))
-                );
+                final String hashToken = json.read("$.bundle.hashToken");
+
+                if (StringUtils.isNotBlank(hashToken)) {
+                    return new CcdDocument(
+                        json.read(STITCHED_DOC_URI),
+                        ensurePdfExtension(fileName),
+                        uriWithBinarySuffix(json.read(STITCHED_DOC_URI)),
+                        hashToken);
+                } else {
+                    return new CcdDocument(
+                        json.read(STITCHED_DOC_URI),
+                        ensurePdfExtension(fileName),
+                        uriWithBinarySuffix(json.read(STITCHED_DOC_URI)));
+                }
+
             } else {
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
@@ -91,6 +120,7 @@ public class StitchingService {
     }
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
+        populateCdamDetails(documentTask);
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
@@ -121,7 +151,7 @@ public class StitchingService {
         for (int i = 0; i < maxRetries; i++) {
             final Response response = http.newCall(request).execute();
             final String responseBody = response.body().string();
-            final String taskState = JsonPath.read(responseBody, "$.taskState");
+            final String taskState = JsonPath.read(responseBody, TASK_STATE);
 
             if (!taskState.equals(TaskState.NEW.toString())) {
                 return responseBody;
@@ -131,5 +161,20 @@ public class StitchingService {
         }
 
         throw new IOException("Task not complete after maximum number of retries");
+    }
+
+    private void populateCdamDetails(DocumentTaskDTO documentTaskDto) {
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        if (Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
+            CdamDetailsDto cdamDetailsDto = (CdamDetailsDto) request.getSession().getAttribute(Constants.CDAM_DEATILS);
+            documentTaskDto.setServiceAuth(cdamDetailsDto.getServiceAuth());
+            documentTaskDto.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
+            documentTaskDto.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
+            request.getSession().removeAttribute(Constants.CDAM_DEATILS);
+
+            logger.debug("Cdam details populated");
+        }
     }
 }

@@ -36,7 +36,9 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo())
                 .globalOperationParameters(Arrays.asList(
                     headerAuthorization(),
-                    headerServiceAuthorization()));
+                    headerServiceAuthorization(),
+                    requestCaseTypeId(),
+                    requestJurisdictionId()));
     }
 
     private Parameter headerAuthorization() {
@@ -59,10 +61,31 @@ public class SwaggerConfiguration {
             .build();
     }
 
+    private Parameter requestCaseTypeId() {
+        return new ParameterBuilder()
+            .name("caseTypeId")
+            .description("Valid caseTypeId required for documents to use CDAM")
+            .modelRef(new ModelRef("string"))
+            .parameterType("request")
+            .required(false)
+            .build();
+    }
+
+    private Parameter requestJurisdictionId() {
+        return new ParameterBuilder()
+            .name("jurisdictionId")
+            .description("Valid jurisdictionId required for documents to use CDAM")
+            .modelRef(new ModelRef("string"))
+            .parameterType("request")
+            .required(false)
+            .build();
+    }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("EM CCD Orchestrator")
-                .description("Orchestrates callbacks from CCD relating to management and stitching of bundles")
+                .description("Orchestrates callbacks from CCD relating to management and stitching of bundles.\n "
+                    + "caseTypeId & jurisdictionId are required attributes for Documents to use CDAM.")
                 .version(apiVersion)
                 .build();
     }

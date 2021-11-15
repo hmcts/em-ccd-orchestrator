@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import pl.touk.throwing.ThrowingFunction;
+import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
 import java.util.Optional;
 
@@ -92,9 +93,14 @@ public class CcdCallbackDto {
                 ? ccdPayload.findValue("jurisdiction").asText() : null;
     }
 
+    public String getJurisdictionId() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
+            ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
+    }
+
     public String getCaseTypeId() {
-        return ccdPayload != null && ccdPayload.findValue("case_type_id") != null
-                ? ccdPayload.findValue("case_type_id").asText() : null;
+        return ccdPayload != null && ccdPayload.findValue(Constants.CASE_TYPE_ID) != null
+                ? ccdPayload.findValue(Constants.CASE_TYPE_ID).asText() : null;
     }
 
     public String getEventToken() {

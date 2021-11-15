@@ -3,18 +3,21 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
+import lombok.ToString;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
+import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class StitchingBundleDTO {
 
     private String bundleTitle;
     private String description;
     private String stitchedDocumentURI;
+    private String hashToken;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
     private String fileName;
@@ -159,6 +162,14 @@ public class StitchingBundleDTO {
 
     public void setDocumentImage(DocumentImage documentImage) {
         this.documentImage = documentImage;
+    }
+
+    public String getHashToken() {
+        return hashToken;
+    }
+
+    public void setHashToken(String hashToken) {
+        this.hashToken = hashToken;
     }
 }
 

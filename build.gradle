@@ -78,14 +78,13 @@ sourceSets {
 }
 
 configurations.all {
-    exclude module: 'com.vaadin.external.google'
+    exclude group: 'com.vaadin.external.google', module: 'android-json'
     exclude group: 'org.glassfish', module: 'jakarta.el'
 }
 
 dependencies {
 
     def withoutStuff = {
-        exclude group: 'com.vaadin.external.google', module: 'android-json'
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
     }
 
@@ -98,11 +97,13 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-
+    implementation 'org.springframework.data:spring-data-commons:2.4.8'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.54'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.54'
+
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.22'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.2'
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.2'
     implementation group: "commons-io", name: "commons-io", version: "2.11.0"
@@ -130,6 +131,7 @@ dependencies {
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
+    implementation 'com.github.hmcts:ccd-case-document-am-client:1.7.1'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
@@ -174,7 +176,7 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version: '1.19.1'
+    aatImplementation 'com.github.hmcts:em-test-helper:1.20.2'
 }
 
 dependencyManagement {
@@ -292,6 +294,7 @@ def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
         '**uk/gov/hmcts/reform/em/orchestrator/info/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
+        '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CdamDetailsDto*',
         '**uk/gov/hmcts/reform/em/orchestrator/config/security/*',
         '**uk/gov/hmcts/reform/em/orchestrator/endpoint/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',

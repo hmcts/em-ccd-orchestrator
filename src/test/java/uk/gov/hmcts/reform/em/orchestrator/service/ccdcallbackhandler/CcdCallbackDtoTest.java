@@ -26,7 +26,7 @@ public class CcdCallbackDtoTest {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": { \"id\": \"1\", "
-                + "\"jurisdiction\": \"j\", \"case_type_id\": \"c\", \"token\": \"t\", \"event_id\":\"e\" }}");
+                + "\"jurisdiction\": \"j\", \"caseTypeId\": \"c\", \"token\": \"t\", \"event_id\":\"e\" }}");
         ccdCallbackDto.setCcdPayload(ccdPayload);
         assertEquals("1", ccdCallbackDto.getCaseId());
         assertEquals("j", ccdCallbackDto.getJurisdiction());

@@ -1,6 +1,7 @@
 java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
+    EM_STITCHING_API_URL: http://em-stitching-pr-723.service.core-compute-preview.internal
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}

@@ -37,6 +37,8 @@ services:
       - microserviceKeys_em_gw=AAAAAAAAAAAAAAAA
       - microserviceKeys_em_stitching_api=AAAAAAAAAAAAAAAA
       - microserviceKeys_em_ccd_orchestrator=AAAAAAAAAAAAAAAA
+      - microserviceKeys_ccd_case_document_am_api=AAAAAAAAAAAAAAAA
+      - microserviceKeys_xui_webapp=AAAAAAAAAAAAAAAA
       - microserviceKeys_ccd_data=AAAAAAAAAAAAAAAA
       - microserviceKeys_ccd_gw=AAAAAAAAAAAAAAAA
       - microserviceKeys_ccd_definition=AAAAAAAAAAAAAAAA
@@ -138,10 +140,6 @@ services:
   stitching-api:
     image: hmctspublic.azurecr.io/em/stitching:latest
     container_name: ccdorc-stitching-api
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 10
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/emstitch
       - SPRING_DATASOURCE_USERNAME=shared
@@ -153,6 +151,7 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=test-key
       - DM_STORE_APP_URL=http://dm-store:8080
       - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
+      - CDAM_URL=http://ccd-case-document-am-api:4455
     dns:
       - 172.16.0.10
       - 172.16.0.14
@@ -184,7 +183,7 @@ services:
       - IDAM_TESTING_SUPPORT_ENABLED=true
       - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8489
-      - S2S_NAMES_WHITELIST=em_npa_app,sscs,divorce,ccd,em_gw,ccd_gw,em_stitching_api,em_ccd_orchestrator
+      - S2S_NAMES_WHITELIST=em_npa_app,sscs,divorce,ccd,em_gw,ccd_gw,em_stitching_api,em_ccd_orchestrator,ccd_case_document_am_api
       - http_proxy=
       - https_proxy=
       - no_proxy=
@@ -291,10 +290,12 @@ services:
       DATA_STORE_DB_USE_SSL: "false"
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,em_ccd_orchestrator
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,em_ccd_orchestrator,xui_webapp,ccd_case_document_am_api
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://idam-api:5000
+      IDAM_API_BASE_URL: http://idam-api:5000
+      IDAM_OIDC_URL: http://idam-api:5000
       IDAM_S2S_URL: http://service-auth-provider-api:8489
       REFORM_SERVICE_NAME: ccd-data-store-api
       REFORM_TEAM: ccd
@@ -304,6 +305,7 @@ services:
       ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       CCD_DM_DOMAIN: http://dm-store:8080
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4452:4452
@@ -357,6 +359,33 @@ services:
       - ccd-definition-store-api
       - ccd-data-store-api
       - dm-store
+
+  ccd-case-document-am-api:
+    image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
+    environment:
+      CASE_DOCUMENT_AM_API_S2S_SECRET: AAAAAAAAAAAAAAAA
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_gw,em_stitching_api
+      IDAM_API_URL: http://idam-api:5000
+      IDAM_OIDC_URL: http://idam-api:5000
+      S2S_URL: http://service-auth-provider-api:8489
+      DM_STORE_BASE_URL: http://dm-store:8080
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      REFORM_SERVICE_NAME: ccd-case-document-am-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      DOCUMENT_TTL: 3600000
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      # JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    ports:
+      - 4455:4455
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - dm-store
+      - service-auth-provider-api
 
   fr-am:
     image: hmctsprivate.azurecr.io/idam/idam-fr-am:latest

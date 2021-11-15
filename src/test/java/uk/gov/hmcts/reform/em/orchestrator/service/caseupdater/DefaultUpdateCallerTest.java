@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +33,9 @@ public class DefaultUpdateCallerTest {
 
     @Mock
     private HttpServletRequest httpServletRequest;
+
+    @Mock
+    private HttpSession httpSession;
 
     @Mock
     private NotificationService notificationService;
@@ -57,6 +61,27 @@ public class DefaultUpdateCallerTest {
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
 
         Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
+        Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
+    }
+
+    @Test
+    public void executeUpdateCdam() throws Exception {
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode caseData = objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" }");
+        ccdCallbackDto.setCcdPayload(caseData);
+
+        when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
+            .thenReturn(ccdCallbackDto);
+
+        when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
+            .thenReturn(objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" }"));
+
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+
+        CcdCallbackResponseDto ccdCallbackResponseDto =
+            defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+
+        Mockito.verify(httpServletRequest, Mockito.times(1)).getSession();
     }
 
     @Test

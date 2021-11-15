@@ -65,8 +65,8 @@ public class CcdCallbackBundleUpdater {
                 ccdBundleDTO.setStitchedDocument(new CcdDocument(
                         stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI(),
                         ensurePdfExtension(stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getFileName()),
-                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary"));
-
+                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getStitchedDocumentURI() + "/binary",
+                        stitchingCompleteCallbackDto.getDocumentTaskDTO().getBundle().getHashToken()));
             }
 
             JsonNode updatedCcdBundle = objectMapper.valueToTree(ccdBundleDTO);
