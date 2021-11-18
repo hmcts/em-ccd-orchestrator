@@ -8,7 +8,7 @@ documentNameValue: /document/document_filename
 documentLinkValue: /document
 sort:
   field: /dateUploaded
-  order: ascending
+  order: ASCENDING
 hasFolderCoversheets: true
 pageNumberFormat: NUMBER_OF_PAGES
 folders:

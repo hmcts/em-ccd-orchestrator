@@ -6,7 +6,7 @@ hasTableOfContents: true
 hasCoversheets: true
 sort:
   field: /fieldName
-  order: ascending
+  order: ASCENDING
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: NUMBER_OF_PAGES

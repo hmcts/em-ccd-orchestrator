@@ -4,7 +4,7 @@ hasTableOfContents: true
 hasCoversheets: true
 sort:
   field: /customDatetimeField
-  order: ascending
+  order: ASCENDING
 hasFolderCoversheets: true
 paginationStyle: topCenter
 pageNumberFormat: PAGE_RANGE
