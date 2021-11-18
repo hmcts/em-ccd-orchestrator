@@ -10,7 +10,7 @@ sort:
   field: /dateUploaded
   order: ascending
 hasFolderCoversheets: true
-pageNumberFormat: numberOfPages
+pageNumberFormat: NUMBER_OF_PAGES
 folders:
   - name: FTPA Appellant documents
     documents:

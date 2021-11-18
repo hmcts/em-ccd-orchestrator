@@ -38,7 +38,7 @@ public class CcdBundleDTO {
     private CcdBoolean hasFolderCoversheets;
     private String stitchStatus;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
-    private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+    private PageNumberFormat pageNumberFormat = PageNumberFormat.NUMBER_OF_PAGES;
     private String stitchingFailureMessage;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

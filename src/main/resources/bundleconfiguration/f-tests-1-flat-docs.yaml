@@ -7,7 +7,7 @@ sort:
   order: ascending
 hasFolderCoversheets: true
 paginationStyle: topCenter
-pageNumberFormat: pageRange
+pageNumberFormat: PAGE_RANGE
 enableEmailNotification: false
 documents:
   - type: documentSet

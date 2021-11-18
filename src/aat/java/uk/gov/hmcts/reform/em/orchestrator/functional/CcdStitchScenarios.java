@@ -199,8 +199,8 @@ public class CcdStitchScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("schmcts.png"))
-                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("firstPage"))
-                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("translucent"))
+                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("FIRST_PAGE"))
+                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("TRANSLUCENT"))
                 .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
     }

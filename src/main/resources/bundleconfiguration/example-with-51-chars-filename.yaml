@@ -4,7 +4,7 @@ coverpageTemplate: FL-FRM-APP-ENG-00002.docx
 hasCoversheets: true
 hasTableOfContents: true
 paginationStyle: topLeft
-pageNumberFormat: numberOfPages
+pageNumberFormat: NUMBER_OF_PAGES
 folders:
   - name: Folder 1
     folders:

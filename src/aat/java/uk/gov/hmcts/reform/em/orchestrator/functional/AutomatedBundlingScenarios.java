@@ -369,8 +369,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("hmcts.png"))
-                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("allPages"))
-                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("opaque"))
+                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("ALL_PAGES"))
+                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("OPAQUE"))
                 .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
     }

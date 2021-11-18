@@ -7,14 +7,14 @@ sort:
   order: ascending
 hasFolderCoversheets: false
 paginationStyle: topCenter
-pageNumberFormat: pageRange
+pageNumberFormat: PAGE_RANGE
 enableEmailNotification: false
 documentImage:
   docmosisAssetId: hmcts.png
-  imageRenderingLocation: allPages
+  imageRenderingLocation: ALL_PAGES
   coordinateX: 50
   coordinateY: 50
-  imageRendering: opaque
+  imageRendering: OPAQUE
 documents:
   - type: documentSet
     property: /caseDocuments

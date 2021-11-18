@@ -6,7 +6,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import java.util.Comparator;
 
 public enum BundleConfigurationSortOrder implements Comparator<CcdValue<CcdBundleDocumentDTO>> {
-    ascending {
+    ASCENDING {
         @Override
         public int compare(CcdValue<CcdBundleDocumentDTO> a, CcdValue<CcdBundleDocumentDTO> b) {
             return a.getValue().getSourceDocument().getCreatedDatetime().compareTo(
@@ -14,7 +14,7 @@ public enum BundleConfigurationSortOrder implements Comparator<CcdValue<CcdBundl
             );
         }
     },
-    descending {
+    DESCENDING {
         @Override
         public int compare(CcdValue<CcdBundleDocumentDTO> a, CcdValue<CcdBundleDocumentDTO> b) {
             return b.getValue().getSourceDocument().getCreatedDatetime().compareTo(

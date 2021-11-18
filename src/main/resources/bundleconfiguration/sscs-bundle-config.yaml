@@ -5,7 +5,7 @@ coverpageTemplate: SSCS-cover-page.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: false
-pageNumberFormat: numberOfPages
+pageNumberFormat: NUMBER_OF_PAGES
 documentNameValue: /documentFileName
 folders:
   - name: DWP

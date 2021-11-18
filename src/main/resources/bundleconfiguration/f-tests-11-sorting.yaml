@@ -7,7 +7,7 @@ sort:
   order: descending
 hasFolderCoversheets: true
 paginationStyle: bottomRight
-pageNumberFormat: pageRange
+pageNumberFormat: PAGE_RANGE
 folders:
   - name: Folder 1
     documents:

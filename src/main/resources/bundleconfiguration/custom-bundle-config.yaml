@@ -6,7 +6,7 @@ hasTableOfContents: true
 hasCoversheets: true
 customDocument: true
 hasFolderCoversheets: false
-pageNumberFormat: numberOfPages
+pageNumberFormat: NUMBER_OF_PAGES
 documentNameValue: /documentFileName
 customDocumentLinkValue: /customDocumentLink
 folders:

@@ -40,8 +40,8 @@ public class StitchingDTOMapperTest {
         documentImage.setDocmosisAssetId("schmcts.png");
         documentImage.setCoordinateY(50);
         documentImage.setCoordinateY(50);
-        documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);
-        documentImage.setImageRendering(ImageRendering.translucent);
+        documentImage.setImageRenderingLocation(ImageRenderingLocation.FIRST_PAGE);
+        documentImage.setImageRendering(ImageRendering.TRANSLUCENT);
 
         CcdBundleDTO bundleDTO = new CcdBundleDTO();
         bundleDTO.setTitle("title");

@@ -9,14 +9,14 @@ sort:
   order: ascending
 hasFolderCoversheets: true
 paginationStyle: topCenter
-pageNumberFormat: numberOfPages
+pageNumberFormat: NUMBER_OF_PAGES
 documentNameValue: /documentFileName
 documentLinkValue: /document
 enableEmailNotification: false
 documentImage:
   docmosisAssetId: hmcts.png
-  imageRendering: opaque
-  imageRenderingLocation: allPages
+  imageRendering: OPAQUE
+  imageRenderingLocation: ALL_PAGES
   coordinateX: 50
   coordinateY: 50
 folders:

@@ -229,7 +229,7 @@ public class AutomatedCaseUpdaterTest {
                                         + "\"hasFolderCoversheets\": \"No\",\n"
                                         + "\"stitchStatus\": null,\n"
                                         + "\"paginationStyle\": \"topLeft\",\n"
-                                        + "\"pageNumberFormat\": \"numberOfPages\",\n"
+                                        + "\"pageNumberFormat\": \"NUMBER_OF_PAGES\",\n"
                                         + "\"stitchingFailureMessage\": null\n"
                                         + "}\n"
                                         + "}]}}}")

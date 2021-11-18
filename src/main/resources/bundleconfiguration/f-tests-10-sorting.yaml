@@ -7,7 +7,7 @@ sort:
   order: ascending
 hasFolderCoversheets: true
 paginationStyle: bottomRight
-pageNumberFormat: pageRange
+pageNumberFormat: PAGE_RANGE
 enableEmailNotification: false
 folders:
   - name: Folder 1

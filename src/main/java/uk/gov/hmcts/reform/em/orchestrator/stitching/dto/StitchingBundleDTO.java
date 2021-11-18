@@ -28,7 +28,7 @@ public class StitchingBundleDTO {
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
-    private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
+    private PageNumberFormat pageNumberFormat = PageNumberFormat.NUMBER_OF_PAGES;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DocumentImage documentImage;

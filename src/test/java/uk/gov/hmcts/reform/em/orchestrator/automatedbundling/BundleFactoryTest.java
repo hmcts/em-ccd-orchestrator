@@ -40,7 +40,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -72,7 +72,7 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+                PageNumberFormat.NUMBER_OF_PAGES,
                 null,
                 true,
                 true,
@@ -100,7 +100,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+                PageNumberFormat.NUMBER_OF_PAGES,
                 null,
                 true,
                 true,
@@ -128,7 +128,7 @@ public class BundleFactoryTest {
                 null,
                 null,
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+                PageNumberFormat.NUMBER_OF_PAGES,
                 null,
                 true,
                 true,
@@ -156,7 +156,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -190,7 +190,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -226,7 +226,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -261,7 +261,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -294,7 +294,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -328,7 +328,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -365,7 +365,7 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
+            PageNumberFormat.NUMBER_OF_PAGES,
             null,
             true,
             true,
@@ -402,8 +402,8 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+                PageNumberFormat.NUMBER_OF_PAGES,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ASCENDING),
                 true,
                 true,
                 true,
@@ -439,8 +439,8 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+            PageNumberFormat.NUMBER_OF_PAGES,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ASCENDING),
             true,
             true,
             true,
@@ -476,8 +476,8 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
+            PageNumberFormat.NUMBER_OF_PAGES,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.DESCENDING),
             true,
             true,
             true,
@@ -513,8 +513,8 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
+                PageNumberFormat.NUMBER_OF_PAGES,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.DESCENDING),
                 true,
                 true,
                 true,
@@ -550,8 +550,8 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+                PageNumberFormat.NUMBER_OF_PAGES,
+                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ASCENDING),
                 true,
                 true,
                 true,
@@ -587,7 +587,7 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+                PageNumberFormat.NUMBER_OF_PAGES,
                 null,
                 true,
                 true,
@@ -622,8 +622,8 @@ public class BundleFactoryTest {
     @Test
     public void createWithImageRenderingDefined() throws IOException, DocumentSelectorException {
         DocumentImage docImg = new DocumentImage();
-        docImg.setImageRendering(ImageRendering.opaque);
-        docImg.setImageRenderingLocation(ImageRenderingLocation.allPages);
+        docImg.setImageRendering(ImageRendering.OPAQUE);
+        docImg.setImageRenderingLocation(ImageRenderingLocation.ALL_PAGES);
         docImg.setCoordinateX(40);
         docImg.setCoordinateY(50);
         docImg.setDocmosisAssetId("schmcts.png");
@@ -633,7 +633,7 @@ public class BundleFactoryTest {
                 "filename.pdf",
                 "/case_details/id",
                 "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
+                PageNumberFormat.NUMBER_OF_PAGES,
                 null,
                 true,
                 true,
@@ -658,8 +658,8 @@ public class BundleFactoryTest {
         assertEquals("document4.pdf", bundle.getDocuments().get(3).getValue().getSourceDocument().getFileName());
         assertEquals(0, bundle.getDocuments().get(2).getValue().getSortIndex());
         assertEquals("schmcts.png", bundle.getDocumentImage().getDocmosisAssetId());
-        assertEquals(ImageRenderingLocation.allPages, bundle.getDocumentImage().getImageRenderingLocation());
-        assertEquals(ImageRendering.opaque, bundle.getDocumentImage().getImageRendering());
+        assertEquals(ImageRenderingLocation.ALL_PAGES, bundle.getDocumentImage().getImageRenderingLocation());
+        assertEquals(ImageRendering.OPAQUE, bundle.getDocumentImage().getImageRendering());
         assertEquals(Integer.valueOf(40), bundle.getDocumentImage().getCoordinateX());
         assertEquals(Integer.valueOf(50), bundle.getDocumentImage().getCoordinateY());
 
@@ -672,8 +672,8 @@ public class BundleFactoryTest {
             "filename.pdf",
             "/case_details/id",
             "FL-FRM-GOR-ENG-12345",
-            PageNumberFormat.numberOfPages,
-            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+            PageNumberFormat.NUMBER_OF_PAGES,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ASCENDING),
             true,
             true,
             true,

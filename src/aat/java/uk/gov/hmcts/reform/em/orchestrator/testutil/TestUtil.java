@@ -213,8 +213,8 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundleWithImageRendered() {
         DocumentImage documentImage = new DocumentImage();
-        documentImage.setImageRendering(ImageRendering.translucent);
-        documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);
+        documentImage.setImageRendering(ImageRendering.TRANSLUCENT);
+        documentImage.setImageRenderingLocation(ImageRenderingLocation.FIRST_PAGE);
         documentImage.setCoordinateX(50);
         documentImage.setCoordinateY(50);
         documentImage.setDocmosisAssetId("schmcts.png");
@@ -430,8 +430,8 @@ public class TestUtil {
 
     public CcdBundleDTO getCdamTestBundleWithImageRendered(String userName) throws Exception {
         DocumentImage documentImage = new DocumentImage();
-        documentImage.setImageRendering(ImageRendering.translucent);
-        documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);
+        documentImage.setImageRendering(ImageRendering.TRANSLUCENT);
+        documentImage.setImageRenderingLocation(ImageRenderingLocation.FIRST_PAGE);
         documentImage.setCoordinateX(50);
         documentImage.setCoordinateY(50);
         documentImage.setDocmosisAssetId("schmcts.png");
