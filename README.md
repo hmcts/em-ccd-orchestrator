@@ -301,4 +301,3 @@ and then using it to publish your tests:
 ```
 ./gradlew pactPublish
 ```
-Checking PR build
