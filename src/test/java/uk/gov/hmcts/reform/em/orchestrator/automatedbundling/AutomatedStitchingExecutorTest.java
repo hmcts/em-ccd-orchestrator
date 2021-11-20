@@ -32,7 +32,7 @@ public class AutomatedStitchingExecutorTest {
 
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
 
-        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.any()))
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(documentTaskDTO);
 
         automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO);
@@ -41,7 +41,7 @@ public class AutomatedStitchingExecutorTest {
                 .toStitchingDTO(Mockito.any(CcdBundleDTO.class));
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString());
+                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString(), Mockito.any());
 
         Mockito.verify(callbackUrlCreator, Mockito.times(1))
                 .createCallbackUrl(Mockito.anyString(), Mockito.anyString(),Mockito.any());
@@ -53,7 +53,8 @@ public class AutomatedStitchingExecutorTest {
     public void startStitchingIOException() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
-        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString())).thenThrow(new IOException("x"));
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString(), Mockito.any()))
+                .thenThrow(new IOException("x"));
 
         assertThrows(StartStitchingException.class, () ->
             automatedStitchingExecutor.startStitching("1", "jwt", ccdBundleDTO)
@@ -63,7 +64,7 @@ public class AutomatedStitchingExecutorTest {
                 .toStitchingDTO(Mockito.any(CcdBundleDTO.class));
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString());
+                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString(), Mockito.any());
 
         Mockito.verify(callbackUrlCreator, Mockito.times(1))
                 .createCallbackUrl(Mockito.anyString(), Mockito.anyString(),Mockito.any());

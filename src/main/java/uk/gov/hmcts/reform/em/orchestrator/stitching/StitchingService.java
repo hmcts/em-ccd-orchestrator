@@ -24,6 +24,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -69,14 +70,15 @@ public class StitchingService {
      * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt) throws InterruptedException  {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt, String caseId) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
         documentTask.setJwt(jwt);
 
+        logger.info("Calling Stitching Service for caseId : {} ", StringUtilities.convertValidLog(caseId));
         try {
-            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt);
+            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt, caseId);
             final String response = poll(createdDocumentTaskDTO.getId(), jwt);
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
@@ -101,10 +103,14 @@ public class StitchingService {
                 }
 
             } else {
+                logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+                        StringUtilities.convertValidLog(json.read("$.failureDescription")));
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
         } catch (IOException e) {
+            logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(e.getMessage()));
             throw new StitchingServiceException(
                     String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
         }
@@ -114,7 +120,7 @@ public class StitchingService {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 
-    public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt) throws IOException {
+    public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt, String caseId) throws IOException {
         populateCdamDetails(documentTask);
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
@@ -128,9 +134,14 @@ public class StitchingService {
         final Response response = http.newCall(request).execute();
 
         if (response.isSuccessful()) {
-            return jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
-
+            DocumentTaskDTO documentTaskDTO =  jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
+            logger.info("Calling Stitching Service for caseId : {} was completed with documentTaskId : {} ",
+                    StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(documentTaskDTO.getId().toString()));
+            return documentTaskDTO;
         } else {
+            logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(response.body().string()));
             throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
