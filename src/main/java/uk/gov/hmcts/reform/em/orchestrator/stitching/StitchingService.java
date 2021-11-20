@@ -76,7 +76,7 @@ public class StitchingService {
         documentTask.setBundle(bundle);
         documentTask.setJwt(jwt);
 
-        logger.info("Calling Stitching Service for caseId : {} ", StringUtilities.convertValidLog(caseId));
+        logger.info("Calling Stitching Service for caseId : %s ", StringUtilities.convertValidLog(caseId));
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt, caseId);
             final String response = poll(createdDocumentTaskDTO.getId(), jwt);
@@ -103,13 +103,13 @@ public class StitchingService {
                 }
 
             } else {
-                logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+                logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
                         StringUtilities.convertValidLog(json.read("$.failureDescription")));
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
         } catch (IOException e) {
-            logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+            logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
                     StringUtilities.convertValidLog(e.getMessage()));
             throw new StitchingServiceException(
                     String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
@@ -135,12 +135,12 @@ public class StitchingService {
 
         if (response.isSuccessful()) {
             DocumentTaskDTO documentTaskDTO =  jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
-            logger.info("Calling Stitching Service for caseId : {} was completed with documentTaskId : {} ",
+            logger.info("Calling Stitching Service for caseId : %s was completed with documentTaskId : %s ",
                     StringUtilities.convertValidLog(caseId),
                     StringUtilities.convertValidLog(documentTaskDTO.getId().toString()));
             return documentTaskDTO;
         } else {
-            logger.error("Calling Stitching Service for caseId : {} had issue : {} ", StringUtilities.convertValidLog(caseId),
+            logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
                     StringUtilities.convertValidLog(response.body().string()));
             throw new IOException("Unable to create stitching task: " + response.body().string());
         }
@@ -179,8 +179,6 @@ public class StitchingService {
             documentTaskDto.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
             documentTaskDto.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
             request.getSession().removeAttribute(Constants.CDAM_DEATILS);
-
-            logger.debug("Cdam details populated");
         }
     }
 }
