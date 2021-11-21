@@ -50,6 +50,9 @@ public class StitchingService {
 
     private static final String STITCHED_DOC_URI = "$.bundle.stitchedDocumentURI";
     private static final String TASK_STATE = "$.taskState";
+    private static final String FAILURE_MSG = "Calling Stitching Service for caseId : %s had issue : %s ";
+    private static final String SUCCESS_MSG =
+            "Calling Stitching Service for caseId : %s was completed with documentTaskId : %s ";
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
                             AuthTokenGenerator authTokenGenerator) {
@@ -76,7 +79,8 @@ public class StitchingService {
         documentTask.setBundle(bundle);
         documentTask.setJwt(jwt);
 
-        logger.info("Calling Stitching Service for caseId : %s ", StringUtilities.convertValidLog(caseId));
+        logger.info(String.format("Calling Stitching Service for caseId : %s ",
+                StringUtilities.convertValidLog(caseId)));
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt, caseId);
             final String response = poll(createdDocumentTaskDTO.getId(), jwt);
@@ -103,14 +107,14 @@ public class StitchingService {
                 }
 
             } else {
-                logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
-                        StringUtilities.convertValidLog(json.read("$.failureDescription")));
+                logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+                        StringUtilities.convertValidLog(json.read("$.failureDescription"))));
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
         } catch (IOException e) {
-            logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
-                    StringUtilities.convertValidLog(e.getMessage()));
+            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(e.getMessage())));
             throw new StitchingServiceException(
                     String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
         }
@@ -135,13 +139,13 @@ public class StitchingService {
 
         if (response.isSuccessful()) {
             DocumentTaskDTO documentTaskDTO =  jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
-            logger.info("Calling Stitching Service for caseId : %s was completed with documentTaskId : %s ",
-                    StringUtilities.convertValidLog(caseId),
-                    StringUtilities.convertValidLog(documentTaskDTO.getId().toString()));
+            logger.info(
+                    String.format(SUCCESS_MSG, StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
             return documentTaskDTO;
         } else {
-            logger.error("Calling Stitching Service for caseId : %s had issue : %s ", StringUtilities.convertValidLog(caseId),
-                    StringUtilities.convertValidLog(response.body().string()));
+            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+                    StringUtilities.convertValidLog(response.body().string())));
             throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
