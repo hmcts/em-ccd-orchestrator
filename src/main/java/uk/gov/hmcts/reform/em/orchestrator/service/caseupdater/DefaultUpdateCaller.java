@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,7 +74,10 @@ public class DefaultUpdateCaller {
                 .serviceAuth(request.getHeader("ServiceAuthorization"))
                 .build();
             request.getSession().setAttribute(Constants.CDAM_DEATILS, cdamDetailsDto);
-            logger.debug("Cdam Details : {} for caseId : {} ", cdamDetailsDto, dto.getCaseId());
+            logger.info("CaseTypeId : {} and JurisdictionId : {} for caseId : {} ",
+                    StringUtilities.convertValidLog(cdamDetailsDto.getCaseTypeId()),
+                    StringUtilities.convertValidLog(cdamDetailsDto.getJurisdictionId()),
+                    StringUtilities.convertValidLog(dto.getCaseId()));
         }
     }
 
