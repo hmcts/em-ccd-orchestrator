@@ -131,7 +131,7 @@ dependencies {
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.logging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.logging
-    implementation 'com.github.hmcts:ccd-case-document-am-client:1.7.1'
+    implementation 'com.github.hmcts:ccd-case-document-am-client:1.59'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
