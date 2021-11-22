@@ -98,7 +98,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation 'org.springframework.data:spring-data-commons:2.6.0'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.54'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.0.13'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.54'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
@@ -220,7 +220,7 @@ dependencyManagement {
         }
 
         //CVE-2021-22118, CVE-2021-22096
-        dependencySet(group: 'org.springframework', version: '5.3.12') {
+        dependencySet(group: 'org.springframework', version: '5.3.13') {
             entry 'spring-aop'
             entry 'spring-beans'
             entry 'spring-context'
