@@ -74,10 +74,10 @@ public class DefaultUpdateCaller {
                 .serviceAuth(request.getHeader("ServiceAuthorization"))
                 .build();
             request.getSession().setAttribute(Constants.CDAM_DEATILS, cdamDetailsDto);
-            logger.info("CaseTypeId : {} and JurisdictionId : {} for caseId : {} ",
+            logger.info(String.format("CaseTypeId : %s and JurisdictionId : %s for caseId : %s ",
                     StringUtilities.convertValidLog(cdamDetailsDto.getCaseTypeId()),
                     StringUtilities.convertValidLog(cdamDetailsDto.getJurisdictionId()),
-                    StringUtilities.convertValidLog(dto.getCaseId()));
+                    StringUtilities.convertValidLog(dto.getCaseId())));
         }
     }
 
