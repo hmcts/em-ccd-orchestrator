@@ -71,7 +71,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         }
 
         try {
-            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), ccdCallbackDto.getJwt());
+            CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), ccdCallbackDto.getJwt(),
+                    ccdCallbackDto.getCaseId());
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
 
             return bundle;

@@ -37,11 +37,14 @@ public class CcdBundleStitchingServiceTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final String TOKEN = "jwt";
+    private static final String CASE_ID = "123456789";
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         CcdDocument ccdDocument = new CcdDocument("", "", "");
-        BDDMockito.given(stitchingService.stitch(any(), any())).willReturn(ccdDocument);
+        BDDMockito.given(stitchingService.stitch(any(), any(), any())).willReturn(ccdDocument);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService, validator);
@@ -53,7 +56,7 @@ public class CcdBundleStitchingServiceTest {
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
-        ccdCallbackDto.setJwt("jwt");
+        ccdCallbackDto.setJwt(TOKEN);
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
         assertEquals(2, ((ArrayNode)node.get("cb")).size());
@@ -61,7 +64,7 @@ public class CcdBundleStitchingServiceTest {
         assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class));
+                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any());
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -70,9 +73,10 @@ public class CcdBundleStitchingServiceTest {
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
-        ccdCallbackDto.setJwt("jwt");
+        ccdCallbackDto.setJwt(TOKEN);
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new StitchingServiceException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any()))
+                .thenThrow(new StitchingServiceException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
@@ -83,7 +87,7 @@ public class CcdBundleStitchingServiceTest {
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
-        ccdCallbackDto.setJwt("jwt");
+        ccdCallbackDto.setJwt(TOKEN);
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
@@ -94,9 +98,10 @@ public class CcdBundleStitchingServiceTest {
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
-        ccdCallbackDto.setJwt("jwt");
+        ccdCallbackDto.setJwt(TOKEN);
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class))).thenThrow(new InterruptedException("x"));
+        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any()))
+                .thenThrow(new InterruptedException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
     }
@@ -118,7 +123,7 @@ public class CcdBundleStitchingServiceTest {
                 + "\"fileName\":\"a\"}}]}");
             ccdCallbackDto.setPropertyName(Optional.of("cb"));
             ccdCallbackDto.setCaseData(node);
-            ccdCallbackDto.setJwt("jwt");
+            ccdCallbackDto.setJwt(TOKEN);
 
             ccdBundleStitchingService.updateCase(ccdCallbackDto);
         } catch (InputValidationException exc) {
@@ -135,7 +140,7 @@ public class CcdBundleStitchingServiceTest {
                 + "\"fileName\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}}]}");
             ccdCallbackDto.setPropertyName(Optional.of("cb"));
             ccdCallbackDto.setCaseData(node);
-            ccdCallbackDto.setJwt("jwt");
+            ccdCallbackDto.setJwt(TOKEN);
 
             ccdBundleStitchingService.updateCase(ccdCallbackDto);
         } catch (InputValidationException exc) {
