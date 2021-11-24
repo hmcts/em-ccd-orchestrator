@@ -67,14 +67,16 @@ public class DefaultUpdateCallerTest {
     @Test
     public void executeUpdateCdam() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode caseData = objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" }");
+        JsonNode caseData = objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" , "
+                + "\"id\" : \"123456789\" }");
         ccdCallbackDto.setCcdPayload(caseData);
 
         when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
             .thenReturn(ccdCallbackDto);
 
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
-            .thenReturn(objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" }"));
+            .thenReturn(objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" , "
+                    + "\"id\" : \"123456789\" }"));
 
         when(httpServletRequest.getSession()).thenReturn(httpSession);
 
