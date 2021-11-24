@@ -5,6 +5,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.util.Comparator;
 
+@SuppressWarnings("squid:S115")
 public enum BundleConfigurationSortOrder implements Comparator<CcdValue<CcdBundleDocumentDTO>> {
     ascending {
         @Override

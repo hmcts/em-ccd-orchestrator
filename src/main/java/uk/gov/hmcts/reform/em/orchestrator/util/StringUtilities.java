@@ -27,14 +27,17 @@ public class StringUtilities {
     }
 
     public static String convertValidLog(String log) {
-        List<String> list = Arrays.asList("%0d", "\r", "%0a", "\n");
+        if (StringUtils.isNoneBlank(log)) {
+            List<String> list = Arrays.asList("%0d", "\r", "%0a", "\n");
 
-        // normalize the log content
-        String encode = Normalizer.normalize(log, Normalizer.Form.NFKC);
-        for (String toReplaceStr : list) {
-            encode = encode.replace(toReplaceStr, "");
+            // normalize the log content
+            String encode = Normalizer.normalize(log, Normalizer.Form.NFKC);
+            for (String toReplaceStr : list) {
+                encode = encode.replace(toReplaceStr, "");
+            }
+            return encode;
         }
-        return encode;
+        return StringUtils.EMPTY;
     }
 
 }
