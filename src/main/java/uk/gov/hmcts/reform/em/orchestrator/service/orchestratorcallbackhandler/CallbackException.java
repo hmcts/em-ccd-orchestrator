@@ -19,6 +19,7 @@ public class CallbackException extends RuntimeException {
         return httpResponseBody;
     }
 
+    @Override
     public String toString() {
         return String.format("CallbackException(%s,%d, %s)", getMessage(), getHttpStatus(), getHttpResponseBody());
     }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings({"squid:S2629"})
 @Service
 public class NotificationService {
 

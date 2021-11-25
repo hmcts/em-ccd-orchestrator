@@ -35,7 +35,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdf
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */
-@SuppressWarnings("squid:S2629")
+@SuppressWarnings({"squid:S2629","squid:S2139"})
 public class StitchingService {
 
     private final Logger logger = LoggerFactory.getLogger(StitchingService.class);

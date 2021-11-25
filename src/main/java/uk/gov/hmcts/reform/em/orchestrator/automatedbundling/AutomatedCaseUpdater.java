@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +33,15 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final ObjectMapper jsonMapper;
     private final BundleFactory bundleFactory;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
-    private final Validator validator;
 
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
                                 BundleFactory bundleFactory,
-                                AutomatedStitchingExecutor automatedStitchingExecutor,
-                                Validator validator) {
+                                AutomatedStitchingExecutor automatedStitchingExecutor) {
         this.configurationLoader = configurationLoader;
         this.jsonMapper = jsonMapper;
         this.bundleFactory = bundleFactory;
         this.automatedStitchingExecutor = automatedStitchingExecutor;
-        this.validator = validator;
     }
 
     /**

@@ -27,6 +27,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */
+@SuppressWarnings("squid:S107")
 public class BundleFactory {
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
