@@ -352,6 +352,10 @@ sonarqube {
         property "sonar.exclusions", coverageExclusionList.join(", ")
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+
+        property "sonar.issue.ignore.multicriteria", "e1"
+        property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S2629"
+        property "sonar.issue.ignore.multicriteria.e1.resourceKey", "src/main/java/uk/gov/hmcts/reform/em/orchestrator/**"
     }
 }
 

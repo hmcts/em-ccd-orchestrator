@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.Local
 import java.io.File;
 import java.net.URL;
 
-@SuppressWarnings("squid:S2629")
 @Service
 public class ValidateYamlCommand {
 

@@ -17,7 +17,6 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 
-@SuppressWarnings("squid:S2629")
 @Service
 public class DefaultUpdateCaller {
 

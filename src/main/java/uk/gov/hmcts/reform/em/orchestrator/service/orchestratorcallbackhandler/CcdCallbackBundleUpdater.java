@@ -18,7 +18,6 @@ import java.util.stream.StreamSupport;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
-@SuppressWarnings("squid:S2629")
 @Service
 public class CcdCallbackBundleUpdater {
 
