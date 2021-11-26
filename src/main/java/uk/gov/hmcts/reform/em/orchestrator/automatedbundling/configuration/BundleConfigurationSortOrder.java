@@ -24,6 +24,4 @@ public enum BundleConfigurationSortOrder implements Comparator<CcdValue<CcdBundl
         }
     };
 
-    @Override
-    public abstract int compare(CcdValue<CcdBundleDocumentDTO> a, CcdValue<CcdBundleDocumentDTO> b);
 }

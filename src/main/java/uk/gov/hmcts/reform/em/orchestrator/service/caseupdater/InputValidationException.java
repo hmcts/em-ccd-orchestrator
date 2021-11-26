@@ -15,7 +15,7 @@ public class InputValidationException extends RuntimeException {
         super("Bundle input validation error");
 
         this.violations = violations.stream()
-            .map(v -> v.getMessage())
+            .map(ConstraintViolation::getMessage)
             .collect(Collectors.toList());
     }
 
