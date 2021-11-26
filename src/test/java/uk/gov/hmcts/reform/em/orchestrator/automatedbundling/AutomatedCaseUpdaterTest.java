@@ -14,9 +14,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -40,9 +37,6 @@ public class AutomatedCaseUpdaterTest {
     @Before
     public void setup() {
 
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
         updater = new AutomatedCaseUpdater(
             new LocalConfigurationLoader(
                 new ObjectMapper(
@@ -51,8 +45,7 @@ public class AutomatedCaseUpdaterTest {
             ),
             new ObjectMapper(),
             new BundleFactory(),
-            automatedStitchingExecutor,
-            validator
+            automatedStitchingExecutor
         );
     }
 
