@@ -5,11 +5,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +31,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdf
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */
-@SuppressWarnings({"squid:S2629","squid:S2139"})
+@SuppressWarnings("squid:S2139")
 public class StitchingService {
 
     private final Logger logger = LoggerFactory.getLogger(StitchingService.class);

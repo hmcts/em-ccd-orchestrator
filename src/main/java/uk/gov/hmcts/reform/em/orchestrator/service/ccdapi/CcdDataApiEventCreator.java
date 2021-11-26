@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.C
 
 import java.io.IOException;
 
-@SuppressWarnings({"squid:S2629", "squid:S3457"})
+@SuppressWarnings("squid:S3457")
 @Service
 public class CcdDataApiEventCreator {
 
