@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.C
 
 import java.io.IOException;
 
-@SuppressWarnings({"squid:S2629", "squid:S3457"})
+@SuppressWarnings("squid:S3457")
 @Service
 public class CcdDataApiCaseUpdater {
 
@@ -24,7 +24,7 @@ public class CcdDataApiCaseUpdater {
     private final OkHttpClient http;
     private final AuthTokenGenerator authTokenGenerator;
     private final String ccdDataBaseUrl;
-    private final String ccdUpdateCasePath = "/cases/%s/events";
+    private static final String CCD_UPDATE_CASE_PATH = "/cases/%s/events";
     private final ObjectMapper objectMapper;
 
     public CcdDataApiCaseUpdater(OkHttpClient http,
@@ -52,7 +52,7 @@ public class CcdDataApiCaseUpdater {
                     .addHeader("experimental", "true")
                     .addHeader("ServiceAuthorization", authTokenGenerator.generate())
                     .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.get("application/json").toString())
-                    .url(String.format(ccdDataBaseUrl + ccdUpdateCasePath, ccdCallbackDto.getCaseId()))
+                    .url(String.format(ccdDataBaseUrl + CCD_UPDATE_CASE_PATH, ccdCallbackDto.getCaseId()))
                     .method("POST", body)
                     .build();
 

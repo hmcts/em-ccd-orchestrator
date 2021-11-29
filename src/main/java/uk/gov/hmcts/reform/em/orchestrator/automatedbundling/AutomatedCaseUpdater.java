@@ -21,6 +21,7 @@ import java.util.Map;
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
  */
+@SuppressWarnings("squid:S4738")
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
     private static final String CONFIG_FIELD = "bundleConfiguration";
@@ -95,7 +96,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
     private List<String> prepareBundleConfigs(CcdCallbackDto ccdCallbackDto) {
 
-        List<String> bundleConfigurations = new ArrayList<String>();
+        List<String> bundleConfigurations = new ArrayList<>();
 
         if (ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
             && !ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD).isEmpty()) {
