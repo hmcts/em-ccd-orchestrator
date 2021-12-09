@@ -60,7 +60,7 @@ withNightlyPipeline(type, product, component) {
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
-    enableFortifyScan('em-ccdorc-aat')
+//    enableFortifyScan('em-ccdorc-aat')
     enableMutationTest()
     enableFullFunctionalTest()
     enableSecurityScan()
