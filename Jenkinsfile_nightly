@@ -61,9 +61,9 @@ withNightlyPipeline(type, product, component) {
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     enableFortifyScan('em-ccdorc-aat')
-//    enableMutationTest()
-//    enableFullFunctionalTest()
-//    enableSecurityScan()
+    enableMutationTest()
+    enableFullFunctionalTest()
+    enableSecurityScan()
 
     enableSlackNotifications('#em-dev-chat')
     after('fortify-scan') {
