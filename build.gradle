@@ -29,8 +29,11 @@ if (!project.hasProperty('runList')) {
 
 group 'uk.gov.hmcts.reform.em.orchestrator'
 version '1.0.0'
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 
