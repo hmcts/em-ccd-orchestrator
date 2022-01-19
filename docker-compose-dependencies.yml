@@ -93,7 +93,7 @@ services:
       - IDAM_SPI_FORGEROCK_IDM_PASSWORD=openidm-admin
       - IDAM_SPI_FORGEROCK_IDM_PIN_DEFAULTPASSWORD=BlaBlaBlackSh33p
     ports:
-      - 5000:5000
+      - 5050:5000
 
   idam-web-public:
     image: hmctspublic.azurecr.io/idam/web-public:stable
@@ -152,9 +152,6 @@ services:
       - DM_STORE_APP_URL=http://dm-store:8080
       - DOCMOSIS_ACCESS_KEY=${DOCMOSIS_ACCESS_KEY}
       - CDAM_URL=http://ccd-case-document-am-api:4455
-    dns:
-      - 172.16.0.10
-      - 172.16.0.14
     depends_on:
       - shared-database
       - dm-store
