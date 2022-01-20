@@ -61,6 +61,7 @@ docker-compose ${COMPOSE_FILE} up -d shared-database \
                                      smtp-server \
                                      stitching-api \
                                      rpa-em-ccd-orchestrator \
+                                     am-role-assignment-service \
                                      ccd-case-document-am-api
 
 
