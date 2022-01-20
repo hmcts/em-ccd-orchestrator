@@ -44,6 +44,7 @@ services:
       - microserviceKeys_ccd_definition=AAAAAAAAAAAAAAAA
       - microserviceKeys_ccd_admin=AAAAAAAAAAAAAAAA
       - microserviceKeys_fpl_case_service=AAAAAAAAAAAAAAAA
+      - microserviceKeys_am_role_assignment_service=AAAAAAAAAAAAAAAA
       #      logging env vars
       - JSON_CONSOLE_PRETTY_PRINT=false
       - REFORM_SERVICE_TYPE=java
@@ -131,7 +132,7 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=idam,emstitch,evidence,ccd_data,ccd_user_profile,ccd_definition,ccd_definition_designer
+      - POSTGRES_MULTIPLE_DATABASES=idam,emstitch,evidence,ccd_data,ccd_user_profile,ccd_definition,ccd_definition_designer,role_assignment
       - POSTGRES_USER=shared
       - POSTGRES_PASSWORD=shared
     ports:
@@ -303,6 +304,7 @@ services:
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       CCD_DM_DOMAIN: http://dm-store:8080
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service:4096
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
     ports:
       - 4452:4452
@@ -384,6 +386,38 @@ services:
       - dm-store
       - service-auth-provider-api
 
+  am-role-assignment-service:
+    image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: shared-database
+      ROLE_ASSIGNMENT_DB_NAME: role_assignment
+      ROLE_ASSIGNMENT_DB_PORT: 5432
+      ROLE_ASSIGNMENT_DB_USERNAME: shared
+      ROLE_ASSIGNMENT_DB_PASSWORD: shared
+      ROLE_ASSIGNMENT_DB_OPTIONS:
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
+      LD_SDK_KEY: something
+      ROLE_ASSIGNMENT_IDAM_KEY:
+      ROLE_ASSIGNMENT_TOKEN_SECRET:
+      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
+      IDAM_USER_URL: http://idam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8489
+      OPEN_ID_API_BASE_URI: http://idam-api:5000/o
+      ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
+      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
+      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: Pa55word11
+      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
+      CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
+      AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
+      REFORM_SERVICE_NAME: am-role-assignment-service
+      REFORM_TEAM: am
+      REFORM_ENVIRONMENT: local
+      BYPASS_ORG_DROOL_RULE: "true"
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx512m -XX:MaxPermSize=512m
+    ports:
+      - 4096:4096
+
   fr-am:
     image: hmctsprivate.azurecr.io/idam/idam-fr-am:latest
     container_name: ccdorc-fr-am
@@ -414,5 +448,6 @@ services:
     container_name: ccdorc-shared-db
     ports:
       - 5432:5432
+
 volumes:
   ccd-docker-azure-blob-data:
