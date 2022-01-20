@@ -13,7 +13,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: ${OPEN_ID_API_BASE_URI:http://localhost:5000/o}
+            issuer-uri: ${OPEN_ID_API_BASE_URI:http://localhost:5050/o}
         registration:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
@@ -56,7 +56,7 @@ info:
 auth:
   idam:
     client:
-      baseUrl: ${IDAM_API_BASE_URI:http://localhost:5000}
+      baseUrl: ${IDAM_API_BASE_URI:http://localhost:5050}
   provider:
     service:
       client:

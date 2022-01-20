@@ -10,7 +10,7 @@
 
 # Set variables
 COMPOSE_FILE="-f docker-compose-dependencies.yml"
-IDAM_URI="http://localhost:5000"
+IDAM_URI="http://localhost:5050"
 IDAM_USERNAME="idamOwner@hmcts.net"
 IDAM_PASSWORD="Ref0rmIsFun"
 export DOCMOSIS_ACCESS_KEY=$1
