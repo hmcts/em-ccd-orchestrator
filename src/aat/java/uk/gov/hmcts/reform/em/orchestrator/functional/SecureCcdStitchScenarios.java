@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SecureCcdStitchScenarios extends BaseTest {
 
     @Rule
-    public RetryRule retryRule = new RetryRule(3);
+    public RetryRule retryRule = new RetryRule(5);
 
     // This has the caseTypeId, jurisdictionId populated by default(Hard coded) as these are required fields for CDAM.
     private static final String syncCaseJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "

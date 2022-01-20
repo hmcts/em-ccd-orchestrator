@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CcdStitchScenarios extends BaseTest {
 
     @Rule
-    public RetryRule retryRule = new RetryRule(3);
+    public RetryRule retryRule = new RetryRule(5);
 
     @Test
     public void testPostBundleStitch() throws IOException {
