@@ -16,7 +16,7 @@ folders:
     documents:
       - type: documentSet
         property: /hearingDocuments
-  - name: Legal representative documents
+  - name: Appellant documents
     documents:
       - type: documentSet
         property: /legalRepresentativeDocuments
@@ -28,11 +28,25 @@ folders:
         filters:
           - property: /tag
             value: appealSubmission
+  - name: Appeal Reasons
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: appealReasons
+  - name: Clarifying Questions
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: clarifyingQuestions
   - name: Additional evidence from appellant
     documents:
       - type: documentSet
         property: /additionalEvidenceDocuments
-  - name: Respondent documents
+  - name: Home office documents
     documents:
       - type: documentSet
         property: /respondentDocuments
