@@ -249,6 +249,27 @@ dependencyManagement {
             entry 'log4j-api'
             entry 'log4j-to-slf4j'
         }
+
+        //CVE-2021-43797
+        dependencySet(group: 'io.netty', version: '4.1.74.Final') {
+            entry 'netty-buffer'
+            entry 'netty-codec'
+            entry 'netty-codec-http'
+            entry 'netty-codec-http2'
+            entry 'netty-common'
+            entry 'netty-handler'
+            entry 'netty-resolver'
+            entry 'netty-transport'
+            entry 'netty-transport-native-epoll'
+            entry 'netty-transport-native-kqueue'
+            entry 'netty-transport-native-unix-common'
+        }
+
+        //CVE-2021-42550
+        dependencySet(group: 'ch.qos.logback', version: '1.2.10') {
+            entry 'logback-classic'
+            entry 'logback-core'
+        }
     }
 }
 
