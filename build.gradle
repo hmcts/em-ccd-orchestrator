@@ -108,7 +108,7 @@ dependencies {
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.3'
     implementation group: "commons-io", name: "commons-io", version: "2.11.0"
 
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.4'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.1'
 
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
