@@ -1,11 +1,11 @@
 name: em-ccdorc
 home: https://github.com/hmcts/em-ccd-orchestrator
-version: 1.0.7
+version: 1.0.8
 apiVersion: v2
 description: HMCTS EM - CCD Orchestrator API
 maintainers:
   - name: HMCTS EM Team
 dependencies:
   - name: java
-    version: 3.6.1
+    version: 3.7.1
     repository: https://hmctspublic.azurecr.io/helm/v1/repo/
