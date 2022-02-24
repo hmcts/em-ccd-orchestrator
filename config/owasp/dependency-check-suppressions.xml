@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
-        <cve>CVE-2020-23171</cve>
-
         <!-- Updating to latest version of 2.5.5 still has below vulnerabilities -->
         <!-- spring-boot-starter-oauth2-client-2.5.5,  spring-boot-starter-oauth2-resource-server-2.5.5 -->
         <cve>CVE-2018-1258</cve>
