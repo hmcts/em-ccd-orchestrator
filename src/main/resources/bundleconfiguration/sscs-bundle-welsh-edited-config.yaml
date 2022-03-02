@@ -10,7 +10,7 @@ documentNameValue: /documentFileName
 customDocument: true
 customDocumentLinkValue: /editedDocumentLink
 folders:
-  - name: DWP
+  - name: FTA
     documents:
       - type: documentSet
         property: /dwpDocuments
