@@ -199,16 +199,6 @@ dependencyManagement {
             entry 'junit'
         }
 
-        dependencySet(group: 'org.junit.jupiter', version: '5.8.0') {
-            entry 'junit-jupiter'
-            entry 'junit-jupiter-api'
-            entry 'junit-jupiter-params'
-        }
-
-        dependencySet(group: 'org.junit.vintage', version: '5.8.2') {
-            entry 'junit-vintage-engine'
-        }
-
         dependencySet(group: 'net.bytebuddy', version: '1.12.7') {
             entry 'byte-buddy'
             entry 'byte-buddy-agent'
@@ -218,25 +208,6 @@ dependencyManagement {
         //CVE-2021-27568
         dependencySet(group: 'net.minidev', version: '2.4.8') {
             entry 'json-smart'
-        }
-
-        //CVE-2021-22118, CVE-2021-22096
-        dependencySet(group: 'org.springframework', version: '5.3.15') {
-            entry 'spring-aop'
-            entry 'spring-beans'
-            entry 'spring-context'
-            entry 'spring-core'
-            entry 'spring-expression'
-            entry 'spring-jcl'
-            entry 'spring-jdbc'
-            entry 'spring-tx'
-            entry 'spring-web'
-            entry 'spring-webmvc'
-        }
-
-        //CVE-2021-22119, CWE-862
-        dependencySet(group: 'org.springframework.security', version: '5.6.1') {
-            entry 'spring-security-core'
         }
 
         //CVE-2021-22044
@@ -265,11 +236,6 @@ dependencyManagement {
             entry 'netty-transport-native-unix-common'
         }
 
-        //CVE-2021-42550
-        dependencySet(group: 'ch.qos.logback', version: '1.2.10') {
-            entry 'logback-classic'
-            entry 'logback-core'
-        }
     }
 }
 
