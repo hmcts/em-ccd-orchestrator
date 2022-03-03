@@ -56,7 +56,6 @@ def versions = [
         fasterXmlJackson   : '2.12.5',
         sonarPitest        : '0.5',
         mockito            : '3.12.4',
-        log4JVersion       : '2.17.0',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
         springSecurity     : '5.6.1'
@@ -214,11 +213,6 @@ dependencyManagement {
         dependencySet(group: 'org.springframework.cloud', version: '3.0.5') {
             entry 'spring-cloud-openfeign-core'
             entry 'spring-cloud-starter-openfeign'
-        }
-
-        dependencySet(group: 'org.apache.logging.log4j', version: versions.log4JVersion) {
-            entry 'log4j-api'
-            entry 'log4j-to-slf4j'
         }
 
         //CVE-2021-43797
