@@ -266,7 +266,7 @@ dependencyManagement {
         }
 
         //CVE-2021-42550
-        dependencySet(group: 'ch.qos.logback', version: '1.2.10') {
+        dependencySet(group: 'ch.qos.logback', version: '1.2.11') {
             entry 'logback-classic'
             entry 'logback-core'
         }
