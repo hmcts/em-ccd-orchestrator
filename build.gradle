@@ -182,16 +182,6 @@ dependencies {
 dependencyManagement {
     dependencies {
 
-        //CVE-2020-15824, CVE-2020-29582
-        dependencySet(group: 'org.jetbrains.kotlin', version: '1.5.0-M1') {
-            entry 'kotlin'
-            entry 'kotlin-stdlib'
-            entry 'kotlin-reflect'
-            entry 'kotlin-stdlib-common'
-            entry 'kotlin-stdlib-jdk7'
-            entry 'kotlin-stdlib-jdk8'
-        }
-
         // Do not change - START
         // Changing below will break Serenity Report generation
         dependencySet(group: 'junit', version: '4.13') {
