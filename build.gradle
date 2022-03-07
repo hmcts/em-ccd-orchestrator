@@ -101,7 +101,7 @@ dependencies {
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.58'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.16'
 
-    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
     aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.22'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
