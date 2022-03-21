@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -99,7 +98,7 @@ public class CcdCallbackBundleUpdaterTest {
     public void updateBundleWithJsonProcessingException() throws Exception {
         ObjectMapper mockObjectMapper = Mockito.mock(ObjectMapper.class);
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(mockObjectMapper);
-        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), (JavaType) Mockito.any())).thenThrow(new JsonProcessingException("x"){});
+        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), (Class<Object>) Mockito.any())).thenThrow(new JsonProcessingException("x"){});
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}"));
