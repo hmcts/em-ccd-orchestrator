@@ -3,7 +3,7 @@ updates:
 - package-ecosystem: gradle
   directory: "/"
   schedule:
-    interval: weekly
+    interval: daily
   open-pull-requests-limit: 10
   ignore: # For below libraries, ignore all updates. As updating these independently results in broken reports.
     - dependency-name: net.serenity-bdd:serenity-single-page-report
