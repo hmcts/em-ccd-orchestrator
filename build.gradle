@@ -81,6 +81,7 @@ sourceSets {
 configurations.all {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
     exclude group: 'org.glassfish', module: 'jakarta.el'
+    exclude group: 'org.springframework.retry', module: 'spring-retry'
 }
 
 dependencies {
