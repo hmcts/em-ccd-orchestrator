@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +50,7 @@ public class StitchingCompleteCallbackController {
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,
                                                                        @PathVariable String bundleId,
-                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) throws JsonProcessingException {
+                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
@@ -66,8 +65,10 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
-                StringUtilities.convertValidLog(triggerId));
+            if(log.isInfoEnabled()) {
+                log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
+                        StringUtilities.convertValidLog(triggerId));
+            }
 
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                     && documentTaskDTO.getBundle().getEnableEmailNotification())

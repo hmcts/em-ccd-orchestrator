@@ -272,7 +272,6 @@ def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/info/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CdamDetailsDto*',
-        '**uk/gov/hmcts/reform/em/orchestrator/endpoint/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
 ]
 
