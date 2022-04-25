@@ -65,7 +65,7 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            if(log.isInfoEnabled()) {
+            if (log.isInfoEnabled()) {
                 log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
                         StringUtilities.convertValidLog(triggerId));
             }
