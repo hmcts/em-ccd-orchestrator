@@ -1,6 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @ConditionalOnProperty("endpoint-toggles.stitching-complete-callback")
+@Tag(name = "Stitching Callback Service", description = "Endpoint for Stitching complete callback.")
 public class StitchingCompleteCallbackController {
 
     private final Logger log = LoggerFactory.getLogger(StitchingCompleteCallbackController.class);
@@ -47,6 +55,28 @@ public class StitchingCompleteCallbackController {
             value = "/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Call back to update the Stitched Document details and the Stitched Status against the Bundle"
+            + "in the case in CCD.",
+            parameters = {
+                    @Parameter(in = ParameterIn.HEADER, name = "authorization",
+                            description = "Authorization (Idam Bearer token)", required = true,
+                            schema = @Schema(type = "string")),
+                    @Parameter(in = ParameterIn.HEADER, name = "serviceauthorization",
+                            description = "Service Authorization (S2S Bearer token)", required = true,
+                            schema = @Schema(type = "string")),
+                    @Parameter(in = ParameterIn.PATH, name = "caseId",
+                            description = "Case Id", required = true,
+                            schema = @Schema(type = "string")),
+                    @Parameter(in = ParameterIn.PATH, name = "triggerId",
+                            description = "Trigger Id", required = true,
+                            schema = @Schema(type = "string")),
+                    @Parameter(in = ParameterIn.PATH, name = "bundleId",
+                            description = "Bundle Id", required = true,
+                            schema = @Schema(type = "string"))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "403", description = "Access Denied")
+    })
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,

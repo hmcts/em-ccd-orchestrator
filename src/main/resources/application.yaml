@@ -111,3 +111,7 @@ notify:
 
 httpclient:
   call-timeout: ${HTTPCLIENT_CALL_TIMEOUT:30}
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.reform.em.orchestrator.endpoint
+  pathsToMatch: /**
