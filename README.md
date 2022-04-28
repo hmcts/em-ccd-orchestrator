@@ -46,8 +46,8 @@ It uses:
 * [lombok plugin](https://plugins.jetbrains.com/idea/plugin/6317-lombok-plugin) - Lombok IDEA plugin
 
 ### Swagger UI
-To view our REST API go to {HOST}:{PORT}/swagger-ui.html
-> http://localhost:8080/swagger-ui.html
+To view our REST API go to {HOST}:{PORT}/swagger-ui/index.html
+> http://localhost:8080/swagger-ui/index.html
 
 ### API Endpoints
 A list of our endpoints can be found here

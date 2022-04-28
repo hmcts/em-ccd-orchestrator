@@ -88,7 +88,7 @@ idam:
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
   s2s-authorised:
-    services: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,jui_webapp,pui_webapp,ccd_data,iac,em_stitching_api,ia,xui_webapp}
+    services: ${S2S_NAMES_WHITELIST:sscs,divorce,ccd,em_gw,ccd_data,iac,em_stitching_api,ia,xui_webapp,civil_service}
 
 callbackUrlCreator:
   scheme: ${CALLBACK_HTTP_SCHEME:http}
@@ -111,3 +111,7 @@ notify:
 
 httpclient:
   call-timeout: ${HTTPCLIENT_CALL_TIMEOUT:30}
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.reform.em.orchestrator.endpoint
+  pathsToMatch: /**
