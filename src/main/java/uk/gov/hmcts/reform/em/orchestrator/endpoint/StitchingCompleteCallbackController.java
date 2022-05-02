@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @ConditionalOnProperty("endpoint-toggles.stitching-complete-callback")
 @Tag(name = "Stitching Callback Service", description = "Endpoint for Stitching complete callback.")
+@SuppressWarnings("squid:S2139")
 public class StitchingCompleteCallbackController {
 
     private final Logger log = LoggerFactory.getLogger(StitchingCompleteCallbackController.class);
@@ -81,7 +81,7 @@ public class StitchingCompleteCallbackController {
                                                                        @PathVariable String caseId,
                                                                        @PathVariable String triggerId,
                                                                        @PathVariable String bundleId,
-                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) throws JsonProcessingException {
+                                                                       @RequestBody DocumentTaskDTO documentTaskDTO) {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
