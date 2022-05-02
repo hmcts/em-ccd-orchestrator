@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @ConditionalOnProperty("endpoint-toggles.stitching-complete-callback")
 @Tag(name = "Stitching Callback Service", description = "Endpoint for Stitching complete callback.")
+@SuppressWarnings("squid:S2139")
 public class StitchingCompleteCallbackController {
 
     private final Logger log = LoggerFactory.getLogger(StitchingCompleteCallbackController.class);
@@ -96,10 +96,8 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            if (log.isInfoEnabled()) {
-                log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
-                        StringUtilities.convertValidLog(triggerId));
-            }
+            log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
+                StringUtilities.convertValidLog(triggerId));
 
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                     && documentTaskDTO.getBundle().getEnableEmailNotification())
