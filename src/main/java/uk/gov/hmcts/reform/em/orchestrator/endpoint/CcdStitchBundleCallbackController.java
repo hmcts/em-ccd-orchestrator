@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Tag(name = "Ccd Bundle Stitching Service", description = "Endpoint to stitch a Ccd Bundle.")
+@SuppressWarnings("squid:S2139")
 public class CcdStitchBundleCallbackController {
+
+    private final Logger log = LoggerFactory.getLogger(CcdStitchBundleCallbackController.class);
 
     private final DefaultUpdateCaller defaultUpdateCaller;
     private final AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
@@ -53,7 +58,9 @@ public class CcdStitchBundleCallbackController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
-        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request));
+        CcdCallbackResponseDto ccdCallbackResponseDto = defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request);
+        log.debug(String.format("/api/stitch-ccd-bundles response : %s", ccdCallbackResponseDto));
+        return ResponseEntity.ok(ccdCallbackResponseDto);
     }
 
     @PostMapping(value = "/api/async-stitch-ccd-bundles",
