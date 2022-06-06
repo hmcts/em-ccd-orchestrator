@@ -12,4 +12,10 @@
         </notes>
         <cve>CVE-2016-1000027</cve>
     </suppress>
+    <suppress>
+        <notes>
+            Awaiting fix as updating to latest available version hasn't resolved this Medium vulnerability.
+        </notes>
+        <cve>CVE-2022-22976</cve>
+    </suppress>
 </suppressions>

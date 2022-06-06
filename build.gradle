@@ -58,7 +58,7 @@ def versions = [
         mockito            : '3.12.4',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
-        springSecurity     : '5.6.1'
+        springSecurity     : '5.7.1'
 ]
 sourceSets {
     aat {
@@ -82,6 +82,7 @@ configurations.all {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
     exclude group: 'org.glassfish', module: 'jakarta.el'
     exclude group: 'org.springframework.retry', module: 'spring-retry'
+    exclude group: 'org.springframework.security', module: 'spring-security-rsa'
 }
 
 dependencies {
