@@ -83,6 +83,7 @@ configurations.all {
     exclude group: 'org.glassfish', module: 'jakarta.el'
     exclude group: 'org.springframework.retry', module: 'spring-retry'
     exclude group: 'org.springframework.security', module: 'spring-security-rsa'
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-security'
 }
 
 dependencies {
@@ -96,7 +97,6 @@ dependencies {
     }
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-batch'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
@@ -138,6 +138,8 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: versions.springSecurity
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurity
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.8'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
