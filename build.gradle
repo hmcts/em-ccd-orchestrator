@@ -84,6 +84,7 @@ configurations.all {
     exclude group: 'org.springframework.retry', module: 'spring-retry'
     exclude group: 'org.springframework.security', module: 'spring-security-rsa'
     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-security'
+    exclude group: 'com.ibm.icu', module: 'icu4j'
 }
 
 dependencies {
