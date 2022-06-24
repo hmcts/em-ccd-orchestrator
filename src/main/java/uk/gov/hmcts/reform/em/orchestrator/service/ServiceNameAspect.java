@@ -51,7 +51,7 @@ public class ServiceNameAspect {
                 } else {
                     serviceName = securityUtils.getServiceName(BEARER + s2sToken);
                 }
-                String caseId = getCaseId(request.getReader());
+                String caseId = getCaseId(request.getReader(), request.getRequestURI());
                 log.info("em-ccdorc : Endpoint : {}  for : {} method is accessed by {} with caseId as {}", request.getRequestURI(),
                         request.getMethod(), serviceName, caseId);
             } catch (InvalidTokenException | IOException invalidTokenException) {
@@ -60,9 +60,9 @@ public class ServiceNameAspect {
         }
     }
 
-    private String getCaseId(Reader reader) throws IOException {
+    private String getCaseId(Reader reader, String uri) throws IOException {
         JsonNode payload = objectMapper.readTree(reader);
-        log.debug("Bundling request payload is : {} ",payload);
+        log.debug("Bundling request to {} has payload : {} ",uri, payload);
         return payload.findValue(Constants.ID) != null ? payload.findValue(Constants.ID).asText() : StringUtils.EMPTY;
     }
 }
