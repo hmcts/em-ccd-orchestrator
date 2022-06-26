@@ -52,8 +52,8 @@ public class ServiceNameAspect {
                     serviceName = securityUtils.getServiceName(BEARER + s2sToken);
                 }
                 String caseId = getCaseId(request.getReader(), request.getRequestURI());
-                log.info("em-ccdorc : Endpoint : {}  for : {} method is accessed by {} with caseId as {}", request.getRequestURI(),
-                        request.getMethod(), serviceName, caseId);
+                log.info("em-ccdorc : Endpoint : {}  for : {} method is accessed by {} with caseId as {}",
+                        request.getRequestURI(), request.getMethod(), serviceName, caseId);
             } catch (InvalidTokenException | IOException invalidTokenException) {
                 log.warn("invalidTokenException logged is: {} ", invalidTokenException.getMessage());
             }
