@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
@@ -7,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class CachedBodyServletInputStream extends ServletInputStream {
+
+    private final Logger logger = LoggerFactory.getLogger(CachedBodyServletInputStream.class);
 
     private InputStream cachedBodyInputStream;
 
@@ -18,8 +23,8 @@ public class CachedBodyServletInputStream extends ServletInputStream {
     public boolean isFinished() {
         try {
             return cachedBodyInputStream.available() == 0;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            logger.error(exception.getMessage());
         }
         return false;
     }
