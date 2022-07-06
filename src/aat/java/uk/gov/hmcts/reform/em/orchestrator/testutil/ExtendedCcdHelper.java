@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -30,6 +27,8 @@ import java.util.stream.Stream;
 
 @Service
 public class ExtendedCcdHelper {
+
+    public static final String CCD_BUNDLE_MVP_TYPE_ASYNC = "CCD_BUNDLE_MVP_TYPE_ASYNC";
 
     @Value("${test.url}")
     private String testUrl;
@@ -113,7 +112,7 @@ public class ExtendedCcdHelper {
     }
 
     public String getEnvCcdCaseTypeId() {
-        return String.format("BUND_ASYNC_%d", testUrl.hashCode());
+        return CCD_BUNDLE_MVP_TYPE_ASYNC;
     }
 
     public InputStream getEnvSpecificDefinitionFile() throws Exception {
@@ -130,26 +129,6 @@ public class ExtendedCcdHelper {
                 String.format("%s/api/clone-ccd-bundles", getCallbackUrl())
         );
 
-        Sheet caseTypeSheet = workbook.getSheet("CaseType");
-
-        caseTypeSheet.getRow(3).getCell(3).setCellValue(getEnvCcdCaseTypeId());
-
-        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-            Sheet sheet = workbook.getSheetAt(i);
-            for (Row row : sheet) {
-                for (Cell cell : row) {
-                    if (cell.getCellType().equals(CellType.STRING)
-                            && cell.getStringCellValue().trim().equals("CCD_BUNDLE_MVP_TYPE_ASYNC")) {
-                        cell.setCellValue(getEnvCcdCaseTypeId());
-                    }
-                    if (cell.getCellType().equals(CellType.STRING)
-                            && cell.getStringCellValue().trim().equals("bundle-tester@gmail.com")) {
-                        cell.setCellValue(bundleTesterUser);
-                    }
-                }
-            }
-        }
-
         File outputFile = File.createTempFile("ccd", "ftest-def");
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
@@ -161,14 +140,14 @@ public class ExtendedCcdHelper {
 
     private String getCallbackUrl() {
         if (testUrl.contains("localhost")) {
-            return "http://rpa-em-ccd-orchestrator:8080";
+            return "http://localhost:8080";
         } else {
             return testUrl.replaceAll("https", "http");
         }
     }
 
     public void initBundleTesterUser() {
-        bundleTesterUser = String.format("bundle-tester-%d@gmail.com", testUrl.hashCode());
+        bundleTesterUser = "bundle-tester@gmail.com";
         idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
     }
 
