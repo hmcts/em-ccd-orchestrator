@@ -10,7 +10,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: ${OPEN_ID_API_BASE_URI:http://localhost:5050/o}
+            issuer-uri: ${OPEN_ID_API_BASE_URI:https://idam-web-public.aat.platform.hmcts.net/o}
         registration:
           oidc:
             client-id: webshow
@@ -32,17 +32,17 @@ test:
 
 idam:
   api:
-    url: ${IDAM_API_BASE_URI:http://localhost:5050}
+    url: ${IDAM_API_BASE_URI:https://idam-api.aat.platform.hmcts.net}
   client:
     id: ${OAUTH_CLIENT:webshow}
     secret: ${FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET:AAAAAAAAAAAAAAAA}
-    redirect_uri: ${IDAM_WEBSHOW_WHITELIST:http://localhost:8080/oauth2redirect}
+    redirect_uri: ${IDAM_WEBSHOW_WHITELIST:https://em-show-aat.service.core-compute-aat.internal/oauth2/callback}
     grant_type: 'password'
     scope: 'openid roles profile'
 
 s2s:
   api:
-    url: ${S2S_BASE_URI:http://localhost:4502}
+    url: ${S2S_BASE_URI:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
     secret: ${FUNCTIONAL_TEST_CLIENT_S2S_TOKEN:AAAAAAAAAAAAAAAA}
     serviceName: ${S2S_SERVICE_NAME:em_gw}
     ccdGwSecret: ${FUNCTIONAL_TEST_CCD_GW_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
@@ -55,7 +55,7 @@ ccd-def:
     url: ${CCD_DEF_API:http://localhost:4451}
 
 document_management:
-  url: ${DM_STORE_APP_URL:http://localhost:4603}
+  url: ${DM_STORE_APP_URL:http://dm-store-aat.service.core-compute-aat.internal}
   docker_url: http://dm-store:8080
 
 core_case_data:

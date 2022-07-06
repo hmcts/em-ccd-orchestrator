@@ -13,7 +13,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: ${OPEN_ID_API_BASE_URI:http://localhost:5050/o}
+            issuer-uri: ${OPEN_ID_API_BASE_URI:https://idam-web-public.aat.platform.hmcts.net/o}
         registration:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
@@ -56,11 +56,11 @@ info:
 auth:
   idam:
     client:
-      baseUrl: ${IDAM_API_BASE_URI:http://localhost:5050}
+      baseUrl: ${IDAM_API_BASE_URI:https://idam-api.aat.platform.hmcts.net}
   provider:
     service:
       client:
-        baseUrl: ${S2S_BASE_URI:http://localhost:4502}
+        baseUrl: ${S2S_BASE_URI:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:true}
@@ -73,10 +73,10 @@ app-insights:
   telemetry-component: on
 
 em-rpa-ccd-orchestrator:
-  base-url: ${EM_CCD_ORCHESTRATOR_URL:http://localhost:4623}
+  base-url: ${EM_CCD_ORCHESTRATOR_URL:http://localhost:8080}
 
 dm-store-app:
-  base-url: ${DM_STORE_APP_URL:http://localhost:4603}
+  base-url: ${DM_STORE_APP_URL:http://dm-store-aat.service.core-compute-aat.internal}
 
 em-rpa-stitching-api:
   base-url: ${EM_STITCHING_API_URL:http://localhost:4630}
@@ -84,7 +84,7 @@ em-rpa-stitching-api:
 
 idam:
   s2s-auth:
-    url: ${S2S_BASE_URI:http://localhost:4502}
+    url: ${S2S_BASE_URI:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
   s2s-authorised:
@@ -92,7 +92,7 @@ idam:
 
 callbackUrlCreator:
   scheme: ${CALLBACK_HTTP_SCHEME:http}
-  host: ${CALLBACK_DOMAIN:host.docker.internal} # SERVER_NAME is the domain injected by the Azure
+  host: ${CALLBACK_DOMAIN:localhost} # SERVER_NAME is the domain injected by the Azure
   port: ${CALLBACK_HTTP_HOST_PORT:8080}
 
 ccd:

@@ -387,7 +387,7 @@ public class TestUtil {
     }
 
     public String getEnvCcdCaseTypeId() {
-        return String.format("BUND_ASYNC_%d", testUrl.hashCode());
+        return ExtendedCcdHelper.CCD_BUNDLE_MVP_TYPE_ASYNC;
     }
 
     public CcdBundleDTO getCdamTestBundle(String userName) throws Exception {
