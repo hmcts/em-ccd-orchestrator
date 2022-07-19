@@ -197,6 +197,7 @@ public class StitchingServiceTest {
 
         Assert.assertEquals("testString/binary", processedString);
     }
+
     @Test
     public void testCaseId() throws Exception {
         List<String> responses = new ArrayList<>();
