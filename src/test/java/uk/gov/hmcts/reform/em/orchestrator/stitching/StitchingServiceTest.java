@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.lang.reflect.Method;
@@ -196,7 +197,22 @@ public class StitchingServiceTest {
 
         Assert.assertEquals("testString/binary", processedString);
     }
+    @Test
+    public void testCaseId() throws Exception {
+        List<String> responses = new ArrayList<>();
 
+        responses.add("{ \"id\": 2, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\" }, " +
+                "" + "\"caseId\": " + CASE_ID + " }");
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+
+        DocumentTaskDTO documentTaskDTO1 = service.startStitchingTask(documentTaskDTO, TOKEN, CASE_ID);
+        Assert.assertEquals(documentTaskDTO1.getCaseId(), CASE_ID);
+        Assert.assertEquals(documentTaskDTO.getCaseId(), CASE_ID);
+
+    }
 
     public StitchingService getStitchingService(OkHttpClient http) {
         return new StitchingService(

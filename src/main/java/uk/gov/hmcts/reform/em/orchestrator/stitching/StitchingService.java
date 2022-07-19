@@ -122,6 +122,11 @@ public class StitchingService {
     }
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt, String caseId) throws IOException {
+        if (caseId.equals("null")) {
+            documentTask.setCaseId(null);
+        } else {
+            documentTask.setCaseId(caseId);
+        }
         populateCdamDetails(documentTask);
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));

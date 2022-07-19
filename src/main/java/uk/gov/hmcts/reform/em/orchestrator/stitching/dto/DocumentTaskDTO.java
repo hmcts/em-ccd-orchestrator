@@ -33,6 +33,8 @@ public class DocumentTaskDTO implements Serializable {
 
     private String caseTypeId;
 
+    private String caseId;
+
     private String jurisdictionId;
 
     public Long getId() {
@@ -114,6 +116,15 @@ public class DocumentTaskDTO implements Serializable {
     public void setCaseTypeId(String caseTypeId) {
         this.caseTypeId = caseTypeId;
     }
+
+    public String getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(String caseId) {
+        this.caseId = caseId;
+    }
+
 
     public String getJurisdictionId() {
         return jurisdictionId;

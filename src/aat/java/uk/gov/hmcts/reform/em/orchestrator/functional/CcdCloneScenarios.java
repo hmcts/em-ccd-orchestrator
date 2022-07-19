@@ -40,6 +40,26 @@ public class CcdCloneScenarios extends BaseTest {
     }
 
     @Test
+    public void testSingleBundleCloneWithCaseId() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setEligibleForCloningAsBoolean(true);
+        List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
+        list.add(new CcdValue<>(bundle));
+        String json = mapper.writeValueAsString(list);
+        String wrappedJson = String.format("{ \"id\": \"123\", \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
+
+        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
+
+        response
+                .assertThat()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle title"))
+                .body("data.caseBundles[0].value.eligibleForCloning", equalTo("no"))
+                .body("data.caseBundles[1].value.title", equalTo("Bundle title"))
+                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"));
+    }
+
+    @Test
     public void testMultipleBundlesClone() throws IOException {
         CcdBundleDTO bundle1 = testUtil.getTestBundle();
         bundle1.setTitle("Bundle 1");
