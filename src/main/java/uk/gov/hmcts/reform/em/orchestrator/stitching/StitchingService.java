@@ -112,7 +112,7 @@ public class StitchingService {
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(cdamDto.getCaseId()),
                     StringUtilities.convertValidLog(e.getMessage())));
             throw new StitchingServiceException(
