@@ -31,6 +31,8 @@ public class DocumentTaskDTO implements Serializable {
     @JsonIgnore
     private String jwt;
 
+    private String serviceAuth;
+
     private String caseTypeId;
 
     @Getter
@@ -101,6 +103,14 @@ public class DocumentTaskDTO implements Serializable {
 
     public void setCallback(CallbackDto callback) {
         this.callback = callback;
+    }
+
+    public String getServiceAuth() {
+        return serviceAuth;
+    }
+
+    public void setServiceAuth(String serviceAuth) {
+        this.serviceAuth = serviceAuth;
     }
 
     public String getCaseTypeId() {

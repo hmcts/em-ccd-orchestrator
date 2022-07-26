@@ -46,6 +46,7 @@ public class StringUtilities {
         return CdamDto.builder()
                 .jwt(ccdCallbackDto.getJwt()).caseId(ccdCallbackDto.getCaseId())
                 .caseTypeId(ccdCallbackDto.getCaseTypeId()).jurisdictionId(ccdCallbackDto.getJurisdictionId())
+                .serviceAuth(ccdCallbackDto.getServiceAuth())
                 .build();
     }
 

@@ -11,5 +11,5 @@ public class CdamDto {
     private String caseId;
     private String caseTypeId;
     private String jurisdictionId;
-
+    private String serviceAuth;
 }

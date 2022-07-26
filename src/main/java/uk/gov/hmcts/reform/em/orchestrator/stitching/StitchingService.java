@@ -77,6 +77,7 @@ public class StitchingService {
         documentTask.setCaseTypeId(cdamDto.getCaseTypeId());
         documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
         documentTask.setCaseId(cdamDto.getCaseId());
+        documentTask.setServiceAuth(cdamDto.getServiceAuth());
 
         logger.info(String.format("Calling Stitching Service for caseId : %s ",
                 StringUtilities.convertValidLog(cdamDto.getCaseId())));
