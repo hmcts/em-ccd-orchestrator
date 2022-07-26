@@ -5,26 +5,25 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
@@ -70,17 +69,20 @@ public class StitchingService {
      * If the document was succesfully
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
-    public CcdDocument stitch(CcdBundleDTO bundleDto, String jwt, String caseId) throws InterruptedException  {
+    public CcdDocument stitch(CcdBundleDTO bundleDto, CdamDto cdamDto) throws InterruptedException  {
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
-        documentTask.setJwt(jwt);
+        documentTask.setJwt(cdamDto.getJwt());
+        documentTask.setCaseTypeId(cdamDto.getCaseTypeId());
+        documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
+        documentTask.setCaseId(cdamDto.getCaseId());
 
         logger.info(String.format("Calling Stitching Service for caseId : %s ",
-                StringUtilities.convertValidLog(caseId)));
+                StringUtilities.convertValidLog(cdamDto.getCaseId())));
         try {
-            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask, jwt, caseId);
-            final String response = poll(createdDocumentTaskDTO.getId(), jwt);
+            final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask);
+            final String response = poll(createdDocumentTaskDTO.getId(), cdamDto.getJwt());
             final DocumentContext json = JsonPath
                 .using(Configuration.defaultConfiguration().addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(response);
@@ -104,13 +106,13 @@ public class StitchingService {
                 }
 
             } else {
-                logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+                logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(cdamDto.getCaseId()),
                         StringUtilities.convertValidLog(json.read("$.failureDescription"))));
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
         } catch (Exception e) {
-            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(cdamDto.getCaseId()),
                     StringUtilities.convertValidLog(e.getMessage())));
             throw new StitchingServiceException(
                     String.format("Unable to stitch bundle using %s: %s", documentTaskEndpoint, e.getMessage()), e);
@@ -121,16 +123,12 @@ public class StitchingService {
         return s.endsWith("/binary") ? s : s + "/binary";
     }
 
-    public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt, String caseId) throws IOException {
-        logger.info(String.format("Started populateCdamDetails for caseId : %s ",
-                StringUtilities.convertValidLog(caseId)));
-        populateCdamDetails(documentTask);
-        logger.info(String.format("completed populateCdamDetails for caseId : %s ",
-                StringUtilities.convertValidLog(caseId)));
+    public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask) throws IOException {
+
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
-            .addHeader("Authorization", jwt)
+            .addHeader("Authorization", documentTask.getJwt())
             .addHeader("ServiceAuthorization", authTokenGenerator.generate())
             .url(documentTaskEndpoint)
             .method("POST", body)
@@ -141,13 +139,13 @@ public class StitchingService {
         if (response.isSuccessful()) {
             DocumentTaskDTO documentTaskDTO =  jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
             logger.info(
-                    String.format(SUCCESS_MSG, StringUtilities.convertValidLog(caseId),
+                    String.format(SUCCESS_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                     StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
             return documentTaskDTO;
         } else {
-            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
+            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                     StringUtilities.convertValidLog(response.body().string())));
-                throw new IOException("Unable to create stitching task: " + response.body().string());
+            throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
 
@@ -174,16 +172,4 @@ public class StitchingService {
         throw new IOException("Task not complete after maximum number of retries");
     }
 
-    private void populateCdamDetails(DocumentTaskDTO documentTaskDto) {
-
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-        if (Objects.nonNull(request.getSession().getAttribute(Constants.CDAM_DEATILS))) {
-            CdamDetailsDto cdamDetailsDto = (CdamDetailsDto) request.getSession().getAttribute(Constants.CDAM_DEATILS);
-            documentTaskDto.setServiceAuth(cdamDetailsDto.getServiceAuth());
-            documentTaskDto.setCaseTypeId(cdamDetailsDto.getCaseTypeId());
-            documentTaskDto.setJurisdictionId(cdamDetailsDto.getJurisdictionId());
-            request.getSession().removeAttribute(Constants.CDAM_DEATILS);
-        }
-    }
 }

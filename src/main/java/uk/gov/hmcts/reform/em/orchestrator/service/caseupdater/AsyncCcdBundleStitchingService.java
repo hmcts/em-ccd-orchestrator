@@ -10,6 +10,8 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingE
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -68,7 +70,9 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
             throw new InputValidationException(violations);
         }
 
-        automatedStitchingExecutor.startStitching(caseId, ccdCallbackDto.getJwt(), bundle.getValue());
+        CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
+
+        automatedStitchingExecutor.startStitching(cdamDto, bundle.getValue());
 
         return bundle;
     }

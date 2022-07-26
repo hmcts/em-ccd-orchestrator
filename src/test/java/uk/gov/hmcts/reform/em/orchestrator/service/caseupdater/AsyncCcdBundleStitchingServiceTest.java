@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -48,7 +49,7 @@ public class AsyncCcdBundleStitchingServiceTest {
         asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
 
         Mockito.verify(automatedStitchingExecutor, Mockito.times(1))
-                .startStitching(Mockito.any(), Mockito.any(), Mockito.any());
+                .startStitching(Mockito.any(CdamDto.class), Mockito.any());
     }
 
     @Test(expected = InputValidationException.class)
@@ -72,13 +73,13 @@ public class AsyncCcdBundleStitchingServiceTest {
 
         Mockito.doThrow(new StitchingServiceException("x"))
                 .when(automatedStitchingExecutor)
-                .startStitching(Mockito.any(), Mockito.any(), Mockito.any());
+                .startStitching(Mockito.any(CdamDto.class), Mockito.any());
 
         asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
     }
 
     @Test
-    public void testUpdateCaseMissingBundles() throws Exception {
+    public void testUpdateCaseMissingBundles() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setCaseData(objectMapper.getNodeFactory().arrayNode());
         JsonNode node = asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);

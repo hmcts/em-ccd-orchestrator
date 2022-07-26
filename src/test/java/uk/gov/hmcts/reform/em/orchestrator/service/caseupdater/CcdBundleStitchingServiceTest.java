@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -42,9 +43,9 @@ public class CcdBundleStitchingServiceTest {
 
     @Before
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         CcdDocument ccdDocument = new CcdDocument("", "", "");
-        BDDMockito.given(stitchingService.stitch(any(), any(), any())).willReturn(ccdDocument);
+        BDDMockito.given(stitchingService.stitch(any(), any(CdamDto.class))).willReturn(ccdDocument);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService, validator);
@@ -64,7 +65,7 @@ public class CcdBundleStitchingServiceTest {
         assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any());
+                .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDto.class));
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -75,7 +76,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any()))
+        Mockito.when(stitchingService.stitch(any(CcdBundleDTO.class), any(CdamDto.class)))
                 .thenThrow(new StitchingServiceException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
@@ -100,7 +101,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
 
-        Mockito.when(stitchingService.stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(String.class), Mockito.any()))
+        Mockito.when(stitchingService.stitch(any(CcdBundleDTO.class), any(CdamDto.class)))
                 .thenThrow(new InterruptedException("x"));
 
         ccdBundleStitchingService.updateCase(ccdCallbackDto);

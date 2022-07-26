@@ -7,13 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CdamDetailsDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
-import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +36,6 @@ public class DefaultUpdateCaller {
 
     public CcdCallbackResponseDto executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
-        createCdamDetails(dto, request);
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
@@ -64,21 +60,6 @@ public class DefaultUpdateCaller {
             );
         }
         return ccdCallbackResponseDto;
-    }
-
-    private void createCdamDetails(CcdCallbackDto dto, HttpServletRequest request) {
-        if (StringUtils.isNotBlank(dto.getCaseTypeId()) && StringUtils.isNotBlank(dto.getJurisdictionId())) {
-            CdamDetailsDto cdamDetailsDto = CdamDetailsDto.builder()
-                .caseTypeId(dto.getCaseTypeId())
-                .jurisdictionId(dto.getJurisdictionId())
-                .serviceAuth(request.getHeader("ServiceAuthorization"))
-                .build();
-            request.getSession().setAttribute(Constants.CDAM_DEATILS, cdamDetailsDto);
-            logger.info(String.format("CaseTypeId : %s and JurisdictionId : %s for caseId : %s ",
-                    StringUtilities.convertValidLog(cdamDetailsDto.getCaseTypeId()),
-                    StringUtilities.convertValidLog(cdamDetailsDto.getJurisdictionId()),
-                    StringUtilities.convertValidLog(dto.getCaseId())));
-        }
     }
 
 }
