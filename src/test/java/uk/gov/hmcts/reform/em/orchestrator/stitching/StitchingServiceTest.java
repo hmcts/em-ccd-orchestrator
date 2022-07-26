@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.lang.reflect.Method;
@@ -27,8 +32,7 @@ public class StitchingServiceTest {
     @Value("${em-rpa-stitching-api.resource}")
     private String stitchingResource;
 
-    private static final String TOKEN = "token";
-    private static final String CASE_ID = "123456789";
+    private static final CdamDto cdamDto = CdamDto.builder().jwt("token").caseId("123456789").build();
 
     @Test
     public void stitchSuccessful() throws StitchingServiceException, InterruptedException {
@@ -43,7 +47,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("stitched.pdf", docId.getFileName());
@@ -63,7 +67,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("2355678kggkhghgjhvhmgv345678", docId.getHash());
@@ -82,7 +86,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("Dummy.Bundle.01.docx", docId.getFileName());
@@ -100,7 +104,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("Dummy-Bundle-01.pdf", docId.getFileName());
@@ -115,7 +119,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("stitched.pdf", docId.getFileName());
@@ -130,7 +134,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        CcdDocument docId = service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
         Assert.assertEquals("AAAAAA", docId.getUrl());
         Assert.assertEquals("stitched.pdf", docId.getFileName());
@@ -149,7 +153,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        service.stitch(new CcdBundleDTO(), cdamDto);
     }
 
     @Test(expected = StitchingServiceException.class)
@@ -164,7 +168,7 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), TOKEN, CASE_ID);
+        service.stitch(new CcdBundleDTO(), cdamDto);
     }
 
     @Test

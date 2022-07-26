@@ -276,7 +276,6 @@ def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/config/**/*',
         '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
         '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
-        '**uk/gov/hmcts/reform/em/orchestrator/stitching/StitchingService*',
         '**uk/gov/hmcts/reform/em/orchestrator/info/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CdamDetailsDto*',

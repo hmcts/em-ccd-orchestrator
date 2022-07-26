@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Getter;
+import lombok.Setter;
 import pl.touk.throwing.ThrowingFunction;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
@@ -18,6 +20,10 @@ public class CcdCallbackDto {
     private JsonNode caseDetails;
 
     private String jwt;
+
+    @Getter
+    @Setter
+    private String serviceAuth;
 
     @JsonIgnore
     private Boolean enableEmailNotification;

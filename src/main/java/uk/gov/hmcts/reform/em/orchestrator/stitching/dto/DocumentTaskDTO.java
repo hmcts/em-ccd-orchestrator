@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +34,10 @@ public class DocumentTaskDTO implements Serializable {
     private String serviceAuth;
 
     private String caseTypeId;
+
+    @Getter
+    @Setter
+    private String caseId;
 
     private String jurisdictionId;
 

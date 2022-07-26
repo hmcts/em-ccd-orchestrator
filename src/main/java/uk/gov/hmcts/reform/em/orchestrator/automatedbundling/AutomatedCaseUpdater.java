@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
+import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +66,9 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
                 return arrayNode;
             });
 
-            automatedStitchingExecutor.startStitching(
-                ccdCallbackDto.getCaseId(),
-                ccdCallbackDto.getJwt(),
-                bundle);
+            CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
+
+            automatedStitchingExecutor.startStitching(cdamDto, bundle);
 
             bundles.insert(0, bundleDtoToBundleJson(bundle));
         }
