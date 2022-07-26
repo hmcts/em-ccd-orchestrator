@@ -47,9 +47,9 @@ public class StitchingService {
 
     private static final String STITCHED_DOC_URI = "$.bundle.stitchedDocumentURI";
     private static final String TASK_STATE = "$.taskState";
-    private static final String FAILURE_MSG = "Calling Stitching Service for caseId : %s had issue : %s ";
+    private static final String FAILURE_MSG = "Failed Calling Stitching Service for caseId : %s had issue : %s ";
     private static final String SUCCESS_MSG =
-            "Calling Stitching Service for caseId : %s was completed with documentTaskId : %s ";
+            "Successfully Called Stitching Service for caseId : %s with documentTaskId : %s ";
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
                             AuthTokenGenerator authTokenGenerator) {
@@ -109,7 +109,7 @@ public class StitchingService {
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
                     StringUtilities.convertValidLog(e.getMessage())));
             throw new StitchingServiceException(
@@ -122,7 +122,11 @@ public class StitchingService {
     }
 
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask, String jwt, String caseId) throws IOException {
+        logger.info(String.format("Started populateCdamDetails for caseId : %s ",
+                StringUtilities.convertValidLog(caseId)));
         populateCdamDetails(documentTask);
+        logger.info(String.format("completed populateCdamDetails for caseId : %s ",
+                StringUtilities.convertValidLog(caseId)));
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
@@ -143,7 +147,7 @@ public class StitchingService {
         } else {
             logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(caseId),
                     StringUtilities.convertValidLog(response.body().string())));
-            throw new IOException("Unable to create stitching task: " + response.body().string());
+                throw new IOException("Unable to create stitching task: " + response.body().string());
         }
     }
 
