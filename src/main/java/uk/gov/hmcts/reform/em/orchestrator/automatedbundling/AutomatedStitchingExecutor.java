@@ -47,6 +47,7 @@ public class AutomatedStitchingExecutor {
         documentTask.setCaseId(cdamDto.getCaseId());
         documentTask.setCaseTypeId(cdamDto.getCaseTypeId());
         documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
+        documentTask.setServiceAuth(cdamDto.getServiceAuth());
 
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
