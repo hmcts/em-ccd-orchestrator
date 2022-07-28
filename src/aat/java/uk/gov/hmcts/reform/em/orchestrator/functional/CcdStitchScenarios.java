@@ -206,18 +206,19 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchAsync() throws IOException {
+    public void testPostBundleStitchAsync() throws IOException, InterruptedException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
-
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        response = testUtil.poll(documentTaskId);
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
+                .body("bundle.bundleTitle", equalTo("Bundle title"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test

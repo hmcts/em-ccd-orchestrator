@@ -25,6 +25,10 @@ public class CcdCallbackDto {
     @Setter
     private String serviceAuth;
 
+    @Getter
+    @Setter
+    private long documentTaskId;
+
     @JsonIgnore
     private Boolean enableEmailNotification;
 

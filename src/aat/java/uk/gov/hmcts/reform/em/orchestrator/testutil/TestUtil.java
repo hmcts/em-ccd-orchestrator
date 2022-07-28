@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.rest.SerenityRest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
 import uk.gov.hmcts.reform.em.test.cdam.CdamHelper;
 import uk.gov.hmcts.reform.em.test.dm.DmHelper;
@@ -43,11 +47,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 @Service
 public class TestUtil {
 
+    private final int retryCount = 3;
+    private final int sleepTime = 500;
     private String idamAuth;
     private String s2sAuth;
 
@@ -73,6 +80,12 @@ public class TestUtil {
     private String dmApiUrl;
     @Value("${document_management.docker_url}")
     private String dmDocumentApiUrl;
+
+    @Value("${em-rpa-stitching-api.base-url}")
+    private String stitchingBaseUrl;
+
+    @Value("${em-rpa-stitching-api.resource}")
+    private String stitchingResource;
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -145,12 +158,6 @@ public class TestUtil {
         bundle.setDescription("Test bundle");
         bundle.setEligibleForStitchingAsBoolean(true);
         bundle.setEligibleForCloningAsBoolean(false);
-
-        CcdDocument doc = new CcdDocument();
-        doc.setBinaryUrl("www.exampleurl.com/binary");
-        doc.setFileName("doc filename");
-        doc.setUrl("www.exampleurl.com");
-        bundle.setStitchedDocument(doc);
 
         List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocument()));
@@ -456,5 +463,25 @@ public class TestUtil {
         bundle.setStitchStatus("");
         bundle.setDocumentImage(documentImage);
         return bundle;
+    }
+
+    public ValidatableResponse poll(long documentTaskId) throws InterruptedException, IOException {
+        final RequestSpecification requestSpecification = authRequest()
+                .baseUri(getTestUrl())
+                .contentType(APPLICATION_JSON_VALUE);
+
+        for (int i = 0; i < retryCount; i++) {
+            final Response response = requestSpecification.get(stitchingBaseUrl
+                    + stitchingResource + documentTaskId);
+            final JsonPath jsonPath = response.body().jsonPath();
+            final String taskState = jsonPath.getString("taskState");
+            if (!taskState.equals(TaskState.NEW.toString())) {
+                return response.then();
+            } else {
+                Thread.sleep(sleepTime);
+            }
+        }
+        throw new IOException("Task not complete after maximum number of retries");
+
     }
 }
