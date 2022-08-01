@@ -36,6 +36,21 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
+    public void testPostBundleStitchWithCaseId() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"id\": \"123\", \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+
+        ValidatableResponse response = postStitchCCDBundle(wrappedJson);
+
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
+    }
+
+    @Test
     public void testPostBundleStitchWithWordDoc() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));

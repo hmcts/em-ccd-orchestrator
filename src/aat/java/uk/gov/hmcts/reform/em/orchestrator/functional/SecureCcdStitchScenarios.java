@@ -40,6 +40,22 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
+    public void testPostBundleStitchWithCaseId() throws Exception {
+        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format("{ \"id\": \"123\", " + syncCaseJson.substring(1), json);
+
+        ValidatableResponse response = postStitchCCDBundle(wrappedJson);
+
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
+                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+    }
+
+    @Test
     public void testPostBundleStitchWithWordDoc() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
