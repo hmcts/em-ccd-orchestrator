@@ -6,6 +6,7 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
@@ -23,6 +24,10 @@ public class AutomatedStitchingExecutorTest {
     @Mock
     private CallbackUrlCreator callbackUrlCreator;
 
+    private CdamDto cdamDto = CdamDto.builder()
+            .jwt("jwt").caseId("123")
+            .build();
+
     @InjectMocks
     private AutomatedStitchingExecutor automatedStitchingExecutor;
 
@@ -32,16 +37,16 @@ public class AutomatedStitchingExecutorTest {
 
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
 
-        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.any(), Mockito.any()))
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any()))
                 .thenReturn(documentTaskDTO);
 
-        automatedStitchingExecutor.startStitching("1", "2", "jwt", ccdBundleDTO);
+        automatedStitchingExecutor.startStitching(cdamDto, ccdBundleDTO);
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))
                 .toStitchingDTO(Mockito.any(CcdBundleDTO.class));
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString(), Mockito.any());
+                .startStitchingTask(Mockito.any(DocumentTaskDTO.class));
 
         Mockito.verify(callbackUrlCreator, Mockito.times(1))
                 .createCallbackUrl(Mockito.anyString(), Mockito.anyString(),Mockito.any());
@@ -53,18 +58,18 @@ public class AutomatedStitchingExecutorTest {
     public void startStitchingIOException() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
-        Mockito.when(stitchingService.startStitchingTask(Mockito.any(), Mockito.anyString(), Mockito.any()))
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any()))
                 .thenThrow(new IOException("x"));
 
         assertThrows(StartStitchingException.class, () ->
-            automatedStitchingExecutor.startStitching("1", "jwt", ccdBundleDTO)
+            automatedStitchingExecutor.startStitching(cdamDto, "1234", ccdBundleDTO)
         );
 
         Mockito.verify(stitchingDTOMapper, Mockito.times(1))
                 .toStitchingDTO(Mockito.any(CcdBundleDTO.class));
 
         Mockito.verify(stitchingService, Mockito.times(1))
-                .startStitchingTask(Mockito.any(DocumentTaskDTO.class), Mockito.anyString(), Mockito.any());
+                .startStitchingTask(Mockito.any(DocumentTaskDTO.class));
 
         Mockito.verify(callbackUrlCreator, Mockito.times(1))
                 .createCallbackUrl(Mockito.anyString(), Mockito.anyString(),Mockito.any());

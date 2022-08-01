@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
@@ -33,6 +35,8 @@ public class DocumentTaskDTO implements Serializable {
 
     private String caseTypeId;
 
+    @Getter
+    @Setter
     private String caseId;
 
     private String jurisdictionId;
@@ -116,15 +120,6 @@ public class DocumentTaskDTO implements Serializable {
     public void setCaseTypeId(String caseTypeId) {
         this.caseTypeId = caseTypeId;
     }
-
-    public String getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
-    }
-
 
     public String getJurisdictionId() {
         return jurisdictionId;

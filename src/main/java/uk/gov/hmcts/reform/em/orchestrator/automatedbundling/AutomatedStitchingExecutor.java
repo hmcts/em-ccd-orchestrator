@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
@@ -26,11 +27,11 @@ public class AutomatedStitchingExecutor {
         this.callbackUrlCreator = callbackUrlCreator;
     }
 
-    public void startStitching(String caseId, String jwt, CcdBundleDTO ccdBundleDTO) {
-        startStitching(caseId, DEFAULT_TRIGGER_NAME, jwt, ccdBundleDTO);
+    public void startStitching(CdamDto cdamDto, CcdBundleDTO ccdBundleDTO) {
+        startStitching(cdamDto, DEFAULT_TRIGGER_NAME, ccdBundleDTO);
     }
 
-    public void startStitching(String caseId, String triggerId, String jwt, CcdBundleDTO ccdBundleDTO) {
+    public void startStitching(CdamDto cdamDto, String triggerId, CcdBundleDTO ccdBundleDTO) {
 
         if (StringUtils.isEmpty(ccdBundleDTO.getId())) {
             ccdBundleDTO.setId(UUID.randomUUID().toString());
@@ -40,15 +41,19 @@ public class AutomatedStitchingExecutor {
         documentTask.setBundle(stitchingDTOMapper.toStitchingDTO(ccdBundleDTO));
 
         CallbackDto callbackDto = new CallbackDto();
-        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(caseId, triggerId, ccdBundleDTO.getId()));
+        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(cdamDto.getCaseId(), triggerId, ccdBundleDTO.getId()));
         documentTask.setCallback(callbackDto);
+        documentTask.setJwt(cdamDto.getJwt());
+        documentTask.setCaseId(cdamDto.getCaseId());
+        documentTask.setCaseTypeId(cdamDto.getCaseTypeId());
+        documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
+        documentTask.setServiceAuth(cdamDto.getServiceAuth());
 
         try {
-            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask, jwt,
-                    caseId);
+            final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
         } catch (IOException e) {
-            throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ", e.getMessage(), caseId), e);
+            throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ", e.getMessage(), cdamDto.getCaseId()), e);
         }
 
     }

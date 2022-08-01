@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
 import java.text.Normalizer;
 import java.util.Arrays;
@@ -38,6 +40,14 @@ public class StringUtilities {
             return encode;
         }
         return StringUtils.EMPTY;
+    }
+
+    public static CdamDto populateCdamDetails(CcdCallbackDto ccdCallbackDto) {
+        return CdamDto.builder()
+                .jwt(ccdCallbackDto.getJwt()).caseId(ccdCallbackDto.getCaseId())
+                .caseTypeId(ccdCallbackDto.getCaseTypeId()).jurisdictionId(ccdCallbackDto.getJurisdictionId())
+                .serviceAuth(ccdCallbackDto.getServiceAuth())
+                .build();
     }
 
 }

@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -21,6 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultUpdateCallerTest {
@@ -62,28 +63,6 @@ public class DefaultUpdateCallerTest {
 
         Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
         Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
-    }
-
-    @Test
-    public void executeUpdateCdam() throws Exception {
-        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode caseData = objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" , "
-                + "\"id\" : \"123456789\" }");
-        ccdCallbackDto.setCcdPayload(caseData);
-
-        when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
-            .thenReturn(ccdCallbackDto);
-
-        when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
-            .thenReturn(objectMapper.readTree("{ \"caseTypeId\" : \"SAMPLE\", \"jurisdictionId\" : \"BENEFIT\" , "
-                    + "\"id\" : \"123456789\" }"));
-
-        when(httpServletRequest.getSession()).thenReturn(httpSession);
-
-        CcdCallbackResponseDto ccdCallbackResponseDto =
-            defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-
-        Mockito.verify(httpServletRequest, Mockito.times(1)).getSession();
     }
 
     @Test
