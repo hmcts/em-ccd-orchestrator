@@ -223,6 +223,14 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        response = testUtil.poll(documentTaskId);
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Bundle title"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test

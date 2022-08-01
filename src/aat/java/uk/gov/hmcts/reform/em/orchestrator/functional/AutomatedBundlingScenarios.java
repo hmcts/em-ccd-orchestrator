@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testCreateBundle() {
+    public void testCreateBundle() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
         response
                 .assertThat().log().all()
@@ -58,6 +59,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.folders[1].value.name", equalTo("Folder 1.b"))
                 .body("data.caseBundles[0].value.folders[1].value.name", equalTo("Folder 2"))
                 .body("data.caseBundles[0].value.fileName", equalTo("stitched.pdf"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("New bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -83,7 +92,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilename() {
+    public void testFilename() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -91,10 +100,18 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle with filename"))
                 .body("data.caseBundles[0].value.fileName", equalTo("bundle.pdf"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Bundle with filename"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testTableOfContentsAndCoversheet() {
+    public void testTableOfContentsAndCoversheet() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -103,10 +120,18 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.hasCoversheets", equalTo("Yes"))
                 .body("data.caseBundles[0].value.hasTableOfContents", equalTo("Yes"))
                 .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("No"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("New bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testFolderCoversheets() {
+    public void testFolderCoversheets() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -115,10 +140,18 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
                 .body("data.caseBundles[0].value.hasTableOfContents", equalTo("No"))
                 .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("Yes"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Bundle with filename"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testSubSubfolders() {
+    public void testSubSubfolders() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -126,12 +159,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders[0].value.folders[0].value.folders", nullValue())
                 .body("data.caseBundles[0].value.folders[0].value.folders[0].value.documents", notNullValue());
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("New bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testAddFlatDocuments() throws IOException {
+    public void testAddFlatDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -143,12 +185,22 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
                 .body("data.caseBundles[0].value.documents[2].value.name", equalTo("Evidence doc"))
                 .body("data.caseBundles[0].value.documents[3].value.name", equalTo("Defendant doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
+
     }
 
     @Test
-    public void testAddFlatFilteredDocuments() throws IOException {
+    public void testAddFlatFilteredDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-2-filter-flat-docs.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -158,12 +210,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.documents", hasSize(2))
                 .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
                 .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 2"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testAddFolderedDocuments() throws IOException {
+    public void testAddFolderedDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-3-foldered-docs.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -178,12 +239,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Evidence doc"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
                 .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testAddFilteredFolderedDocuments() throws IOException {
+    public void testAddFilteredFolderedDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-4-filtered-foldered-docs.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -197,6 +267,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
                 .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 4"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -226,9 +304,10 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDocumentNotPresent() throws IOException {
+    public void testDocumentNotPresent() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -236,6 +315,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -292,9 +379,10 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testMultipleFilters() throws IOException {
+    public void testMultipleFilters() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-9-multiple-filters.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -306,12 +394,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Evidence doc"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional Test 11"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testSortDocumentsAscending() throws IOException {
+    public void testSortDocumentsAscending() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-10-sorting.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -326,12 +423,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Defendant doc 1"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
                 .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testSortDocumentsDescending() throws IOException {
+    public void testSortDocumentsDescending() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-11-sorting.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -346,22 +452,39 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Prosecution doc 1"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
                 .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testEnableEmailNotificationIsNull() throws IOException {
+    public void testEnableEmailNotificationIsNull() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response.assertThat()
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.enableEmailNotification", nullValue());
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("New bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testRenderImageInStitchedDocument() throws IOException {
+    public void testRenderImageInStitchedDocument() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
+        json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -373,12 +496,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("opaque"))
                 .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional test For Image Rendering"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testRedactedDocuments() throws IOException {
-
-        final ValidatableResponse response = postNewBundle(customDocumentsJson);
+    public void testRedactedDocuments() throws IOException, InterruptedException {
+        String json = customDocumentsJson.toString();
+        json = findDocumentUrl(json);
+        final ValidatableResponse response = postNewBundle(json);
 
         response.assertThat()
                 .log().all()
@@ -388,12 +520,21 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Redacted Doc2.pdf"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Redacted Doc3.pdf"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("AT38.png"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testNonRedactedDocuments() {
-
-        final ValidatableResponse response = postNewBundle(nonCustomDocumentsJson);
+    public void testNonRedactedDocuments() throws IOException, InterruptedException {
+        String json = nonCustomDocumentsJson.toString();
+        json = findDocumentUrl(json);
+        final ValidatableResponse response = postNewBundle(json);
 
         response.assertThat()
                 .log().all()
@@ -402,17 +543,35 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Non Redacted Doc1.pdf"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("DWP response.pdf"))
                 .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("DWP evidence.pdf"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    public void testMultiBundleDocuments() {
+    public void testMultiBundleDocuments() throws IOException, InterruptedException {
 
-        final ValidatableResponse response = postNewBundle(multiBundleDocumentsJson);
+        String json = multiBundleDocumentsJson.toString();
+        json = findDocumentUrl(json);
+        final ValidatableResponse response = postNewBundle(json);
 
         response.assertThat()
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles", hasSize(2));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -442,5 +601,19 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .unauthenticatedRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE);
+    }
+
+    @NotNull
+    private String findDocumentUrl(String json) {
+        String url = testUtil.uploadDocument();
+        json = json.replaceAll(
+                "\"document_url\":\"documentUrl\"",
+                String.format("\"document_url\":\"%s\"", url)
+        );
+        json = json.replaceAll(
+                "\"document_binary_url\":\"documentUrl",
+                String.format("\"document_binary_url\":\"%s", url)
+        );
+        return json;
     }
 }

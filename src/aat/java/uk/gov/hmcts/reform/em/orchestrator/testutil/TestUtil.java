@@ -53,8 +53,8 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 public class TestUtil {
 
-    private final int retryCount = 3;
-    private final int sleepTime = 500;
+    private final int retryCount = 6;
+    private final int sleepTime = 1000;
     private String idamAuth;
     private String s2sAuth;
 
