@@ -72,7 +72,8 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
 
         CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
 
-        automatedStitchingExecutor.startStitching(cdamDto, bundle.getValue());
+        long documentTaskId = automatedStitchingExecutor.startStitching(cdamDto, bundle.getValue());
+        ccdCallbackDto.setDocumentTaskId(documentTaskId);
 
         return bundle;
     }

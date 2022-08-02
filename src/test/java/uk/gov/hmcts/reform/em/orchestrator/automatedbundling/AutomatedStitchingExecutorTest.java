@@ -36,6 +36,7 @@ public class AutomatedStitchingExecutorTest {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+        documentTaskDTO.setId(575645345L);
 
         Mockito.when(stitchingService.startStitchingTask(Mockito.any()))
                 .thenReturn(documentTaskDTO);

@@ -68,7 +68,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
             CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
 
-            automatedStitchingExecutor.startStitching(cdamDto, bundle);
+            long documentTaskId = automatedStitchingExecutor.startStitching(cdamDto, bundle);
+            ccdCallbackDto.setDocumentTaskId(documentTaskId);
 
             bundles.insert(0, bundleDtoToBundleJson(bundle));
         }

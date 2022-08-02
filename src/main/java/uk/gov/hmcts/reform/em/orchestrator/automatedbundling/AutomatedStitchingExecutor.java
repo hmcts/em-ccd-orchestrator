@@ -27,11 +27,11 @@ public class AutomatedStitchingExecutor {
         this.callbackUrlCreator = callbackUrlCreator;
     }
 
-    public void startStitching(CdamDto cdamDto, CcdBundleDTO ccdBundleDTO) {
-        startStitching(cdamDto, DEFAULT_TRIGGER_NAME, ccdBundleDTO);
+    public long startStitching(CdamDto cdamDto, CcdBundleDTO ccdBundleDTO) {
+        return startStitching(cdamDto, DEFAULT_TRIGGER_NAME, ccdBundleDTO);
     }
 
-    public void startStitching(CdamDto cdamDto, String triggerId, CcdBundleDTO ccdBundleDTO) {
+    public long startStitching(CdamDto cdamDto, String triggerId, CcdBundleDTO ccdBundleDTO) {
 
         if (StringUtils.isEmpty(ccdBundleDTO.getId())) {
             ccdBundleDTO.setId(UUID.randomUUID().toString());
@@ -52,6 +52,7 @@ public class AutomatedStitchingExecutor {
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
+            return createdDocumentTaskDTO.getId();
         } catch (IOException e) {
             throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ", e.getMessage(), cdamDto.getCaseId()), e);
         }

@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ public class CcdCallbackResponseDto {
     private List<String> errors = new ArrayList<>();
 
     private List<String> warnings = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private long documentTaskId;
 
     public JsonNode getData() {
         return CollectionUtils.isNotEmpty(getErrors()) ?  copyOfCcdData : data;

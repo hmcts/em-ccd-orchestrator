@@ -40,6 +40,7 @@ public class DefaultUpdateCaller {
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
+            ccdCallbackResponseDto.setDocumentTaskId(dto.getDocumentTaskId());
         } catch (InputValidationException e) {
             logger.error(e.getMessage(), e);
             ccdCallbackResponseDto.getErrors().addAll(e.getViolations());
