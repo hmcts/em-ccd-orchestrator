@@ -142,7 +142,7 @@ public class ExtendedCcdHelper {
         if (testUrl.contains("localhost")) {
             return "http://localhost:8080";
         } else {
-            return testUrl.replaceAll("https", "http");
+            return testUrl;
         }
     }
 
