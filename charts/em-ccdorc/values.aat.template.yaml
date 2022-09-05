@@ -1,6 +1,8 @@
 java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
+    CALLBACK_HTTP_HOST_PORT: 443
+    CALLBACK_HTTP_SCHEME: https
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
