@@ -1,6 +1,7 @@
 java:
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
+    CALLBACK_HTTP_HOST_PORT:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
