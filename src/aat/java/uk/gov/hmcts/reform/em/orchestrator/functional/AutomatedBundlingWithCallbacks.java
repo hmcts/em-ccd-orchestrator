@@ -2,12 +2,10 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
-@Ignore("Need to investigate callback failure")
 public class AutomatedBundlingWithCallbacks extends BaseTest {
 
     private static final int WAIT_SECONDS = 60;

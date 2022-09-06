@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 import java.util.ArrayList;
 import java.util.List;
 
-@Ignore("Need to investigate callback failure")
 public class SecureAutomatedBundlingWithCallbacks extends BaseTest {
 
     private final Logger logger = LoggerFactory.getLogger(SecureAutomatedBundlingWithCallbacks.class);
