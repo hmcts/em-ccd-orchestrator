@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
@@ -14,6 +16,8 @@ import java.util.UUID;
 
 @Service
 public class AutomatedStitchingExecutor {
+
+    private final Logger logger = LoggerFactory.getLogger(AutomatedStitchingExecutor.class);
 
     private final StitchingService stitchingService;
     private final StitchingDTOMapper stitchingDTOMapper;
@@ -48,7 +52,7 @@ public class AutomatedStitchingExecutor {
         documentTask.setCaseTypeId(cdamDto.getCaseTypeId());
         documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
         documentTask.setServiceAuth(cdamDto.getServiceAuth());
-
+        logger.info(String.format("CallBackUrl is : %s", callbackDto.getCallbackUrl()));
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
