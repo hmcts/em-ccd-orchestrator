@@ -200,7 +200,7 @@ dependencyManagement {
         // Do not change - END
 
         //CVE-2021-22044
-        dependencySet(group: 'org.springframework.cloud', version: '3.1.2') {
+        dependencySet(group: 'org.springframework.cloud', version: '3.1.4') {
             entry 'spring-cloud-openfeign-core'
             entry 'spring-cloud-starter-openfeign'
         }
