@@ -108,7 +108,7 @@ dependencies {
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
     aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.22'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
-    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.9.3'
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.10.0'
     implementation group: "commons-io", name: "commons-io", version: "2.11.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
