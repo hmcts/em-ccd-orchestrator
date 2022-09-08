@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.config;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.zalando.problem.ProblemModule;
+import org.zalando.problem.jackson.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 @Configuration
