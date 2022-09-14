@@ -68,5 +68,5 @@ resource "azurerm_key_vault_secret" "appinsights_key" {
 resource "azurerm_key_vault_secret" "local_app_insights_connection_string" {
   name         = "app-insights-connection-string"
   value        = data.azurerm_application_insights.appinsights.connection_string
-  key_vault_id = data.azurerm_key_vault.local_key_vault.id
+  key_vault_id = module.local_key_vault.key_vault_id
 }
