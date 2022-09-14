@@ -28,8 +28,12 @@ if (!project.hasProperty('runList')) {
 
 group 'uk.gov.hmcts.reform.em.orchestrator'
 version '1.0.0'
-sourceCompatibility = 11
-targetCompatibility = 11
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 
@@ -345,6 +349,11 @@ idea {
         testSourceDirs += project.sourceSets.contractTest.java.srcDirs
         testResourceDirs += project.sourceSets.contractTest.resources.srcDirs
     }
+}
+
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+    javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 test {
