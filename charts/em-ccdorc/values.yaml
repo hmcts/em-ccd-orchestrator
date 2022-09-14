@@ -13,6 +13,8 @@ java:
           alias: S2S_KEY
         - name: notification-api-key
           alias: NOTIFICATION_API_KEY
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
   environment:
     # Regardless of environment, point towards AAT instances. Overwrite in product charts etc.
     IDAM_API_BASE_URI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
