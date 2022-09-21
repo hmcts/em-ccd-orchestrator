@@ -11,8 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -28,6 +31,11 @@ public class NewBundleControllerTest extends BaseTest {
 
     @Test
     public void shouldCallCcdCallbackHandlerService() throws Exception {
+        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto();
+        ccdCallbackResponseDto.setErrors(Collections.emptyList());
+        Mockito.when(defaultUpdateCaller.executeUpdate(
+                Mockito.any(AutomatedCaseUpdater.class), Mockito.any(HttpServletRequest.class)))
+                .thenReturn(ccdCallbackResponseDto);
 
         mockMvc
                 .perform(post("/api/new-bundle")
