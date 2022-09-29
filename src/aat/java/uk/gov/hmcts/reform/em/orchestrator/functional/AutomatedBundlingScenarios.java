@@ -74,7 +74,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         final ValidatableResponse response = postNewBundle(invalidJson);
         response
                 .assertThat().log().all()
-                .statusCode(200) //FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", equalTo("Invalid configuration file entry in: does-not-exist.yaml"
                     + "; Configuration file parameter(s) and/or parameter value(s)"));
 
@@ -86,7 +86,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200) //FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml"
                     + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
@@ -286,7 +286,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200) //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Invalid configuration file entry in: f-tests-6-has-typo.yaml; "
                     + "Configuration file parameter(s) and/or parameter value(s)"));
     }
@@ -299,7 +299,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200)  //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Invalid configuration file entry in: configurationFile; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
@@ -334,7 +334,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200)   //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Element is an array: /caseDocuments"));
     }
 
@@ -347,7 +347,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200)  //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Element is not an array: /singleDocument"));
     }
 
@@ -361,7 +361,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200)  //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Could not find the property /documentLink/document_url in the node: "));
     }
 
@@ -374,7 +374,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         response.assertThat()
                 .log().all()
-                .statusCode(200)  //FIXME should be 400
+                .statusCode(400)
                 .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
