@@ -1,0 +1,53 @@
+title: PRL Bundle
+filename: PRLBundle
+filenameIdentifier: /case_details/id
+hasTableOfContents: true
+hasCoversheets: false
+hasFolderCoversheets: true
+pageNumberFormat: numberOfPages
+documentNameValue: /documentFileName
+folders:
+  - name: MainApplicationDocuments
+    documents:
+      - type: documentSet
+        property: /furtherEvidences
+        filters:
+          - property: /typeOfDocumentFurtherEvidence
+            value: consentOrder
+      - type: documentSet
+        property: /furtherEvidences
+        filters:
+          - property: /typeOfDocumentFurtherEvidence
+            value: miamCertificate
+      - type: documentSet
+        property: /furtherEvidences
+        filters:
+          - property: /typeOfDocumentFurtherEvidence
+            value: previousOrders
+  - name: OtherDocuments
+    documents:
+      - type: documentSet
+        property: /otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: applicantStatement
+      - type: documentSet
+        property: /otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: cafcassReports
+      - type: documentSet
+        property: /otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: expertReports
+      - type: documentSet
+        property: /otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: respondentReports
+      - type: documentSet
+        property: /otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: otherReports
