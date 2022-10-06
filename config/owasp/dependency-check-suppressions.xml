@@ -5,6 +5,5 @@
             Awaiting fix as updating to latest available version hasn't resolved this.
         </notes>
         <cve>CVE-2016-1000027</cve>
-        <cve>CVE-2022-42003</cve>
     </suppress>
 </suppressions>
