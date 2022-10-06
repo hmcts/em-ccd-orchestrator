@@ -55,7 +55,7 @@ def versions = [
         serenityRestAssured: '2.6.0',
         pact_version       : '4.0.10',
         logging            : '5.1.7',
-        fasterXmlJackson   : '2.13.2',
+        fasterXmlJackson   : '2.14.0-rc1',
         mockito            : '3.12.4',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
@@ -123,7 +123,7 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-afterburner', version: versions.fasterXmlJackson
 
     implementation group: 'pl.touk', name : 'throwing-function', version: '1.3'
