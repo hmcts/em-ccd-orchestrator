@@ -48,7 +48,7 @@ public class CcdCloneBundleController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> cloneCcdBundles(HttpServletRequest request) {
-        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(ccdBundleCloningService, request));
+        return defaultUpdateCaller.executeUpdate(ccdBundleCloningService, request);
     }
 
 }

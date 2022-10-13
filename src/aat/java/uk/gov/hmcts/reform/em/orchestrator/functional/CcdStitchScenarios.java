@@ -113,7 +113,7 @@ public class CcdStitchScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200) //FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
@@ -129,7 +129,7 @@ public class CcdStitchScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
@@ -161,7 +161,7 @@ public class CcdStitchScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(400)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
                 .body("data.caseBundles[0].value.fileName", equalTo("1234567890123456789012345678901%.pdf"))
                 .body("errors[0]", notNullValue());
@@ -178,7 +178,7 @@ public class CcdStitchScenarios extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", notNullValue());
     }
 
@@ -248,7 +248,7 @@ public class CcdStitchScenarios extends BaseTest {
 
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
@@ -263,7 +263,7 @@ public class CcdStitchScenarios extends BaseTest {
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
         response
                 .assertThat().log().all()
-                .statusCode(200)//FIXME should be 400
+                .statusCode(400)
                 .body("errors[0]", notNullValue());
     }
 

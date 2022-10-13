@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
@@ -58,9 +59,10 @@ public class DefaultUpdateCallerTest {
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
             .thenReturn(objectMapper.readTree("{ \"p\" : 1 }"));
 
-        CcdCallbackResponseDto ccdCallbackResponseDto =
+        ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
         Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
         Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
     }
@@ -87,9 +89,10 @@ public class DefaultUpdateCallerTest {
 
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(e);
-
-        CcdCallbackResponseDto ccdCallbackResponseDto =
+        ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+        Assert.assertEquals(400, response.getStatusCodeValue());
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
 
         Assert.assertEquals("abc", ccdCallbackResponseDto.getErrors().get(0));
     }
@@ -112,9 +115,10 @@ public class DefaultUpdateCallerTest {
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("x"));
 
-        CcdCallbackResponseDto ccdCallbackResponseDto =
+        ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-
+        Assert.assertEquals(400, response.getStatusCodeValue());
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
         Assert.assertEquals("x", ccdCallbackResponseDto.getErrors().get(0));
     }
 
@@ -132,9 +136,11 @@ public class DefaultUpdateCallerTest {
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(new RuntimeException("x"));
 
-        CcdCallbackResponseDto ccdCallbackResponseDto =
+        ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+        Assert.assertEquals(400, response.getStatusCodeValue());
 
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
         Assert.assertEquals("x", ccdCallbackResponseDto.getErrors().get(0));
     }
 

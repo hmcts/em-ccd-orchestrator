@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -34,7 +35,7 @@ public class DefaultUpdateCaller {
         this.notificationService = notificationService;
     }
 
-    public CcdCallbackResponseDto executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
+    public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
@@ -61,7 +62,13 @@ public class DefaultUpdateCaller {
                     ccdCallbackResponseDto.getErrors().toString()
             );
         }
-        return ccdCallbackResponseDto;
+
+        if (ccdCallbackResponseDto.getErrors().isEmpty()) {
+            return ResponseEntity.ok(ccdCallbackResponseDto);
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(ccdCallbackResponseDto);
     }
 
 }

@@ -55,13 +55,6 @@ public class NewBundleController {
     })
     public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
         log.info(String.format("Received request for : %s", request.getRequestURI()));
-        CcdCallbackResponseDto ccdCallbackResponseDto = defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
-
-        if (ccdCallbackResponseDto.getErrors().isEmpty()) {
-            return ResponseEntity.ok(ccdCallbackResponseDto);
-        }
-        return ResponseEntity
-                .badRequest()
-                .body(ccdCallbackResponseDto);
+        return defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
     }
 }

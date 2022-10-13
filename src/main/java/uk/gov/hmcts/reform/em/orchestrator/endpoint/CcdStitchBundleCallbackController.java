@@ -53,7 +53,7 @@ public class CcdStitchBundleCallbackController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
-        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request));
+        return defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request);
     }
 
     @PostMapping(value = "/api/async-stitch-ccd-bundles",
@@ -74,7 +74,7 @@ public class CcdStitchBundleCallbackController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> asyncStitchCcdBundles(HttpServletRequest request) {
-        return ResponseEntity.ok(defaultUpdateCaller.executeUpdate(asyncCcdBundleStitchingService, request));
+        return defaultUpdateCaller.executeUpdate(asyncCcdBundleStitchingService, request);
     }
 
 
