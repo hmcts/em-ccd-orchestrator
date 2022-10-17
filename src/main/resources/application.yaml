@@ -115,3 +115,7 @@ httpclient:
 springdoc:
   packagesToScan: uk.gov.hmcts.reform.em.orchestrator.endpoint
   pathsToMatch: /**
+
+logging:
+  level:
+    uk.gov.hmcts.reform.authorisation.filters: DEBUG
