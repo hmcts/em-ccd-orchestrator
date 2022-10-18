@@ -52,9 +52,9 @@ public class CcdCallbackBundleUpdater {
     private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
         try {
             CcdBundleDTO ccdBundleDTO = this.objectMapper.treeToValue(ccdBundle, CcdBundleDTO.class);
-            log.info("Updating bundle# {} with {}",
+            log.info("Updating bundle with Id {} with caseId {}",
                 StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
-                    StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().toString()));
+                    StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().getCaseId()));
             ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()
