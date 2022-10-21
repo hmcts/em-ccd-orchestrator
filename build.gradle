@@ -54,7 +54,6 @@ def versions = [
         serenityreporter   : '2.6.0',
         serenityRestAssured: '2.6.0',
         pact_version       : '4.0.10',
-        logging            : '5.1.7',
         fasterXmlJackson   : '2.14.0-rc1',
         mockito            : '3.12.4',
         jupiter            : '5.8.2',
@@ -135,7 +134,8 @@ dependencies {
     implementation group: "commons-validator", name: "commons-validator", version: "1.7"
     implementation group: "uk.gov.hmcts.reform.auth", name: "auth-checker-lib", version: "2.1.4"
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.1'
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.logging
+    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
+
     implementation 'com.github.hmcts:ccd-case-document-am-client:1.59'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
@@ -268,7 +268,6 @@ bootJar {
 def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/Application*',
         '**uk/gov/hmcts/reform/em/orchestrator/CliApplication*',
-        '**uk/gov/hmcts/reform/em/orchestrator/appinsights/*',
         '**uk/gov/hmcts/reform/em/orchestrator/config/**/*',
         '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
         '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
@@ -292,7 +291,6 @@ jacocoTestReport {
 pitest {
     targetClasses = ['uk.gov.hmcts.reform.em.orchestrator.*']
     excludedClasses = [
-            'uk.gov.hmcts.reform.em.orchestrator.appinsights.*' ,
             'uk.gov.hmcts.reform.em.orchestrator.domain.*' ,
             'uk.gov.hmcts.reform.em.orchestrator.config.*',
             'uk.gov.hmcts.reform.em.orchestrator.info.*',
