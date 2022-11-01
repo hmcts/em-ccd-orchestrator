@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
+import uk.gov.hmcts.reform.em.orchestrator.util.HttpOkResponseCloser;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -63,6 +64,7 @@ public class NotificationService {
     }
 
     private String getUserEmail(String jwt) {
+        Response response = null;
         try {
             final Request request = new Request.Builder()
                     .addHeader("authorization", jwt)
@@ -70,7 +72,8 @@ public class NotificationService {
                     .get()
                     .build();
 
-            final Response response = http.newCall(request).execute();
+
+            response = http.newCall(request).execute();
 
             if (response.isSuccessful()) {
                 JsonNode userDetails = jsonMapper.readValue(response.body().byteStream(), JsonNode.class);
@@ -78,8 +81,11 @@ public class NotificationService {
             } else {
                 throw new CallbackException(500, response.body().string(), "Unable to retrieve user details");
             }
+
         } catch (IOException e) {
             throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
+        } finally {
+            HttpOkResponseCloser.closeResponse(response);
         }
     }
 }

@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
+import uk.gov.hmcts.reform.em.orchestrator.util.HttpOkResponseCloser;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.io.IOException;
@@ -129,24 +130,28 @@ public class StitchingService {
         final String json = jsonMapper.writeValueAsString(documentTask);
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
-            .addHeader("Authorization", documentTask.getJwt())
-            .addHeader("ServiceAuthorization", authTokenGenerator.generate())
-            .url(documentTaskEndpoint)
-            .method("POST", body)
-            .build();
+                .addHeader("Authorization", documentTask.getJwt())
+                .addHeader("ServiceAuthorization", authTokenGenerator.generate())
+                .url(documentTaskEndpoint)
+                .method("POST", body)
+                .build();
+        Response response = null;
+        try {
+            response = http.newCall(request).execute();
 
-        final Response response = http.newCall(request).execute();
-
-        if (response.isSuccessful()) {
-            DocumentTaskDTO documentTaskDTO =  jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
-            logger.info(
-                    String.format(SUCCESS_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
-                    StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
-            return documentTaskDTO;
-        } else {
-            logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
-                    StringUtilities.convertValidLog(response.body().string())));
-            throw new IOException("Unable to create stitching task: " + response.body().string());
+            if (response.isSuccessful()) {
+                DocumentTaskDTO documentTaskDTO = jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
+                logger.info(
+                        String.format(SUCCESS_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
+                                StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
+                return documentTaskDTO;
+            } else {
+                logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
+                        StringUtilities.convertValidLog(response.body().string())));
+                throw new IOException("Unable to create stitching task: " + response.body().string());
+            }
+        } finally {
+            HttpOkResponseCloser.closeResponse(response);
         }
     }
 
@@ -157,19 +162,24 @@ public class StitchingService {
             .url(documentTaskEndpoint + taskId)
             .get()
             .build();
+        Response response = null;
 
-        for (int i = 0; i < maxRetries; i++) {
-            final Response response = http.newCall(request).execute();
-            final String responseBody = response.body().string();
-            final String taskState = JsonPath.read(responseBody, TASK_STATE);
+        try {
+            for (int i = 0; i < maxRetries; i++) {
+                response = http.newCall(request).execute();
+                final String responseBody = response.body().string();
+                final String taskState = JsonPath.read(responseBody, TASK_STATE);
 
-            if (!taskState.equals(TaskState.NEW.toString())) {
-                return responseBody;
-            } else {
-                Thread.sleep(SLEEP_TIME);
+                if (!taskState.equals(TaskState.NEW.toString())) {
+                    return responseBody;
+                } else {
+                    Thread.sleep(SLEEP_TIME);
+                }
+                response.close();
             }
+        } finally {
+            HttpOkResponseCloser.closeResponse(response);
         }
-
         throw new IOException("Task not complete after maximum number of retries");
     }
 
