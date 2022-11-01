@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCaseDataContent;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdEvent;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
+import uk.gov.hmcts.reform.em.orchestrator.util.HttpOkResponseCloser;
 
 import java.io.IOException;
 
@@ -44,6 +45,7 @@ public class CcdDataApiCaseUpdater {
      * @param jwt - authentication
      */
     public void executeUpdate(CcdCallbackDto ccdCallbackDto, String jwt) {
+        Response updateResponse = null;
         try {
             final String json = objectMapper.writeValueAsString(createCcdCaseDataContent(ccdCallbackDto));
             final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
@@ -58,15 +60,16 @@ public class CcdDataApiCaseUpdater {
 
             log.info(String.format("Ccd Update URL :  %s", updateRequest.url()));
 
-            final Response updateResponse = http.newCall(updateRequest).execute();
+            updateResponse = http.newCall(updateRequest).execute();
 
             if (!updateResponse.isSuccessful()) {
                 throw new CallbackException(updateResponse.code(), updateResponse.body().string(), "Update of case data failed");
             }
         } catch (IOException e) {
             throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
+        } finally {
+            HttpOkResponseCloser.closeResponse(updateResponse);
         }
-
     }
 
     private CcdCaseDataContent createCcdCaseDataContent(CcdCallbackDto ccdCallbackDto) {
