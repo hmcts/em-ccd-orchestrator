@@ -58,7 +58,7 @@ def versions = [
         mockito            : '3.12.4',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
-        springSecurity     : '5.7.1',
+        springSecurity     : '5.7.5',
         springCloud        : '3.1.4',
         zalando            : '0.27.0',
         okhttp3            : '4.10.0'
@@ -219,9 +219,11 @@ dependencyManagement {
             entry 'snakeyaml'
         }
 
-        //CVE-2022-40149, CVE-2022-40150
-        dependencySet(group: 'org.codehaus.jettison', version: '1.5.1') {
-            entry 'jettison'
+        // CVE-2022-31692 - CVE-2022-31690
+        dependencySet(group: 'org.springframework.security', version: '5.7.5') {
+            entry 'spring-security-core'
+            entry 'spring-security-web'
+            entry 'spring-security-crypto'
         }
     }
 }
