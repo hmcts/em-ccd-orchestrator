@@ -37,6 +37,7 @@ public class DefaultUpdateCaller {
 
     public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
+        logger.info("Bundling request payload : {} ", dto.getCcdPayload());
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
