@@ -1,0 +1,55 @@
+title: /case_details/id
+filename: PRLBundle
+filenameIdentifier: /case_details/id
+hasTableOfContents: true
+hasCoversheets: false
+paginationStyle: bottomRight
+pageNumberFormat: pageRange
+documentNameValue: /documentFileName
+folders:
+  - name: Applications and Orders
+    folders:
+      - name: Applications
+        documents:
+          - type: document
+            property: /data/finalDocument
+          - type: document
+            property: /data/finalWelshDocument
+      - name: Orders
+        documents:
+          - type: documentSet
+            property: /data/orders
+
+  - name: Statements and Affidavits
+    folders:
+      - name: Statements
+        documents:
+          - type: documentSet
+            property: /data/otherDocuments
+            filters:
+              - property: /documentTypeOther
+                value: applicantStatement
+      - name: Affidavits
+        documents:
+          - type: documentSet
+            property: /data/furtherEvidences
+            filters:
+              - property: /typeOfDocumentFurtherEvidence
+                value: consentOrder
+          - type: documentSet
+            property: /data/furtherEvidences
+            filters:
+              - property: /typeOfDocumentFurtherEvidence
+                value: miamCertificate
+          - type: documentSet
+            property: /data/furtherEvidences
+            filters:
+              - property: /typeOfDocumentFurtherEvidence
+                value: previousOrders
+  - name: Expert Reports
+    documents:
+      - type: documentSet
+        property: /data/otherDocuments
+        filters:
+          - property: /documentTypeOther
+            value: expertReports
