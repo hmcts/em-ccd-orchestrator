@@ -1,8 +1,9 @@
 title: /case_details/id
 filename: PRLBundle
 filenameIdentifier: /case_details/id
+coverpageTemplate: PRL-cover-page.docx
 hasTableOfContents: true
-hasCoversheets: false
+hasCoversheets: true
 paginationStyle: bottomRight
 pageNumberFormat: pageRange
 documentNameValue: /documentLink/document_filename
