@@ -1,21 +1,19 @@
 title: /case_details/id
 filename: PRLBundle
 filenameIdentifier: /case_details/id
-coverpageTemplate: PRL-cover-page.docx
-hasTableOfContents: true
-hasCoversheets: true
+hasTableOfContents: false
+hasCoversheets: false
 paginationStyle: bottomRight
 pageNumberFormat: pageRange
-documentNameValue: /documentLink/document_filename
+documentNameValue: /documentFileName
 folders:
   - name: Applications and Orders
     folders:
       - name: Applications
         documents:
-          - type: document
-            property: /data/finalDocument
-          - type: document
-            property: /data/finalWelshDocument
+          - type: documentSet
+            property: /data/applications
+          
       - name: Orders
         documents:
           - type: documentSet
