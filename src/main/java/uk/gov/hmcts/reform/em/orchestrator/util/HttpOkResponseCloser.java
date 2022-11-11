@@ -10,9 +10,11 @@ public class HttpOkResponseCloser {
 
     public static void closeResponse(Response response) {
         try {
-            response.close();
+            if (response != null) {
+                response.close();
+            }
         } catch (Exception ex) {
-            log.info("Closing http response failed.", ex);
+            log.info("Closing http response failed.Exception:{}", ex.getMessage());
         }
     }
 }
