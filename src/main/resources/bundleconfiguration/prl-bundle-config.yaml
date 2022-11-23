@@ -9,12 +9,6 @@ paginationStyle: bottomRight
 pageNumberFormat: pageRange
 documentNameValue: /documentFileName
 folders:
-  - name: Orders
-    folders:
-      - name: Orders Submitted with Application
-        documents:
-          - type: documentSet
-            property: /data/orders
   - name: Preliminary Documents
     folders:
       - name: Position statements
@@ -33,44 +27,59 @@ folders:
                 filters:
                   - property: /documentGroup
                     value: respondentPositionStatements
-  - name: Applications
+  - name: Applications and Orders
     folders:
-      - name: Applicant Documents
+      - name: Applications
         folders:
-          - name: Applicant Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-          - name: Applicant C1A Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantC1AApplication
-          - name: Miam Certificate
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantMiamCertificate
-          - name: Previous Orders Submitted With Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantPreviousOrdersSubmittedWithApplication
-      - name: Respondent Documents
+          - name: Applicant Documents
+            folders:
+              - name: Applicant Application
+                documents:
+                  - type: documentSet
+                    property: /data/applications
+                    filters:
+                      - property: /documentGroup
+                        value: applicantApplication
+              - name: Applicant C1A Application
+                documents:
+                  - type: documentSet
+                    property: /data/applications
+                    filters:
+                      - property: /documentGroup
+                        value: applicantC1AApplication
+              - name: Miam Certificate
+                documents:
+                  - type: documentSet
+                    property: /data/applications
+                    filters:
+                      - property: /documentGroup
+                        value: applicantMiamCertificate
+              - name: Previous Orders Submitted With Application
+                documents:
+                  - type: documentSet
+                    property: /data/applications
+                    filters:
+                      - property: /documentGroup
+                        value: applicantPreviousOrdersSubmittedWithApplication
+          - name: Respondent Documents
+            folders:
+              - name: Respondent Application
+                documents:
+                  - type: documentSet
+                    property: /data/applications
+                    filters:
+                      - property: /documentGroup
+                        value: c7Documents
+      - name: Orders
         folders:
-          - name: Respondent Application
+          - name: Orders Submitted with Application
             documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: c7Documents
+            - type: documentSet
+              property: /data/orders
+              filters:
+                - property: /documentGroup
+                  value: ordersSubmittedWithApplication
+
   - name: Witness Statement And Evidence
     folders:
       - name: Applicant's Statements
@@ -82,11 +91,6 @@ folders:
                 filters:
                   - property: /documentGroup
                     value: applicantWitnessStatements
-              - type: documentSet
-                property: /data/otherDocumentsUploadedByCourtAdmin
-                filters:
-                  - property: /documentGroup
-                    value: applicantStatementDocsUploadedByCourtAdmin
           - name: Letters from School
             documents:
               - type: documentSet
@@ -94,13 +98,20 @@ folders:
                 filters:
                   - property: /documentGroup
                     value: applicantLettersFromSchool
-          - name: Other Evidences
+          - name: Digital or Mobile Phone Screenshots or Photographic Evidences
             documents:
               - type: documentSet
                 property: /data/citizenUploadedDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantEmailsOrScreenshotsOrImagesOrOtherMediaFiles
+          - name: Other Evidences
+            documents:
+              - type: documentSet
+                property: /data/otherDocumentsUploadedByCourtAdmin
+                filters:
+                  - property: /documentGroup
+                    value: applicantStatementDocsUploadedByCourtAdmin
       - name: Respondent's Statements
         folders:
           - name: Witness Statements
@@ -149,11 +160,6 @@ folders:
             filters:
               - property: /documentGroup
                 value: expertMedicalReports
-          - type: documentSet
-            property: /data/otherDocumentsUploadedByCourtAdmin
-            filters:
-              - property: /documentGroup
-                value: expertReportsUploadedByCourtAdmin
       - name: DNA Reports
         documents:
           - type: documentSet
@@ -182,3 +188,10 @@ folders:
             filters:
               - property: /documentGroup
                 value: policeReports
+      - name: Other Reports
+        documents:
+          - type: documentSet
+            property: /data/otherDocumentsUploadedByCourtAdmin
+            filters:
+              - property: /documentGroup
+                value: expertReportsUploadedByCourtAdmin
