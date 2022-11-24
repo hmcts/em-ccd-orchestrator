@@ -4,6 +4,7 @@ pluginManagement {
         maven {
             url "https://jitpack.io"
         }
+        maven { url 'https://repo.spring.io/milestone' }
     }
 }
 rootProject.name = 'rpa-em-ccd-orchestrator'
