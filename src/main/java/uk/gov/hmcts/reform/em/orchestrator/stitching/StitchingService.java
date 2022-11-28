@@ -71,6 +71,7 @@ public class StitchingService {
      * stitched the new document ID from DM store will be returned, otherwise an exception is thrown.
      */
     public CcdDocument stitch(CcdBundleDTO bundleDto, CdamDto cdamDto) throws InterruptedException  {
+        logger.info("caseid {} bundleDto {}", cdamDto.getCaseId(), bundleDto);
         final StitchingBundleDTO bundle = dtoMapper.toStitchingDTO(bundleDto);
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(bundle);
@@ -79,9 +80,12 @@ public class StitchingService {
         documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
         documentTask.setCaseId(cdamDto.getCaseId());
         documentTask.setServiceAuth(cdamDto.getServiceAuth());
+        logger.info("caseid {} bundle {}", cdamDto.getCaseId(), bundle);
+        logger.info("caseid {} documentTask {}", cdamDto.getCaseId(), documentTask);
 
         logger.info(String.format("Calling Stitching Service for caseId : %s ",
                 StringUtilities.convertValidLog(cdamDto.getCaseId())));
+
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask);
             final String response = poll(createdDocumentTaskDTO.getId(), cdamDto.getJwt());
