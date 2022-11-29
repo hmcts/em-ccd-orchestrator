@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -7,6 +8,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -25,6 +28,7 @@ import java.util.Map;
  */
 @SuppressWarnings("squid:S4738")
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
+    private final Logger logger = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
 
     private static final String CONFIG_FIELD = "bundleConfiguration";
     private static final String MULTI_BUNDLE_CONFIG_FIELD = "multiBundleConfiguration";
@@ -69,9 +73,16 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
 
             long documentTaskId = automatedStitchingExecutor.startStitching(cdamDto, bundle);
+            logger.info("startStitching documentTaskId:{}", documentTaskId);
             ccdCallbackDto.setDocumentTaskId(documentTaskId);
 
             bundles.insert(0, bundleDtoToBundleJson(bundle));
+        }
+
+        try {
+            logger.info("response ccdCallbackDto.getCaseData {}", jsonMapper.writeValueAsString(ccdCallbackDto.getCaseData()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
         return ccdCallbackDto.getCaseData();
@@ -83,7 +94,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
             BundleConfiguration configuration = configurationLoader.load(bundleConfig);
 
-
             CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
             ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
             if (StringUtils.isNotBlank(bundle.getFileNameIdentifier())) {
@@ -91,6 +101,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             }
             bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 
+            logger.info("bundles.... {} ", bundle);
             ccdBundleDtos.add(bundle);
         }
         return ccdBundleDtos;
@@ -98,6 +109,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
     private List<String> prepareBundleConfigs(CcdCallbackDto ccdCallbackDto) {
 
+        logger.info("ccdCallbackDto {}", ccdCallbackDto);
         List<String> bundleConfigurations = new ArrayList<>();
 
         if (ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
@@ -114,8 +126,10 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
         }
 
+        logger.info("bundleConfigurations {}", bundleConfigurations);
         if (CollectionUtils.isEmpty(bundleConfigurations)) {
             bundleConfigurations.add(CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG));
+            logger.info("was empty bundleConfigurations {}", bundleConfigurations);
         }
         return bundleConfigurations;
     }
