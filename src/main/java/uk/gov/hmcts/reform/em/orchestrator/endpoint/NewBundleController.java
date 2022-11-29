@@ -56,14 +56,10 @@ public class NewBundleController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
-    public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
+    public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) throws JsonProcessingException {
         log.info(String.format("Received request for : %s", request.getRequestURI()));
-        var response= defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
-        try {
-            log.info("Received request for {}", objectMapper.writeValueAsString(response.getBody()));
-        } catch (JsonProcessingException e) {
-            log.error("error /api/new-bundle ", e);
-        }
+        var response = defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
+        log.info("Received request for {}", objectMapper.writeValueAsString(response.getBody()));
         return response;
     }
 }
