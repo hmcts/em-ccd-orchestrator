@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -28,6 +30,7 @@ public class NewBundleController {
 
     private final DefaultUpdateCaller defaultUpdateCaller;
     private final AutomatedCaseUpdater automatedCaseUpdater;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public NewBundleController(DefaultUpdateCaller defaultUpdateCaller, AutomatedCaseUpdater automatedCaseUpdater) {
         this.defaultUpdateCaller = defaultUpdateCaller;
@@ -55,6 +58,12 @@ public class NewBundleController {
     })
     public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
         log.info(String.format("Received request for : %s", request.getRequestURI()));
-        return defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
+        var response= defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
+        try {
+            log.info("Received request for {}", objectMapper.writeValueAsString(response.getBody()));
+        } catch (JsonProcessingException e) {
+            log.error("error /api/new-bundle ", e);
+        }
+        return response;
     }
 }
