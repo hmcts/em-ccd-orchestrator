@@ -1,12 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
@@ -28,7 +25,6 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 @Transactional
 public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
-    private static Logger log = LoggerFactory.getLogger(AsyncCcdBundleStitchingService.class);
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -58,24 +54,8 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
 
-            log.info("newBundles {}", newBundles);
-
-            try {
-                log.info("objectMapper newBundles {}", objectMapper.writeValueAsString(newBundles));
-            } catch (JsonProcessingException e) {
-                log.error("objectMapper newBundles", e);
-            }
-
-
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
-
-            try {
-                log.info("maybeBundles  {}", objectMapper.writeValueAsString(maybeBundles));
-            } catch (JsonProcessingException e) {
-                log.error("error maybeBundles", e);
-            }
-
         }
 
         return ccdCallbackDto.getCaseData();
