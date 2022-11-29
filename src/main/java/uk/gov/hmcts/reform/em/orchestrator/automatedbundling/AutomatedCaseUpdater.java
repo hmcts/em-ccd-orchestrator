@@ -80,9 +80,10 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         }
 
         try {
-            logger.info("response ccdCallbackDto.getCaseData {}", jsonMapper.writeValueAsString(ccdCallbackDto.getCaseData()));
+            logger.info("AutomatedCaseUpdater response ccdCallbackDto.getCaseData {}",
+                    jsonMapper.writeValueAsString(ccdCallbackDto.getCaseData()));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("AutomatedCaseUpdater response ccdCallbackDto JsonProcessingException {}", e);
         }
 
         return ccdCallbackDto.getCaseData();
