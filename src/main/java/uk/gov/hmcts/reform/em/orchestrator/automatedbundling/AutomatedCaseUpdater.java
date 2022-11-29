@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -77,13 +76,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             ccdCallbackDto.setDocumentTaskId(documentTaskId);
 
             bundles.insert(0, bundleDtoToBundleJson(bundle));
-        }
-
-        try {
-            logger.info("AutomatedCaseUpdater response ccdCallbackDto.getCaseData {}",
-                    jsonMapper.writeValueAsString(ccdCallbackDto.getCaseData()));
-        } catch (JsonProcessingException e) {
-            logger.error("AutomatedCaseUpdater response ccdCallbackDto JsonProcessingException {}", e);
         }
 
         return ccdCallbackDto.getCaseData();
