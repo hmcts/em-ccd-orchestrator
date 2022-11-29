@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -54,10 +53,8 @@ public class NewBundleController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
-    public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) throws JsonProcessingException {
+    public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
         log.info(String.format("Received request for : %s", request.getRequestURI()));
-        var response = defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
-        log.info("Received request for {}", response.getBody());
-        return response;
+        return defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
     }
 }

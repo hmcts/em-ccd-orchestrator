@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 @SuppressWarnings("squid:S4738")
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
+    private final Logger log = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
 
     private static final String CONFIG_FIELD = "bundleConfiguration";
     private static final String MULTI_BUNDLE_CONFIG_FIELD = "multiBundleConfiguration";
@@ -70,7 +73,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
             long documentTaskId = automatedStitchingExecutor.startStitching(cdamDto, bundle);
             ccdCallbackDto.setDocumentTaskId(documentTaskId);
-
+            log.info("documentTaskId {}", documentTaskId);
+            log.info("bundle {}", bundle);
             bundles.insert(0, bundleDtoToBundleJson(bundle));
         }
 
