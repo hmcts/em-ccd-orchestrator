@@ -2,9 +2,11 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
+import lombok.ToString;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
+@ToString
 public class CcdBundleDocumentDTO {
 
     private String name;

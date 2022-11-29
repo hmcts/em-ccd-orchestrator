@@ -2,10 +2,12 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.ToString;
 
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class CcdBundleFolderDTO {
 
     private String name;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.ToString;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
@@ -14,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class CcdBundleDTO {
 
     private String id;
