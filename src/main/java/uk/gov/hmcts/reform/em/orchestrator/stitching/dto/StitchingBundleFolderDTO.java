@@ -1,11 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class StitchingBundleFolderDTO {
 
     private String description;
