@@ -56,7 +56,6 @@ public class NewBundleController {
     public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
         log.info(String.format("Received request for : %s", request.getRequestURI()));
         var response = defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
-        log.info(String.format("Response for newBundle : %s", response.getBody()));
         return response;
     }
 }
