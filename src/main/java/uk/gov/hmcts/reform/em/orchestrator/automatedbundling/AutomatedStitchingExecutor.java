@@ -43,7 +43,7 @@ public class AutomatedStitchingExecutor {
 
         final DocumentTaskDTO documentTask = new DocumentTaskDTO();
         documentTask.setBundle(stitchingDTOMapper.toStitchingDTO(ccdBundleDTO));
-        logger.info("ccdBundleDTO {} ", documentTask.getBundle());
+        logger.info("ccdBundleDTO");
         CallbackDto callbackDto = new CallbackDto();
         callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(cdamDto.getCaseId(), triggerId, ccdBundleDTO.getId()));
         documentTask.setCallback(callbackDto);
