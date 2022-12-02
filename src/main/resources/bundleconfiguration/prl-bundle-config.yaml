@@ -1,9 +1,9 @@
 title: /case_details/id
-filename: PRLBundle
+filename: Bundle
 filenameIdentifier: /case_details/id
 coverpageTemplate: FL-PRL-LET-ENG-CoverPage.docx
 hasTableOfContents: true
-hasCoversheets: true
+hasCoversheets: false
 hasFolderCoversheets: true
 paginationStyle: bottomRight
 pageNumberFormat: pageRange
@@ -29,47 +29,46 @@ folders:
                     value: respondentPositionStatements
   - name: Applications and Orders
     folders:
-      - name: Applications
+      - name: Applicant Documents
         folders:
-          - name: Applicant Documents
-            folders:
-              - name: Applicant Application
-                documents:
-                  - type: documentSet
-                    property: /data/applications
-                    filters:
-                      - property: /documentGroup
-                        value: applicantApplication
-              - name: Applicant C1A Application
-                documents:
-                  - type: documentSet
-                    property: /data/applications
-                    filters:
-                      - property: /documentGroup
-                        value: applicantC1AApplication
-              - name: Miam Certificate
-                documents:
-                  - type: documentSet
-                    property: /data/applications
-                    filters:
-                      - property: /documentGroup
-                        value: applicantMiamCertificate
-              - name: Previous Orders Submitted With Application
-                documents:
-                  - type: documentSet
-                    property: /data/applications
-                    filters:
-                      - property: /documentGroup
-                        value: applicantPreviousOrdersSubmittedWithApplication
-          - name: Respondent Documents
-            folders:
-              - name: Respondent Application
-                documents:
-                  - type: documentSet
-                    property: /data/applications
-                    filters:
-                      - property: /documentGroup
-                        value: c7Documents
+          - name: Applicant Application
+            documents:
+              - type: documentSet
+                property: /data/applications
+                filters:
+                  - property: /documentGroup
+                    value: applicantApplication
+          - name: Applicant C1A Application
+            documents:
+              - type: documentSet
+                property: /data/applications
+                filters:
+                  - property: /documentGroup
+                    value: applicantC1AApplication
+          - name: Miam Certificate
+            documents:
+              - type: documentSet
+                property: /data/applications
+                filters:
+                  - property: /documentGroup
+                    value: applicantMiamCertificate
+          - name: Previous Orders Submitted With Application
+            documents:
+              - type: documentSet
+                property: /data/applications
+                filters:
+                  - property: /documentGroup
+                    value: applicantPreviousOrdersSubmittedWithApplication
+      - name: Respondent Documents
+        folders:
+          - name: Respondent Application
+            documents:
+              - type: documentSet
+                property: /data/applications
+                filters:
+                  - property: /documentGroup
+                    value: c7Documents
+
       - name: Orders
         folders:
           - name: Orders Submitted with Application
@@ -142,56 +141,58 @@ folders:
             filters:
               - property: /documentGroup
                 value: otherWitnessStatements
-  - name: CAFCASS Report and Guardian
+  - name: Expert Reports including Guardian (CAFCASS)
     folders:
-      - name: Other Documents
-        documents:
-          - type: documentSet
-            property: /data/otherDocumentsUploadedByCourtAdmin
-            filters:
-              - property: /documentGroup
-                value: cafcassReportsUploadedByCourtAdmin
-  - name: Expert Reports
-    folders:
-      - name: Medical Reports
-        documents:
-          - type: documentSet
-            property: /data/citizenUploadedDocuments
-            filters:
-              - property: /documentGroup
-                value: expertMedicalReports
-      - name: DNA Reports
-        documents:
-          - type: documentSet
-            property: /data/citizenUploadedDocuments
-            filters:
-              - property: /documentGroup
-                value: expertDNAReports
-      - name: Medical Records
-        documents:
-          - type: documentSet
-            property: /data/citizenUploadedDocuments
-            filters:
-              - property: /documentGroup
-                value: expertMedicalRecords
-      - name: Drug And Alcohol Tests(Toxicology)
-        documents:
-          - type: documentSet
-            property: /data/citizenUploadedDocuments
-            filters:
-              - property: /documentGroup
-                value: expertReportsForDrugAndAlcholTest
-      - name: Police Reports
-        documents:
-          - type: documentSet
-            property: /data/citizenUploadedDocuments
-            filters:
-              - property: /documentGroup
-                value: policeReports
-      - name: Other Reports
-        documents:
-          - type: documentSet
-            property: /data/otherDocumentsUploadedByCourtAdmin
-            filters:
-              - property: /documentGroup
-                value: expertReportsUploadedByCourtAdmin
+      - name: CAFCASS Report and Guardian
+        folders:
+          - name: Other Documents
+            documents:
+              - type: documentSet
+                property: /data/otherDocumentsUploadedByCourtAdmin
+                filters:
+                  - property: /documentGroup
+                    value: cafcassReportsUploadedByCourtAdmin
+      - name: Expert Reports
+        folders:
+          - name: Medical Reports
+            documents:
+              - type: documentSet
+                property: /data/citizenUploadedDocuments
+                filters:
+                  - property: /documentGroup
+                    value: expertMedicalReports
+          - name: DNA Reports
+            documents:
+              - type: documentSet
+                property: /data/citizenUploadedDocuments
+                filters:
+                  - property: /documentGroup
+                    value: expertDNAReports
+          - name: Medical Records
+            documents:
+              - type: documentSet
+                property: /data/citizenUploadedDocuments
+                filters:
+                  - property: /documentGroup
+                    value: expertMedicalRecords
+          - name: Drug And Alcohol Tests(Toxicology)
+            documents:
+              - type: documentSet
+                property: /data/citizenUploadedDocuments
+                filters:
+                  - property: /documentGroup
+                    value: expertReportsForDrugAndAlcholTest
+          - name: Police Reports
+            documents:
+              - type: documentSet
+                property: /data/citizenUploadedDocuments
+                filters:
+                  - property: /documentGroup
+                    value: policeReports
+          - name: Other Reports
+            documents:
+              - type: documentSet
+                property: /data/otherDocumentsUploadedByCourtAdmin
+                filters:
+                  - property: /documentGroup
+                    value: expertReportsUploadedByCourtAdmin
