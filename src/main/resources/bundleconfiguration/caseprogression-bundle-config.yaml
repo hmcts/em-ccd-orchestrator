@@ -1,0 +1,285 @@
+filename: BundleCP.pdf
+filenameIdentifier: /case_details/id
+hasTableOfContents: true
+hasCoversheets: false
+hasFolderCoversheets: true
+paginationStyle: bottomCenter
+pageNumberFormat: NumberofPages
+folders:
+  - name: Statements of Case
+    folders:
+      - name: Claimant Statements of Case
+        folders:
+          - name: Details of Claim
+            documents:
+              - type: documentSet
+                property: systemGeneratedCaseDocuments
+                filters:
+                  - property: /documentType
+                    value: SEALED_CLAIM
+          - name: Particulars of Claim
+            documents:
+              - type: documentSet
+                property: ServedDocumentFiles/particularsOfClaimDocument
+          - name: Schedules of loss
+            documents:
+              - type: documentSet
+                property: documentWitnessStatement/witnessOptionDocument
+          - name: reply
+            documents:
+              - type: documentSet
+                property: documentForDisclosure
+          - name: Directions questionnaire
+            documents:
+              - type: documentSet
+                property: systemGeneratedCaseDocuments
+                filters:
+                  - property: /documentType
+                    value: DIRECTIONS_QUESTIONNAIRE
+      - name: Defendent Statements of Case
+        folders:
+          - name: Defence
+            documents:
+              - type: documentSet
+                property: defendantResponseDocuments
+          - name: counter schedules of loss
+            documents:
+              - type: documentSet
+                property: ServedDocumentFiles/particularsOfClaimDocument
+          - name: Schedules of loss
+            documents:
+                - type: documentSet
+                  property: documentWitnessStatementRes/witnessOptionDocument
+  - name: Documents
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Disclosure List
+            documents :
+              - type: documentSet
+                property: documentDisclosureList
+          - name: Disclosure
+            documents :
+              - type: documentSet
+                property: documentForDisclosure
+      - name: Defendent1 documentSet
+        folders:
+          - name: Disclosure List
+            documents :
+              - type: documentSet
+                property: documentDisclosureListRes
+          - name: Disclosure
+            documents :
+              - type: documentSet
+                property: documentForDisclosureRes
+      - name: Defendent2 documentSet
+        folders:
+          - name: Disclosure List
+            documents :
+              - type: documentSet
+                property: documentDisclosureListRes2
+          - name: Disclosure
+            documents :
+              - type: documentSet
+                property: documentForDisclosureRes2
+  - name: Witness statements for trial
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Claimant - Statement
+            documents :
+              - type: documentSet
+                property: documentWitnessStatement/witnessOptionDocument
+          - name: Witness summaries
+            documents :
+              - type: documentSet
+                property: documentWitnessSummary/witnessOptionDocument
+          - name: Hearsay notices
+            documents :
+              - type: documentSet
+                property: documentHearsayNotice/witnessOptionDocument
+      - name: Defendent1 documentSet
+        folders:
+          - name: Defendent - Statement
+            documents :
+              - type: documentSet
+                property: documentWitnessStatementRes/witnessOptionDocument
+          - name: Witness summaries
+            documents :
+              - type: documentSet
+                property: documentWitnessSummaryRes/witnessOptionDocument
+          - name: Hearsay notices
+            documents :
+              - type: documentSet
+                property: documentHearsayNoticeRes/witnessOptionDocument
+      - name: Defendent2 documentSet
+        folders:
+          - name: Defendent - Statement
+            documents :
+              - type: documentSet
+                property: documentWitnessStatementRes2/witnessOptionDocument
+          - name: Witness summaries
+            documents :
+              - type: documentSet
+                property: documentWitnessSummaryRes2/witnessOptionDocument
+          - name: Hearsay notices
+            documents :
+              - type: documentSet
+                property: documentHearsayNoticeRes2/witnessOptionDocument
+  - name: Expert Evidence
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Reports
+            documents :
+              - type: documentSet
+                property: documentExpertReport/expertDocument
+          - name: Questions of experts of any other party
+            documents :
+              - type: documentSet
+                property: documentQuestions/expertDocument
+          - name: answers to any questions asked by another party
+            documents :
+              - type: documentSet
+                property: documentAnswers/expertDocument
+          - name: Joint statement of experts
+            documents :
+              - type: documentSet
+                property: documentJointStatement/expertDocument
+      - name: Defendent1 documentSet
+        folders:
+          - name: Reports
+            documents :
+              - type: documentSet
+                property: documentExpertReportRes/expertDocument
+          - name: Questions of experts of any other party
+            documents :
+              - type: documentSet
+                property: documentQuestionsRes/expertDocument
+          - name: answers to any questions asked by another party
+            documents :
+              - type: documentSet
+                property: documentAnswersRes/expertDocument
+          - name: Joint statement of experts
+            documents :
+              - type: documentSet
+                property: documentJointStatementRes/expertDocument
+      - name: Defendent2 documentSet
+        folders:
+          - name: Reports
+            documents :
+              - type: documentSet
+                property: documentExpertReportRes2/expertDocument
+          - name: Questions of experts of any other party
+            documents :
+              - type: documentSet
+                property: documentQuestionsRes2/expertDocument
+          - name: answers to any questions asked by another party
+            documents :
+              - type: documentSet
+                property: documentAnswersRes2/expertDocument
+          - name: Joint statement of experts
+            documents :
+              - type: documentSet
+                property: documentJointStatementRes2/expertDocument
+  - name: Documents for pre-trial review
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Case summary
+            documents :
+              - type: documentSet
+                property: documentCaseSummary
+      - name: Defendent1 documentSet
+        folders:
+          - name: Case summary
+            documents :
+              - type: documentSet
+                property: documentCaseSummaryRes
+      - name: Defendent2 documentSet
+        folders:
+          - name: Case summary
+            documents :
+              - type: documentSet
+                property: documentCaseSummaryRes2
+  - name: Trial Documents
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Skeleton argument
+            documents :
+              - type: documentSet
+                property: documentSkeletonArgument
+      - name: Defendent1 documentSet
+        folders:
+          - name: Skeleton argument
+            documents :
+              - type: documentSet
+                property: documentSkeletonArgumentRes
+      - name: Defendent2 documentSet
+        folders:
+          - name: Skeleton argument
+            documents :
+              - type: documentSet
+                property: documentSkeletonArgumentRes2
+  - name: Orders
+    folders:
+      - name: Case Management orders
+        folders:
+          - name: Orders
+            documents:
+              - type: documentSet
+                property: generalOrderDocument
+          - name: SDO
+            documents:
+              - type: documentSet
+                property: systemGeneratedCaseDocuments
+                filters:
+                  - property: /documentType
+                    value: SDO_ORDER
+      - name: Orders made on applications
+        folders:
+          - name: Orders
+            documents :
+              - type: documentSet
+                property: generalOrderDocument
+  - name: Costs budgets
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Uploaded / Agreed precedent H
+            documents :
+              - type: documentSet
+                property: documentAuthorities
+      - name: Defendent1 documentSet
+        folders:
+          - name: Uploaded / Agreed precedent H
+            documents :
+              - type: documentSet
+                property: documentAuthoritiesRes
+      - name: Defendent2 documentSet
+        folders:
+          - name: Uploaded / Agreed precedent H
+            documents :
+              - type: documentSet
+                property: documentAuthoritiesRes2
+  - name: Correspondence
+    folders:
+      - name: Claimant documentSet
+        folders:
+          - name: Chronology, Trial timetables and Supplementary Evidence
+            documents :
+              - type: documentSet
+                property: documentEvidenceForTrial
+      - name: Defendent1 documentSet
+        folders:
+          - name: Chronology, Trial timetables and Supplementary Evidence
+            documents :
+              - type: documentSet
+                property: documentEvidenceForTrialRes
+      - name: Defendent2 documentSet
+        folders:
+          - name: Chronology, Trial timetables and Supplementary Evidence
+            documents :
+              - type: documentSet
+                property: documentEvidenceForTrialRes2
