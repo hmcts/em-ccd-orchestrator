@@ -8,7 +8,7 @@ pageNumberFormat: NumberofPages
 folders:
   - name: Statements of Case
     folders:
-      - name: Claimant Statements of Case
+      - name: Claimant
         folders:
           - name: Details of Claim
             documents:
@@ -36,7 +36,7 @@ folders:
                 filters:
                   - property: /documentType
                     value: DIRECTIONS_QUESTIONNAIRE
-      - name: Defendent Statements of Case
+      - name: Defendant
         folders:
           - name: Defence
             documents:
@@ -52,7 +52,7 @@ folders:
                   property: documentWitnessStatementRes/witnessOptionDocument
   - name: Documents
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Disclosure List
             documents :
@@ -62,7 +62,7 @@ folders:
             documents :
               - type: documentSet
                 property: documentForDisclosure
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Disclosure List
             documents :
@@ -72,7 +72,7 @@ folders:
             documents :
               - type: documentSet
                 property: documentForDisclosureRes
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Disclosure List
             documents :
@@ -84,7 +84,7 @@ folders:
                 property: documentForDisclosureRes2
   - name: Witness statements for trial
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Claimant - Statement
             documents :
@@ -98,9 +98,9 @@ folders:
             documents :
               - type: documentSet
                 property: documentHearsayNotice/witnessOptionDocument
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
-          - name: Defendent - Statement
+          - name: Defendant - Statement
             documents :
               - type: documentSet
                 property: documentWitnessStatementRes/witnessOptionDocument
@@ -112,9 +112,9 @@ folders:
             documents :
               - type: documentSet
                 property: documentHearsayNoticeRes/witnessOptionDocument
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
-          - name: Defendent - Statement
+          - name: Defendant - Statement
             documents :
               - type: documentSet
                 property: documentWitnessStatementRes2/witnessOptionDocument
@@ -128,7 +128,7 @@ folders:
                 property: documentHearsayNoticeRes2/witnessOptionDocument
   - name: Expert Evidence
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Reports
             documents :
@@ -146,7 +146,7 @@ folders:
             documents :
               - type: documentSet
                 property: documentJointStatement/expertDocument
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Reports
             documents :
@@ -164,7 +164,7 @@ folders:
             documents :
               - type: documentSet
                 property: documentJointStatementRes/expertDocument
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Reports
             documents :
@@ -184,19 +184,19 @@ folders:
                 property: documentJointStatementRes2/expertDocument
   - name: Documents for pre-trial review
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Case summary
             documents :
               - type: documentSet
                 property: documentCaseSummary
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Case summary
             documents :
               - type: documentSet
                 property: documentCaseSummaryRes
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Case summary
             documents :
@@ -210,13 +210,13 @@ folders:
             documents :
               - type: documentSet
                 property: documentSkeletonArgument
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Skeleton argument
             documents :
               - type: documentSet
                 property: documentSkeletonArgumentRes
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Skeleton argument
             documents :
@@ -245,19 +245,19 @@ folders:
                 property: generalOrderDocument
   - name: Costs budgets
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Uploaded / Agreed precedent H
             documents :
               - type: documentSet
                 property: documentAuthorities
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Uploaded / Agreed precedent H
             documents :
               - type: documentSet
                 property: documentAuthoritiesRes
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Uploaded / Agreed precedent H
             documents :
@@ -265,19 +265,19 @@ folders:
                 property: documentAuthoritiesRes2
   - name: Correspondence
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Chronology, Trial timetables and Supplementary Evidence
             documents :
               - type: documentSet
                 property: documentEvidenceForTrial
-      - name: Defendent1 documentSet
+      - name: Defendant1
         folders:
           - name: Chronology, Trial timetables and Supplementary Evidence
             documents :
               - type: documentSet
                 property: documentEvidenceForTrialRes
-      - name: Defendent2 documentSet
+      - name: Defendant2
         folders:
           - name: Chronology, Trial timetables and Supplementary Evidence
             documents :
