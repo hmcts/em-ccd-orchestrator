@@ -1,10 +1,11 @@
-filename: BundleCP.pdf
+filename: HearingBundle.pdf
 filenameIdentifier: /case_details/id
 hasTableOfContents: true
 hasCoversheets: false
 hasFolderCoversheets: true
-paginationStyle: bottomCenter
+paginationStyle: bottomRight
 pageNumberFormat: NumberofPages
+documentNameValue: /documentFileName
 folders:
   - name: Statements of Case
     folders:
