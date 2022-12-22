@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
@@ -10,6 +11,7 @@ import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Ignore("Not required fro now")
 public class StitchingCompleteScenarios extends BaseTest {
     JsonNode jsonNode;
 

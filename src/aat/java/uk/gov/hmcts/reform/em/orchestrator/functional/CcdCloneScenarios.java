@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Ignore("Not required fro now")
 public class CcdCloneScenarios extends BaseTest {
 
     @Rule
