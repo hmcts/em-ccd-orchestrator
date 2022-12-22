@@ -5,6 +5,7 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
@@ -70,6 +71,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testInvalidConfig() {
         final ValidatableResponse response = postNewBundle(invalidJson);
         response
@@ -81,6 +83,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testCorruptConfig() {
         final ValidatableResponse response = postNewBundle(invalidConfigJson);
 
@@ -92,6 +95,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testFilename() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
@@ -131,6 +135,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testFolderCoversheets() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
@@ -151,6 +156,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testSubSubfolders() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
 
@@ -278,6 +284,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testTypoInConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-6-has-typo.yaml");
@@ -292,6 +299,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testDefaultFallBackConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
 
@@ -304,6 +312,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testDocumentNotPresent() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
@@ -326,6 +335,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");
@@ -339,6 +349,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testDocumentSetPropertyIsNotAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-8-not-an-array.yaml");
@@ -352,6 +363,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("document_url", "incorrect_property_name");
@@ -366,6 +378,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testConfigurationFileDoesNotExist() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "nonexistent.yaml");
@@ -463,6 +476,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testEnableEmailNotificationIsNull() throws IOException, InterruptedException {
         final ValidatableResponse response = postNewBundle(validJson);
 
@@ -481,6 +495,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testRenderImageInStitchedDocument() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
@@ -507,6 +522,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testRedactedDocuments() throws IOException, InterruptedException {
         String json = customDocumentsJson.toString();
         json = findDocumentUrl(json);
@@ -531,6 +547,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testNonRedactedDocuments() throws IOException, InterruptedException {
         String json = nonCustomDocumentsJson.toString();
         json = findDocumentUrl(json);
@@ -554,6 +571,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void testMultiBundleDocuments() throws IOException, InterruptedException {
 
         String json = multiBundleDocumentsJson.toString();
@@ -575,6 +593,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore("Not required fro now")
     public void shouldReturn401WhenUnAuthenticatedUserCreateBundle() {
         unAuthenticatedRequest
                 .body(validJson)
@@ -588,7 +607,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         return request
                 .body(requestBody)
                 .post("/api/new-bundle")
-                .then();
+                .then().log().all();
     }
 
     private void setupRequests() {
