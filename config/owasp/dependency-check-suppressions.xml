@@ -6,5 +6,7 @@
         </notes>
         <cve>CVE-2016-1000027</cve>
         <cve>CVE-2021-37533</cve>
+        <cve>CVE-2022-41915</cve>
+        <cve>CVE-2022-41881</cve>
     </suppress>
 </suppressions>
