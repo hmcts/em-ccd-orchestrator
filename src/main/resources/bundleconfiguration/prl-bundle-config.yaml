@@ -16,14 +16,14 @@ folders:
           - name: Applicant Position Statement
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantPositionStatements
           - name: Respondent Position Statement
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: respondentPositionStatements
@@ -86,28 +86,36 @@ folders:
           - name: Witness Statements
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantWitnessStatements
           - name: Letters from School
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantLettersFromSchool
+
+          - name: Statements of supporting evidence
+            documents:
+              - type: documentSet
+                property: /data/allOtherDocuments
+                filters:
+                  - property: /documentGroup
+                    value: applicantStatementSupportingEvidence
           - name: Digital or Mobile Phone Screenshots or Photographic Evidences
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantEmailsOrScreenshotsOrImagesOrOtherMediaFiles
           - name: Other Evidences
             documents:
               - type: documentSet
-                property: /data/otherDocumentsUploadedByCourtAdmin
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: applicantStatementDocsUploadedByCourtAdmin
@@ -116,28 +124,28 @@ folders:
           - name: Witness Statements
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: respondentWitnessStatements
           - name: Letters from School
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: respondentLettersFromSchool
           - name: Other Evidences
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: respondentEmailsOrScreenshotsOrImagesOrOtherMediaFiles
       - name: Other Witness Statements
         documents:
           - type: documentSet
-            property: /data/citizenUploadedDocuments
+            property: /data/allOtherDocuments
             filters:
               - property: /documentGroup
                 value: otherWitnessStatements
@@ -148,7 +156,7 @@ folders:
           - name: Other Documents
             documents:
               - type: documentSet
-                property: /data/otherDocumentsUploadedByCourtAdmin
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: cafcassReportsUploadedByCourtAdmin
@@ -157,42 +165,42 @@ folders:
           - name: Medical Reports
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: expertMedicalReports
           - name: DNA Reports
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: expertDNAReports
           - name: Medical Records
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: expertMedicalRecords
           - name: Drug And Alcohol Tests(Toxicology)
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: expertReportsForDrugAndAlcholTest
           - name: Police Reports
             documents:
               - type: documentSet
-                property: /data/citizenUploadedDocuments
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: policeReports
           - name: Other Reports
             documents:
               - type: documentSet
-                property: /data/otherDocumentsUploadedByCourtAdmin
+                property: /data/allOtherDocuments
                 filters:
                   - property: /documentGroup
                     value: expertReportsUploadedByCourtAdmin
