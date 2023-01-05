@@ -132,7 +132,7 @@ dependencies {
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.14'
     implementation group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
     implementation group: "commons-validator", name: "commons-validator", version: "1.7"
-    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.1'
+    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.2'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
 
     implementation 'com.github.hmcts:ccd-case-document-am-client:1.59'
