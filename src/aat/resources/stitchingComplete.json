@@ -1,0 +1,142 @@
+{
+  "createdBy": "582c80dc-560a-4e61-a7c4-4ed21370ce4c",
+  "createdDate": "2022-12-07T16:28:10.606590Z",
+  "lastModifiedBy": "system",
+  "lastModifiedDate": "2022-12-07T16:28:21.269138Z",
+  "id": 318,
+  "bundle": {
+    "createdBy": "582c80dc-560a-4e61-a7c4-4ed21370ce4c",
+    "createdDate": "2022-12-07T16:28:10.713963Z",
+    "lastModifiedBy": "system",
+    "lastModifiedDate": "2022-12-07T16:28:21.268499Z",
+    "id": 319,
+    "bundleTitle": "Functional tests bundle 1",
+    "description": null,
+    "stitchedDocumentURI": "http://dm-store-aat.service.core-compute-aat.internal/documents/105ab830-cd10-43d0-b04a-275f068c1835",
+    "stitchStatus": null,
+    "fileName": "bundle.pdf",
+    "fileNameIdentifier": null,
+    "coverpageTemplate": "",
+    "pageNumberFormat": "pageRange",
+    "paginationStyle": "topCenter",
+    "enableEmailNotification": false,
+    "hashToken": null,
+    "documentImage": null,
+    "coverpageTemplateData": {
+      "id": 1670430488754967,
+      "state": "1_OPEN",
+      "version": 0,
+      "case_data": {
+        "caseOwner": null,
+        "caseTitle": null,
+        "caseBundles": [],
+        "caseComments": null,
+        "caseDocuments": [
+          {
+            "id": "946cb420-8557-46af-bb22-9e3e8b27714e",
+            "value": {
+              "documentLink": {
+                "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8ea656c-6282-49b3-ae96-75f5eb783084",
+                "document_filename": "mydoc.txt",
+                "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8ea656c-6282-49b3-ae96-75f5eb783084/binary"
+              },
+              "documentName": "my doc text"
+            }
+          }
+        ],
+        "caseDescription": null,
+        "caseCreationDate": null,
+        "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+      },
+      "case_type_id": "CCD_BUNDLE_MVP_TYPE_ASYNC",
+      "created_date": [
+        2022,
+        12,
+        7,
+        16,
+        28,
+        8,
+        767658000
+      ],
+      "jurisdiction": "PUBLICLAW",
+      "last_modified": [
+        2022,
+        12,
+        7,
+        16,
+        28,
+        9,
+        394614453
+      ],
+      "supplementary_data": null,
+      "data_classification": {
+        "caseOwner": "PUBLIC",
+        "caseTitle": "PUBLIC",
+        "caseComments": "PUBLIC",
+        "caseDocuments": {
+          "value": [
+            {
+              "id": "946cb420-8557-46af-bb22-9e3e8b27714e",
+              "value": {
+                "documentLink": "PUBLIC",
+                "documentName": "PUBLIC"
+              }
+            }
+          ],
+          "classification": "PUBLIC"
+        },
+        "caseDescription": "PUBLIC",
+        "caseCreationDate": "PUBLIC",
+        "bundleConfiguration": "PUBLIC"
+      },
+      "security_classification": "PUBLIC",
+      "callback_response_status": null,
+      "last_state_modified_date": [
+        2022,
+        12,
+        7,
+        16,
+        28,
+        8,
+        767658000
+      ],
+      "delete_draft_response_status": null,
+      "callback_response_status_code": null,
+      "after_submit_callback_response": null,
+      "delete_draft_response_status_code": null
+    },
+    "folders": [],
+    "documents": [
+      {
+        "createdBy": "582c80dc-560a-4e61-a7c4-4ed21370ce4c",
+        "createdDate": "2022-12-07T16:28:11.139957Z",
+        "lastModifiedBy": "582c80dc-560a-4e61-a7c4-4ed21370ce4c",
+        "lastModifiedDate": "2022-12-07T16:28:11.139957Z",
+        "id": 320,
+        "docTitle": "my doc text",
+        "docDescription": null,
+        "documentURI": "http://dm-store-aat.service.core-compute-aat.internal/documents/c8ea656c-6282-49b3-ae96-75f5eb783084",
+        "sortIndex": 0
+      }
+    ],
+    "sortIndex": 0
+  },
+  "taskState": "DONE",
+  "failureDescription": null,
+  "caseTypeId": null,
+  "caseId": "1670430488754967",
+  "jurisdictionId": null,
+  "callback": {
+    "createdBy": "582c80dc-560a-4e61-a7c4-4ed21370ce4c",
+    "createdDate": "2022-12-07T16:28:12.326664Z",
+    "lastModifiedBy": "system",
+    "lastModifiedDate": "2022-12-07T16:28:22.000367Z",
+    "id": 321,
+    "callbackState": "SUCCESS",
+    "failureDescription": null,
+    "callbackUrl": "http://localhost:8080/api/stitching-complete-callback/1670430488754967/asyncStitchingComplete/6c3bed53-9b8c-411c-8f36-6dde925974f7",
+    "version": 0,
+    "attempts": 0
+  },
+  "version": 1
+}
