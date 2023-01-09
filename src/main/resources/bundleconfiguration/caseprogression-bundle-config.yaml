@@ -22,7 +22,7 @@ folders:
           - name: Particulars of Claim
             documents:
               - type: documentSet
-                property: /ServedDocumentFiles/particularsOfClaimDocument
+                property: /servedDocumentFiles/particularsOfClaimDocument
           - name: Schedules of loss
             documents:
               - type: documentSet
