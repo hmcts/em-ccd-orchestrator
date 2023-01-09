@@ -181,7 +181,7 @@ folders:
           - name: Joint statement of experts
             documents :
               - type: documentSet
-                property: /documentJointStatementRes2m
+                property: /documentJointStatementRes2
   - name: Documents for pre-trial review
     folders:
       - name: Claimant
