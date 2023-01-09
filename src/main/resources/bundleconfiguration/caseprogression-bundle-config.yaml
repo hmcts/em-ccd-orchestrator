@@ -26,7 +26,7 @@ folders:
           - name: Schedules of loss
             documents:
               - type: documentSet
-                property: /documentWitnessStatement/witnessOptionDocument
+                property: /documentReferredInStatement
           - name: reply
             documents:
               - type: documentSet
@@ -46,12 +46,10 @@ folders:
                 property: /defendantResponseDocuments
           - name: counter schedules of loss
             documents:
-              - type: documentSet
-                property: /ServedDocumentFiles/particularsOfClaimDocument
-          - name: Schedules of loss
-            documents:
                 - type: documentSet
-                  property: /documentWitnessStatementRes/witnessOptionDocument
+                  property: /documentReferredInStatementRes
+                - type: documentSet
+                  property: /documentReferredInStatementRes2
   - name: Documents
     folders:
       - name: Claimant
@@ -91,43 +89,43 @@ folders:
           - name: Claimant - Statement
             documents :
               - type: documentSet
-                property: /documentWitnessStatement/witnessOptionDocument
+                property: /documentWitnessStatement
           - name: Witness summaries
             documents :
               - type: documentSet
-                property: /documentWitnessSummary/witnessOptionDocument
+                property: /documentWitnessSummary
           - name: Hearsay notices
             documents :
               - type: documentSet
-                property: /documentHearsayNotice/witnessOptionDocument
+                property: /documentHearsayNotice
       - name: Defendant1
         folders:
           - name: Defendant - Statement
             documents :
               - type: documentSet
-                property: /documentWitnessStatementRes/witnessOptionDocument
+                property: /documentWitnessStatementRes
           - name: Witness summaries
             documents :
               - type: documentSet
-                property: /documentWitnessSummaryRes/witnessOptionDocument
+                property: /documentWitnessSummaryRes
           - name: Hearsay notices
             documents :
               - type: documentSet
-                property: /documentHearsayNoticeRes/witnessOptionDocument
+                property: /documentHearsayNoticeRes
       - name: Defendant2
         folders:
           - name: Defendant - Statement
             documents :
               - type: documentSet
-                property: /documentWitnessStatementRes2/witnessOptionDocument
+                property: /documentWitnessStatementRes2
           - name: Witness summaries
             documents :
               - type: documentSet
-                property: /documentWitnessSummaryRes2/witnessOptionDocument
+                property: /documentWitnessSummaryRes2
           - name: Hearsay notices
             documents :
               - type: documentSet
-                property: /documentHearsayNoticeRes2/witnessOptionDocument
+                property: /documentHearsayNoticeRes2
   - name: Expert Evidence
     folders:
       - name: Claimant
@@ -135,55 +133,55 @@ folders:
           - name: Reports
             documents :
               - type: documentSet
-                property: /documentExpertReport/expertDocument
+                property: /documentExpertReport
           - name: Questions of experts of any other party
             documents :
               - type: documentSet
-                property: /documentQuestions/expertDocument
+                property: /documentQuestions
           - name: answers to any questions asked by another party
             documents :
               - type: documentSet
-                property: /documentAnswers/expertDocument
+                property: /documentAnswers
           - name: Joint statement of experts
             documents :
               - type: documentSet
-                property: /documentJointStatement/expertDocument
+                property: /documentJointStatement
       - name: Defendant1
         folders:
           - name: Reports
             documents :
               - type: documentSet
-                property: /documentExpertReportRes/expertDocument
+                property: /documentExpertReportRes
           - name: Questions of experts of any other party
             documents :
               - type: documentSet
-                property: /documentQuestionsRes/expertDocument
+                property: /documentQuestionsRes
           - name: answers to any questions asked by another party
             documents :
               - type: documentSet
-                property: /documentAnswersRes/expertDocument
+                property: /documentAnswersRes
           - name: Joint statement of experts
             documents :
               - type: documentSet
-                property: /documentJointStatementRes/expertDocument
+                property: /documentJointStatementRes
       - name: Defendant2
         folders:
           - name: Reports
             documents :
               - type: documentSet
-                property: /documentExpertReportRes2/expertDocument
+                property: /documentExpertReportRes2
           - name: Questions of experts of any other party
             documents :
               - type: documentSet
-                property: /documentQuestionsRes2/expertDocument
+                property: /documentQuestionsRes2
           - name: answers to any questions asked by another party
             documents :
               - type: documentSet
-                property: /documentAnswersRes2/expertDocument
+                property: /documentAnswersRes2
           - name: Joint statement of experts
             documents :
               - type: documentSet
-                property: /documentJointStatementRes2/expertDocument
+                property: /documentJointStatementRes2m
   - name: Documents for pre-trial review
     folders:
       - name: Claimant
