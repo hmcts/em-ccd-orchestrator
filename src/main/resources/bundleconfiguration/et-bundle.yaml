@@ -1,0 +1,26 @@
+title: ET Bundle
+filename: Employment Tribunal Bundle
+filenameIdentifier: /case_details/case_data/ethosCaseReference
+coverpageTemplate: SSCS-cover-page.docx # Need to create one
+hasTableOfContents: true
+hasCoversheets: true
+pageNumberFormat: numberOfPages
+documentNameValue: /document/document_filename
+folders:
+  - name: ET1 Documents
+    documents:
+      - type: documentSet
+        property: documentCollection
+        filters:
+          - property: /typeOfDocument
+            value: ET1
+      - type: documentSet
+        property: documentCollection
+        filters:
+          - property: /typeOfDocument
+            value: ACAS Certificate
+  - name: All Case Documents
+    documents:
+      - type: documentSet
+        property: documentCollection
+
