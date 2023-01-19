@@ -9,7 +9,7 @@ plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.springframework.boot' version '2.7.5'
-    id 'uk.gov.hmcts.java' version '0.12.35'
+    id 'uk.gov.hmcts.java' version '0.12.37'
     id 'com.github.ben-manes.versions' version '0.44.0'
     id 'org.sonarqube' version '3.5.0.2730'
     id 'jacoco'
@@ -129,7 +129,7 @@ dependencies {
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
     implementation group: 'org.zalando', name: 'problem-spring-web', version: versions.zalando
     implementation group: 'org.zalando', name: 'jackson-datatype-problem', version: versions.zalando
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.14'
     implementation group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
     implementation group: "commons-validator", name: "commons-validator", version: "1.7"
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.1'
@@ -196,7 +196,7 @@ dependencyManagement {
             entry 'junit'
         }
 
-        dependencySet(group: 'net.bytebuddy', version: '1.12.20') {
+        dependencySet(group: 'net.bytebuddy', version: '1.12.22') {
             entry 'byte-buddy'
             entry 'byte-buddy-agent'
         }
@@ -223,6 +223,12 @@ dependencyManagement {
             entry 'spring-security-core'
             entry 'spring-security-web'
             entry 'spring-security-crypto'
+        }
+
+        //CVE-2022-45143
+        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.69') {
+            entry 'tomcat-embed-core'
+            entry 'tomcat-embed-websocket'
         }
     }
 }
