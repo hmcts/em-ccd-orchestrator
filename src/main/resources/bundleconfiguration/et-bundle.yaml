@@ -1,0 +1,14 @@
+title: ET Bundle
+filename: ETBundle # no spaces
+filenameIdentifier: /case_details/id #case_data/ethosCaseReference doesnt work because of /
+hasTableOfContents: true
+hasCoversheets: true
+pageNumberFormat: numberOfPages
+documentNameValue: /uploadedDocument/document_filename # can try /typeOfDocument
+customDocument: true
+customDocumentLinkValue: /uploadedDocument
+folders:
+  - name: All Case Documents
+    documents:
+      - type: documentSet
+        property: /documentCollection
