@@ -1,10 +1,10 @@
 title: ET Bundle
-filename: ETBundle # no spaces
-filenameIdentifier: /case_details/id #case_data/ethosCaseReference doesnt work because of /
+filename: EmploymentTribunalBundle
+filenameIdentifier: /case_details/id
 hasTableOfContents: true
 hasCoversheets: true
 pageNumberFormat: numberOfPages
-documentNameValue: /uploadedDocument/document_filename # can try /typeOfDocument
+documentNameValue: /uploadedDocument/document_filename
 customDocument: true
 customDocumentLinkValue: /uploadedDocument
 folders:
