@@ -2,13 +2,34 @@ title: ET Bundle
 filename: EmploymentTribunalBundle
 filenameIdentifier: /case_details/id
 hasTableOfContents: true
-hasCoversheets: true
+hasCoversheets: false
 pageNumberFormat: numberOfPages
 documentNameValue: /uploadedDocument/document_filename
 customDocument: true
 customDocumentLinkValue: /uploadedDocument
 folders:
-  - name: All Case Documents
-    documents:
-      - type: documentSet
-        property: /documentCollection
+  - name: Digital Case File
+    folders:
+      - name: Claimant - ET1
+        documents:
+        - type: documentSet
+          property: /documentCollection
+          filters:
+            - property: /typeOfDocument
+              value: ET1
+        - type: documentSet
+          property: /documentCollection
+          filters:
+            - property: /typeOfDocument
+              value: ACAS Certificate
+        - type: document
+          property: /claimantRequests/claim_description_document
+        - type: document
+          property: /et1VettingDocument
+      - name: Respondent - ET3
+        documents:
+        - type: documentSet
+          property: /documentCollection
+          filters:
+            - property: /typeOfDocument
+              value: ET3
