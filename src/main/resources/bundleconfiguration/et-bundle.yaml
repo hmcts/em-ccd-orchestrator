@@ -22,10 +22,10 @@ folders:
           filters:
             - property: /typeOfDocument
               value: ACAS Certificate
-        - type: document
-          property: /claimantRequests/claim_description_document
-        - type: document
-          property: /et1VettingDocument
+#        - type: document
+#          property: /claimantRequests/claim_description_document
+#        - type: document
+#          property: /et1VettingDocument
       - name: Respondent - ET3
         documents:
         - type: documentSet
