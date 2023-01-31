@@ -9,27 +9,40 @@ customDocument: true
 customDocumentLinkValue: /uploadedDocument
 folders:
   - name: Digital Case File
-    folders:
-      - name: Claimant - ET1
-        documents:
-        - type: documentSet
-          property: /documentCollection
-          filters:
-            - property: /typeOfDocument
-              value: ET1
-        - type: documentSet
-          property: /documentCollection
-          filters:
-            - property: /typeOfDocument
-              value: ACAS Certificate
-        - type: document
-          property: /claimantRequests/claim_description_document
-#        - type: document
-#          property: /et1VettingDocument
-      - name: Respondent - ET3
-        documents:
-        - type: documentSet
-          property: /documentCollection
-          filters:
-            - property: /typeOfDocument
-              value: ET3
+    documents:
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: ET1
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: ACAS Certificate
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: Other
+        - property: /shortDescription
+          value: Claimant Supporting Document
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: Other
+        - property: /shortDescription
+          value: ET1 Vetting
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: ET3
+    - type: documentSet
+      property: /documentCollection
+      filters:
+        - property: /typeOfDocument
+          value: Other
+        - property: /shortDescription
+          value: ET3 Processing
