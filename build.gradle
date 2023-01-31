@@ -116,6 +116,7 @@ dependencies {
     implementation group: "commons-io", name: "commons-io", version: "2.11.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
 
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
@@ -145,6 +146,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
+
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.1'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
