@@ -9,13 +9,14 @@ plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.springframework.boot' version '2.7.5'
-    id 'uk.gov.hmcts.java' version '0.12.37'
+    id 'uk.gov.hmcts.java' version '0.12.39'
     id 'com.github.ben-manes.versions' version '0.44.0'
     id 'org.sonarqube' version '3.5.0.2730'
     id 'jacoco'
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
     id "info.solidsoft.pitest" version '1.9.0'
+    id 'org.owasp.dependencycheck' version '8.0.2'
 }
 
 apply plugin: 'idea'
@@ -115,6 +116,7 @@ dependencies {
     implementation group: "commons-io", name: "commons-io", version: "2.11.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
 
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
@@ -144,6 +146,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
+
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.1'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
@@ -195,18 +198,7 @@ dependencyManagement {
         dependencySet(group: 'junit', version: '4.13') {
             entry 'junit'
         }
-
-        dependencySet(group: 'net.bytebuddy', version: '1.12.22') {
-            entry 'byte-buddy'
-            entry 'byte-buddy-agent'
-        }
         // Do not change - END
-
-        //CVE-2021-22044
-        dependencySet(group: 'org.springframework.cloud', version: versions.springCloud) {
-            entry 'spring-cloud-openfeign-core'
-            entry 'spring-cloud-starter-openfeign'
-        }
 
         //CVE-2022-23437
         dependencySet(group: 'xerces', version: '2.12.2') {
