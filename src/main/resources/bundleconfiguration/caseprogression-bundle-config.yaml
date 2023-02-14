@@ -231,7 +231,7 @@ folders:
             documents:
               - type: documentSet
                 property: /generalOrderDocument
-          - name: SDO
+          - name: Standard Direction Order
             documents:
               - type: documentSet
                 property: /systemGeneratedCaseDocuments
