@@ -14,6 +14,9 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
 
 @Service
 public class DefaultUpdateCaller {
@@ -23,21 +26,37 @@ public class DefaultUpdateCaller {
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator;
     private final NotificationService notificationService;
 
+    private final Validator validator;
+
     @Value("${notify.failureTemplateId}")
     private String failureTemplateId;
+
+    @Value("${cdam.validation.enabled}")
+    private boolean enableCdamValidation;
 
     private static final String CLONE_BUNDLE_EVENT = "cloneBundle";
     private static final String ASYNC_STITCHING_COMPLETE_EVENT = "asyncStitchingComplete";
 
     public DefaultUpdateCaller(CcdCallbackDtoCreator ccdCallbackDtoCreator,
-                               NotificationService notificationService) {
+                               NotificationService notificationService,
+                               Validator validator) {
         this.ccdCallbackDtoCreator = ccdCallbackDtoCreator;
         this.notificationService = notificationService;
+        this.validator = validator;
     }
 
     public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
+
+        if (enableCdamValidation) {
+            Set<ConstraintViolation<CcdCallbackDto>> violations = validator.validate(dto);
+
+            if (!violations.isEmpty()) {
+                throw new PropertyNotFoundException(violations);
+            }
+        }
+
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));

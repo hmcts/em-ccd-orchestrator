@@ -3,11 +3,12 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -17,6 +18,9 @@ import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationServ
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,8 +48,16 @@ public class DefaultUpdateCallerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @InjectMocks
     DefaultUpdateCaller defaultUpdateCaller;
+
+    @Before
+    public void setup() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        //Below is required to create validator object. As mocking of validator does not work.
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        defaultUpdateCaller = new DefaultUpdateCaller(ccdCallbackDtoCreator, notificationService, validator);
+    }
 
     @Test
     public void executeUpdate() throws Exception {

@@ -7,6 +7,7 @@ import lombok.Setter;
 import pl.touk.throwing.ThrowingFunction;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public class CcdCallbackDto {
@@ -103,11 +104,13 @@ public class CcdCallbackDto {
                 ? ccdPayload.findValue("jurisdiction").asText() : null;
     }
 
+    @NotNull(message = "jurisdictionId is required attribute")
     public String getJurisdictionId() {
         return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
             ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
     }
 
+    @NotNull(message = "caseTypeId is required attribute")
     public String getCaseTypeId() {
         return ccdPayload != null && ccdPayload.findValue(Constants.CASE_TYPE_ID) != null
                 ? ccdPayload.findValue(Constants.CASE_TYPE_ID).asText() : null;
