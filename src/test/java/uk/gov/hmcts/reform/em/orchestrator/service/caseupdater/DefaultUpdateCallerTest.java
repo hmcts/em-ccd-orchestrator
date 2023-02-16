@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
@@ -77,6 +79,48 @@ public class DefaultUpdateCallerTest {
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
         Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
         Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
+    }
+
+    @Test
+    public void executeUpdateValidCdam() throws Exception {
+        ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ObjectNode caseData = objectMapper.createObjectNode();
+        caseData.put("jurisdictionId", "jurisdictionId");
+        caseData.put("caseTypeId", "caseTypeId");
+        ccdCallbackDto.setCcdPayload(caseData);
+        when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
+                .thenReturn(ccdCallbackDto);
+
+        when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
+                .thenReturn(objectMapper.readTree("{ \"p\" : 1 }"));
+
+        ResponseEntity<CcdCallbackResponseDto> response =
+                defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
+        Assert.assertNotNull(ccdCallbackResponseDto);
+        Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
+        Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
+    }
+
+    @Test
+    public void executeUpdatePropertyNotFoundException() throws Exception {
+        ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
+        CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        JsonNode caseData = mock(JsonNode.class);
+        ccdCallbackDto.setCcdPayload(caseData);
+        when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))
+                .thenReturn(ccdCallbackDto);
+
+        ResponseEntity<CcdCallbackResponseDto> response =
+                defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
+        Assert.assertEquals(400, response.getStatusCodeValue());
+        CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
+        Assert.assertNotNull(ccdCallbackResponseDto);
+        Assert.assertTrue(ccdCallbackResponseDto.getErrors().contains("caseTypeId is required attribute"));
+        Assert.assertTrue(ccdCallbackResponseDto.getErrors().contains("jurisdictionId is required attribute"));
+
     }
 
     @Test
