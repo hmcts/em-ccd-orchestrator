@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -23,11 +24,28 @@ public class OpenIdConnectScenarios extends BaseTest {
 
     @Test
     public void testValidAuthenticationAndAuthorisation() throws IOException {
+        Assume.assumeFalse(enableCdamValidation);
         String wrappedJson = caseBundleJsonPayload();
 
         Response response =
                 testUtil
                         .authRequest()
+                        .baseUri(testUtil.getTestUrl())
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(wrappedJson)
+                        .post(API_STITCH_CCD_BUNDLES);
+
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void testCdamValidAuthenticationAndAuthorisation() throws Exception {
+        Assume.assumeTrue(enableCdamValidation);
+        String wrappedJson = cdamBundleJsonPayload();
+
+        Response response =
+                testUtil
+                        .cdamAuthRequest()
                         .baseUri(testUtil.getTestUrl())
                         .contentType(APPLICATION_JSON_VALUE)
                         .body(wrappedJson)
@@ -98,6 +116,13 @@ public class OpenIdConnectScenarios extends BaseTest {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         return String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+    }
+
+    private String cdamBundleJsonPayload() throws Exception {
+        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String caseDetails = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
+        return testUtil.addCdamProperties(caseDetails);
     }
 
 }

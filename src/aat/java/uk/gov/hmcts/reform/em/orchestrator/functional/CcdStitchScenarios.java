@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
@@ -19,6 +21,11 @@ public class CcdStitchScenarios extends BaseTest {
 
     @Rule
     public RetryRule retryRule = new RetryRule(5);
+
+    @Before
+    public void setUp() throws Exception {
+        Assume.assumeFalse(enableCdamValidation);
+    }
 
     @Test
     public void testPostBundleStitch() throws IOException {

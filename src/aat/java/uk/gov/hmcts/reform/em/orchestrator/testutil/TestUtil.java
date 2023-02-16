@@ -53,7 +53,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 public class TestUtil {
 
-    private final int retryCount = 6;
+    private final int retryCount = 15;
     private final int sleepTime = 1000;
     private String idamAuth;
     private String s2sAuth;
@@ -356,6 +356,18 @@ public class TestUtil {
             objectMapper.readTree(String.format(createCdamAutomatedBundlingCaseTemplate, documents)));
     }
 
+    public Document.Links uploadCdamDocument() throws Exception {
+        List<MultipartFile> multipartFiles = Stream.of(Pair.of("annotationTemplate.pdf", "application/pdf"))
+                .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
+                .collect(Collectors.toList());
+
+        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
+                "PUBLICLAW", multipartFiles);
+
+        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
+        return uploadResponse.getDocuments().get(0).links;
+    }
+
     public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws Exception {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
@@ -482,6 +494,13 @@ public class TestUtil {
             }
         }
         throw new IOException("Task not complete after maximum number of retries");
-
     }
+
+    public String addCdamProperties(Object json) {
+        String cdamJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
+                + "\"jurisdictionId\":\"BENEFIT\",%s } }";
+        String string = json.toString();
+        return String.format(cdamJson, string.substring(1, string.length() - 1));
+    }
+
 }
