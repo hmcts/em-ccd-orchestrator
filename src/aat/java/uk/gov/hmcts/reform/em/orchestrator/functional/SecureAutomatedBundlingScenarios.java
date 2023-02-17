@@ -21,6 +21,7 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
 
     private static JsonNode validJson;
     private static JsonNode invalidJson;
+    private static JsonNode missingPropertiesJson;
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
     private static JsonNode filenameWith51CharsJson;
@@ -34,12 +35,12 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     private RequestSpecification request;
     private RequestSpecification unAuthenticatedRequest;
 
-
     @Before
     public void setup() throws Exception {
         Assume.assumeTrue(enableCdamValidation);
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
+        missingPropertiesJson = extendedCcdHelper.loadMissingPropertiesCase("missing-cdam-properties-case.json");
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
         invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
         filenameWith51CharsJson = extendedCcdHelper.loadCaseFromFile("filename-with-51-chars.json");
@@ -74,12 +75,12 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
 
     @Test
     public void testMissingCdamProperties() {
-        final ValidatableResponse response = postNewBundle(validJson);
+        final ValidatableResponse response = postNewBundle(missingPropertiesJson);
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors", containsInAnyOrder("caseTypeId is required attribute",
-                        "jurisdictionId is required attribute"));
+                .body("errors", containsInAnyOrder("caseTypeId or case_type_id is required attribute",
+                        "jurisdictionId or jurisdiction is required attribute"));
 
     }
 
