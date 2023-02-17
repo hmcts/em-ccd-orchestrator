@@ -98,10 +98,16 @@ public class CcdCallbackDto {
         return ccdPayload != null && ccdPayload.findValue("id") != null
                 ? ccdPayload.findValue("id").asText() : null;
     }
-
+    @NotNull(message = "jurisdiction is required attribute")
     public String getJurisdiction() {
-        return ccdPayload != null && ccdPayload.findValue("jurisdiction") != null
-                ? ccdPayload.findValue("jurisdiction").asText() : null;
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION) != null
+                ? ccdPayload.findValue(Constants.JURISDICTION).asText() : null;
+    }
+
+    @NotNull(message = "case_type_id is required attribute")
+    public String getAlternativeCaseTypeId() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID) != null
+                ? ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID).asText() : null;
     }
 
     @NotNull(message = "jurisdictionId is required attribute")
