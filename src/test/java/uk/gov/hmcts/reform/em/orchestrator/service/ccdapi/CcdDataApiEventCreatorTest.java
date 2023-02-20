@@ -11,6 +11,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 
+import java.io.Reader;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,7 +29,7 @@ public class CcdDataApiEventCreatorTest {
         Mockito.when(ccdCallbackDtoCreator.createDto(
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.anyString(),
-                Mockito.any())).thenReturn(new CcdCallbackDto());
+                Mockito.any(Reader.class))).thenReturn(new CcdCallbackDto());
         ccdDataApiEventCreator.executeTrigger("1", "triggerId", "jwt");
         assertTrue(true, "No exceptions");
     }

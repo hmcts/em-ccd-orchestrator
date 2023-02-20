@@ -1,0 +1,119 @@
+package uk.gov.hmcts.reform.em.orchestrator.service.ccdapi;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.CaseResource;
+import uk.gov.hmcts.reform.ccd.client.model.Event;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
+
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatObject;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+class CCDUpdateServiceTest {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    private CoreCaseDataApi coreCaseDataApi = mock(CoreCaseDataApi.class);
+
+    private AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
+
+    private CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
+
+
+    private CcdUpdateService ccdUpdateService = new CcdUpdateService(coreCaseDataApi, authTokenGenerator, ccdCallbackDtoCreator);
+
+    private String caseId = "test_case_id";
+    private String triggerId = "event_abc";
+    private String jwt = "jtw_test";
+    private String serviceToken = "service_token";
+    private String ccdEventToken = "ccd_event_token";
+
+    Map<String, Object> caseDataMap = Map.of("id", "23132131", "caseCustomData", Map.of("key1", "value"));
+
+    CaseDetails caseDetails = CaseDetails.builder()
+            .data(caseDataMap)
+            .caseTypeId(caseId)
+            .callbackResponseStatus("SUCCESS")
+            .jurisdiction("TEST_jurisdiction")
+            .build();
+
+    StartEventResponse startEventResponse = StartEventResponse
+            .builder()
+            .token(ccdEventToken)
+            .eventId(triggerId)
+            .caseDetails(caseDetails)
+            .build();
+
+    CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+
+    @Test
+    public void should_startCcdEvent() {
+        given(authTokenGenerator.generate()).willReturn(serviceToken);
+        ccdUpdateService.startCcdEvent(caseId, triggerId, jwt);
+        verify(coreCaseDataApi).startEvent(jwt, serviceToken, caseId, triggerId);
+    }
+
+    @Test
+    public void should_return_startCcdEvent_response() {
+        given(authTokenGenerator.generate()).willReturn(serviceToken);
+        given(coreCaseDataApi.startEvent(jwt, serviceToken, caseId, triggerId)).willReturn(startEventResponse);
+
+        CcdCallbackDto result = ccdUpdateService.startCcdEvent(caseId, triggerId, jwt);
+
+        verify(coreCaseDataApi).startEvent(jwt, serviceToken, caseId, triggerId);
+        assertThat(result.getJwt()).isEqualTo(jwt);
+        assertThat(result.getPropertyName().get()).isEqualTo("caseBundles");
+
+        assertThatObject(result.getCaseData())
+                .extracting(jn -> textAtPath(jn, "/id"), jn -> textAtPath(jn, "/caseCustomData/key1"))
+                .containsExactly("23132131", "value");
+    }
+
+    private String textAtPath(JsonNode node, String path) {
+        System.out.println("node[" + node + "]");
+        return node.at(path).asText();
+    }
+
+    @Test
+    public void should_call_createCcdEvent() {
+        given(authTokenGenerator.generate()).willReturn(serviceToken);
+        ccdCallbackDto.setCcdPayload(objectMapper.valueToTree(startEventResponse));
+        ccdCallbackDto.setCaseData(objectMapper.valueToTree(caseDataMap));
+        ccdCallbackDto.setCaseDetails(objectMapper.valueToTree(caseDetails));
+
+
+        CaseResource caseResource = new CaseResource();
+        caseResource.setData(Map.of("caseBundles", objectMapper.valueToTree(Map.of("key123", "value123"))));
+        given(coreCaseDataApi.createEvent(anyString(), anyString(), anyString(), any(CaseDataContent.class)))
+                .willReturn(caseResource);
+
+        ccdUpdateService.submitCcdEvent(caseId, jwt, ccdCallbackDto);
+        ArgumentCaptor<CaseDataContent> caseDataContentCapturer = ArgumentCaptor.forClass(CaseDataContent.class);
+        verify(coreCaseDataApi).createEvent(eq(jwt), eq(serviceToken), eq(caseId), caseDataContentCapturer.capture());
+        var caseDataContent = caseDataContentCapturer.getValue();
+        assertThat(caseDataContent.getEvent()).isEqualTo(Event.builder().id(triggerId).build());
+        assertThat(caseDataContent.getEventToken()).isEqualTo(ccdEventToken);
+
+        assertThatObject(caseDataContent.getData())
+                .extracting(jn -> textAtPath((JsonNode) jn, "/id"), jn -> textAtPath((JsonNode) jn, "/caseCustomData/key1"))
+                .containsExactly("23132131", "value");
+
+    }
+}

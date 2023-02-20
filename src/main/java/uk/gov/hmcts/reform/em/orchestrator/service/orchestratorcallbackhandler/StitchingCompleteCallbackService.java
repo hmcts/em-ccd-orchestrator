@@ -2,23 +2,21 @@ package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdDataApiCaseUpdater;
-import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdDataApiEventCreator;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdUpdateService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 
 @Service
 @Transactional
 public class StitchingCompleteCallbackService {
 
-    private final CcdDataApiEventCreator ccdDataApiEventCreator;
-    private final CcdDataApiCaseUpdater ccdDataApiCaseUpdater;
+    private final CcdUpdateService ccdUpdateService;
     private final CcdCallbackBundleUpdater ccdCallbackBundleUpdater;
 
-    public StitchingCompleteCallbackService(CcdDataApiEventCreator ccdDataApiEventCreator,
-                                            CcdDataApiCaseUpdater ccdDataApiCaseUpdater,
-                                            CcdCallbackBundleUpdater ccdCallbackBundleUpdater) {
-        this.ccdDataApiEventCreator = ccdDataApiEventCreator;
-        this.ccdDataApiCaseUpdater = ccdDataApiCaseUpdater;
+    public StitchingCompleteCallbackService(
+            CcdUpdateService ccdUpdateService,
+            CcdCallbackBundleUpdater ccdCallbackBundleUpdater
+    ) {
+        this.ccdUpdateService = ccdUpdateService;
         this.ccdCallbackBundleUpdater = ccdCallbackBundleUpdater;
     }
 
@@ -28,7 +26,7 @@ public class StitchingCompleteCallbackService {
 
         try {
 
-            ccdCallbackDto = ccdDataApiEventCreator.executeTrigger(stitchingCompleteCallbackDto.getCaseId(),
+            ccdCallbackDto = ccdUpdateService.startCcdEvent(stitchingCompleteCallbackDto.getCaseId(),
                     stitchingCompleteCallbackDto.getTriggerId(),
                     stitchingCompleteCallbackDto.getJwt());
 
@@ -36,7 +34,7 @@ public class StitchingCompleteCallbackService {
 
         } finally {
             if (ccdCallbackDto != null) {
-                ccdDataApiCaseUpdater.executeUpdate(ccdCallbackDto, stitchingCompleteCallbackDto.getJwt());
+                ccdUpdateService.submitCcdEvent(stitchingCompleteCallbackDto.getCaseId(), stitchingCompleteCallbackDto.getJwt(), ccdCallbackDto);
             }
         }
 
