@@ -21,23 +21,15 @@ public class StitchingCompleteCallbackService {
     }
 
     public void handleCallback(StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
-
         CcdCallbackDto ccdCallbackDto = null;
 
-        try {
+        ccdCallbackDto = ccdUpdateService.startCcdEvent(stitchingCompleteCallbackDto.getCaseId(),
+                stitchingCompleteCallbackDto.getTriggerId(),
+                stitchingCompleteCallbackDto.getJwt());
 
-            ccdCallbackDto = ccdUpdateService.startCcdEvent(stitchingCompleteCallbackDto.getCaseId(),
-                    stitchingCompleteCallbackDto.getTriggerId(),
-                    stitchingCompleteCallbackDto.getJwt());
+        ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-            ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
-
-        } finally {
-            if (ccdCallbackDto != null) {
-                ccdUpdateService.submitCcdEvent(stitchingCompleteCallbackDto.getCaseId(), stitchingCompleteCallbackDto.getJwt(), ccdCallbackDto);
-            }
-        }
-
+        ccdUpdateService.submitCcdEvent(stitchingCompleteCallbackDto.getCaseId(), stitchingCompleteCallbackDto.getJwt(), ccdCallbackDto);
     }
 
 }
