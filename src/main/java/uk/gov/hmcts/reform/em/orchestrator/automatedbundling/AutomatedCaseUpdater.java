@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -27,8 +25,6 @@ import java.util.Map;
  */
 @SuppressWarnings("squid:S4738")
 public class AutomatedCaseUpdater implements CcdCaseUpdater {
-
-    private final Logger logger = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
 
     private static final String CONFIG_FIELD = "bundleConfiguration";
     private static final String MULTI_BUNDLE_CONFIG_FIELD = "multiBundleConfiguration";
@@ -103,11 +99,6 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private List<String> prepareBundleConfigs(CcdCallbackDto ccdCallbackDto) {
 
         List<String> bundleConfigurations = new ArrayList<>();
-        logger.info(
-                "find bundle config, {} = {}",
-                MULTI_BUNDLE_CONFIG_FIELD,
-                ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
-        );
 
         if (ccdCallbackDto.getCaseData().has(MULTI_BUNDLE_CONFIG_FIELD)
             && !ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD).isEmpty()) {
@@ -120,17 +111,10 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         } else if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
             && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")) {
 
-            logger.info(
-                    "find bundle config, {} = {}",
-                    CONFIG_FIELD,
-                    ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
-            );
-
             bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
         }
 
         if (CollectionUtils.isEmpty(bundleConfigurations)) {
-            logger.info("Using default config = {}", DEFAULT_CONFIG);
             bundleConfigurations.add(CONFIG_MAP.getOrDefault(ccdCallbackDto.getJurisdiction(), DEFAULT_CONFIG));
         }
         return bundleConfigurations;
