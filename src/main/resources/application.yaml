@@ -100,6 +100,9 @@ ccd:
     api:
       url: ${CCD_DATA_API_URL:http://localhost:4452}
 
+core_case_data:
+  api:
+    url: ${CCD_DATA_API_URL:http://localhost:4452}
 
 endpoint-toggles:
   stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}
