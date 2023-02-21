@@ -57,6 +57,6 @@ public class CcdUpdateService {
         CaseResource caseDetails = coreCaseDataApi
                 .createEvent(jwt, authTokenGenerator.generate(), caseId, caseDataContent
                 );
-        log.info("caseBundles {} ", caseDetails.getData().get("caseBundles").textValue());
+        log.info("CCD event submitted for reference  {} ", caseDetails.getReference());
     }
 }
