@@ -61,7 +61,6 @@ def versions = [
         poi                : '5.0.0',
         springSecurity     : '5.7.5',
         springCloud        : '3.1.4',
-        zalando            : '0.27.0',
         okhttp3            : '4.10.0'
 ]
 sourceSets {
@@ -119,12 +118,8 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
 
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.fasterXmlJackson
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.fasterXmlJackson
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.fasterXmlJackson
 
     implementation group: 'pl.touk', name : 'throwing-function', version: '1.3'
     implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
