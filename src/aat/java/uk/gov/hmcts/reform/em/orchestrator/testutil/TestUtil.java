@@ -375,7 +375,7 @@ public class TestUtil {
             .collect(Collectors.toList());
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
-            "PUBLICLAW", multipartFiles);
+            "BEFTA_JURISDICTION_2", multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
 
@@ -406,7 +406,7 @@ public class TestUtil {
     }
 
     public String getEnvCcdCaseTypeId() {
-        return ExtendedCcdHelper.CCD_BUNDLE_MVP_TYPE_ASYNC;
+        return "BEFTA_CASETYPE_2";
     }
 
     public CcdBundleDTO getCdamTestBundle(String userName) throws Exception {
