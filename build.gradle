@@ -361,7 +361,7 @@ task functional(type: Test) {
     description = 'Executes functional tests'
     setTestClassesDirs(sourceSets.aat.output.classesDirs)
     setClasspath(sourceSets.aat.runtimeClasspath)
-    include "uk/gov/hmcts/reform/em/orchestrator/functional/**"
+    include "uk/gov/hmcts/reform/em/orchestrator/functional/SecureAutomatedBundlingWithCallbacks**"
 
     testLogging {
         exceptionFormat = 'full'

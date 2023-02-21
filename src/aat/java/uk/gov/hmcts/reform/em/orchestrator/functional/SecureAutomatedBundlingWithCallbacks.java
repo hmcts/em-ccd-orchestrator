@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 import java.util.ArrayList;
 import java.util.List;
 
-@Ignore("Need to investigate further")
+
 public class SecureAutomatedBundlingWithCallbacks extends BaseTest {
 
     private final Logger logger = LoggerFactory.getLogger(SecureAutomatedBundlingWithCallbacks.class);
