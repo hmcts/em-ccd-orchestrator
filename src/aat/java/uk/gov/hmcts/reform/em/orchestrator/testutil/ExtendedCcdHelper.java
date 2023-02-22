@@ -96,7 +96,7 @@ public class ExtendedCcdHelper {
     }
 
     public CaseDetails createCdamCase(String documents) throws Exception {
-        return ccdDataHelper.createCase(bundleTesterUser, "BEFTA_JURISDICTION_2", getEnvCcdCaseTypeId(), "createCase",
+        return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
             objectMapper.readTree(String.format(createCdamAutomatedBundlingCaseTemplate, documents)));
     }
 
@@ -109,7 +109,7 @@ public class ExtendedCcdHelper {
     }
 
     public String getEnvCcdCaseTypeId() {
-        return "BEFTA_CASETYPE_2";
+        return CCD_BUNDLE_MVP_TYPE_ASYNC;
     }
 
     public InputStream getEnvSpecificDefinitionFile() throws Exception {
