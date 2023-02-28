@@ -137,7 +137,7 @@ dependencies {
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.2'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
-    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.0-RELEASE'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.1-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
