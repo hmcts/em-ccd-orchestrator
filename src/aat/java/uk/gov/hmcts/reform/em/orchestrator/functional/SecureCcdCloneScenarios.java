@@ -16,26 +16,27 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class CcdCloneScenarios extends BaseTest {
+public class SecureCcdCloneScenarios extends BaseTest {
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
     @Before
     public void setUp() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+        Assume.assumeTrue(enableCdamValidation);
     }
 
     @Test
-    public void testSingleBundleClone() throws IOException {
-        CcdBundleDTO bundle = testUtil.getTestBundle();
+    public void testSingleBundleClone() throws Exception {
+        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
         list.add(new CcdValue<>(bundle));
         String json = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
+        String cdamJson = testUtil.addCdamProperties(wrappedJson);
 
-        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
+        ValidatableResponse response = postCloneCCDBundle(cdamJson);
 
         response
                 .assertThat()
@@ -47,15 +48,15 @@ public class CcdCloneScenarios extends BaseTest {
     }
 
     @Test
-    public void testSingleBundleCloneWithCaseId() throws IOException {
-        CcdBundleDTO bundle = testUtil.getTestBundle();
+    public void testSingleBundleCloneWithCaseId() throws Exception {
+        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
         list.add(new CcdValue<>(bundle));
         String json = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"id\": \"123\", \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
-
-        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
+        String cdamJson = testUtil.addCdamProperties(wrappedJson);
+        ValidatableResponse response = postCloneCCDBundle(cdamJson);
 
         response
                 .assertThat()
@@ -82,8 +83,9 @@ public class CcdCloneScenarios extends BaseTest {
 
         String jsonList = mapper.writeValueAsString(list);
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\": %s  } } }", jsonList);
+        String cdamJson = testUtil.addCdamProperties(wrappedJson);
+        ValidatableResponse response = postCloneCCDBundle(cdamJson);
 
-        ValidatableResponse response = postCloneCCDBundle(wrappedJson);
 
         response
                 .assertThat()
@@ -97,7 +99,7 @@ public class CcdCloneScenarios extends BaseTest {
 
     private ValidatableResponse postCloneCCDBundle(String wrappedJson) {
         return testUtil
-                .authRequest()
+                .cdamAuthRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)

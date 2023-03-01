@@ -17,10 +17,7 @@ import uk.gov.hmcts.reform.em.test.ccddefinition.CcdDefinitionHelper;
 import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -163,6 +160,10 @@ public class ExtendedCcdHelper {
     public JsonNode loadCaseFromFile(String file) throws Exception {
         return assignEnvCcdCaseTypeIdToCase(
                 objectMapper.readTree(ClassLoader.getSystemResource(file)));
+    }
+
+    public JsonNode loadMissingPropertiesCase(String file) throws IOException {
+        return objectMapper.readTree(ClassLoader.getSystemResource(file));
     }
 
     //////// CDAM //////////

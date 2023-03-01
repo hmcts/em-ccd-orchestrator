@@ -99,21 +99,42 @@ public class CcdCallbackDto {
                 ? ccdPayload.findValue("id").asText() : null;
     }
 
-    public String getJurisdiction() {
-        return ccdPayload != null && ccdPayload.findValue("jurisdiction") != null
-                ? ccdPayload.findValue("jurisdiction").asText() : null;
-    }
-
-    @NotNull(message = "jurisdictionId is required attribute")
+    @NotNull(message = "jurisdictionId or jurisdiction is required attribute")
     public String getJurisdictionId() {
-        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
-            ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
+        if (getJurisdictionIdAttribute() != null) {
+            return getJurisdictionIdAttribute();
+        }
+        return getJurisdiction();
+
     }
 
-    @NotNull(message = "caseTypeId is required attribute")
+    public String getJurisdictionIdAttribute() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
+                ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
+    }
+
+    public String getJurisdiction() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION) != null
+                ? ccdPayload.findValue(Constants.JURISDICTION).asText() : null;
+    }
+
+    @NotNull(message = "caseTypeId or case_type_id is required attribute")
     public String getCaseTypeId() {
+        if (getPrimeCaseTypeId() != null) {
+            return getPrimeCaseTypeId();
+        }
+        return getAlternativeCaseTypeId();
+
+    }
+
+    private String getPrimeCaseTypeId() {
         return ccdPayload != null && ccdPayload.findValue(Constants.CASE_TYPE_ID) != null
                 ? ccdPayload.findValue(Constants.CASE_TYPE_ID).asText() : null;
+    }
+
+    private String getAlternativeCaseTypeId() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID) != null
+                ? ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID).asText() : null;
     }
 
     public String getEventToken() {

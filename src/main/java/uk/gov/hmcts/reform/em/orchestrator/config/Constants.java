@@ -12,6 +12,11 @@ public final class Constants {
         + "more than 255 Chars";
     public static final String CASE_TYPE_ID = "caseTypeId";
     public static final String JURISDICTION_ID = "jurisdictionId";
+
+    public static final String ALT_CASE_TYPE_ID = "case_type_id";
+
+    public static final String JURISDICTION = "jurisdiction";
+
     public static final String ID = "id";
     public static final String SERVICE_AUTH = "serviceauthorization";
     public static final String CDAM_DEATILS = "cdamDetails";

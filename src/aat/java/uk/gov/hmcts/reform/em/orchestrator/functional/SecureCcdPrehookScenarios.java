@@ -7,28 +7,28 @@ import org.junit.Test;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class CcdPrehookScenarios extends BaseTest {
+public class SecureCcdPrehookScenarios extends BaseTest {
 
-    private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
+    private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case-cdam.json").getPath());
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
     @Before
     public void setUp() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+        Assume.assumeTrue(enableCdamValidation);
     }
+
 
     @Test
     public void testPostBundleStitch() {
         testUtil
-                .authRequest()
+                .cdamAuthRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(jsonFile)
@@ -41,10 +41,10 @@ public class CcdPrehookScenarios extends BaseTest {
     }
 
     @Test
-    public void testEndToEnd() throws IOException {
+    public void testEndToEnd() throws Exception {
         final HashMap<String, String> caseData =
                 testUtil
-                        .authRequest()
+                        .cdamAuthRequest()
                         .baseUri(testUtil.getTestUrl())
                         .contentType(APPLICATION_JSON_VALUE)
                         .body(jsonFile)
@@ -54,19 +54,21 @@ public class CcdPrehookScenarios extends BaseTest {
                         .get("data");
 
         // pretend the user has modified some fields
-        final String uploadedDocUri = testUtil.uploadDocument();
+        final String uploadedDocUri = testUtil.uploadCdamDocument().self.href;
         final String caseJson = mapper.writeValueAsString(caseData)
                 .replace("New Bundle", "Bundle title")
                 .replace("hasCoversheets\":\"Yes", "hasCoversheets\":\"No")
                 .replace("http://dm-store:8080/documents/05647df3-094c-45a3-b667-2a6f1bf3d088", uploadedDocUri);
 
-        final String request = String.format("{ \"case_details\":{ \"case_data\": %s } } }", caseJson);
+        String request = String.format("{ \"case_details\":{ \"case_data\": %s } } }", caseJson);
+
+        String body = testUtil.addCdamProperties(request);
 
         testUtil
-                .authRequest()
+                .cdamAuthRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(request)
+                .body(body)
                 .post("/api/stitch-ccd-bundles")
                 .then()
                 .assertThat()

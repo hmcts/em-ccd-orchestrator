@@ -98,7 +98,7 @@ callbackUrlCreator:
 ccd:
   data:
     api:
-      url: ${CCD_DATA_API_URL:http://localhost:4452}
+      url: ${CCD_DATA_API_URL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
 
 
 endpoint-toggles:

@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationServ
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -49,15 +50,19 @@ public class DefaultUpdateCaller {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
 
+        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         if (enableCdamValidation) {
             Set<ConstraintViolation<CcdCallbackDto>> violations = validator.validate(dto);
 
             if (!violations.isEmpty()) {
-                throw new PropertyNotFoundException(violations);
+                List<String> messages = violations.stream().map(ConstraintViolation::getMessage).toList();
+                ccdCallbackResponseDto.getErrors().addAll(messages);
+                return ResponseEntity
+                        .badRequest()
+                        .body(ccdCallbackResponseDto);
             }
         }
 
-        CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
         try {
             ccdCallbackResponseDto.setData(ccdCaseUpdater.updateCase(dto));
             ccdCallbackResponseDto.setDocumentTaskId(dto.getDocumentTaskId());
