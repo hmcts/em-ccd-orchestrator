@@ -12,6 +12,8 @@ properties([
     ])
 ])
 
+@Library("Infrastructure")
+
 def type = "java"
 def product = "em"
 def component = "ccdorc"
