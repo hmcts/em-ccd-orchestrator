@@ -12,8 +12,6 @@ properties([
     ])
 ])
 
-@Library("Infrastructure@enable-logging-on-ft")
-
 def type = "java"
 def product = "em"
 def component = "ccdorc"
