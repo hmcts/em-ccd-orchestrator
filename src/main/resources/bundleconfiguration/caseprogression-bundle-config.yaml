@@ -1,6 +1,6 @@
 title: Trial Bundle
 filename: Trial_Bundle.pdf
-filenameIdentifier: /case_details/id
+filenameIdentifier: /case_details/filename_identifier
 coverpageTemplate: CV-UNS-LET-ENG-01224.docx
 hasTableOfContents: true
 hasCoversheets: false
@@ -231,13 +231,18 @@ folders:
             documents:
               - type: documentSet
                 property: /generalOrderDocument
-          - name: SDO
+          - name: Standard Direction Order
             documents:
               - type: documentSet
                 property: /systemGeneratedCaseDocuments
                 filters:
                   - property: /documentType
                     value: SDO_ORDER
+              - type: documentSet
+                property: /systemGeneratedCaseDocuments
+                filters:
+                  - property: /documentType
+                    value: DEFAULT_JUDGMENT_SDO_ORDER
       - name: Orders made on applications
         folders:
           - name: Orders
