@@ -16,7 +16,7 @@ plugins {
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
     id "info.solidsoft.pitest" version '1.9.0'
-    id 'org.owasp.dependencycheck' version '8.1.1'
+    id 'org.owasp.dependencycheck' version '8.1.2'
 }
 
 apply plugin: 'idea'
@@ -208,6 +208,11 @@ dependencyManagement {
         dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.69') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-websocket'
+        }
+
+        //CVE-2023-24998
+        dependencySet(group: 'commons-fileupload', version: '1.5') {
+            entry 'commons-fileupload'
         }
     }
 }
