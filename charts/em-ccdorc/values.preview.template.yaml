@@ -4,6 +4,7 @@ java:
     CALLBACK_HTTP_HOST_PORT: 443
     CALLBACK_HTTP_SCHEME: https
     ENABLE_CDAM_VALIDATION: true
+    EM_STITCHING_API_URL: https://em-stitching-pr-1432.preview.platform.hmcts.net
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
