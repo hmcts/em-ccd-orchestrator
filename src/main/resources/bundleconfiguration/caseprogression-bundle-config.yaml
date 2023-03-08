@@ -238,6 +238,11 @@ folders:
                 filters:
                   - property: /documentType
                     value: SDO_ORDER
+              - type: documentSet
+                property: /systemGeneratedCaseDocuments
+                filters:
+                  - property: /documentType
+                    value: DEFAULT_JUDGMENT_SDO_ORDER
       - name: Orders made on applications
         folders:
           - name: Orders
