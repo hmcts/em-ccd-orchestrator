@@ -11,6 +11,8 @@ import java.io.Reader;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static pl.touk.throwing.ThrowingSupplier.unchecked;
+
 @Service
 public class CcdCallbackDtoCreator {
 
@@ -33,30 +35,21 @@ public class CcdCallbackDtoCreator {
     }
 
     public CcdCallbackDto createDto(String propertyName, String jwt, Reader reader) {
-        return createCcdCallbackDto(() -> {
-            try {
-                return objectMapper.readTree(reader);
-            } catch (Exception ex) {
-                throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
-            }
-            }, propertyName, jwt
-        );
+        return createCcdCallbackDto(unchecked(() -> objectMapper.readTree(reader)), propertyName, jwt);
     }
 
     public CcdCallbackDto createDto(String propertyName, String jwt, StartEventResponse startEventResponse) {
-        return createCcdCallbackDto(() -> {
-            try {
-                return objectMapper.valueToTree(startEventResponse);
-            } catch (Exception ex) {
-                throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
-            }
-            }, propertyName, jwt
-        );
+        return createCcdCallbackDto(unchecked(() -> objectMapper.valueToTree(startEventResponse)), propertyName, jwt);
     }
 
     private CcdCallbackDto createCcdCallbackDto(Supplier<JsonNode> readTree, String propertyName, String jwt) {
         CcdCallbackDto dto = new CcdCallbackDto();
-        JsonNode payload = readTree.get();
+        JsonNode payload;
+        try {
+            payload = readTree.get();
+        } catch (Exception ex) {
+            throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
+        }
         if (payload == null) {
             throw new CantReadCcdPayloadException("Payload from CCD is empty");
         }
