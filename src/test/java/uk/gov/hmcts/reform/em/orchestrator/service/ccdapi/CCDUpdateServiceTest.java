@@ -3,7 +3,11 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdapi;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
@@ -11,10 +15,12 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.CaseResource;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CantReadCcdPayloadException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatObject;
@@ -23,21 +29,25 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class CCDUpdateServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class CCDUpdateServiceTest {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Mock
+    private CoreCaseDataApi coreCaseDataApi;
 
-    private CoreCaseDataApi coreCaseDataApi = mock(CoreCaseDataApi.class);
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
 
-    private AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
+    @Mock
+    private CcdCallbackDtoCreator ccdCallbackDtoCreator;
 
-    private CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
+    @InjectMocks
+    private CcdUpdateService ccdUpdateService;
 
-
-    private CcdUpdateService ccdUpdateService = new CcdUpdateService(coreCaseDataApi, authTokenGenerator, ccdCallbackDtoCreator);
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
 
     private String caseId = "test_case_id";
     private String triggerId = "event_abc";
@@ -45,23 +55,21 @@ class CCDUpdateServiceTest {
     private String serviceToken = "service_token";
     private String ccdEventToken = "ccd_event_token";
 
-    Map<String, Object> caseDataMap = Map.of("id", "23132131", "caseCustomData", Map.of("key1", "value"));
+    private Map<String, Object> caseDataMap = Map.of("id", "23132131", "caseCustomData", Map.of("key1", "value"));
 
-    CaseDetails caseDetails = CaseDetails.builder()
+    private CaseDetails caseDetails = CaseDetails.builder()
             .data(caseDataMap)
             .caseTypeId(caseId)
             .callbackResponseStatus("SUCCESS")
             .jurisdiction("TEST_jurisdiction")
             .build();
 
-    StartEventResponse startEventResponse = StartEventResponse
+    private StartEventResponse startEventResponse = StartEventResponse
             .builder()
             .token(ccdEventToken)
             .eventId(triggerId)
             .caseDetails(caseDetails)
             .build();
-
-    CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
 
     @Test
     public void should_startCcdEvent() {
@@ -74,6 +82,18 @@ class CCDUpdateServiceTest {
     public void should_return_startCcdEvent_response() {
         given(authTokenGenerator.generate()).willReturn(serviceToken);
         given(coreCaseDataApi.startEvent(jwt, serviceToken, caseId, triggerId)).willReturn(startEventResponse);
+        given(ccdCallbackDtoCreator.createDto("caseBundles", jwt, startEventResponse)).willReturn(ccdCallbackDto);
+
+        try {
+            ccdCallbackDto.setCcdPayload(objectMapper.valueToTree(startEventResponse));
+        } catch (Exception e) {
+            throw new CantReadCcdPayloadException("Payload from CCD can't be read", e);
+        }
+        ccdCallbackDto.setCaseData(ccdCallbackDto.getCcdPayload().findValue("case_data"));
+        ccdCallbackDto.setCaseDetails(ccdCallbackDto.getCcdPayload().findValue("case_details"));
+        ccdCallbackDto.setJwt(jwt);
+        ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
+
 
         CcdCallbackDto result = ccdUpdateService.startCcdEvent(caseId, triggerId, jwt);
 
