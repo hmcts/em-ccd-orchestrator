@@ -33,30 +33,24 @@ public class CcdCallbackDtoCreator {
     }
 
     public CcdCallbackDto createDto(String propertyName, String jwt, Reader reader) {
-        return createCcdCallbackDto(
-                () -> {
-                    try {
-                        return objectMapper.readTree(reader);
-                    } catch (Exception ex) {
-                        throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
-                    }
-                },
-                propertyName,
-                jwt
+        return createCcdCallbackDto(() -> {
+            try {
+                return objectMapper.readTree(reader);
+            } catch (Exception ex) {
+                throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
+            }
+            }, propertyName, jwt
         );
     }
 
     public CcdCallbackDto createDto(String propertyName, String jwt, StartEventResponse startEventResponse) {
-        return createCcdCallbackDto(
-                () -> {
-                    try {
-                        return objectMapper.valueToTree(startEventResponse);
-                    } catch (Exception ex) {
-                        throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
-                    }
-                },
-                propertyName,
-                jwt
+        return createCcdCallbackDto(() -> {
+            try {
+                return objectMapper.valueToTree(startEventResponse);
+            } catch (Exception ex) {
+                throw new CantReadCcdPayloadException("Payload from CCD can't be read", ex);
+            }
+            }, propertyName, jwt
         );
     }
 
