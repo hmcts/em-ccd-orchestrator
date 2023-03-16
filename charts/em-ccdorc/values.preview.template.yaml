@@ -3,7 +3,7 @@ java:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
     CALLBACK_HTTP_HOST_PORT: 443
     CALLBACK_HTTP_SCHEME: https
-    ENABLE_CDAM_VALIDATION: true
+    ENABLE_CDAM_VALIDATION: false
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
