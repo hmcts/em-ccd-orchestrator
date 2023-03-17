@@ -82,3 +82,7 @@ app-insights:
   dev-mode: off
   request-component: on
   telemetry-component: on
+
+cdam:
+  validation:
+    enabled: ${ENABLE_CDAM_VALIDATION:false}
