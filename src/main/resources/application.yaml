@@ -95,11 +95,9 @@ callbackUrlCreator:
   host: ${CALLBACK_DOMAIN:localhost} # SERVER_NAME is the domain injected by the Azure
   port: ${CALLBACK_HTTP_HOST_PORT:8080}
 
-ccd:
-  data:
-    api:
-      url: ${CCD_DATA_API_URL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
-
+core_case_data:
+  api:
+    url: ${CCD_DATA_API_URL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
 
 endpoint-toggles:
   stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}
