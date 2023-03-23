@@ -85,6 +85,7 @@ public class DefaultUpdateCallerTest {
     public void executeUpdateValidCdam() throws Exception {
         ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setEnableCdamValidation(true);
         ObjectNode caseData = objectMapper.createObjectNode();
         caseData.put("jurisdictionId", "jurisdictionId");
         caseData.put("caseTypeId", "caseTypeId");
@@ -108,6 +109,7 @@ public class DefaultUpdateCallerTest {
     public void executeUpdatePropertyNotFoundException() throws Exception {
         ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
+        ccdCallbackDto.setEnableCdamValidation(true);
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
         when(ccdCallbackDtoCreator.createDto(Mockito.any(HttpServletRequest.class), Mockito.any(String.class)))

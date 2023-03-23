@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
@@ -17,6 +18,9 @@ import static pl.touk.throwing.ThrowingSupplier.unchecked;
 public class CcdCallbackDtoCreator {
 
     private final ObjectMapper objectMapper;
+
+    @Value("${cdam.validation.enabled}")
+    private boolean enableCdamValidation;
 
     public CcdCallbackDtoCreator(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -58,6 +62,7 @@ public class CcdCallbackDtoCreator {
         dto.setCaseDetails(dto.getCcdPayload().findValue("case_details"));
         dto.setPropertyName(Optional.of(propertyName));
         dto.setJwt(jwt);
+        dto.setEnableCdamValidation(enableCdamValidation);
         return dto;
     }
 

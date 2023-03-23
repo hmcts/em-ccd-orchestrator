@@ -3,8 +3,10 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -19,6 +21,11 @@ public class CcdCallbackDtoCreatorTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
+
+    @Before
+    public void setup() {
+        ReflectionTestUtils.setField(ccdCallbackDtoCreator, "enableCdamValidation", false);
+    }
 
     @Test
     public void createDto() throws Exception {
