@@ -24,6 +24,10 @@ public class CcdCallbackDto {
 
     @Getter
     @Setter
+    private boolean enableCdamValidation;
+
+    @Getter
+    @Setter
     private String serviceAuth;
 
     @Getter
@@ -101,11 +105,14 @@ public class CcdCallbackDto {
 
     @NotNull(message = "jurisdictionId or jurisdiction is required attribute")
     public String getJurisdictionId() {
-        if (getJurisdictionIdAttribute() != null) {
+        if (enableCdamValidation) {
+            if (getJurisdictionIdAttribute() != null) {
+                return getJurisdictionIdAttribute();
+            }
+            return getJurisdiction();
+        } else {
             return getJurisdictionIdAttribute();
         }
-        return getJurisdiction();
-
     }
 
     public String getJurisdictionIdAttribute() {
@@ -120,11 +127,14 @@ public class CcdCallbackDto {
 
     @NotNull(message = "caseTypeId or case_type_id is required attribute")
     public String getCaseTypeId() {
-        if (getPrimeCaseTypeId() != null) {
+        if (enableCdamValidation) {
+            if (getPrimeCaseTypeId() != null) {
+                return getPrimeCaseTypeId();
+            }
+            return getAlternativeCaseTypeId();
+        } else {
             return getPrimeCaseTypeId();
         }
-        return getAlternativeCaseTypeId();
-
     }
 
     private String getPrimeCaseTypeId() {

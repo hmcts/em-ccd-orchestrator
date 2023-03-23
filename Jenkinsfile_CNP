@@ -66,11 +66,6 @@ curl https://raw.githubusercontent.com/hmcts/reform-api-docs/master/bin/publish-
 sh ./publish-swagger-docs.sh
 '''
     }
-    onPR()
-    {
-        env.ENABLE_CDAM_VALIDATION = true
-    }
-
     onMaster()
     {
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
