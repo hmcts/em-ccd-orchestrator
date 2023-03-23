@@ -18,7 +18,6 @@
     <suppress until="2023-04-04">
         <cve>CVE-2022-41881</cve>
         <cve>CVE-2022-41915</cve>
-        <cve>CVE-2022-1471</cve>
     </suppress>
     <!--netty vulnerabilities -->
 </suppressions>
