@@ -8,7 +8,7 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springframework.boot' version '2.7.5'
+    id 'org.springframework.boot' version '2.7.10'
     id 'uk.gov.hmcts.java' version '0.12.42'
     id 'com.github.ben-manes.versions' version '0.46.0'
     id 'org.sonarqube' version '4.0.0.2929'
@@ -194,8 +194,8 @@ dependencyManagement {
             entry 'xercesImpl'
         }
 
-        //CVE-2022-25857
-        dependencySet(group: 'org.yaml', version: '1.33') {
+        //CVE-2022-1471
+        dependencySet(group: 'org.yaml', version: '2.0') {
             entry 'snakeyaml'
         }
 
