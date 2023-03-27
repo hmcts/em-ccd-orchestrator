@@ -530,7 +530,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 14"))
                 .body("bundle.stitchedDocumentURI", notNullValue())
                 .body("bundle.stitchedDocumentClassification", equalTo(Classification.PRIVATE.toString()));
     }
