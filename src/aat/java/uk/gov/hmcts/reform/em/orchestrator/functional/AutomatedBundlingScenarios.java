@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
@@ -66,7 +67,8 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body("bundle.stitchedDocumentURI", notNullValue())
+                .body("bundle.stitchedDocumentClassification", equalTo(Classification.PUBLIC.toString()));
     }
 
     @Test
@@ -504,6 +506,33 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Functional test For Image Rendering"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
+    }
+
+    @Test
+    public void testStitchedDocumentClassification() throws IOException, InterruptedException {
+        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        json = json.replaceAll("configurationFile", "f-tests-14-stitched-document-classification.yaml");
+        json = findDocumentUrl(json);
+
+        final ValidatableResponse response = postNewBundle(json);
+
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.documents", hasSize(4))
+                .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.documents[2].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.documents[3].value.name", equalTo("Defendant doc 1"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
+                .body("bundle.stitchedDocumentURI", notNullValue())
+                .body("bundle.stitchedDocumentClassification", equalTo(Classification.PRIVATE.toString()));
     }
 
     @Test

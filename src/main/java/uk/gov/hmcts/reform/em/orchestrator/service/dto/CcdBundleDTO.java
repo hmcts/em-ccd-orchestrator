@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
@@ -23,6 +24,7 @@ public class CcdBundleDTO {
     private String eligibleForStitching;
     private String eligibleForCloning;
     private CcdDocument stitchedDocument;
+    private Classification stitchedDocumentClassification = Classification.PUBLIC;
     private List<CcdValue<CcdBundleDocumentDTO>> documents = new LinkedList<>();
     private List<CcdValue<CcdBundleFolderDTO>> folders = new LinkedList<>();
 
@@ -116,6 +118,14 @@ public class CcdBundleDTO {
 
     public void setStitchedDocument(CcdDocument stitchedDocument) {
         this.stitchedDocument = stitchedDocument;
+    }
+
+    public Classification getStitchedDocumentClassification() {
+        return stitchedDocumentClassification;
+    }
+
+    public void setStitchedDocumentClassification(Classification stitchedDocumentClassification) {
+        this.stitchedDocumentClassification = stitchedDocumentClassification;
     }
 
     public List<CcdValue<CcdBundleDocumentDTO>> getDocuments() {

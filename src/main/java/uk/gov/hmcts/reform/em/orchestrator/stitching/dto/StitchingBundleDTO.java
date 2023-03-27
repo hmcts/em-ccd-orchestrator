@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.ToString;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
@@ -17,6 +18,7 @@ public class StitchingBundleDTO {
     private String bundleTitle;
     private String description;
     private String stitchedDocumentURI;
+    private Classification stitchedDocumentClassification = Classification.PUBLIC;
     private String hashToken;
     private List<StitchingBundleFolderDTO> folders = new ArrayList<>();
     private List<StitchingBundleDocumentDTO> documents = new ArrayList<>();
@@ -146,6 +148,14 @@ public class StitchingBundleDTO {
 
     public void setStitchedDocumentURI(String stitchedDocumentURI) {
         this.stitchedDocumentURI = stitchedDocumentURI;
+    }
+
+    public Classification getStitchedDocumentClassification() {
+        return stitchedDocumentClassification;
+    }
+
+    public void setStitchedDocumentClassification(Classification stitchedDocumentClassification) {
+        this.stitchedDocumentClassification = stitchedDocumentClassification;
     }
 
     public Boolean getEnableEmailNotification() {

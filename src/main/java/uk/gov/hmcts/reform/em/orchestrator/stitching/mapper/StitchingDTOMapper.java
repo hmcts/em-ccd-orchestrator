@@ -36,6 +36,7 @@ public class StitchingDTOMapper {
                         : null
         );
         bundle.setDocumentImage(bundleDTO.getDocumentImage());
+        bundle.setStitchedDocumentClassification(bundleDTO.getStitchedDocumentClassification());
 
         return bundle;
     }

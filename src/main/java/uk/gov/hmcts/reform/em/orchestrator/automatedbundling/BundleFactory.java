@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -46,6 +47,7 @@ public class BundleFactory {
         bundle.setEligibleForStitchingAsBoolean(false);
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
         bundle.setDocumentImage(configuration.documentImage);
+        bundle.setStitchedDocumentClassification(configuration.stitchedDocumentClassification);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue,
             caseJson, configuration.documentLinkValue, configuration.customDocumentLinkValue,
