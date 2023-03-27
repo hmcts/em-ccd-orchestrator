@@ -38,7 +38,7 @@ public class StitchingDTOMapper {
         );
         bundle.setDocumentImage(bundleDTO.getDocumentImage());
         bundle.setStitchedDocumentClassification(
-                bundleDTO.getEnableEmailNotification() != null
+                bundleDTO.getStitchedDocumentClassification() != null
                         ? bundleDTO.getStitchedDocumentClassification()
                         : Classification.PUBLIC);
 
