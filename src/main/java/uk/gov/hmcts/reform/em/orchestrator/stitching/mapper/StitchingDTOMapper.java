@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
@@ -36,7 +37,10 @@ public class StitchingDTOMapper {
                         : null
         );
         bundle.setDocumentImage(bundleDTO.getDocumentImage());
-        bundle.setStitchedDocumentClassification(bundleDTO.getStitchedDocumentClassification());
+        bundle.setStitchedDocumentClassification(
+                bundleDTO.getEnableEmailNotification() != null
+                        ? bundleDTO.getStitchedDocumentClassification()
+                        : Classification.PUBLIC);
 
         return bundle;
     }
