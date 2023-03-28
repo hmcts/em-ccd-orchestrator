@@ -218,12 +218,6 @@ dependencyManagement {
             entry 'spring-security-crypto'
         }
 
-        //CVE-2022-45143
-        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.69') {
-            entry 'tomcat-embed-core'
-            entry 'tomcat-embed-websocket'
-        }
-
         //CVE-2023-24998
         dependencySet(group: 'commons-fileupload', version: '1.5') {
             entry 'commons-fileupload'
