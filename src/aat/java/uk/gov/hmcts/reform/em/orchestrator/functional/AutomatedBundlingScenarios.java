@@ -67,8 +67,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue())
-                .body("bundle.stitchedDocumentClassification", equalTo(Classification.PUBLIC.toString()));
+                .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -506,6 +505,29 @@ public class AutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Functional test For Image Rendering"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
+    }
+
+    @Test
+    public void testDefaultClassification() throws IOException, InterruptedException {
+        final ValidatableResponse response = postNewBundle(validJson);
+        response
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("data.caseBundles[0].value.title", equalTo("New bundle"))
+                .body("data.caseBundles[0].value.folders[0].value.name", equalTo("Folder 1"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.name", equalTo("Folder 1.a"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[1].value.name", equalTo("Folder 1.b"))
+                .body("data.caseBundles[0].value.folders[1].value.name", equalTo("Folder 2"))
+                .body("data.caseBundles[0].value.fileName", equalTo("stitched.pdf"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+        pollResponse
+                .assertThat().log().all()
+                .statusCode(200)
+                .body("bundle.bundleTitle", equalTo("New bundle"))
+                .body("bundle.stitchedDocumentURI", notNullValue())
+                .body("bundle.stitchedDocumentClassification", equalTo(Classification.PUBLIC.toString()));
     }
 
     @Test
