@@ -221,6 +221,11 @@ dependencyManagement {
         dependencySet(group: 'commons-fileupload', version: '1.5') {
             entry 'commons-fileupload'
         }
+
+        //CVE-2022-45688
+        dependencySet(group: 'org.json', version: '20230227') {
+            entry 'json'
+        }
     }
 }
 
