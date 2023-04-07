@@ -137,7 +137,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
-    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.2'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.3'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.0-RELEASE'
