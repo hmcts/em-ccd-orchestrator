@@ -88,7 +88,6 @@ The bundle configuration files can be validated by executing the `validateYaml` 
 ```
 
 
-
 ## Plugins
 
 The template contains the following plugins:
