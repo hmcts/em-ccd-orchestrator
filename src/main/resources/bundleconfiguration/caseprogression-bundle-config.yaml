@@ -289,3 +289,7 @@ folders:
             documents :
               - type: documentSet
                 property: /documentEvidenceForTrialRes2
+  - name: SectionA
+    documents:
+      - type: documentSet
+        property: /expertDocs
