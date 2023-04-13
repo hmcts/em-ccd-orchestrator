@@ -40,5 +40,12 @@
   "10054_Cookie without SameSite Attribute_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/_GET":"ignore",
   "10096_Timestamp Disclosure - Unix_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/_GET":"ignore",
   "10021_X-Content-Type-Options Header Missing_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/_GET":"ignore",
-  "90033_Loosely Scoped Cookie_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/_GET":"ignore"
+  "90033_Loosely Scoped Cookie_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/_GET":"ignore",
+  "10010_Cookie No HttpOnly Flag_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal_GET":"ignore",
+  "10010_Cookie No HttpOnly Flag_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "10054_Cookie without SameSite Attribute_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal_GET":"ignore",
+  "10054_Cookie without SameSite Attribute_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "10021_X-Content-Type-Options Header Missing_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal_GET":"ignore",
+  "90033_Loosely Scoped Cookie_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal_GET":"ignore",
+  "90033_Loosely Scoped Cookie_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore"
 }
