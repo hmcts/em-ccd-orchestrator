@@ -8,15 +8,15 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springframework.boot' version '2.7.5'
-    id 'uk.gov.hmcts.java' version '0.12.41'
+    id 'org.springframework.boot' version '2.7.10'
+    id 'uk.gov.hmcts.java' version '0.12.43'
     id 'com.github.ben-manes.versions' version '0.46.0'
     id 'org.sonarqube' version '4.0.0.2929'
     id 'jacoco'
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
     id "info.solidsoft.pitest" version '1.9.0'
-    id 'org.owasp.dependencycheck' version '8.1.0'
+    id 'org.owasp.dependencycheck' version '8.2.1'
 }
 
 apply plugin: 'idea'
@@ -60,7 +60,8 @@ def versions = [
         poi                : '5.0.0',
         springSecurity     : '5.7.5',
         springCloud        : '3.1.4',
-        okhttp3            : '4.10.0'
+        okhttp3            : '4.10.0',
+        jackson            : '2.14.2'
 ]
 sourceSets {
     aat {
@@ -104,7 +105,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-    implementation 'org.springframework.data:spring-data-commons:3.0.2'
+    implementation 'org.springframework.data:spring-data-commons:3.0.4'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
@@ -117,14 +118,16 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
 
     implementation group: 'pl.touk', name : 'throwing-function', version: '1.3'
-    implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.7.0'
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.14'
+    implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.8.0'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
     implementation group: "org.apache.commons", name: "commons-lang3", version: "3.12.0"
     implementation group: "commons-validator", name: "commons-validator", version: "1.7"
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.1'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
 
-    implementation 'com.github.hmcts:ccd-case-document-am-client:1.59'
+
+    implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.59'
+    implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '4.9.1'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
 
@@ -134,13 +137,13 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
-    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.1'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.3'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
 
     testImplementation group: 'com.github.hmcts', name :'fortify-client', version: '1.2.0', classifier: 'all'
 
@@ -174,7 +177,7 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation 'com.github.hmcts:em-test-helper:1.21.8'
+    aatImplementation 'com.github.hmcts:em-test-helper:1.21.9'
 }
 
 dependencyManagement {
@@ -192,9 +195,19 @@ dependencyManagement {
             entry 'xercesImpl'
         }
 
-        //CVE-2022-25857
-        dependencySet(group: 'org.yaml', version: '1.33') {
+        //CVE-2022-1471
+        dependencySet(group: 'org.yaml', version: '2.0') {
             entry 'snakeyaml'
+        }
+
+        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jackson) {
+            entry 'jackson-databind'
+            entry 'jackson-core'
+            entry 'jackson-annotations'
+        }
+
+        dependencySet(group: 'com.fasterxml.jackson.dataformat', version: versions.jackson) {
+            entry 'jackson-dataformat-yaml'
         }
 
         // CVE-2022-31692 - CVE-2022-31690
@@ -204,10 +217,14 @@ dependencyManagement {
             entry 'spring-security-crypto'
         }
 
-        //CVE-2022-45143
-        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.69') {
-            entry 'tomcat-embed-core'
-            entry 'tomcat-embed-websocket'
+        //CVE-2023-24998
+        dependencySet(group: 'commons-fileupload', version: '1.5') {
+            entry 'commons-fileupload'
+        }
+
+        //CVE-2022-45688
+        dependencySet(group: 'org.json', version: '20230227') {
+            entry 'json'
         }
     }
 }

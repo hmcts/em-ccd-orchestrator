@@ -28,7 +28,7 @@ folders:
             documents:
               - type: documentSet
                 property: /documentReferredInStatement
-          - name: reply
+          - name: Reply
             documents:
               - type: documentSet
                 property: /documentForDisclosure
@@ -45,7 +45,7 @@ folders:
             documents:
               - type: documentSet
                 property: /defendantResponseDocuments
-          - name: counter schedules of loss
+          - name: Counter schedules of loss
             documents:
                 - type: documentSet
                   property: /documentReferredInStatementRes
@@ -139,7 +139,7 @@ folders:
             documents :
               - type: documentSet
                 property: /documentQuestions
-          - name: answers to any questions asked by another party
+          - name: Answers to any questions asked by another party
             documents :
               - type: documentSet
                 property: /documentAnswers
@@ -157,7 +157,7 @@ folders:
             documents :
               - type: documentSet
                 property: /documentQuestionsRes
-          - name: answers to any questions asked by another party
+          - name: Answers to any questions asked by another party
             documents :
               - type: documentSet
                 property: /documentAnswersRes
@@ -175,7 +175,7 @@ folders:
             documents :
               - type: documentSet
                 property: /documentQuestionsRes2
-          - name: answers to any questions asked by another party
+          - name: Answers to any questions asked by another party
             documents :
               - type: documentSet
                 property: /documentAnswersRes2
@@ -205,7 +205,7 @@ folders:
                 property: /documentCaseSummaryRes2
   - name: Trial Documents
     folders:
-      - name: Claimant documentSet
+      - name: Claimant
         folders:
           - name: Skeleton argument
             documents :
@@ -289,3 +289,7 @@ folders:
             documents :
               - type: documentSet
                 property: /documentEvidenceForTrialRes2
+  - name: SectionA
+    documents:
+      - type: documentSet
+        property: /expertDocs

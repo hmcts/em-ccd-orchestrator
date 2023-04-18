@@ -206,8 +206,8 @@ public class StitchingServiceTest {
     public void testCaseId() throws Exception {
         List<String> responses = new ArrayList<>();
 
-        responses.add("{ \"id\": 2, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\" }, " +
-                "" + "\"caseId\": " + cdamDto.getCaseId() + " }");
+        responses.add("{ \"id\": 2, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\" }, "
+                + "" + "\"caseId\": " + cdamDto.getCaseId() + " }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
