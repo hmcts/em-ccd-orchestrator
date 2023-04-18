@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -29,13 +31,13 @@ public class WelcomeController {
         produces = APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<String> welcome() {
+    public ResponseEntity<Map<String, String>> welcome() {
 
         log.info("Welcome message : '{}'", MESSAGE);
 
         return ResponseEntity
             .ok()
             .cacheControl(CacheControl.noCache())
-            .body(MESSAGE);
+            .body(Map.of("message",MESSAGE));
     }
 }
