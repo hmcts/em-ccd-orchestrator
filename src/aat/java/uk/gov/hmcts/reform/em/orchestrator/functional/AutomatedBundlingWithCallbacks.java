@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 public class AutomatedBundlingWithCallbacks extends BaseTest {
@@ -12,6 +10,11 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
+
+    @Before
+    public void setUp() throws Exception {
+        Assume.assumeFalse(enableCdamValidation);
+    }
 
     @Test
     public void testSuccessfulAsyncStitching() throws Exception {

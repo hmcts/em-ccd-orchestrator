@@ -1,34 +1,39 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.data.util.Pair;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class StitchingCompleteScenarios extends BaseTest {
-    JsonNode jsonNode;
+public class SecureStitchingCompleteScenarios extends BaseTest {
+    String wrappedJson;
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
     @Before
     public void setup() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
-        jsonNode = extendedCcdHelper.loadCaseFromFile("automated-case.json");
+        Assume.assumeTrue(enableCdamValidation);
+        wrappedJson = testUtil.addCdamProperties(extendedCcdHelper.loadCaseFromFile("automated-case.json"));
     }
 
     @Test
     public void testPostBundleStitchRequestMissing() throws Exception {
-        String uploadedUrl = testUtil.uploadDocument();
-        String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
-        String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
-        ValidatableResponse response = postStitchingCompleteCallback(jsonNode, caseId, "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
+        List<Pair<String, String>> fileDetails = new ArrayList<>();
+        fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
+        String documentString = testUtil.uploadCdamDocuments(fileDetails);
+
+        String caseId = extendedCcdHelper.createCdamCase(documentString).getId().toString();
+        ValidatableResponse response = postStitchingCompleteCallback(wrappedJson, caseId, "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
 
         response
                 .assertThat().log().all()
@@ -37,9 +42,9 @@ public class StitchingCompleteScenarios extends BaseTest {
                 .body("localizedMessage", equalTo("Bundle collection could not be found"));
     }
 
-    private ValidatableResponse postStitchingCompleteCallback(JsonNode wrappedJson, String caseId, String bundleId) {
+    private ValidatableResponse postStitchingCompleteCallback(String wrappedJson, String caseId, String bundleId) {
         return testUtil
-                .authRequest()
+                .cdamAuthRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)

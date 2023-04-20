@@ -7,6 +7,7 @@ import lombok.Setter;
 import pl.touk.throwing.ThrowingFunction;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public class CcdCallbackDto {
@@ -20,6 +21,10 @@ public class CcdCallbackDto {
     private JsonNode caseDetails;
 
     private String jwt;
+
+    @Getter
+    @Setter
+    private boolean enableCdamValidation;
 
     @Getter
     @Setter
@@ -98,19 +103,48 @@ public class CcdCallbackDto {
                 ? ccdPayload.findValue("id").asText() : null;
     }
 
-    public String getJurisdiction() {
-        return ccdPayload != null && ccdPayload.findValue("jurisdiction") != null
-                ? ccdPayload.findValue("jurisdiction").asText() : null;
-    }
-
+    @NotNull(message = "jurisdictionId or jurisdiction is required attribute")
     public String getJurisdictionId() {
-        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
-            ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
+        if (enableCdamValidation) {
+            if (getJurisdictionIdAttribute() != null) {
+                return getJurisdictionIdAttribute();
+            }
+            return getJurisdiction();
+        } else {
+            return getJurisdictionIdAttribute();
+        }
     }
 
+    public String getJurisdictionIdAttribute() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION_ID) != null
+                ? ccdPayload.findValue(Constants.JURISDICTION_ID).asText() : null;
+    }
+
+    public String getJurisdiction() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.JURISDICTION) != null
+                ? ccdPayload.findValue(Constants.JURISDICTION).asText() : null;
+    }
+
+    @NotNull(message = "caseTypeId or case_type_id is required attribute")
     public String getCaseTypeId() {
+        if (enableCdamValidation) {
+            if (getPrimeCaseTypeId() != null) {
+                return getPrimeCaseTypeId();
+            }
+            return getAlternativeCaseTypeId();
+        } else {
+            return getPrimeCaseTypeId();
+        }
+    }
+
+    private String getPrimeCaseTypeId() {
         return ccdPayload != null && ccdPayload.findValue(Constants.CASE_TYPE_ID) != null
                 ? ccdPayload.findValue(Constants.CASE_TYPE_ID).asText() : null;
+    }
+
+    private String getAlternativeCaseTypeId() {
+        return ccdPayload != null && ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID) != null
+                ? ccdPayload.findValue(Constants.ALT_CASE_TYPE_ID).asText() : null;
     }
 
     public String getEventToken() {

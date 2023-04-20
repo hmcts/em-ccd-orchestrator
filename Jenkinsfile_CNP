@@ -66,7 +66,6 @@ curl https://raw.githubusercontent.com/hmcts/reform-api-docs/master/bin/publish-
 sh ./publish-swagger-docs.sh
 '''
     }
-
     onMaster()
     {
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])

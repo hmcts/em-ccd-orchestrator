@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
@@ -22,6 +24,11 @@ public class SecureCcdStitchScenarios extends BaseTest {
     private static final String syncCaseJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
         + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
         + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
+
+    @Before
+    public void setUp() throws Exception {
+        Assume.assumeTrue(enableCdamValidation);
+    }
 
     @Test
     public void testPostBundleStitch() throws Exception {

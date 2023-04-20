@@ -6,6 +6,7 @@ import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.em.EmTestConfig;
@@ -25,5 +26,8 @@ public abstract class BaseTest {
     protected ExtendedCcdHelper extendedCcdHelper;
 
     ObjectMapper mapper = new ObjectMapper();
+
+    @Value("${cdam.validation.enabled}")
+    protected boolean enableCdamValidation;
 
 }
