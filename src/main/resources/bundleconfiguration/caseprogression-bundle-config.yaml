@@ -4,7 +4,7 @@ filenameIdentifier: /case_details/filename_identifier
 coverpageTemplate: CV-UNS-LET-ENG-01224.docx
 hasTableOfContents: true
 hasCoversheets: false
-hasFolderCoversheets: true
+hasFolderCoversheets: false
 paginationStyle: bottomRight
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
@@ -289,7 +289,3 @@ folders:
             documents :
               - type: documentSet
                 property: /documentEvidenceForTrialRes2
-  - name: SectionA
-    documents:
-      - type: documentSet
-        property: /expertDocs
