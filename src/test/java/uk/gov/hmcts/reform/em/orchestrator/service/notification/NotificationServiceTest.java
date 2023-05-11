@@ -6,9 +6,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
+import uk.gov.hmcts.reform.em.orchestrator.config.HttpClientConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -21,10 +24,11 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = {NotificationService.class, HttpClientConfiguration.class})
+@TestPropertySource("classpath:application.yaml")
 public class NotificationServiceTest {
 
-    @Mock
+    @MockBean
     private NotificationClient notificationClient;
 
     private NotificationService notificationService;

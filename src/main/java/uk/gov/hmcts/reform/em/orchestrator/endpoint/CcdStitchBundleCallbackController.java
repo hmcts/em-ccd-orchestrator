@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.AsyncCcdBundleSti
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleStitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Tag(name = "Ccd Bundle Stitching Service", description = "Endpoint to stitch a Ccd Bundle.")

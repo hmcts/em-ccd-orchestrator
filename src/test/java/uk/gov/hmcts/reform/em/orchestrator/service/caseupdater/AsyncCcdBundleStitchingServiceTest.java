@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +17,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNull;

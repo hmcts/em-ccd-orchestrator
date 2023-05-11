@@ -1,15 +1,21 @@
 package uk.gov.hmcts.reform.em.orchestrator.smoke;
 
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.reform.em.EmTestConfig;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = {EmTestConfig.class})
 @TestPropertySource(value = "classpath:application.yml")
+@RunWith(SpringIntegrationSerenityRunner.class)
+@WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest {
 
     private static final String MESSAGE = "{\"message\":\"Welcome to EM Ccd Orchestrator API!\"}";

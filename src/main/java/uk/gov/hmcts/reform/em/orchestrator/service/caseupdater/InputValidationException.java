@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
+import jakarta.validation.ConstraintViolation;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 
-import javax.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
