@@ -105,7 +105,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-    implementation 'org.springframework.data:spring-data-commons:3.0.5'
+    implementation 'org.springframework.data:spring-data-commons:3.1.0'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
