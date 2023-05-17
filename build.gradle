@@ -105,7 +105,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-    implementation 'org.springframework.data:spring-data-commons:3.0.5'
+    implementation 'org.springframework.data:spring-data-commons:3.1.0'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
@@ -140,7 +140,7 @@ dependencies {
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.3'
     implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
-    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.0-RELEASE'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '4.1.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
