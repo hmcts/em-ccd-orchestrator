@@ -20,14 +20,6 @@ folders:
     documents:
       - type: documentSet
         property: /legalRepresentativeDocuments
-        filters:
-          - property: /tag
-            value: caseArgument
-      - type: documentSet
-        property: /legalRepresentativeDocuments
-        filters:
-          - property: /tag
-            value: appealSubmission
   - name: Appeal Reasons
     documents:
       - type: documentSet
