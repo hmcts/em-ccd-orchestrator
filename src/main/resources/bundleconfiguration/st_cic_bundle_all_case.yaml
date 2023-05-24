@@ -12,17 +12,52 @@ folders:
         filters:
           - property: /documentType
             value: A
-  - name: Further additions
+  - name: Direction - decision notices
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value:
-                - TD
-                - B
-                - C
-                - D
-                - E
-                - L
-                - TG
+              value: TD
+  - name: Police evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: B
+  - name: Medical records
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: C
+  - name: Financial records
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: D
+  - name: Other evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: E
+  - name: Linked documents
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: L
+  - name: General evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+              value: TG
