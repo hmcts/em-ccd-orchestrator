@@ -11,17 +11,18 @@ folders:
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: A
+            value: A
   - name: Further additions
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: TD
-              value: B
-              value: C
-              value: D
-              value: E
-              value: L
-              value: TG
+              value:
+                - TD
+                - B
+                - C
+                - D
+                - E
+                - L
+                - TG
