@@ -18,46 +18,46 @@ folders:
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: TD
+            value: TD
   - name: Police evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: B
+            value: B
   - name: Medical records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: C
+            value: C
   - name: Financial records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: D
+            value: D
   - name: Other evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: E
+            value: E
   - name: Linked documents
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: L
+            value: L
   - name: General evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
           - property: /documentType
-              value: TG
+            value: TG
