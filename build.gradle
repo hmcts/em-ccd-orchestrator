@@ -61,7 +61,6 @@ def versions = [
         springSecurity     : '5.7.8',
         springCloud        : '3.1.4',
         okhttp3            : '4.10.0',
-        jackson            : '2.14.2'
 ]
 sourceSets {
     aat {
@@ -202,10 +201,6 @@ dependencyManagement {
             entry 'jackson-databind'
             entry 'jackson-core'
             entry 'jackson-annotations'
-        }
-
-        dependencySet(group: 'com.fasterxml.jackson.dataformat', version: versions.jackson) {
-            entry 'jackson-dataformat-yaml'
         }
 
         //CVE-2023-24998
