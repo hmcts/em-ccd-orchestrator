@@ -198,12 +198,6 @@ dependencyManagement {
             entry 'snakeyaml'
         }
 
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jackson) {
-            entry 'jackson-databind'
-            entry 'jackson-core'
-            entry 'jackson-annotations'
-        }
-
         dependencySet(group: 'com.fasterxml.jackson.dataformat', version: versions.jackson) {
             entry 'jackson-dataformat-yaml'
         }
