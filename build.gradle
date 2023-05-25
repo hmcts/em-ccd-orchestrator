@@ -108,8 +108,8 @@ dependencies {
     implementation 'org.springframework.data:spring-data-commons:3.1.0'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
-    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
-    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.26'
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.28'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.okhttp3
     implementation group: "commons-io", name: "commons-io", version: "2.12.0"
@@ -143,7 +143,7 @@ dependencies {
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '4.1.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
 
     testImplementation group: 'com.github.hmcts', name :'fortify-client', version: '1.2.0', classifier: 'all'
 
