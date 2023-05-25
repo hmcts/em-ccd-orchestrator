@@ -60,7 +60,7 @@ def versions = [
         poi                : '5.0.0',
         springSecurity     : '5.7.8',
         springCloud        : '3.1.4',
-        okhttp3            : '4.10.0',
+        okhttp3            : '4.10.0'
 ]
 sourceSets {
     aat {
@@ -195,12 +195,6 @@ dependencyManagement {
         //CVE-2022-1471
         dependencySet(group: 'org.yaml', version: '2.0') {
             entry 'snakeyaml'
-        }
-
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jackson) {
-            entry 'jackson-databind'
-            entry 'jackson-core'
-            entry 'jackson-annotations'
         }
 
         //CVE-2023-24998
