@@ -60,7 +60,6 @@ def versions = [
         springSecurity     : '6.0.3',
         springCloud        : '4.0.0',
         okhttp3            : '4.10.0',
-        jackson            : '2.14.2'
 ]
 sourceSets {
     aat {
@@ -109,11 +108,11 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
-    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
-    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.26'
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.28'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.okhttp3
-    implementation group: "commons-io", name: "commons-io", version: "2.11.0"
+    implementation group: "commons-io", name: "commons-io", version: "2.12.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
@@ -131,8 +130,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '4.9.2'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
-    runtimeOnly group: 'org.springframework.boot', name: 'spring-boot-properties-migrator'
-
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.15.1'
 
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: versions.springSecurity
@@ -141,12 +139,10 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.3'
-    implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
-    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.0-RELEASE'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '4.1.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
 
     testImplementation group: 'com.github.hmcts', name :'fortify-client', version: '1.2.0', classifier: 'all'
 
@@ -180,7 +176,7 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation 'com.github.hmcts:em-test-helper:1.21.9'
+    aatImplementation 'com.github.hmcts:em-test-helper:2.0.4'
 }
 
 dependencyManagement {
@@ -201,16 +197,6 @@ dependencyManagement {
         //CVE-2022-1471
         dependencySet(group: 'org.yaml', version: '2.0') {
             entry 'snakeyaml'
-        }
-
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jackson) {
-            entry 'jackson-databind'
-            entry 'jackson-core'
-            entry 'jackson-annotations'
-        }
-
-        dependencySet(group: 'com.fasterxml.jackson.dataformat', version: versions.jackson) {
-            entry 'jackson-dataformat-yaml'
         }
 
         //CVE-2023-24998

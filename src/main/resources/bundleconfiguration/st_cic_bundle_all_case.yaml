@@ -1,0 +1,63 @@
+title: CIC Bundle
+filename: cic_case_all_bundle.pdf
+coverpageTemplate: ST_CIC_CoverPage.docx
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: true
+folders:
+  - name: Application Documents
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: A
+  - name: Direction - decision notices
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: TD
+  - name: Police evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: B
+  - name: Medical records
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: C
+  - name: Financial records
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: D
+  - name: Other evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: E
+  - name: Linked documents
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: L
+  - name: General evidence
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentType
+            value: TG

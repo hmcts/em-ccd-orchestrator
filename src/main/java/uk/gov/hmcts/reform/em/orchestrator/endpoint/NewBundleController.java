@@ -53,7 +53,6 @@ public class NewBundleController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
-        log.info(String.format("Received request for : %s", request.getRequestURI()));
         return defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);
     }
 }
