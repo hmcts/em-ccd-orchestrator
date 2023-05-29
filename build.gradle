@@ -106,7 +106,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation 'org.springframework.data:spring-data-commons:3.1.0'
 
-    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '32.0.0-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
     aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.28'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
