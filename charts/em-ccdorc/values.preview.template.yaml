@@ -1,4 +1,12 @@
 java:
+  keyVaults:
+    em-ccdorc:
+      resourceGroup: em-ccdorc
+      secrets:
+        - name: microservicekey-em-ccd-orchestrator
+          alias: S2S_KEY
+        - name: notification-api-key
+          alias: NOTIFICATION_API_KEY
   environment:
     CALLBACK_DOMAIN: ${SERVICE_FQDN}
     CALLBACK_HTTP_HOST_PORT: 443
