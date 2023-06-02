@@ -117,7 +117,6 @@ springdoc:
 logging:
   level:
     uk.gov.hmcts.reform.authorisation.filters: DEBUG
-    root: DEBUG
 cdam:
   validation:
     enabled: ${ENABLE_CDAM_VALIDATION:false}
