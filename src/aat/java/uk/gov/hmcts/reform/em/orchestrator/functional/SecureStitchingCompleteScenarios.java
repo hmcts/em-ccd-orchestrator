@@ -5,7 +5,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.data.util.Pair;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.util.ArrayList;

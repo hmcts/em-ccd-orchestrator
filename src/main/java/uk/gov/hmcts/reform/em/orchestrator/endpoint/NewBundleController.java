@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Tag(name = "Bundle Stitching Service", description = "Endpoint to create and stitch a Bundle.")

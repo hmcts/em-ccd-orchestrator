@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.util.Pair;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.util.ArrayList;

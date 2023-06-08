@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -13,8 +14,6 @@ import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedCaseUpdater;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
-
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.Collections;
 
