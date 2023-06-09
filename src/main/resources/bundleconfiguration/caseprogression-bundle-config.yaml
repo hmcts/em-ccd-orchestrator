@@ -6,7 +6,7 @@ hasTableOfContents: true
 hasCoversheets: false
 hasFolderCoversheets: true
 paginationStyle: bottomRight
-pageNumberFormat: pageRange
+pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
 folders:
   - name: Statements of Case
