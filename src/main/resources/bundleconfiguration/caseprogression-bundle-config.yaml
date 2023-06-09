@@ -4,9 +4,9 @@ filenameIdentifier: /case_details/filename_identifier
 coverpageTemplate: CV-UNS-LET-ENG-01224.docx
 hasTableOfContents: true
 hasCoversheets: false
-hasFolderCoversheets: false
+hasFolderCoversheets: true
 paginationStyle: bottomRight
-pageNumberFormat: numberOfPages
+pageNumberFormat: pageRange
 documentNameValue: /documentFileName
 folders:
   - name: Statements of Case
