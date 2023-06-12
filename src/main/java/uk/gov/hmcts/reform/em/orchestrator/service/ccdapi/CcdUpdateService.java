@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.CaseResource;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
@@ -58,5 +59,10 @@ public class CcdUpdateService {
                 .createEvent(jwt, authTokenGenerator.generate(), caseId, caseDataContent
                 );
         log.info("CCD event submitted for reference  {} ", caseDetails.getReference());
+    }
+
+    public CaseDetails getCaseDetails(String jwt, String serviceAuth,String uid, String jurisdictionId,
+                                      String caseTypeId, String caseId) {
+        return coreCaseDataApi.readForCaseWorker(jwt, serviceAuth, uid, jurisdictionId, caseTypeId, caseId);
     }
 }
