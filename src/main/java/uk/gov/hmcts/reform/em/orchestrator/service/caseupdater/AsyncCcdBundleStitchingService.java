@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
@@ -31,6 +33,8 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
     private final Validator validator;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
+    private final Logger logger = LoggerFactory.getLogger(AsyncCcdBundleStitchingService.class);
+
     public AsyncCcdBundleStitchingService(ObjectMapper objectMapper,
                                           AutomatedStitchingExecutor automatedStitchingExecutor,
                                           Validator validator) {
@@ -44,6 +48,11 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 
+        logger.info("async updateCase service caseId: {}, getJurisdiction: {} casedata {}",
+                ccdCallbackDto.getCaseId(),
+                ccdCallbackDto.getPropertyName().orElseGet(() -> "NULL"),
+                ccdCallbackDto.getCaseData()
+        );
         if (maybeBundles.isPresent()) {
             List<JsonNode> newBundles = StreamSupport
                     .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
@@ -53,6 +62,8 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                             ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                     .collect(Collectors.toList());
+
+            logger.info("maybeBundles {}", maybeBundles.get());
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
