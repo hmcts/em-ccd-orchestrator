@@ -81,6 +81,4 @@ public class CcdStitchBundleCallbackController {
         return defaultUpdateCaller.executeUpdate(asyncCcdBundleStitchingService, request);
     }
 
-
-
 }
