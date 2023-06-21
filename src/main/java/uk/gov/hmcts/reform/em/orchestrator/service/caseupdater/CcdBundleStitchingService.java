@@ -52,9 +52,9 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        logger.info("updateCase service caseId: {}, getJurisdiction: {} ",
+        logger.info("xx updateCase service caseId: {}, getJurisdiction: {} ",
                 ccdCallbackDto.getCaseId(),
-                ccdCallbackDto.getJurisdiction()
+                ccdCallbackDto.getPropertyName().orElseGet(() -> "NULL")
         );
 
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
