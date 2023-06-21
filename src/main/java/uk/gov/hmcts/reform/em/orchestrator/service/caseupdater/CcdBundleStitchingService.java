@@ -52,6 +52,11 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
+        logger.info("updateCase service caseId: {}, getJurisdiction: {} ",
+                ccdCallbackDto.getCaseId(),
+                ccdCallbackDto.getJurisdiction()
+        );
+
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 
         if (maybeBundles.isPresent()) {
@@ -67,7 +72,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
-
+        logger.info("ccdCallbackDto.getCaseData {} ", ccdCallbackDto.getCaseData());
         return ccdCallbackDto.getCaseData();
     }
 
@@ -81,7 +86,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         }
         CdamDto cdamDto = StringUtilities.populateCdamDetails(ccdCallbackDto);
         try {
-
+            logger.info("calling stitching, getDescription {} ", bundle.getValue().getDescription());
             CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), cdamDto);
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
 

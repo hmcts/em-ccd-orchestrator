@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,8 @@ public class CcdStitchBundleCallbackController {
     private final DefaultUpdateCaller defaultUpdateCaller;
     private final AsyncCcdBundleStitchingService asyncCcdBundleStitchingService;
     private final CcdBundleStitchingService ccdBundleStitchingService;
+
+    private final Logger log = LoggerFactory.getLogger(CcdStitchBundleCallbackController.class);
 
     public CcdStitchBundleCallbackController(DefaultUpdateCaller defaultUpdateCaller,
                                              AsyncCcdBundleStitchingService asyncCcdBundleStitchingService,
@@ -52,6 +56,7 @@ public class CcdStitchBundleCallbackController {
             @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> stitchCcdBundles(HttpServletRequest request) {
+        log.info("Stitch Ccd Bundles called {} ", request.getRequestURL());
         return defaultUpdateCaller.executeUpdate(ccdBundleStitchingService, request);
     }
 
