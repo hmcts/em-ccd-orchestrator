@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -37,6 +39,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     private final BundleFactory bundleFactory;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
+    private final Logger logger = LoggerFactory.getLogger(AutomatedCaseUpdater.class);
+
     public AutomatedCaseUpdater(ConfigurationLoader configurationLoader,
                                 ObjectMapper jsonMapper,
                                 BundleFactory bundleFactory,
@@ -60,9 +64,11 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
         //Make call for Stitching only after the validation is completed for the Bundles and have no validation error.
         for (CcdBundleDTO bundle : ccdBundleDtos) {
+            logger.info("getCaseData {} getPropertyName {}", ccdCallbackDto.getCaseData(), ccdCallbackDto.getPropertyName());
             final ArrayNode bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class).orElseGet(() -> {
                 ArrayNode arrayNode = jsonMapper.createArrayNode();
                 ((ObjectNode) ccdCallbackDto.getCaseData()).set(ccdCallbackDto.getPropertyName().get(), arrayNode);
+                logger.info("arrayNode {}", arrayNode);
                 return arrayNode;
             });
 
