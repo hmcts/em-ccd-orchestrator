@@ -8,7 +8,7 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springframework.boot' version '3.1.0'
+    id 'org.springframework.boot' version '3.1.1'
     id 'uk.gov.hmcts.java' version '0.12.43'
     id 'com.github.ben-manes.versions' version '0.47.0'
     id 'org.sonarqube' version '4.2.1.3168'
@@ -16,7 +16,7 @@ plugins {
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
     id "info.solidsoft.pitest" version '1.9.0'
-    id 'org.owasp.dependencycheck' version '8.2.1'
+    id 'org.owasp.dependencycheck' version '8.3.1'
 }
 
 apply plugin: 'idea'
