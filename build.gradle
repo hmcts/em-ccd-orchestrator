@@ -208,6 +208,11 @@ dependencyManagement {
         dependencySet(group: 'org.apache.httpcomponents', version: '4.5.14') {
             entry 'fluent-hc'
         }
+
+        //CVE-2022-45688
+        dependencySet(group: 'org.json', version: '20230618') {
+            entry 'json'
+        }
     }
 }
 
