@@ -39,4 +39,14 @@ public class StitchingCompleteCallbackDto {
         return ccdBundleId;
     }
 
+    @Override
+    public String toString() {
+        return "StitchingCompleteCallbackDto{" +
+                "jwt='" + jwt + '\'' +
+                ", caseId='" + caseId + '\'' +
+                ", triggerId='" + triggerId + '\'' +
+                ", ccdBundleId='" + ccdBundleId + '\'' +
+                ", documentTaskDTO=" + documentTaskDTO +
+                '}';
+    }
 }

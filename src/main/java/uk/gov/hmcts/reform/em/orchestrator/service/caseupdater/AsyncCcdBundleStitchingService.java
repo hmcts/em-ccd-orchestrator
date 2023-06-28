@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
@@ -25,6 +27,8 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 @Transactional
 public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
+
+    private final Logger logger = LoggerFactory.getLogger(AsyncCcdBundleStitchingService.class);
 
     private final ObjectMapper objectMapper;
     private final JavaType type;
@@ -65,7 +69,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
-
+        violations.forEach(v -> logger.info("violations=> {}", v.getMessage()));
         if (!violations.isEmpty()) {
             throw new InputValidationException(violations);
         }

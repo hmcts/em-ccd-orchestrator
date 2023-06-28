@@ -80,9 +80,12 @@ public class StitchingCompleteCallbackController {
                                                                        @PathVariable String triggerId,
                                                                        @PathVariable String bundleId,
                                                                        @RequestBody DocumentTaskDTO documentTaskDTO) {
+
+        log.info("stitchingCompleteCallback==> caseId {}, documentTaskDTO {}", caseId, documentTaskDTO);
+        log.info("documentTaskDTO.getTaskState==>{}", documentTaskDTO.getTaskState());
+
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
-
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
                     new StitchingCompleteCallbackDto(
@@ -91,6 +94,7 @@ public class StitchingCompleteCallbackController {
                             triggerId,
                             bundleId,
                             documentTaskDTO);
+            log.info("calling stitchingCompleteCallbackDto==>{} ", stitchingCompleteCallbackDto);
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 

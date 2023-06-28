@@ -74,8 +74,13 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
     private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
-        Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
+        logger.info("bundle getFileName {}", bundle.getValue().getFileName());
+        logger.info("bundle getDescription {}", bundle.getValue().getDescription());
+        logger.info("bundle {}", bundle.getValue());
 
+        Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
+        violations.forEach(v -> logger.info("CcdBundleStitchingService violations={}", v.getMessage()));
+        
         if (!violations.isEmpty()) {
             throw new InputValidationException(violations);
         }
