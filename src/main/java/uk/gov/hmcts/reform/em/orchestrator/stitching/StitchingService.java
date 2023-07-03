@@ -159,7 +159,7 @@ public class StitchingService {
         final Request request = new Request.Builder()
             .addHeader("Authorization", jwt)
             .addHeader("ServiceAuthorization", authTokenGenerator.generate())
-            .url(documentTaskEndpoint + taskId)
+            .url(documentTaskEndpoint + "/" + taskId)
             .get()
             .build();
         Response response = null;
