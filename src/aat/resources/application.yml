@@ -71,7 +71,7 @@ annotation:
 
 em-rpa-stitching-api:
   base-url: ${EM_STITCHING_API_URL:http://localhost:4630}
-  resource: '/api/document-tasks/'
+  resource: '/api/document-tasks'
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:true}

@@ -483,7 +483,7 @@ public class TestUtil {
 
         for (int i = 0; i < retryCount; i++) {
             final Response response = requestSpecification.get(stitchingBaseUrl
-                    + stitchingResource + documentTaskId);
+                    + stitchingResource + "/" + documentTaskId);
             final JsonPath jsonPath = response.body().jsonPath();
             final String taskState = jsonPath.getString("taskState");
             if (!taskState.equals(TaskState.NEW.toString())) {
