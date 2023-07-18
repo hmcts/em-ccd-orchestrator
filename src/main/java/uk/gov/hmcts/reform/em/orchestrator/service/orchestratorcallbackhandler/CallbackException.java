@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 public class CallbackException extends RuntimeException {
 
     private final int httpStatus;
@@ -23,5 +26,10 @@ public class CallbackException extends RuntimeException {
     public String toString() {
         return String.format("CallbackException(%s,%d, %s)", getMessage(), getHttpStatus(), getHttpResponseBody());
     }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public static CallbackException conflict(String httpResponseBody, String message) {
+        return new CallbackException(HttpStatus.CONFLICT.value(), httpResponseBody, message);
+    }
+
 
 }
