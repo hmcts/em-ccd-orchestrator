@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.S
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
+import org.springframework.http.HttpStatus;
 
 @Controller
 @ConditionalOnProperty("endpoint-toggles.stitching-complete-callback")
@@ -113,7 +114,8 @@ public class StitchingCompleteCallbackController {
 
         } catch (CallbackException e) {
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
-            return ResponseEntity.status(e.getHttpStatus()).body(e);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+
         }
     }
 }
