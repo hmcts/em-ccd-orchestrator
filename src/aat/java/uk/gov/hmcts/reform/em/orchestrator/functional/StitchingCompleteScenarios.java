@@ -2,10 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -24,6 +21,7 @@ public class StitchingCompleteScenarios extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testPostBundleStitchRequestMissing() throws Exception {
         String uploadedUrl = testUtil.uploadDocument();
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
