@@ -113,9 +113,12 @@ public class StitchingCompleteCallbackController {
             return ResponseEntity.ok().build();
 
         } catch (CallbackException e) {
+            if(e.getHttpStatus() == 403){
+                log.error(String.format(" Conflict with callback: %s", e.toString()));
+                throw CallbackException.conflict(e.getHttpResponseBody(),"Conflic occured" );
+            }
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-
+            return ResponseEntity.status(e.getHttpStatus()).body(e);
         }
     }
 }
