@@ -8,7 +8,7 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.springframework.boot' version '3.1.1'
+    id 'org.springframework.boot' version '3.1.2'
     id 'uk.gov.hmcts.java' version '0.12.43'
     id 'com.github.ben-manes.versions' version '0.47.0'
     id 'org.sonarqube' version '4.3.0.3225'
@@ -96,7 +96,9 @@ dependencies {
         exclude group: 'com.sun.xml.bind', module: 'jaxb-osgi'
     }
 
-    def withoutAlpnApi = {
+    def withoutPactExtras = {
+        exclude group: 'org.jetbrains.kotlinx',   module: 'kotlinx-coroutines-io'
+        exclude group: 'org.jetbrains.kotlinx',   module: 'kotlinx-io'
         exclude group: 'org.eclipse.jetty.alpn', module: 'alpn-api'
     }
 
@@ -167,10 +169,10 @@ dependencies {
     aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
     
     //pact contract testing
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutAlpnApi
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutAlpnApi
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutAlpnApi
-    implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutAlpnApi
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutPactExtras
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutPactExtras
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
+    implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
 
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
