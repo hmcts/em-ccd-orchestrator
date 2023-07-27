@@ -58,7 +58,7 @@ def versions = [
         mockito            : '3.12.4',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
-        springSecurity     : '6.1.0',
+        springSecurity     : '6.1.2',
         springCloud        : '4.0.3',
         okhttp3            : '4.10.0',
 ]
@@ -185,14 +185,6 @@ dependencies {
 
 dependencyManagement {
     dependencies {
-
-        // Do not change - START
-        // Changing below will break Serenity Report generation
-        dependencySet(group: 'junit', version: '4.13') {
-            entry 'junit'
-        }
-        // Do not change - END
-
         //CVE-2022-23437
         dependencySet(group: 'xerces', version: '2.12.2') {
             entry 'xercesImpl'
@@ -211,6 +203,11 @@ dependencyManagement {
         //CVE-2020-13956
         dependencySet(group: 'org.apache.httpcomponents', version: '4.5.14') {
             entry 'fluent-hc'
+        }
+
+        //CVE-2023-3635
+        dependencySet(group: 'com.squareup.okio', version: '3.4.0') {
+            entry 'okio-jvm'
         }
     }
 }
