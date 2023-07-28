@@ -120,8 +120,10 @@ public class DefaultUpdateCallerTest {
         Assert.assertEquals(400, response.getStatusCodeValue());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
         Assert.assertNotNull(ccdCallbackResponseDto);
-        Assert.assertTrue(ccdCallbackResponseDto.getErrors().contains("caseTypeId or case_type_id is required attribute"));
-        Assert.assertTrue(ccdCallbackResponseDto.getErrors().contains("jurisdictionId or jurisdiction is required attribute"));
+        Assert.assertTrue(ccdCallbackResponseDto.getErrors()
+            .contains("caseTypeId or case_type_id is required attribute"));
+        Assert.assertTrue(ccdCallbackResponseDto.getErrors()
+            .contains("jurisdictionId or jurisdiction is required attribute"));
 
     }
 

@@ -2,7 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
@@ -12,7 +14,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AutomatedStitchingExecutorTest {

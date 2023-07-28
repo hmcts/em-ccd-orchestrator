@@ -27,7 +27,8 @@ public class CcdCallbackBundleUpdaterTest {
 
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
 
-        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
+        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": "
+            + "\"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
 
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
@@ -48,10 +49,14 @@ public class CcdCallbackBundleUpdaterTest {
 
         ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-        assertEquals("DONE", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchStatus").asText());
-        assertEquals("aa.pdf", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("document_filename").asText());
-        assertEquals("https://aaa.com/pdf", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("document_url").asText());
-        assertEquals("https://aaa.com/pdf/binary", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("document_binary_url").asText());
+        assertEquals("DONE", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("stitchStatus").asText());
+        assertEquals("aa.pdf", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("document_filename").asText());
+        assertEquals("https://aaa.com/pdf", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("document_url").asText());
+        assertEquals("https://aaa.com/pdf/binary", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("document_binary_url").asText());
     }
 
     @Test
@@ -59,7 +64,8 @@ public class CcdCallbackBundleUpdaterTest {
 
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
 
-        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
+        JsonNode jsonNode = objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": "
+            + "\"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}");
 
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
@@ -80,9 +86,12 @@ public class CcdCallbackBundleUpdaterTest {
 
         ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-        assertEquals("FAILED", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchStatus").asText());
-        assertEquals("err", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchingFailureMessage").asText());
-        assertEquals("null", ccdCallbackDto.getCaseData().findPath("caseBundles").get(0).findValue("stitchedDocument").asText());
+        assertEquals("FAILED", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("stitchStatus").asText());
+        assertEquals("err", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("stitchingFailureMessage").asText());
+        assertEquals("null", ccdCallbackDto.getCaseData().findPath("caseBundles")
+            .get(0).findValue("stitchedDocument").asText());
     }
 
     @Test
@@ -90,7 +99,8 @@ public class CcdCallbackBundleUpdaterTest {
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundlesXXXXXXX"));
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}"));
+        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": "
+            + "[ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}"));
         assertThrows(CallbackException.class, () -> ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, null));
     }
 
@@ -98,16 +108,19 @@ public class CcdCallbackBundleUpdaterTest {
     public void updateBundleWithJsonProcessingException() throws Exception {
         ObjectMapper mockObjectMapper = Mockito.mock(ObjectMapper.class);
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(mockObjectMapper);
-        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), (Class<Object>) Mockito.any())).thenThrow(new JsonProcessingException("x"){});
+        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), (Class<Object>) Mockito.any()))
+            .thenThrow(new JsonProcessingException("x"){});
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
-        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [ { \"value\":  {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}"));
+        ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [ { \"value\": "
+            + " {\"id\": \"922639a4-9b06-4574-b329-ce7ecf845d6b\"} }]}"));
         StitchingCompleteCallbackDto stitchingCompleteCallbackDto = new StitchingCompleteCallbackDto(
                 "jwt",
                 "1", "x",
                 "922639a4-9b06-4574-b329-ce7ecf845d6b",
                 null);
-        assertThrows(CallbackException.class, () -> ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto));
+        assertThrows(CallbackException.class,
+            () -> ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto));
     }
 
     @Test
@@ -131,7 +144,8 @@ public class CcdCallbackBundleUpdaterTest {
                         UUID.randomUUID().toString(),
                         documentTaskDTO);
 
-        assertThrows(CallbackException.class, () -> ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto));
+        assertThrows(CallbackException.class,
+            () -> ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto));
     }
 
 }

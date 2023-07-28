@@ -36,13 +36,15 @@ public class AsyncCcdBundleStitchingServiceTest {
         MockitoAnnotations.initMocks(this);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        asyncCcdBundleStitchingService = new AsyncCcdBundleStitchingService(objectMapper, automatedStitchingExecutor, validator);
+        asyncCcdBundleStitchingService =
+            new AsyncCcdBundleStitchingService(objectMapper, automatedStitchingExecutor, validator);
     }
 
     @Test
     public void testUpdateCase() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
@@ -55,7 +57,8 @@ public class AsyncCcdBundleStitchingServiceTest {
     @Test(expected = InputValidationException.class)
     public void testInvalidFilename() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
@@ -66,7 +69,8 @@ public class AsyncCcdBundleStitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void testUpdateStitchingServiceException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");

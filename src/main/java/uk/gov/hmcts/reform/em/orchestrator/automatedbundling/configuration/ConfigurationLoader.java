@@ -7,7 +7,7 @@ public interface ConfigurationLoader {
 
     /**
      * Load the configuration from somewhere.
-     * @return
+     * @return the configuration
      */
     BundleConfiguration load(String configuration);
 

@@ -24,15 +24,20 @@ public class CcdBundleCloningServiceTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final File jsonOneEligible = new File(ClassLoader.getSystemResource("case-one-eligible.json").getPath());
+    private final File jsonOneEligible = new File(ClassLoader
+        .getSystemResource("case-one-eligible.json").getPath());
 
-    private final File jsonOneNotEligible = new File(ClassLoader.getSystemResource("case-one-not-eligible.json").getPath());
+    private final File jsonOneNotEligible = new File(ClassLoader
+        .getSystemResource("case-one-not-eligible.json").getPath());
 
-    private final File jsonOneEligibleOneNot = new File(ClassLoader.getSystemResource("case-one-eligible-one-not-eligible.json").getPath());
+    private final File jsonOneEligibleOneNot = new File(ClassLoader
+        .getSystemResource("case-one-eligible-one-not-eligible.json").getPath());
 
-    private final File jsonTwoEligible = new File(ClassLoader.getSystemResource("case-two-eligible.json").getPath());
+    private final File jsonTwoEligible = new File(ClassLoader
+        .getSystemResource("case-two-eligible.json").getPath());
 
-    private final JavaType type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
+    private final JavaType type = objectMapper.getTypeFactory()
+        .constructParametricType(CcdValue.class, CcdBundleDTO.class);
 
     private CcdCallbackDto createCallbackDto(JsonNode node) {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();

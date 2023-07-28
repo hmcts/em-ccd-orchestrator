@@ -13,7 +13,8 @@ public class LocalConfigurationLoaderTest {
     private final LocalConfigurationLoader loader = new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
 
     private static final String CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG =
-        "customDocumentLinkValue should be provided in custom-bundle-wrong-config.yaml when customDocument is set to true.";
+        "customDocumentLinkValue should be provided in custom-bundle-wrong-config.yaml "
+            + "when customDocument is set to true.";
 
     @Test
     public void load() {

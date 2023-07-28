@@ -14,7 +14,12 @@ import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class SecureAutomatedBundlingScenarios extends BaseTest {
@@ -59,8 +64,10 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("New bundle"))
                 .body("data.caseBundles[0].value.folders[0].value.name", equalTo("Folder 1"))
-                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.name", equalTo("Folder 1.a"))
-                .body("data.caseBundles[0].value.folders[0].value.folders[1].value.name", equalTo("Folder 1.b"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[0].value.name",
+                    equalTo("Folder 1.a"))
+                .body("data.caseBundles[0].value.folders[0].value.folders[1].value.name",
+                    equalTo("Folder 1.b"))
                 .body("data.caseBundles[0].value.folders[1].value.name", equalTo("Folder 2"))
                 .body("data.caseBundles[0].value.fileName", equalTo("stitched.pdf"));
 
@@ -104,8 +111,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml"
-                        + "; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors[0]", equalTo("Invalid configuration file entry in:"
+                    + " example-incorrect-key.yaml; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -257,12 +264,17 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders", hasSize(2))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Defendant doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
+                    equalTo("Evidence doc"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
+                    equalTo("Single doc 1"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -288,10 +300,13 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .body("data.caseBundles[0].value.folders", hasSize(2))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Prosecution doc 2"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
+                    equalTo("Single doc 1"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -327,7 +342,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: configurationFile; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors", contains("Invalid configuration file entry in: configurationFile;"
+                    + " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -407,7 +423,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml;" +
+                    " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -424,9 +441,12 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders", hasSize(1))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Evidence doc"));
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("Evidence doc"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -451,12 +471,17 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders", hasSize(2))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
+                    equalTo("Defendant doc 1"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
+                    equalTo("Single doc 1"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -481,12 +506,17 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders", hasSize(2))
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Defendant doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("Prosecution doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Defendant doc 1"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Evidence doc"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("Prosecution doc 2"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
+                    equalTo("Prosecution doc 1"))
                 .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name", equalTo("Single doc 1"));
+                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
+                    equalTo("Single doc 1"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -528,8 +558,10 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("hmcts.png"))
-                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("allPages"))
+                .body("data.caseBundles[0].value.documentImage.docmosisAssetId",
+                    equalTo("hmcts.png"))
+                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation",
+                    equalTo("allPages"))
                 .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("opaque"))
                 .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
@@ -555,10 +587,14 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Non Redacted Doc1.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("Redacted Doc2.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("Redacted Doc3.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name", equalTo("AT38.png"));
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Non Redacted Doc1.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("Redacted Doc2.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("Redacted Doc3.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
+                    equalTo("AT38.png"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
@@ -581,9 +617,12 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name", equalTo("Non Redacted Doc1.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name", equalTo("DWP response.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name", equalTo("DWP evidence.pdf"));
+                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                    equalTo("Non Redacted Doc1.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                    equalTo("DWP response.pdf"))
+                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                    equalTo("DWP evidence.pdf"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
