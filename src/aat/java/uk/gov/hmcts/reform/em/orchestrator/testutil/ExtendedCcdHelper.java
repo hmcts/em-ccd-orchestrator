@@ -17,7 +17,11 @@ import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
 import uk.gov.hmcts.reform.em.test.ccddefinition.CcdDefinitionHelper;
 import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,7 +76,8 @@ public class ExtendedCcdHelper {
                     + "      }";
     @Getter
     private String bundleTesterUser;
-    private List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import").collect(Collectors.toList());
+    private List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import")
+        .collect(Collectors.toList());
 
     @PostConstruct
     public void init() throws Exception {
@@ -101,7 +106,8 @@ public class ExtendedCcdHelper {
     }
 
     public JsonNode triggerEvent(String caseId, String eventId) throws Exception {
-        return objectMapper.readTree(objectMapper.writeValueAsString(ccdDataHelper.triggerEvent(bundleTesterUser, caseId, eventId)));
+        return objectMapper.readTree(objectMapper.writeValueAsString(
+            ccdDataHelper.triggerEvent(bundleTesterUser, caseId, eventId)));
     }
 
     public JsonNode getCase(String caseId) throws Exception {
@@ -113,7 +119,8 @@ public class ExtendedCcdHelper {
     }
 
     public InputStream getEnvSpecificDefinitionFile() throws Exception {
-        Workbook workbook = new XSSFWorkbook(ClassLoader.getSystemResourceAsStream("adv_bundling_functional_tests_ccd_def.xlsx"));
+        Workbook workbook = new XSSFWorkbook(ClassLoader
+            .getSystemResourceAsStream("adv_bundling_functional_tests_ccd_def.xlsx"));
         Sheet caseEventSheet = workbook.getSheet("CaseEvent");
 
         caseEventSheet.getRow(5).getCell(11).setCellValue(

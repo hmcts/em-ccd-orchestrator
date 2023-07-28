@@ -25,7 +25,8 @@ public class AutomatedStitchingExecutor {
 
     public static final String DEFAULT_TRIGGER_NAME  = "asyncStitchingComplete";
 
-    public AutomatedStitchingExecutor(StitchingService stitchingService, StitchingDTOMapper stitchingDTOMapper, CallbackUrlCreator callbackUrlCreator) {
+    public AutomatedStitchingExecutor(StitchingService stitchingService,
+                                      StitchingDTOMapper stitchingDTOMapper, CallbackUrlCreator callbackUrlCreator) {
         this.stitchingService = stitchingService;
         this.stitchingDTOMapper = stitchingDTOMapper;
         this.callbackUrlCreator = callbackUrlCreator;
@@ -45,7 +46,8 @@ public class AutomatedStitchingExecutor {
         documentTask.setBundle(stitchingDTOMapper.toStitchingDTO(ccdBundleDTO));
 
         CallbackDto callbackDto = new CallbackDto();
-        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(cdamDto.getCaseId(), triggerId, ccdBundleDTO.getId()));
+        callbackDto.setCallbackUrl(callbackUrlCreator.createCallbackUrl(
+            cdamDto.getCaseId(), triggerId, ccdBundleDTO.getId()));
         documentTask.setCallback(callbackDto);
         documentTask.setJwt(cdamDto.getJwt());
         documentTask.setCaseId(cdamDto.getCaseId());
@@ -58,7 +60,8 @@ public class AutomatedStitchingExecutor {
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
             return createdDocumentTaskDTO.getId();
         } catch (IOException e) {
-            throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ", e.getMessage(), cdamDto.getCaseId()), e);
+            throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ",
+                e.getMessage(), cdamDto.getCaseId()), e);
         }
 
     }

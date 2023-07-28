@@ -1,18 +1,20 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching.mapper;
 
-import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleFolderDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
-import uk.gov.hmcts.reform.em.orchestrator.service.dto.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class StitchingDTOMapperTest {
 
@@ -62,14 +64,22 @@ public class StitchingDTOMapperTest {
         assertEquals(bundleDTO.getTitle(), stitchingBundleDTO.getBundleTitle());
         assertEquals(bundleDTO.getDescription(), stitchingBundleDTO.getDescription());
         assertEquals(bundleDTO.getFileName(), stitchingBundleDTO.getFileName());
-        assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasCoversheets());
-        assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes, stitchingBundleDTO.getHasTableOfContents());
-        assertEquals(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes, stitchingBundleDTO.getHasFolderCoversheets());
-        assertEquals(bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes, stitchingBundleDTO.getEnableEmailNotification());
-        assertEquals(bundleDTO.getDocumentImage().getDocmosisAssetId(), stitchingBundleDTO.getDocumentImage().getDocmosisAssetId());
-        assertEquals(bundleDTO.getDocumentImage().getCoordinateX(), stitchingBundleDTO.getDocumentImage().getCoordinateX());
-        assertEquals(bundleDTO.getDocumentImage().getImageRendering(), stitchingBundleDTO.getDocumentImage().getImageRendering());
-        assertEquals(bundleDTO.getDocumentImage().getImageRenderingLocation(), stitchingBundleDTO.getDocumentImage().getImageRenderingLocation());
+        assertEquals(bundleDTO.getHasCoversheets() == CcdBoolean.Yes,
+            stitchingBundleDTO.getHasCoversheets());
+        assertEquals(bundleDTO.getHasTableOfContents() == CcdBoolean.Yes,
+            stitchingBundleDTO.getHasTableOfContents());
+        assertEquals(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes,
+            stitchingBundleDTO.getHasFolderCoversheets());
+        assertEquals(bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes,
+            stitchingBundleDTO.getEnableEmailNotification());
+        assertEquals(bundleDTO.getDocumentImage().getDocmosisAssetId(),
+            stitchingBundleDTO.getDocumentImage().getDocmosisAssetId());
+        assertEquals(bundleDTO.getDocumentImage().getCoordinateX(),
+            stitchingBundleDTO.getDocumentImage().getCoordinateX());
+        assertEquals(bundleDTO.getDocumentImage().getImageRendering(),
+            stitchingBundleDTO.getDocumentImage().getImageRendering());
+        assertEquals(bundleDTO.getDocumentImage().getImageRenderingLocation(),
+            stitchingBundleDTO.getDocumentImage().getImageRenderingLocation());
 
         assertEquals(
                 bundleDTO.getDocuments().get(0).getValue().getSourceDocument().getUrl(),
@@ -137,7 +147,7 @@ public class StitchingDTOMapperTest {
         StitchingDTOMapper mapper = new StitchingDTOMapper();
         StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
 
-        assertEquals(null, stitchingBundleDTO.getEnableEmailNotification());
+        assertNull(stitchingBundleDTO.getEnableEmailNotification());
     }
 
     @Test

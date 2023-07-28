@@ -57,7 +57,8 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
             .thenReturn(
                 new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\", \"caseBundles\": []}}}")
+                    new StringReader("{\"case_details\":{\"case_data\": "
+                        + "{\"bundleConfiguration\":\"example.yaml\", \"caseBundles\": []}}}")
                 )
             );
 
@@ -68,10 +69,14 @@ public class AutomatedCaseUpdaterTest {
 
         assertTrue(bundles.isPresent());
         assertEquals(1, bundles.get().size());
-        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
-        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders")
+            .get(1).at("/value/name").asText());
         assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
     }
 
@@ -82,7 +87,8 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
             .thenReturn(
                 new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":[{\"value\":\"example.yaml\"}], "
+                    new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":"
+                        + "[{\"value\":\"example.yaml\"}], "
                         + "\"caseBundles\": []}}}")
                 )
             );
@@ -94,10 +100,14 @@ public class AutomatedCaseUpdaterTest {
 
         assertTrue(bundles.isPresent());
         assertEquals(1, bundles.get().size());
-        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
-        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders")
+            .get(1).at("/value/name").asText());
         assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
     }
 
@@ -190,7 +200,8 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
                 .thenReturn(
                         new BufferedReader(
-                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\","
+                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":"
+                                        + "\"example.yaml\","
                                         + "\"caseBundles\": "
                                         + "[{\n"
                                         + "\"value\": {\n"
@@ -236,14 +247,20 @@ public class AutomatedCaseUpdaterTest {
         assertTrue(bundles.isPresent());
         assertEquals(2, bundles.get().size());
 
-        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders").get(0).at("/value/folders").get(1).at("/value/name").asText());
-        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 1", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1.b", bundles.get().get(0).at("/value/folders")
+            .get(0).at("/value/folders").get(1).at("/value/name").asText());
+        assertEquals("Folder 2", bundles.get().get(0).at("/value/folders")
+            .get(1).at("/value/name").asText());
         assertEquals("stitched.pdf", bundles.get().get(0).at("/value/fileName").asText());
 
-        assertEquals("Folder 1 Original", bundles.get().get(1).at("/value/folders").get(0).at("/value/name").asText());
-        assertEquals("Folder 1.a Original", bundles.get().get(1).at("/value/folders").get(0).at("/value/folders").get(0).at("/value/name").asText());
+        assertEquals("Folder 1 Original", bundles.get().get(1).at("/value/folders")
+            .get(0).at("/value/name").asText());
+        assertEquals("Folder 1.a Original", bundles.get().get(1).at("/value/folders")
+            .get(0).at("/value/folders").get(0).at("/value/name").asText());
         assertEquals("original_bundle.pdf", bundles.get().get(1).at("/value/fileName").asText());
     }
 }

@@ -2,8 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
 import java.util.ArrayList;

@@ -71,7 +71,8 @@ public class StitchingCompleteCallbackServiceTest {
         stitchingCompleteCallbackService.handleCallback(new StitchingCompleteCallbackDto("x",
                 "a", "1", UUID.randomUUID().toString(), new DocumentTaskDTO()));
 
-        Mockito.verify(ccdUpdateService, Mockito.never()).submitCcdEvent(anyString(), anyString(), any(CcdCallbackDto.class));
+        Mockito.verify(ccdUpdateService, Mockito.never())
+            .submitCcdEvent(anyString(), anyString(), any(CcdCallbackDto.class));
 
         assertTrue(true, "No exception should be thrown");
     }

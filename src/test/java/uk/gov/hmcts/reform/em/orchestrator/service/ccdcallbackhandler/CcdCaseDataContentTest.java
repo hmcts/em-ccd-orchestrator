@@ -2,7 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 
 public class CcdCaseDataContentTest {
 
@@ -30,7 +31,8 @@ public class CcdCaseDataContentTest {
         assertEquals(Boolean.TRUE, ccdCaseDataContent.getIgnoreWarning());
         assertEquals("x", ccdCaseDataContent.getSecurityClassification());
         assertEquals("CcdCaseDataContent(event=CcdEvent(eventId=eventx), data=null, eventData=null, "
-                + "securityClassification=x, dataClassification=null, token=token, ignoreWarning=true, draftId=draftId, "
+                + "securityClassification=x, dataClassification=null, token=token,"
+                + " ignoreWarning=true, draftId=draftId, "
                 + "caseReference=x)", ccdCaseDataContent.toString());
 
     }

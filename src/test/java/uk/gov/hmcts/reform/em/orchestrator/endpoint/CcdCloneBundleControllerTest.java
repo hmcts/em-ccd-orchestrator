@@ -20,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @TestPropertySource(
-        properties = {
-                "case_document_am.url=http://localhost:8090"
-        }
+    properties = {
+        "case_document_am.url=http://localhost:8090"
+    }
 )
 public class CcdCloneBundleControllerTest extends BaseTest {
 
@@ -33,14 +33,14 @@ public class CcdCloneBundleControllerTest extends BaseTest {
     public void shouldCallCcdCallbackHandlerService() throws Exception {
 
         mockMvc
-                .perform(post("/api/clone-ccd-bundles")
-                        .content("[]")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx"))
-                .andDo(print()).andExpect(status().isOk());
+            .perform(post("/api/clone-ccd-bundles")
+                .content("[]")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "xxx"))
+            .andDo(print()).andExpect(status().isOk());
 
         Mockito
-                .verify(defaultUpdateCaller, Mockito.times(1))
-                .executeUpdate(Mockito.any(CcdBundleCloningService.class), Mockito.any(HttpServletRequest.class));
+            .verify(defaultUpdateCaller, Mockito.times(1))
+            .executeUpdate(Mockito.any(CcdBundleCloningService.class), Mockito.any(HttpServletRequest.class));
     }
 }
