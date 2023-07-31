@@ -60,7 +60,7 @@ def versions = [
         poi                : '5.0.0',
         springSecurity     : '6.1.2',
         springCloud        : '4.0.3',
-        okhttp3            : '4.10.0',
+        okhttp3            : '4.11.0',
 ]
 sourceSets {
     aat {
