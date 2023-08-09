@@ -140,7 +140,8 @@ public class StitchingService {
             response = http.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                DocumentTaskDTO documentTaskDTO = jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
+                DocumentTaskDTO documentTaskDTO = jsonMapper.readValue(
+                    response.body().byteStream(), DocumentTaskDTO.class);
                 logger.info(
                         String.format(SUCCESS_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                                 StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));

@@ -34,23 +34,23 @@ public class NewBundleController {
     }
 
     @PostMapping(value = "/api/new-bundle",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Creates and Stitches a Bundle. This is Asynchronous call. This call returns the created"
-            + "Bundle with out the Stitched Document URL. Stitched Document URL is updated asynchronously by the"
-            + "Stitching api against the Bundle with in the case in CCD.",
-            parameters = {
-                    @Parameter(in = ParameterIn.HEADER, name = "authorization",
-                            description = "Authorization (Idam Bearer token)", required = true,
-                            schema = @Schema(type = "string")),
-                    @Parameter(in = ParameterIn.HEADER, name = "serviceauthorization",
-                            description = "Service Authorization (S2S Bearer token)", required = true,
-                            schema = @Schema(type = "string"))})
+        + "Bundle with out the Stitched Document URL. Stitched Document URL is updated asynchronously by the"
+        + "Stitching api against the Bundle with in the case in CCD.",
+        parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "authorization",
+                description = "Authorization (Idam Bearer token)", required = true,
+                schema = @Schema(type = "string")),
+            @Parameter(in = ParameterIn.HEADER, name = "serviceauthorization",
+                description = "Service Authorization (S2S Bearer token)", required = true,
+                schema = @Schema(type = "string"))})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success",
-                    content = @Content(schema = @Schema(implementation = CcdCallbackResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "403", description = "Access Denied")
+        @ApiResponse(responseCode = "200", description = "Success",
+            content = @Content(schema = @Schema(implementation = CcdCallbackResponseDto.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid input"),
+        @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CcdCallbackResponseDto> prepareNewBundle(HttpServletRequest request) {
         return defaultUpdateCaller.executeUpdate(automatedCaseUpdater, request);

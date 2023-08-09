@@ -73,6 +73,6 @@ public class CallbackDto {
 
     public String toString() {
         return "CallbackDto(id=" + this.getId() + ", callbackState=" + this.getCallbackState()
-                + ", failureDescription=" + this.getFailureDescription() + ", callbackUrl=" + this.getCallbackUrl() + ")";
+            + ", failureDescription=" + this.getFailureDescription() + ", callbackUrl=" + this.getCallbackUrl() + ")";
     }
 }

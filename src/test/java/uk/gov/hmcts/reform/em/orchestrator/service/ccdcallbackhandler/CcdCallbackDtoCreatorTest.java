@@ -34,7 +34,8 @@ public class CcdCallbackDtoCreatorTest {
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
 
-        Mockito.when(mockRequest.getReader()).thenReturn(new BufferedReader(new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")));
+        Mockito.when(mockRequest.getReader()).thenReturn(new BufferedReader(
+            new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
 
@@ -49,7 +50,8 @@ public class CcdCallbackDtoCreatorTest {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader()).thenReturn(new BufferedReader(new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")));
+        Mockito.when(mockRequest.getReader()).thenReturn(
+            new BufferedReader(new StringReader("{\"case_details\":{\"case_data\": {\"a\":\"b\"}}}")));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
 

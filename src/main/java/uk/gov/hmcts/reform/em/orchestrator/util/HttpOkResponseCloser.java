@@ -8,6 +8,9 @@ public class HttpOkResponseCloser {
 
     private static Logger log = LoggerFactory.getLogger(HttpOkResponseCloser.class);
 
+    private HttpOkResponseCloser() {
+    }
+
     public static void closeResponse(Response response) {
         try {
             if (response != null) {
