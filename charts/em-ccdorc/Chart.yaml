@@ -1,6 +1,6 @@
 name: em-ccdorc
 home: https://github.com/hmcts/em-ccd-orchestrator
-version: 2.0.10
+version: 2.0.11
 apiVersion: v2
 description: HMCTS EM - CCD Orchestrator API
 maintainers:

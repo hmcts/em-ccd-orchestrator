@@ -1,0 +1,11 @@
+title: ET DCF
+filename: DigitalCaseFile
+hasTableOfContents: true
+hasCoversheets: false
+pageNumberFormat: numberOfPages
+documentNameValue: /uploadedDocument/document_filename
+customDocument: true
+customDocumentLinkValue: /uploadedDocument
+documents:
+  - type: documentSet
+    property: /documentCollection

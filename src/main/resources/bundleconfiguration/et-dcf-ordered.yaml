@@ -1,0 +1,74 @@
+title: ET DCF
+filename: DigitalCaseFile
+hasTableOfContents: true
+hasCoversheets: false
+pageNumberFormat: numberOfPages
+documentNameValue: /uploadedDocument/document_filename
+customDocument: true
+customDocumentLinkValue: /uploadedDocument
+folders:
+  - name: Starting a claim
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Starting a Claim
+  - name: Response to a Claim
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Response to a Claim
+  - name: Initial Consideration
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Initial Consideration
+  - name: Case Management
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Case Management
+  - name: Withdrawal/Settled
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Withdrawal/Settled
+  - name: Hearings
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Hearings
+  - name: Judgment and Reasons
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Judgment and Reasons
+  - name: Reconsideration
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Reconsideration
+  - name: Misc
+    documents:
+      - type: documentSet
+        property: /documentCollection
+        filters:
+          - property: /topLevelDocuments
+            value: Misc
+          - property: /miscDocuments
+            value: Other
