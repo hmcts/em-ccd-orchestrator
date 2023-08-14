@@ -35,16 +35,16 @@ folders:
             property: /claimant1WitnessStatements
       - name: CL 2 Witness Statements
         documents:
-        - type: documentSet
-          property: /claimant2WitnessStatements
+          - type: documentSet
+            property: /claimant2WitnessStatements
       - name: DF 1 Witness Statements
         documents:
-        - type: documentSet
-          property: /defendant1WitnessStatements
-        - name: DF 2 Witness Statements
-          documents:
-            - type: documentSet
-              property: /defendant2WitnessStatements
+          - type: documentSet
+            property: /defendant1WitnessStatements
+      - name: DF 2 Witness Statements
+        documents:
+          - type: documentSet
+            property: /defendant2WitnessStatements
   - name: Expert Evidence
     folders:
       - name: CL 1 Experts
