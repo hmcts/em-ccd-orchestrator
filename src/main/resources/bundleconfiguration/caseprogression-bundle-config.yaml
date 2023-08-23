@@ -11,14 +11,7 @@ folders:
   - name: Trial Documents
     documents:
       - type: documentSet
-        property: /claimant1TrialDocuments
-        filters:
-          - property: /documentType
-            value: WITNESS_SUMMARY
-          - property: /documentType
-            value: CHRONOLOGY
-          - property: /documentType
-            value: TIMETABLE
+        property: /trialDocuments
   - name: Statements of Case
     documents:
       - type: documentSet
