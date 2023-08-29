@@ -4,5 +4,6 @@
   "100000_A Client Error response code was returned by the server_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET":"ignore",
   "90033_Loosely Scoped Cookie_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET":"ignore",
   "10096_Timestamp Disclosure - Unix_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET":"ignore",
-  "10049_Non-Storable Content_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
+  "10049_Non-Storable Content_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10112_Session Management Response Identified_http://em-ccd-orchestrator-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
 }
