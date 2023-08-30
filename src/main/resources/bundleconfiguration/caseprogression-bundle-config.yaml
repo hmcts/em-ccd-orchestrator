@@ -1,5 +1,4 @@
 title: Trial Bundle
-filename: Trial_Bundle.pdf
 filenameIdentifier: /case_details/filename_identifier
 hasTableOfContents: true
 hasCoversheets: false
@@ -69,7 +68,7 @@ folders:
       - name: CL 2 Documents they intend to rely on
         documents:
           - type: documentSet
-            property: /claimant1DisclosedDocuments
+            property: /claimant2DisclosedDocuments
       - name: DF 1 Documents they intend to rely on
         documents:
           - type: documentSet
