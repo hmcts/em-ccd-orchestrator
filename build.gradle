@@ -209,6 +209,12 @@ dependencyManagement {
         dependencySet(group: 'com.squareup.okio', version: '3.5.0') {
             entry 'okio-jvm'
         }
+
+        //CVE-2023-41080
+        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.13') {
+            entry 'tomcat-embed-websocket'
+            entry 'tomcat-embed-core'
+        }
     }
 }
 
