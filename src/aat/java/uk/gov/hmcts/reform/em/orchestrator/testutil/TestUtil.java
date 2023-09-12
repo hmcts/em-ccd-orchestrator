@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingTaskMaxRetryException;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
@@ -495,7 +496,7 @@ public class TestUtil {
                 Thread.sleep(sleepTime);
             }
         }
-        throw new IOException("Task not complete after maximum number of retries");
+        throw new StitchingTaskMaxRetryException();
     }
 
     public String addCdamProperties(Object json) {

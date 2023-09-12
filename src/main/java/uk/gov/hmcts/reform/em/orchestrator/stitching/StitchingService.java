@@ -151,7 +151,7 @@ public class StitchingService {
             } else {
                 logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                         StringUtilities.convertValidLog(response.body().string())));
-                throw new IOException("Unable to create stitching task: " + response.body().string());
+                throw new StitchingServiceException("Unable to create stitching task: " + response.body().string());
             }
         } finally {
             HttpOkResponseCloser.closeResponse(response);
@@ -183,7 +183,7 @@ public class StitchingService {
         } finally {
             HttpOkResponseCloser.closeResponse(response);
         }
-        throw new IOException("Task not complete after maximum number of retries");
+        throw new StitchingTaskMaxRetryException();
     }
 
 }
