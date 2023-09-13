@@ -135,6 +135,8 @@ public class StitchingService {
                 .url(documentTaskEndpoint)
                 .method("POST", body)
                 .build();
+
+        logger.debug("calling documentTaskEndpoint {}, body {} ", documentTaskEndpoint, json);
         Response response = null;
         try {
             response = http.newCall(request).execute();
