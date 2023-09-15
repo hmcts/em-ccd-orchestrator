@@ -132,6 +132,7 @@ public class StitchingService {
     public DocumentTaskDTO startStitchingTask(DocumentTaskDTO documentTask) throws IOException {
 
         final String json = jsonMapper.writeValueAsString(documentTask);
+        logger.info(String.format("request payload to stitching API : %s ", json));
         final RequestBody body = RequestBody.create(json, MediaType.get("application/json"));
         final Request request = new Request.Builder()
                 .addHeader("Authorization", documentTask.getJwt())
