@@ -84,6 +84,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         try {
 
             CcdDocument stitchedDocumentURI = stitchingService.stitch(bundle.getValue(), cdamDto);
+            logger.info(String.format("stitchedDocument details : %s ",
+                    stitchedDocumentURI));
             bundle.getValue().setStitchedDocument(stitchedDocumentURI);
 
             return bundle;

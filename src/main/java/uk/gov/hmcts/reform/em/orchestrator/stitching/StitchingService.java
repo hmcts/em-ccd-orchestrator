@@ -82,6 +82,10 @@ public class StitchingService {
 
         logger.info(String.format("Calling Stitching Service for caseId : %s ",
                 StringUtilities.convertValidLog(cdamDto.getCaseId())));
+
+        logger.info(String.format("Bundle details for fileName : %s ",
+                documentTask.getBundle()));
+
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = startStitchingTask(documentTask);
             final String response = poll(createdDocumentTaskDTO.getId(), cdamDto.getJwt());
@@ -91,7 +95,7 @@ public class StitchingService {
 
             if (JsonPath.read(response, TASK_STATE).equals(TaskState.DONE.toString())) {
                 final String fileName = json.read("$.bundle.fileName");
-
+                logger.info(String.format("Response FileName : %s ",fileName));
                 final String hashToken = json.read("$.bundle.hashToken");
 
                 if (StringUtils.isNotBlank(hashToken)) {
