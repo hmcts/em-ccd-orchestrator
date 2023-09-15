@@ -10,54 +10,54 @@ folders:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: A
   - name: Direction - decision notices
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: TD
   - name: Police evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: B
   - name: Medical records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: C
   - name: Financial records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: D
   - name: Other evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: E
   - name: Linked documents
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: L
   - name: General evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /category_id
+          - property: /categoryId
             value: TG
