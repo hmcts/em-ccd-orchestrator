@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
@@ -76,6 +77,11 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());
+
+        if(Objects.nonNull(ccdCallbackDto.getCaseData())
+            && Objects.nonNull(ccdCallbackDto.getCaseData().findValue("filename"))) {
+            bundle.getValue().setFileName(ccdCallbackDto.getCaseData().findValue("filename").toString());
+        }
 
         if (!violations.isEmpty()) {
             throw new InputValidationException(violations);
