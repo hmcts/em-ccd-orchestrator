@@ -55,7 +55,7 @@ def versions = [
         serenityreporter   : '3.7.0',
         serenityRestAssured: '3.7.0',
         pact_version       : '4.0.10',
-        mockito            : '3.12.4',
+        mockito            : '5.5.0',
         jupiter            : '5.8.2',
         poi                : '5.0.0',
         springSecurity     : '6.1.4',
