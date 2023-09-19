@@ -14,7 +14,6 @@
       "matchManagers": ["gradle","gradle-wrapper"],
       "enabled": false
     }
-  ],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "labels": ["dependencies"],
   "helm-requirements":
