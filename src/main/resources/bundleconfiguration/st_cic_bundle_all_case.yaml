@@ -1,9 +1,12 @@
 title: CIC Bundle
-filename: cic_case_all_bundle.pdf
-coverpageTemplate: ST_CIC_CoverPage.docx
+filename: cicBundle
+filenameIdentifier: /details/id
+coverpageTemplate: ST_CIC-ASS-ENG-Cover-Page.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+pageNumberFormat: numberOfPages
+paginationStyle: bottomCenter
 folders:
   - name: Application Documents
     documents:
