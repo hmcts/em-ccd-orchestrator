@@ -15,6 +15,9 @@
     }
   ],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>hmcts/.github:renovate-config"
+  ],
   "labels": ["dependencies"],
   "helm-requirements":
   {
