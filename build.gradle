@@ -11,7 +11,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.4'
     id 'uk.gov.hmcts.java' version '0.12.45'
     id 'com.github.ben-manes.versions' version '0.48.0'
-    id 'org.sonarqube' version '4.4.0.3356'
+    id 'org.sonarqube' version '4.4.1.3373'
     id 'jacoco'
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
