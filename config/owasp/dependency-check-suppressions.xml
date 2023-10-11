@@ -10,6 +10,9 @@
         <packageUrl regex="true">^pkg:maven/com.fasterxml.jackson.core/jackson-databind@.*$</packageUrl>
         <cve>CVE-2023-35116</cve>
     </suppress>
+    <suppress until="2024-01-11">
+        <cve>CVE-2023-4586</cve>
+    </suppress>
     <suppress until="2023-10-31">
         <notes>logging-interceptor-4.10.0.jar (pkg:maven/com.squareup.okhttp3/logging-interceptor@4.10.0,.</notes>
         <packageUrl regex="true">^pkg:maven/com.squareup.okhttp3/logging-interceptor@.*$</packageUrl>
@@ -19,10 +22,5 @@
         <notes>okhttp-4.10.0.jar (pkg:maven/com.squareup.okhttp3/okhttp@4.10.0,.</notes>
         <packageUrl regex="true">^pkg:maven/com.squareup.okhttp3/okhttp@.*$</packageUrl>
         <cve>CVE-2023-3782</cve>
-    </suppress>
-    <suppress until="2024-01-11">
-        <notes>netty-handler-4.1.97 (pkg:maven/io\.netty/netty-handler@4.1.97,.</notes>
-        <packageUrl regex="true">^pkg:maven/io\.netty/netty-handler@.*$</packageUrl>
-        <cve>CVE-2023-4586</cve>
     </suppress>
 </suppressions>
