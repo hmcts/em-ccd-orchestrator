@@ -33,7 +33,8 @@ public class SecureStitchingCompleteScenarios extends BaseTest {
         String documentString = testUtil.uploadCdamDocuments(fileDetails);
 
         String caseId = extendedCcdHelper.createCdamCase(documentString).getId().toString();
-        ValidatableResponse response = postStitchingCompleteCallback(wrappedJson, caseId, "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
+        ValidatableResponse response = postStitchingCompleteCallback(
+            wrappedJson, caseId, "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
 
         response
                 .assertThat().log().all()

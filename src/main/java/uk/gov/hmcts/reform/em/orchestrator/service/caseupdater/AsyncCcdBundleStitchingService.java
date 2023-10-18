@@ -16,7 +16,11 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -46,13 +50,14 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
 
         if (maybeBundles.isPresent()) {
             List<JsonNode> newBundles = StreamSupport
-                    .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(), Spliterator.ORDERED), false)
-                    .parallel()
-                    .map(unchecked(this::bundleJsonToBundleValue))
-                    .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                            ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
-                    .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                    .collect(Collectors.toList());
+                .stream(Spliterators.spliteratorUnknownSize(
+                    maybeBundles.get().iterator(), Spliterator.ORDERED), false)
+                .parallel()
+                .map(unchecked(this::bundleJsonToBundleValue))
+                .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
+                    ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
+                .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
+                .collect(Collectors.toList());
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
@@ -61,7 +66,8 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {
+    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle,
+                                                CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
         Set<ConstraintViolation<CcdBundleDTO>> violations = validator.validate(bundle.getValue());

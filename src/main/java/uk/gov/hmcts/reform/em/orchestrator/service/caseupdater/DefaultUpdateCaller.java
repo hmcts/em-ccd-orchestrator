@@ -46,7 +46,8 @@ public class DefaultUpdateCaller {
         this.validator = validator;
     }
 
-    public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater, HttpServletRequest request) {
+    public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater,
+                                                                HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
 
@@ -77,7 +78,8 @@ public class DefaultUpdateCaller {
         String ccdEvent = dto.getEventId();
         if (CollectionUtils.isNotEmpty(ccdCallbackResponseDto.getErrors())
                 && BooleanUtils.isTrue(dto.getEnableEmailNotification())
-                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT) && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
+                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT)
+                && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),

@@ -53,7 +53,8 @@ public class CcdStitchBundleCallbackControllerTest extends BaseTest {
 
         Mockito
                 .verify(defaultUpdateCaller, Mockito.times(1))
-                .executeUpdate(Mockito.any(AsyncCcdBundleStitchingService.class), Mockito.any(HttpServletRequest.class));
+                .executeUpdate(Mockito.any(AsyncCcdBundleStitchingService.class),
+                    Mockito.any(HttpServletRequest.class));
     }
 
 }

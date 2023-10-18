@@ -29,7 +29,8 @@ public class StitchingCompleteCallbackService {
 
         ccdCallbackBundleUpdater.updateBundle(ccdCallbackDto, stitchingCompleteCallbackDto);
 
-        ccdUpdateService.submitCcdEvent(stitchingCompleteCallbackDto.getCaseId(), stitchingCompleteCallbackDto.getJwt(), ccdCallbackDto);
+        ccdUpdateService.submitCcdEvent(stitchingCompleteCallbackDto.getCaseId(),
+            stitchingCompleteCallbackDto.getJwt(), ccdCallbackDto);
     }
 
 }

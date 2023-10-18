@@ -1,7 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 public class AutomatedBundlingWithCallbacks extends BaseTest {
@@ -51,7 +55,8 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
             System.out.println(String.format("Testing %s - %s", caseId, caseJson.toPrettyString()));
             if (!caseJson.findPath("stitchStatus").asText().equals("NEW")) {
                 Assert.assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
-                Assert.assertEquals("Unknown file type: text/csv", caseJson.findPath("stitchingFailureMessage").asText());
+                Assert.assertEquals("Unknown file type: text/csv",
+                    caseJson.findPath("stitchingFailureMessage").asText());
                 break;
             }
             Thread.sleep(1000);

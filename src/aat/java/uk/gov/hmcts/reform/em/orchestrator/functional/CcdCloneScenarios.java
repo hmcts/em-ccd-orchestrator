@@ -53,7 +53,8 @@ public class CcdCloneScenarios extends BaseTest {
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
         list.add(new CcdValue<>(bundle));
         String json = mapper.writeValueAsString(list);
-        String wrappedJson = String.format("{ \"id\": \"123\", \"case_details\":{ \"case_data\":{ \"caseBundles\": %s } } }", json);
+        String wrappedJson = String.format("{ \"id\": \"123\", \"case_details\":"
+            + "{ \"case_data\":{ \"caseBundles\": %s } } }", json);
 
         ValidatableResponse response = postCloneCCDBundle(wrappedJson);
 

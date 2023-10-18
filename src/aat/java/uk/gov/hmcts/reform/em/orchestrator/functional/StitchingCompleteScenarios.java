@@ -28,7 +28,8 @@ public class StitchingCompleteScenarios extends BaseTest {
         String uploadedUrl = testUtil.uploadDocument();
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
-        ValidatableResponse response = postStitchingCompleteCallback(jsonNode, caseId, "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
+        ValidatableResponse response = postStitchingCompleteCallback(jsonNode, caseId,
+            "68dd9a7d-90e5-4daf-8e50-643c68cf953b");
 
         response
                 .assertThat().log().all()

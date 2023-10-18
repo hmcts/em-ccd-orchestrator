@@ -24,7 +24,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatObject;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -132,7 +131,8 @@ public class CCDUpdateServiceTest {
         assertThat(caseDataContent.getEventToken()).isEqualTo(ccdEventToken);
 
         assertThatObject(caseDataContent.getData())
-                .extracting(jn -> textAtPath((JsonNode) jn, "/id"), jn -> textAtPath((JsonNode) jn, "/caseCustomData/key1"))
+                .extracting(jn -> textAtPath((JsonNode) jn, "/id"),
+                    jn -> textAtPath((JsonNode) jn, "/caseCustomData/key1"))
                 .containsExactly("23132131", "value");
 
     }

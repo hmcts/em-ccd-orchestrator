@@ -50,30 +50,30 @@ public class StitchingCompleteCallbackController {
     }
 
     @PostMapping(
-            value = "/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+        value = "/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Call back to update the Stitched Document details and the Stitched Status against the Bundle"
-            + "in the case in CCD.",
-            parameters = {
-                    @Parameter(in = ParameterIn.HEADER, name = "authorization",
-                            description = "Authorization (Idam Bearer token)", required = true,
-                            schema = @Schema(type = "string")),
-                    @Parameter(in = ParameterIn.HEADER, name = "serviceauthorization",
-                            description = "Service Authorization (S2S Bearer token)", required = true,
-                            schema = @Schema(type = "string")),
-                    @Parameter(in = ParameterIn.PATH, name = "caseId",
-                            description = "Case Id", required = true,
-                            schema = @Schema(type = "string")),
-                    @Parameter(in = ParameterIn.PATH, name = "triggerId",
-                            description = "Trigger Id", required = true,
-                            schema = @Schema(type = "string")),
-                    @Parameter(in = ParameterIn.PATH, name = "bundleId",
-                            description = "Bundle Id", required = true,
-                            schema = @Schema(type = "string"))})
+        + "in the case in CCD.",
+        parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "authorization",
+                description = "Authorization (Idam Bearer token)", required = true,
+                schema = @Schema(type = "string")),
+            @Parameter(in = ParameterIn.HEADER, name = "serviceauthorization",
+                description = "Service Authorization (S2S Bearer token)", required = true,
+                schema = @Schema(type = "string")),
+            @Parameter(in = ParameterIn.PATH, name = "caseId",
+                description = "Case Id", required = true,
+                schema = @Schema(type = "string")),
+            @Parameter(in = ParameterIn.PATH, name = "triggerId",
+                description = "Trigger Id", required = true,
+                schema = @Schema(type = "string")),
+            @Parameter(in = ParameterIn.PATH, name = "bundleId",
+                description = "Bundle Id", required = true,
+                schema = @Schema(type = "string"))})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "403", description = "Access Denied")
+        @ApiResponse(responseCode = "200", description = "Success"),
+        @ApiResponse(responseCode = "403", description = "Access Denied")
     })
     public ResponseEntity<CallbackException> stitchingCompleteCallback(HttpServletRequest request,
                                                                        @PathVariable String caseId,
@@ -85,12 +85,12 @@ public class StitchingCompleteCallbackController {
 
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
-                    new StitchingCompleteCallbackDto(
-                            jwt,
-                            caseId,
-                            triggerId,
-                            bundleId,
-                            documentTaskDTO);
+                new StitchingCompleteCallbackDto(
+                    jwt,
+                    caseId,
+                    triggerId,
+                    bundleId,
+                    documentTaskDTO);
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
@@ -98,14 +98,14 @@ public class StitchingCompleteCallbackController {
                 StringUtilities.convertValidLog(triggerId));
 
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
-                    && documentTaskDTO.getBundle().getEnableEmailNotification())
-                    && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
+                && documentTaskDTO.getBundle().getEnableEmailNotification())
+                && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
                 notificationService.sendEmailNotification(
-                        taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
-                        jwt,
-                        caseId,
-                        documentTaskDTO.getBundle().getBundleTitle(),
-                        taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
+                    taskState.equals(TaskState.DONE) ? successTemplateId : failureTemplateId,
+                    jwt,
+                    caseId,
+                    documentTaskDTO.getBundle().getBundleTitle(),
+                    taskState.equals(TaskState.DONE) ? null : documentTaskDTO.getFailureDescription()
                 );
             }
 

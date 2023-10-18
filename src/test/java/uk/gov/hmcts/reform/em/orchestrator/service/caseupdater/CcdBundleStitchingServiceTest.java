@@ -54,7 +54,8 @@ public class CcdBundleStitchingServiceTest {
     @Test
     public void testUpdateCase() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},"
+            + "{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
@@ -71,7 +72,8 @@ public class CcdBundleStitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void testUpdateCaseStitchingException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
@@ -85,7 +87,8 @@ public class CcdBundleStitchingServiceTest {
     @Test(expected = InputValidationException.class)
     public void testInvalidFilename() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
@@ -96,7 +99,8 @@ public class CcdBundleStitchingServiceTest {
     @Test(expected = StitchingServiceException.class)
     public void testUpdateCaseInterruptedException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
-        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
+        JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
+            + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);

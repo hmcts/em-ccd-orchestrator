@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDocumentDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingTaskMaxRetryException;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
@@ -53,7 +54,7 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 public class TestUtil {
 
     private final int retryCount = 6;
-    private final int sleepTime = 1000;
+    private final int sleepTime = 2000;
     private String idamAuth;
     private String s2sAuth;
 
@@ -110,7 +111,8 @@ public class TestUtil {
 
     @PostConstruct
     public void init() {
-        idamHelper.createUser(getUsername(), Stream.of("caseworker", "caseworker-publiclaw").collect(Collectors.toList()));
+        idamHelper.createUser(getUsername(), Stream.of("caseworker", "caseworker-publiclaw")
+            .collect(Collectors.toList()));
         SerenityRest.useRelaxedHTTPSValidation();
         idamAuth = idamHelper.authenticateUser(getUsername());
         s2sAuth = s2sHelper.getS2sToken();
@@ -300,14 +302,15 @@ public class TestUtil {
             .header("ServiceAuthorization", cdamS2sHelper.getS2sToken());
     }
 
-    public List<CcdValue<CcdBundleDocumentDTO>> uploadCdamBundleDocuments(List<Pair<String, String>> fileDetails, String userName) throws Exception {
+    public List<CcdValue<CcdBundleDocumentDTO>> uploadCdamBundleDocuments(
+                    List<Pair<String, String>> fileDetails, String userName) throws Exception {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
             .collect(Collectors.toList());
 
-        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
-            "PUBLICLAW", multipartFiles);
+        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
 
@@ -360,8 +363,8 @@ public class TestUtil {
                 .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
                 .collect(Collectors.toList());
 
-        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
-                "PUBLICLAW", multipartFiles);
+        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
         return uploadResponse.getDocuments().get(0).links;
@@ -373,8 +376,8 @@ public class TestUtil {
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
             .collect(Collectors.toList());
 
-        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(),
-            "PUBLICLAW", multipartFiles);
+        DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
 
@@ -438,7 +441,8 @@ public class TestUtil {
 
         List<Pair<String, String>> fileDetails = new ArrayList<>();
         fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
-        fileDetails.add(Pair.of("wordDocument2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+        fileDetails.add(Pair.of("wordDocument2.docx",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
 
         List<CcdValue<CcdBundleDocumentDTO>> docs = uploadCdamBundleDocuments(fileDetails, userName);
         bundle.setDocuments(docs);
@@ -492,7 +496,7 @@ public class TestUtil {
                 Thread.sleep(sleepTime);
             }
         }
-        throw new IOException("Task not complete after maximum number of retries");
+        throw new StitchingTaskMaxRetryException();
     }
 
     public String addCdamProperties(Object json) {

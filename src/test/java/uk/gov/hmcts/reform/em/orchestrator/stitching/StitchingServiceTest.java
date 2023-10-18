@@ -74,7 +74,8 @@ public class StitchingServiceTest {
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
-        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"Dummy.Bundle.01.docx\" } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\","
+            + " \"fileName\": \"Dummy.Bundle.01.docx\" } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -92,7 +93,8 @@ public class StitchingServiceTest {
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
-        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"Dummy-Bundle-01\" } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\""
+            + ", \"fileName\": \"Dummy-Bundle-01\" } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -107,7 +109,8 @@ public class StitchingServiceTest {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
-        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"\" } }");
+        responses.add("{ \"id\": 1, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\""
+            + ", \"fileName\": \"\" } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);

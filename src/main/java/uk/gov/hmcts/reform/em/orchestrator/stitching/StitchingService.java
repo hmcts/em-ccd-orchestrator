@@ -135,12 +135,15 @@ public class StitchingService {
                 .url(documentTaskEndpoint)
                 .method("POST", body)
                 .build();
+
+        logger.debug("calling documentTaskEndpoint {}, body {} ", documentTaskEndpoint, json);
         Response response = null;
         try {
             response = http.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                DocumentTaskDTO documentTaskDTO = jsonMapper.readValue(response.body().byteStream(), DocumentTaskDTO.class);
+                DocumentTaskDTO documentTaskDTO = jsonMapper.readValue(
+                    response.body().byteStream(), DocumentTaskDTO.class);
                 logger.info(
                         String.format(SUCCESS_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                                 StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
@@ -148,7 +151,7 @@ public class StitchingService {
             } else {
                 logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
                         StringUtilities.convertValidLog(response.body().string())));
-                throw new IOException("Unable to create stitching task: " + response.body().string());
+                throw new StitchingServiceException("Unable to create stitching task: " + response.body().string());
             }
         } finally {
             HttpOkResponseCloser.closeResponse(response);
@@ -180,7 +183,7 @@ public class StitchingService {
         } finally {
             HttpOkResponseCloser.closeResponse(response);
         }
-        throw new IOException("Task not complete after maximum number of retries");
+        throw new StitchingTaskMaxRetryException();
     }
 
 }

@@ -14,8 +14,8 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.command.ValidateYam
 import uk.gov.hmcts.reform.em.orchestrator.config.SwaggerConfiguration;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@ComponentScan(excludeFilters  = {@ComponentScan.Filter(
-    type = FilterType.ASSIGNABLE_TYPE, classes = {Application.class, SwaggerConfiguration.class})})
+@ComponentScan(excludeFilters = {@ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE, classes = {Application.class, SwaggerConfiguration.class})})
 public class CliApplication implements ApplicationRunner {
 
     @Autowired

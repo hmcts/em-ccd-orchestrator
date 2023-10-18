@@ -48,8 +48,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
     }
 
     /**
-     * Load the configuration file then add a new bundle to the case data based on that configuration. If an error occurs
-     * during loading or processing the original case data will be returned with errors
+     * Load the configuration file then add a new bundle to the case data based on that configuration.
+     * If an error occurs during loading or processing the original case data will be returned with errors
      */
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
@@ -87,7 +87,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
             CcdBundleDTO bundle = bundleFactory.create(configuration, ccdCallbackDto.getCaseData());
             ccdCallbackDto.setEnableEmailNotification(bundle.getEnableEmailNotificationAsBoolean());
             if (StringUtils.isNotBlank(bundle.getFileNameIdentifier())) {
-                bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
+                bundle.setFileName(ccdCallbackDto.getIdentifierFromCcdPayload(
+                    bundle.getFileNameIdentifier()) + "-" + bundle.getFileName());
             }
             bundle.setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
 

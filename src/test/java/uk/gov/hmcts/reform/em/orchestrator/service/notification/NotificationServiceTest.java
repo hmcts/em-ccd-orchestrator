@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -19,7 +23,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {NotificationService.class, HttpClientConfiguration.class})

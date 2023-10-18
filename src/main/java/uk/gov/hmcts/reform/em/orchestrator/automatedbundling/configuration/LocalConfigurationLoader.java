@@ -6,8 +6,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
 
 /**
- * This loading strategy takes a file from the local filesystem and converts it to a BundleConfiguration object. The local
- * configuration file can be any format that Jackson will support (e.g. JSON or YAML).
+ * This loading strategy takes a file from the local filesystem and converts it to a BundleConfiguration object.
+ * The local configuration file can be any format that Jackson will support (e.g. JSON or YAML).
  */
 public class LocalConfigurationLoader implements ConfigurationLoader {
 
@@ -18,8 +18,8 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
     }
 
     /**
-     * Load the file from the file system and then pass it to Jackson for parsing. If an exception returns the Optional will
-     * be empty.
+     * Load the file from the file system and then pass it to Jackson for parsing.
+     * If an exception returns the Optional will be empty.
      */
     @Override
     public BundleConfiguration load(String filename) {
@@ -40,7 +40,8 @@ public class LocalConfigurationLoader implements ConfigurationLoader {
             throw bundleConfigExp;
         } catch (Exception e) {
             throw new BundleConfigurationException(
-                    "Invalid configuration file entry in: " + filename + "; Configuration file parameter(s) and/or parameter value(s)", e);
+                    "Invalid configuration file entry in: " + filename
+                        + "; Configuration file parameter(s) and/or parameter value(s)", e);
         } finally {
             IOUtils.closeQuietly(input);
         }

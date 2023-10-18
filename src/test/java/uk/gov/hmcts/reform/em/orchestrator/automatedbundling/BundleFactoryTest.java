@@ -5,8 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Test;
-import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.*;
-import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.*;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationSort;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationSortOrder;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
+import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
@@ -18,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public class BundleFactoryTest {
 
@@ -249,7 +257,8 @@ public class BundleFactoryTest {
             JsonNode json = mapper.readTree(customCaseJson);
             CcdBundleDTO bundle = factory.create(configuration, json);
         } catch (DocumentSelectorException docExp) {
-            assertTrue(docExp.getMessage().equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
+            assertTrue(docExp.getMessage()
+                .equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
         }
 
     }
@@ -483,8 +492,8 @@ public class BundleFactoryTest {
             true,
             new ArrayList<>(),
             Arrays.asList(
-            new BundleConfigurationDocument("/document1"),
-            new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
             ),
             CcdBundlePaginationStyle.off,
             null,
