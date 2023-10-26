@@ -111,7 +111,7 @@ dependencies {
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.okhttp3
-    implementation group: "commons-io", name: "commons-io", version: "2.14.0"
+    implementation group: "commons-io", name: "commons-io", version: "2.15.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
