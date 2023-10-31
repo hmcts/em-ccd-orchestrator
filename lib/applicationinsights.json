@@ -2,5 +2,27 @@
   "connectionString": "${file:/mnt/secrets/em-ccdorc/app-insights-connection-string}",
   "role": {
     "name": "em-ccdorc"
+  },
+  "preview": {
+    "sampling": {
+      "overrides": [
+        {
+          "telemetryType": "request",
+          "attributes": [
+            {
+              "key": "http.url",
+              "value": "https?://[^/]+/health.*",
+              "matchType": "regexp"
+            },
+            {
+              "key": "http.url",
+              "value": "https?://[^/]+/",
+              "matchType": "regexp"
+            }
+          ],
+          "percentage": 1
+        }
+      ]
+    }
   }
 }
