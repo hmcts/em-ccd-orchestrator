@@ -16,10 +16,6 @@ folders:
     documents:
       - type: documentSet
         property: /statementsOfCaseDocuments
-  - name: Particulars Of Claim
-    documents:
-      - type: documentSet
-        property: /particularsOfClaim
   - name: Orders
     documents:
       - type: documentSet
