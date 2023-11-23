@@ -16,6 +16,10 @@ folders:
     documents:
       - type: documentSet
         property: /statementsOfCaseDocuments
+  - name: Directions Questionnaires
+    documents:
+      - type: documentSet
+        property: /directionsQuestionnaires
   - name: Orders
     documents:
       - type: documentSet
