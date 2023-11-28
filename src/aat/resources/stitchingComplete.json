@@ -46,7 +46,7 @@
         ],
         "caseDescription": null,
         "caseCreationDate": null,
-        "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+        "bundleConfiguration": "test-files/f-tests-1-flat-docs.yaml"
       },
       "case_type_id": "CCD_BUNDLE_MVP_TYPE_ASYNC",
       "created_date": [

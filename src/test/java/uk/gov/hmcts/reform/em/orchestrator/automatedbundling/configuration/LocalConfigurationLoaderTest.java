@@ -47,7 +47,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void filename() {
-        BundleConfiguration config = loader.load("example-with-filename.yaml");
+        BundleConfiguration config = loader.load("test-files/example-with-filename.yaml");
 
         assertEquals("Bundle with filename", config.title);
         assertEquals("bundle.pdf", config.filename);
@@ -75,14 +75,14 @@ public class LocalConfigurationLoaderTest {
     @Test
     public void fileContainsIncorrectValueForField() {
         thrown.expect(BundleConfigurationException.class);
-        thrown.expectMessage("Invalid configuration file entry in: example-incorrect-value-for-key.yaml"
+        thrown.expectMessage("Invalid configuration file entry in: test-files/example-incorrect-value-for-key.yaml"
                 + "; Configuration file parameter(s) and/or parameter value(s)");
-        loader.load("example-incorrect-value-for-key.yaml");
+        loader.load("test-files/example-incorrect-value-for-key.yaml");
     }
 
     @Test
     public void documentSet() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("test-files/example-with-documents.yaml");
 
         assertEquals(2, config.documents.size());
         assertEquals(0, config.folders.get(0).documents.size());
@@ -91,7 +91,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void enableEmailNotificationNull() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("test-files/example-with-documents.yaml");
 
         assertEquals(null, config.enableEmailNotification);
     }

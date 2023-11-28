@@ -176,7 +176,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
+        json = json.replaceAll("configurationFile", "test-files/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);

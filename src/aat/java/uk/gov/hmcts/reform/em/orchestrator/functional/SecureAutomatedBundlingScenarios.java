@@ -199,7 +199,7 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatDocuments() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
+        json = json.replaceAll("configurationFile", "test-files/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
