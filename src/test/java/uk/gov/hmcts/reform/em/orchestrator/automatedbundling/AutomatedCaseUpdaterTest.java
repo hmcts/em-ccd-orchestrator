@@ -58,7 +58,7 @@ public class AutomatedCaseUpdaterTest {
             .thenReturn(
                 new BufferedReader(
                     new StringReader("{\"case_details\":{\"case_data\": "
-                        + "{\"bundleConfiguration\":\"example.yaml\", \"caseBundles\": []}}}")
+                        + "{\"bundleConfiguration\":\"test-files/example.yaml\", \"caseBundles\": []}}}")
                 )
             );
 
@@ -88,7 +88,7 @@ public class AutomatedCaseUpdaterTest {
             .thenReturn(
                 new BufferedReader(
                     new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":"
-                        + "[{\"value\":\"example.yaml\"}], "
+                        + "[{\"value\":\"test-files/example.yaml\"}], "
                         + "\"caseBundles\": []}}}")
                 )
             );
@@ -180,7 +180,7 @@ public class AutomatedCaseUpdaterTest {
         Mockito.when(mockRequest.getReader())
             .thenReturn(
                 new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\"}}}")
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"test-files/example.yaml\"}}}")
                 )
             );
 
@@ -201,7 +201,7 @@ public class AutomatedCaseUpdaterTest {
                 .thenReturn(
                         new BufferedReader(
                                 new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":"
-                                        + "\"example.yaml\","
+                                        + "\"test-files/example.yaml\","
                                         + "\"caseBundles\": "
                                         + "[{\n"
                                         + "\"value\": {\n"

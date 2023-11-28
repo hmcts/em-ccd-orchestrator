@@ -18,7 +18,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void load() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("test-files/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals(true, config.hasTableOfContents);
@@ -58,7 +58,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void bundleWithNoFileName() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("test-files/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals("stitched.pdf", config.filename);
