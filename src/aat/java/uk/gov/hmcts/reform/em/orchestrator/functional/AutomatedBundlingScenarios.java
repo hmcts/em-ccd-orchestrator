@@ -91,7 +91,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml"
+                .body("errors[0]", equalTo("Invalid configuration file entry in: test-files/example-incorrect-key.yaml"
                     + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
 

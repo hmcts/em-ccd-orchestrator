@@ -112,7 +112,7 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(400)
                 .body("errors[0]", equalTo("Invalid configuration file entry in:"
-                    + " example-incorrect-key.yaml; Configuration file parameter(s) and/or parameter value(s)"));
+                    + " test-files/example-incorrect-key.yaml; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test

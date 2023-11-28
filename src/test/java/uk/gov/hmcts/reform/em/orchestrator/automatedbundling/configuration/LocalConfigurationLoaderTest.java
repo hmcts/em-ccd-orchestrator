@@ -66,7 +66,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test(expected = BundleConfigurationException.class)
     public void fileContainsIncorrectFieldname() {
-        loader.load("example-incorrect-key.yaml");
+        loader.load("test-files/example-incorrect-key.yaml");
     }
 
     @Rule
