@@ -219,14 +219,13 @@ public class BundleFactory {
                             customDocumentLinkValue, customDocument))
                     .collect(Collectors.toList());
         } catch (Exception ex) {
-            logger.error("addDocumentSet failed caseData:{},"
+            logger.error("addDocumentSet failed,"
                             + "list:{},"
                             + "documentSelector property:{},"
                             + "documentNameValue:{},"
                             + "documentLinkValue:{},"
                             + "customDocumentLinkValue:{},"
                             + "customDocument:{}",
-                    caseData.asText(),
                     list,
                     documentSelector.property,
                     documentNameValue,
