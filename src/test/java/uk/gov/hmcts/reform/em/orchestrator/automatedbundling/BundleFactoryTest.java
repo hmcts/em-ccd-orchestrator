@@ -26,6 +26,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class BundleFactoryTest {
@@ -38,6 +39,7 @@ public class BundleFactoryTest {
     private final File case4Json = new File(ClassLoader.getSystemResource("case-data4.json").getPath());
     private final File case5Json = new File(ClassLoader.getSystemResource("case-data5.json").getPath());
     private final File case6Json = new File(ClassLoader.getSystemResource("case-data6.json").getPath());
+    private final File case7Json = new File(ClassLoader.getSystemResource("case-data7.json").getPath());
     private final File customCaseJson = new File(ClassLoader.getSystemResource("case-data-custom.json").getPath());
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -328,6 +330,36 @@ public class BundleFactoryTest {
         assertEquals("document1.pdf", bundle.getDocuments().get(0).getValue().getSourceDocument().getFileName());
         assertEquals("document2.pdf", bundle.getDocuments().get(1).getValue().getSourceDocument().getFileName());
         assertEquals("document3.pdf", bundle.getDocuments().get(2).getValue().getSourceDocument().getFileName());
+    }
+
+    @Test
+    public void createWithDocumentFails() throws IOException, DocumentSelectorException {
+        BundleConfiguration configuration = new BundleConfiguration(
+                "Bundle title",
+                "filename.pdf",
+                "/case_details/id",
+                "FL-FRM-GOR-ENG-12345",
+                PageNumberFormat.numberOfPages,
+                null,
+                true,
+                true,
+                true,
+                new ArrayList<>(),
+                Arrays.asList(
+                        new BundleConfigurationDocument("/document1"),
+                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+                ),
+                CcdBundlePaginationStyle.off,
+                null,
+                null,
+                false,
+                null,
+                false,
+                null
+        );
+
+        JsonNode json = mapper.readTree(case7Json);
+        assertThrows(DocumentSelectorException.class, () -> factory.create(configuration, json));
     }
 
     @Test

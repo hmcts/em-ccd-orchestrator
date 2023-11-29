@@ -24,8 +24,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static pl.touk.throwing.ThrowingFunction.unchecked;
-
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */
