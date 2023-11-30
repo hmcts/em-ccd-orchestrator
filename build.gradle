@@ -48,6 +48,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven { url  'https://repo.spring.io/milestone/'}
 }
 
 def versions = [
@@ -59,7 +60,7 @@ def versions = [
         jupiter            : '5.8.2',
         poi                : '5.2.4',
         springSecurity     : '6.2.0',
-        springCloud        : '4.0.4',
+        springCloud        : '4.1.0-RC1',
         okhttp3            : '4.12.0',
 ]
 sourceSets {
