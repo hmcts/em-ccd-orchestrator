@@ -238,7 +238,12 @@ dependencyManagement {
             entry 'netty-transport-native-epoll'
             entry 'netty-transport-native-kqueue'
             entry 'netty-transport-native-unix-common'
-        }     
+        }
+       // CVE-2023-6378
+      dependencySet(group: 'ch.qos.logback', version: '1.4.14') {
+          entry 'logback-classic'
+          entry 'logback-core'
+        } 
     }
 }
 
