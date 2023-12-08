@@ -6,7 +6,7 @@ hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
 pageNumberFormat: numberOfPages
-documentNameValue: /documentFileName
+documentNameValue: /documentLink/document_filename
 paginationStyle: bottomCenter
 folders:
   - name: Application Documents
