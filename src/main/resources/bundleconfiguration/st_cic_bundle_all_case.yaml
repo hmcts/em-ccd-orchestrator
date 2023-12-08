@@ -6,15 +6,13 @@ hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
 pageNumberFormat: numberOfPages
+documentNameValue: /documentLink/document_filename
 paginationStyle: bottomCenter
 folders:
   - name: Application Documents
     documents:
       - type: documentSet
         property: /caseDocuments
-        filters:
-          - property: /categoryId
-            value: A
   - name: Direction - decision notices
     documents:
       - type: documentSet
