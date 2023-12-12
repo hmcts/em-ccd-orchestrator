@@ -179,6 +179,11 @@ dependencies {
     contractTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.1"
     contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: versions.junitPlatform
 
+
+    contractTestImplementation "org.junit.jupiter:junit-jupiter-api:5.10.1"
+    contractTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.1"
+    contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: versions.junitPlatform
+
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
 
