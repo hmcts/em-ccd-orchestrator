@@ -175,6 +175,10 @@ dependencies {
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
     implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
 
+    contractTestImplementation "org.junit.jupiter:junit-jupiter-api:5.10.1"
+    contractTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.1"
+    contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: versions.junitPlatform
+
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
 
