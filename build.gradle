@@ -173,10 +173,10 @@ dependencies {
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutPactExtras
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutPactExtras
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
-    implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
 
-    contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
-    contractTestRuntimeOnly  group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
+
+    contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: versions.jupiter
 
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
