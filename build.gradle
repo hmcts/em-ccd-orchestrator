@@ -170,14 +170,10 @@ dependencies {
     aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.4'
     
     //pact contract testing
-    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
-        exclude group: 'junit', module: 'junit'
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
-    implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5_2.12', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8_2.12', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-provider-junit5', version: '4.0.10'
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-provider-gradle', version: '4.0.10'
 
     contractTestImplementation "org.junit.jupiter:junit-jupiter-api:5.10.1"
     contractTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.1"
