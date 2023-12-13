@@ -195,11 +195,6 @@ dependencyManagement {
             entry 'snakeyaml'
         }
 
-        //CVE-2023-3635
-        dependencySet(group: 'com.squareup.okio', version: '3.6.0') {
-            entry 'okio-jvm'
-        }
-
         // CVE-2023-6378
         dependencySet(group: 'ch.qos.logback', version: '1.4.14') {
             entry 'logback-classic'
