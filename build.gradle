@@ -8,8 +8,8 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'org.springframework.boot' version '3.2.0'
-    id 'uk.gov.hmcts.java' version '0.12.52'
+    id 'org.springframework.boot' version '3.2.1'
+    id 'uk.gov.hmcts.java' version '0.12.53'
     id 'com.github.ben-manes.versions' version '0.50.0'
     id 'org.sonarqube' version '4.4.1.3373'
     id 'jacoco'
@@ -59,7 +59,7 @@ def versions = [
         mockito            : '5.7.0',
         jupiter            : '5.10.1',
         poi                : '5.2.4',
-        springSecurity     : '6.2.0',
+        springSecurity     : '6.2.1',
         springCloud        : '4.1.0',
         okhttp3            : '4.12.0',
 ]
@@ -206,7 +206,7 @@ dependencyManagement {
 checkstyle {
 //    ignoreFailures = true
     maxWarnings = 10
-    toolVersion = '10.12.5'
+    toolVersion = '10.12.7'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
