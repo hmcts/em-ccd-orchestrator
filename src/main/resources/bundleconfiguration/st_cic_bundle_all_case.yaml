@@ -13,6 +13,9 @@ folders:
     documents:
       - type: documentSet
         property: /caseDocuments
+        filters:
+          - property: /categoryId
+            value: A
   - name: Direction - decision notices
     documents:
       - type: documentSet
