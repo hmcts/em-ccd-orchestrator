@@ -1,7 +1,7 @@
 title: CIC Bundle
 filename: cicBundle
 filenameIdentifier: /details/id
-coverpageTemplate: ST-CIC-ASS-ENG-Cover-Page.docx
+coverpageTemplate: ST_CIC-ASS-ENG-Cover-Page.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
@@ -14,54 +14,61 @@ folders:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: A
-  - name: Direction - decision notices
-    documents:
-      - type: documentSet
-        property: /caseDocuments
-        filters:
-          - property: /categoryId
-            value: TD
   - name: Police evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: B
   - name: Medical records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: C
   - name: Financial records
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: D
   - name: Other evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: E
   - name: Linked documents
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: L
+  - name: Witness Statements
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentLink/category_id
+            value: S
+  - name: Direction - decision notices
+    documents:
+      - type: documentSet
+        property: /caseDocuments
+        filters:
+          - property: /documentLink/category_id
+            value: TD
   - name: General evidence
     documents:
       - type: documentSet
         property: /caseDocuments
         filters:
-          - property: /categoryId
+          - property: /documentLink/category_id
             value: TG
