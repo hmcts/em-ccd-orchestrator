@@ -63,7 +63,7 @@ public class ExtendedCcdHelper {
             + "    \"caseDescription\": null,\n"
             + "    \"caseComments\": null,\n"
             + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"prl-bundle-config.yaml\"\n"
+            + "    \"bundleConfiguration\": \"default-config.yaml\"\n"
             + "  }";
     public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
         + "    \"caseTitle\": null,\n"
