@@ -47,7 +47,7 @@ public class AutomatedBundlingWithCallbacks extends BaseTest {
     public void testUnSuccessfulAsyncStitching() throws Exception {
         String uploadedUrl = testUtil.uploadDocument("dm-text.csv", "text/csv");
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
-        String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
+        String caseId = extendedCcdHelper.createPublicLawCase(documentString).getId().toString();
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
         int i = 0;
         while (i < WAIT_SECONDS) {
