@@ -55,18 +55,6 @@ public class ExtendedCcdHelper {
             + "    \"caseDocuments\": [%s],\n"
             + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
             + "  }";
-
-    public final String createPublicLawAutomatedBundlingCaseTemplate = "{\n"
-            + "    \"caseTitle\": null,\n"
-            + "    \"caseOwner\": null,\n"
-            + "    \"caseCreationDate\": null,\n"
-            + "    \"caseDescription\": null,\n"
-            + "    \"caseComments\": null,\n"
-            + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"prl-bundle-config.yaml\"\n"
-            + "  }";
-
-
     public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
         + "    \"caseTitle\": null,\n"
         + "    \"caseOwner\": null,\n"
@@ -107,9 +95,9 @@ public class ExtendedCcdHelper {
 
     }
 
-    public CaseDetails createPublicLawCase(String documents) throws Exception {
+    public CaseDetails createCase(String documents) throws Exception {
         return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
-                objectMapper.readTree(String.format(createPublicLawAutomatedBundlingCaseTemplate, documents)));
+                objectMapper.readTree(String.format(createAutomatedBundlingCaseTemplate, documents)));
     }
 
     public CaseDetails createCdamCase(String documents) throws Exception {
