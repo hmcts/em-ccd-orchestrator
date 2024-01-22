@@ -53,7 +53,7 @@ public class ExtendedCcdHelper {
             + "    \"caseDescription\": null,\n"
             + "    \"caseComments\": null,\n"
             + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"iac2-bundle-config.yaml\"\n"
+            + "    \"bundleConfiguration\": \"complex-example.yaml\"\n"
             + "  }";
 
     public final String createPublicLawAutomatedBundlingCaseTemplate = "{\n"
@@ -63,7 +63,7 @@ public class ExtendedCcdHelper {
             + "    \"caseDescription\": null,\n"
             + "    \"caseComments\": null,\n"
             + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"iac-hearing-bundle-config.yaml\"\n"
+            + "    \"bundleConfiguration\": \"st_cic_bundle_all_case.yaml\"\n"
             + "  }";
     public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
         + "    \"caseTitle\": null,\n"
