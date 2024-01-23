@@ -18,7 +18,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void load() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals(true, config.hasTableOfContents);
@@ -47,7 +47,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void filename() {
-        BundleConfiguration config = loader.load("example-with-filename.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-filename.yaml");
 
         assertEquals("Bundle with filename", config.title);
         assertEquals("bundle.pdf", config.filename);
@@ -58,7 +58,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void bundleWithNoFileName() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals("stitched.pdf", config.filename);
@@ -66,7 +66,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test(expected = BundleConfigurationException.class)
     public void fileContainsIncorrectFieldname() {
-        loader.load("example-incorrect-key.yaml");
+        loader.load("testbundleconfiguration/example-incorrect-key.yaml");
     }
 
     @Rule
@@ -82,7 +82,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void documentSet() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-documents.yaml");
 
         assertEquals(2, config.documents.size());
         assertEquals(0, config.folders.get(0).documents.size());
@@ -91,7 +91,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void enableEmailNotificationNull() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-documents.yaml");
 
         assertEquals(null, config.enableEmailNotification);
     }

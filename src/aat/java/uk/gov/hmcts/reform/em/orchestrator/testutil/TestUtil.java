@@ -96,7 +96,7 @@ public class TestUtil {
         + "    \"caseDescription\": null,\n"
         + "    \"caseComments\": null,\n"
         + "    \"caseDocuments\": [%s],\n"
-        + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
+        + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
         + "  }";
 
     public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
@@ -106,7 +106,7 @@ public class TestUtil {
         + "    \"caseDescription\": null,\n"
         + "    \"caseComments\": null,\n"
         + "    \"caseDocuments\": %s,\n"
-        + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
+        + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
         + "  }";
 
     @PostConstruct

@@ -91,7 +91,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo("Invalid configuration file entry in: example-incorrect-key.yaml"
+                .body("errors[0]", equalTo("Invalid configuration file entry in: testbundleconfiguration/example-incorrect-key.yaml"
                     + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
@@ -176,7 +176,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-1-flat-docs.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -203,7 +203,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatFilteredDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-2-filter-flat-docs.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -227,7 +227,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFolderedDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-3-foldered-docs.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -261,7 +261,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFilteredFolderedDocuments() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-4-filtered-foldered-docs.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -292,14 +292,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testTypoInConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-6-has-typo.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-6-has-typo.yaml");
 
         final ValidatableResponse response = postNewBundle(json);
 
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: f-tests-6-has-typo.yaml; "
+                .body("errors", contains("Invalid configuration file entry in: testbundleconfiguration/f-tests-6-has-typo.yaml; "
                     + "Configuration file parameter(s) and/or parameter value(s)"));
     }
 
@@ -319,7 +319,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testDocumentNotPresent() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-12-invalid-document-property.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-12-invalid-document-property.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -341,7 +341,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-7-not-a-single-doc.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-7-not-a-single-doc.yaml");
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -354,7 +354,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testDocumentSetPropertyIsNotAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-8-not-an-array.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-8-not-an-array.yaml");
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -368,7 +368,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     public void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("document_url", "incorrect_property_name");
-        json = json.replaceAll("configurationFile", "f-tests-5-invalid-url.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-5-invalid-url.yaml");
 
         final ValidatableResponse response = postNewBundle(json);
 
@@ -395,7 +395,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testMultipleFilters() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-9-multiple-filters.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-9-multiple-filters.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -424,7 +424,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testSortDocumentsAscending() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-10-sorting.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-10-sorting.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -458,7 +458,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testSortDocumentsDescending() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-11-sorting.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-11-sorting.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
@@ -510,7 +510,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testRenderImageInStitchedDocument() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "f-tests-13-render-image-flat-docs.yaml");
+        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-13-render-image-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
