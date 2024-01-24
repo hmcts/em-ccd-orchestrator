@@ -7,13 +7,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.assertEquals;
 
 public class LocalConfigurationLoaderTest {
     private final LocalConfigurationLoader loader = new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
 
     private static final String CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG =
-        "customDocumentLinkValue should be provided in custom-bundle-wrong-config.yaml "
+        "customDocumentLinkValue should be provided in testbundleconfiguration/custom-bundle-wrong-config.yaml "
             + "when customDocument is set to true.";
 
     @Test
@@ -39,7 +44,7 @@ public class LocalConfigurationLoaderTest {
     @Test
     public void loadMissingCustomDocumentLinkValue() {
         try {
-            loader.load("custom-bundle-wrong-config.yaml");
+            loader.load("testbundleconfiguration/custom-bundle-wrong-config.yaml");
         }  catch (BundleConfigurationException exp) {
             Assert.assertTrue(CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG.equalsIgnoreCase(exp.getMessage()));
         }
@@ -95,4 +100,28 @@ public class LocalConfigurationLoaderTest {
 
         assertEquals(null, config.enableEmailNotification);
     }
+
+    @Test
+    public void checkAllBundleConfigurationStructure() throws IOException {
+        String resourceName = "bundleconfiguration";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File folder = new File(classLoader.getResource(resourceName).getFile());
+
+        var fileNameList = Files.list(folder.toPath())
+                .map(file -> file.toFile().getName())
+                .filter(fileName -> !fileName.contains("testbundleconfiguration"))
+                .collect(Collectors.toSet());
+        boolean success = false;
+        for (String fileName : fileNameList) {
+            try {
+                loader.load(fileName);
+                // everything works as expected
+                success = true;
+            } catch (Exception exp) {
+                Assert.assertEquals("New config failed, check Actual->", exp.getMessage());
+            }
+        }
+        Assert.assertTrue(success);
+    }
+
 }
