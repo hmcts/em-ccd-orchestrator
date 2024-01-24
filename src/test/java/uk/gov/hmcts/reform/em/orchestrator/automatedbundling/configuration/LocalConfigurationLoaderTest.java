@@ -112,13 +112,13 @@ public class LocalConfigurationLoaderTest {
                 .filter(fileName -> !fileName.contains("testbundleconfiguration"))
                 .collect(Collectors.toSet());
         boolean success = false;
-        for(String fileName:fileNameList) {
+        for (String fileName : fileNameList) {
             try {
                 loader.load(fileName);
                 // everything works as expected
-                success =true;
+                success = true;
             } catch (Exception exp) {
-                Assert.assertEquals("New config failed, check Actual->",exp.getMessage());
+                Assert.assertEquals("New config failed, check Actual->", exp.getMessage());
             }
         }
         Assert.assertTrue(success);
