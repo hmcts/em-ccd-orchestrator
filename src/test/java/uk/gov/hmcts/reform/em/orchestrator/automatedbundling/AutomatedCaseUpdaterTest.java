@@ -177,12 +177,13 @@ public class AutomatedCaseUpdaterTest {
     public void createCaseBundlesPropertyWhenItDoesntExist() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"testbundleconfiguration/example.yaml\"}}}")
-                )
-            );
+        Mockito
+                .when(mockRequest.getReader())
+                .thenReturn(
+                        new BufferedReader(
+                                new StringReader("{\"case_details\":{\"case_data\":"
+                                        + "{\"bundleConfiguration\":\"testbundleconfiguration/example.yaml\"}}}")
+                        ));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
         updater.updateCase(ccdCallbackDto);
