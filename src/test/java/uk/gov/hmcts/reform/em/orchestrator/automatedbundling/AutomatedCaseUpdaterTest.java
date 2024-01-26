@@ -181,7 +181,7 @@ public class AutomatedCaseUpdaterTest {
                 .when(mockRequest.getReader())
                 .thenReturn(
                         new BufferedReader(
-                                new StringReader("{\"case_details\":{\"case_data\": "
+                                new StringReader("{\"case_details\":{\"case_data\":"
                                         + "{\"bundleConfiguration\":\"testbundleconfiguration/example.yaml\"}}}")
                         ));
 
