@@ -170,7 +170,9 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
-                .assertThat().log().all()
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Bundle with filename"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
@@ -190,7 +192,9 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
-                .assertThat().log().all()
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("New bundle"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
@@ -199,7 +203,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatDocuments() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
+        json = json
+                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -228,7 +233,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFlatFilteredDocuments() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
+        json = json
+                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -244,7 +250,9 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
-                .assertThat().log().all()
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Functional tests bundle 2"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
@@ -253,7 +261,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFolderedDocuments() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
+        json = json
+                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -279,7 +288,9 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
-                .assertThat().log().all()
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
@@ -288,7 +299,8 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testAddFilteredFolderedDocuments() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
+        json = json.replaceAll("configurationFile",
+                "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -311,7 +323,9 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
-                .assertThat().log().all()
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(200)
                 .body("bundle.bundleTitle", equalTo("Functional tests bundle 4"))
                 .body("bundle.stitchedDocumentURI", notNullValue());
@@ -325,10 +339,13 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
-        response.assertThat()
-                .log().all()
+        response
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: testbundleconfiguration/f-tests-6-has-typo.yaml; "
+                .body("errors", contains("Invalid configuration file entry in: "
+                        + "testbundleconfiguration/f-tests-6-has-typo.yaml; "
                         + "Configuration file parameter(s) and/or parameter value(s)"));
     }
 
@@ -339,17 +356,21 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
-        response.assertThat()
-                .log().all()
+        response
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(400)
                 .body("errors", contains("Invalid configuration file entry in: configurationFile;"
-                    + " Configuration file parameter(s) and/or parameter value(s)"));
+                        + " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
     public void testDocumentNotPresent() throws Exception {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-12-invalid-document-property.yaml");
+        json = json
+                .replaceAll("configurationFile",
+                        "testbundleconfiguration/f-tests-12-invalid-document-property.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -420,11 +441,13 @@ public class SecureAutomatedBundlingScenarios extends BaseTest {
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
-        response.assertThat()
-                .log().all()
+        response
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml;" +
-                    " Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml;"
+                        + " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test

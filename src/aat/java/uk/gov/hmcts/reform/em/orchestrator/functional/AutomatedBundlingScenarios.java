@@ -91,8 +91,9 @@ public class AutomatedBundlingScenarios extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo("Invalid configuration file entry in: testbundleconfiguration/example-incorrect-key.yaml"
-                    + "; Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors[0]", equalTo("Invalid configuration file entry in: "
+                        + "testbundleconfiguration/example-incorrect-key.yaml"
+                        + "; Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -296,11 +297,14 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
         final ValidatableResponse response = postNewBundle(json);
 
-        response.assertThat()
-                .log().all()
+        response
+                .assertThat()
+                .log()
+                .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: testbundleconfiguration/f-tests-6-has-typo.yaml; "
-                    + "Configuration file parameter(s) and/or parameter value(s)"));
+                .body("errors", contains("Invalid configuration file entry in: "
+                        + "testbundleconfiguration/f-tests-6-has-typo.yaml; "
+                        + "Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
@@ -319,7 +323,11 @@ public class AutomatedBundlingScenarios extends BaseTest {
     @Test
     public void testDocumentNotPresent() throws IOException, InterruptedException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-12-invalid-document-property.yaml");
+        json = json
+                .replaceAll(
+                        "configurationFile",
+                        "testbundleconfiguration/f-tests-12-invalid-document-property.yaml"
+                );
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);
