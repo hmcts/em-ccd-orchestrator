@@ -32,7 +32,7 @@ version '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -56,6 +56,7 @@ def versions = [
         serenityreporter   : '3.7.0',
         serenityRestAssured: '3.7.0',
         pact_version       : '4.0.10',
+        pact_junit5        : '4.6.4',
         mockito            : '5.7.0',
         jupiter            : '5.8.2',
         poi                : '5.2.4',
@@ -171,7 +172,7 @@ dependencies {
     
     //pact contract testing
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutPactExtras
+    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_junit5, withoutPactExtras
     contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
     implementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
 
