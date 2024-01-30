@@ -58,7 +58,7 @@ public class AutomatedCaseUpdaterTest {
             .thenReturn(
                 new BufferedReader(
                     new StringReader("{\"case_details\":{\"case_data\": "
-                        + "{\"bundleConfiguration\":\"example.yaml\", \"caseBundles\": []}}}")
+                        + "{\"bundleConfiguration\":\"testbundleconfiguration/example.yaml\", \"caseBundles\": []}}}")
                 )
             );
 
@@ -88,7 +88,7 @@ public class AutomatedCaseUpdaterTest {
             .thenReturn(
                 new BufferedReader(
                     new StringReader("{\"case_details\":{\"case_data\": {\"multiBundleConfiguration\":"
-                        + "[{\"value\":\"example.yaml\"}], "
+                        + "[{\"value\":\"testbundleconfiguration/example.yaml\"}], "
                         + "\"caseBundles\": []}}}")
                 )
             );
@@ -177,12 +177,13 @@ public class AutomatedCaseUpdaterTest {
     public void createCaseBundlesPropertyWhenItDoesntExist() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(mockRequest.getReader())
-            .thenReturn(
-                new BufferedReader(
-                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":\"example.yaml\"}}}")
-                )
-            );
+        Mockito
+                .when(mockRequest.getReader())
+                .thenReturn(
+                        new BufferedReader(
+                                new StringReader("{\"case_details\":{\"case_data\":"
+                                        + "{\"bundleConfiguration\":\"testbundleconfiguration/example.yaml\"}}}")
+                        ));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
         updater.updateCase(ccdCallbackDto);
@@ -201,7 +202,7 @@ public class AutomatedCaseUpdaterTest {
                 .thenReturn(
                         new BufferedReader(
                                 new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":"
-                                        + "\"example.yaml\","
+                                        + "\"testbundleconfiguration/example.yaml\","
                                         + "\"caseBundles\": "
                                         + "[{\n"
                                         + "\"value\": {\n"

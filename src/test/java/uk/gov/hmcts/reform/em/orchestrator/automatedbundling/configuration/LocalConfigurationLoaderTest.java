@@ -7,18 +7,23 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.assertEquals;
 
 public class LocalConfigurationLoaderTest {
     private final LocalConfigurationLoader loader = new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
 
     private static final String CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG =
-        "customDocumentLinkValue should be provided in custom-bundle-wrong-config.yaml "
+        "customDocumentLinkValue should be provided in testbundleconfiguration/custom-bundle-wrong-config.yaml "
             + "when customDocument is set to true.";
 
     @Test
     public void load() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals(true, config.hasTableOfContents);
@@ -39,7 +44,7 @@ public class LocalConfigurationLoaderTest {
     @Test
     public void loadMissingCustomDocumentLinkValue() {
         try {
-            loader.load("custom-bundle-wrong-config.yaml");
+            loader.load("testbundleconfiguration/custom-bundle-wrong-config.yaml");
         }  catch (BundleConfigurationException exp) {
             Assert.assertTrue(CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG.equalsIgnoreCase(exp.getMessage()));
         }
@@ -47,7 +52,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void filename() {
-        BundleConfiguration config = loader.load("example-with-filename.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-filename.yaml");
 
         assertEquals("Bundle with filename", config.title);
         assertEquals("bundle.pdf", config.filename);
@@ -58,7 +63,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void bundleWithNoFileName() {
-        BundleConfiguration config = loader.load("example.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example.yaml");
 
         assertEquals("New bundle", config.title);
         assertEquals("stitched.pdf", config.filename);
@@ -66,7 +71,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test(expected = BundleConfigurationException.class)
     public void fileContainsIncorrectFieldname() {
-        loader.load("example-incorrect-key.yaml");
+        loader.load("testbundleconfiguration/example-incorrect-key.yaml");
     }
 
     @Rule
@@ -82,7 +87,7 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void documentSet() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-documents.yaml");
 
         assertEquals(2, config.documents.size());
         assertEquals(0, config.folders.get(0).documents.size());
@@ -91,8 +96,32 @@ public class LocalConfigurationLoaderTest {
 
     @Test
     public void enableEmailNotificationNull() {
-        BundleConfiguration config = loader.load("example-with-documents.yaml");
+        BundleConfiguration config = loader.load("testbundleconfiguration/example-with-documents.yaml");
 
         assertEquals(null, config.enableEmailNotification);
     }
+
+    @Test
+    public void checkAllBundleConfigurationStructure() throws IOException {
+        String resourceName = "bundleconfiguration";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File folder = new File(classLoader.getResource(resourceName).getFile());
+
+        var fileNameList = Files.list(folder.toPath())
+                .map(file -> file.toFile().getName())
+                .filter(fileName -> !fileName.contains("testbundleconfiguration"))
+                .collect(Collectors.toSet());
+        boolean success = false;
+        for (String fileName : fileNameList) {
+            try {
+                loader.load(fileName);
+                // everything works as expected
+                success = true;
+            } catch (Exception exp) {
+                Assert.assertEquals("New config failed, check Actual->", exp.getMessage());
+            }
+        }
+        Assert.assertTrue(success);
+    }
+
 }
