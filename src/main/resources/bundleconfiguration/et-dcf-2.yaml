@@ -1,8 +1,7 @@
 title: ET DCF
 filename: DigitalCaseFile
-hasTableOfContents: false
+hasTableOfContents: true
 hasCoversheets: false
-coverpageTemplate: EM-TRB-EGW-ENG-DCF-Coversheet.docx
 pageNumberFormat: numberOfPages
 documentNameValue: /uploadedDocument/document_filename
 customDocument: true
