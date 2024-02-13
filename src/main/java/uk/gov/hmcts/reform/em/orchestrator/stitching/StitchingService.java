@@ -36,7 +36,7 @@ public class StitchingService {
 
     private final Logger logger = LoggerFactory.getLogger(StitchingService.class);
 
-    private static final int DEFAULT_MAX_RETRIES = 200;
+    private static final int DEFAULT_MAX_RETRIES = 3;
     private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
