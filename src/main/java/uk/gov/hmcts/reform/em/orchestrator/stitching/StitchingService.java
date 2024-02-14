@@ -36,18 +36,25 @@ public class StitchingService {
 
     private final Logger logger = LoggerFactory.getLogger(StitchingService.class);
 
-    private static final int SLEEP_TIME = 1000;
+    private static final int DEFAULT_MAX_RETRIES = 200;
+    private static final int SLEEP_TIME = 500;
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
     private final AuthTokenGenerator authTokenGenerator;
     private final int maxRetries;
+
     private static final String STITCHED_DOC_URI = "$.bundle.stitchedDocumentURI";
     private static final String TASK_STATE = "$.taskState";
     private static final String FAILURE_MSG = "Failed Calling Stitching Service for caseId : %s had issue : %s ";
     private static final String SUCCESS_MSG =
             "Successfully Called Stitching Service for caseId : %s with documentTaskId : %s ";
+
+    public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
+                            AuthTokenGenerator authTokenGenerator) {
+        this(dtoMapper, http, documentTaskEndpoint, authTokenGenerator, DEFAULT_MAX_RETRIES);
+    }
 
     public StitchingService(StitchingDTOMapper dtoMapper, OkHttpClient http, String documentTaskEndpoint,
                             AuthTokenGenerator authTokenGenerator, int maxRetries) {
@@ -159,7 +166,7 @@ public class StitchingService {
             .get()
             .build();
         Response response = null;
-        int sleepTime = SLEEP_TIME;
+
         try {
             for (int i = 0; i < maxRetries; i++) {
                 response = http.newCall(request).execute();
@@ -169,8 +176,7 @@ public class StitchingService {
                 if (!taskState.equals(TaskState.NEW.toString())) {
                     return responseBody;
                 } else {
-                    Thread.sleep(sleepTime);
-                    sleepTime += SLEEP_TIME * (i + 1);
+                    Thread.sleep(SLEEP_TIME);
                 }
                 response.close();
             }
