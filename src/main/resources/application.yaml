@@ -123,3 +123,5 @@ logging:
 cdam:
   validation:
     enabled: ${ENABLE_CDAM_VALIDATION:false}
+
+max-retry-to-poll-stitching:  ${MAX_RETRY_TO_POLL_STITCHING:5}
