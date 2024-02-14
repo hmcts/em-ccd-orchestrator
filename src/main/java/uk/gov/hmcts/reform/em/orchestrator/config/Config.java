@@ -28,13 +28,17 @@ public class Config {
     @Value("${notify.apiKey}")
     String notificationApiKey;
 
+    @Value("${max-retry-to-poll-stitching}")
+    int maxRetryToPollStitching;
+
     @Bean
     public StitchingService getStitchingService() {
         return new StitchingService(
-            new StitchingDTOMapper(),
-            http,
-            stitchingBaseUrl + stitchingResource,
-            authTokenGenerator
+                new StitchingDTOMapper(),
+                http,
+                stitchingBaseUrl + stitchingResource,
+                authTokenGenerator,
+                maxRetryToPollStitching
         );
     }
 
