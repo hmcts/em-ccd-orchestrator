@@ -58,12 +58,12 @@ public class CcdCallbackResponseDto {
 
     @Override
     public String toString() {
-        return "CcdCallbackResponseDto{" +
-            "copyOfCcdData=" + copyOfCcdData +
-            ", data=" + data +
-            ", errors=" + errors +
-            ", warnings=" + warnings +
-            ", documentTaskId=" + documentTaskId +
-            '}';
+        return "CcdCallbackResponseDto{"
+            + "copyOfCcdData=" + copyOfCcdData
+            + ", data=" + data
+            + ", errors=" + errors
+            + ", warnings=" + warnings
+            + ", documentTaskId=" + documentTaskId
+            + '}';
     }
 }
