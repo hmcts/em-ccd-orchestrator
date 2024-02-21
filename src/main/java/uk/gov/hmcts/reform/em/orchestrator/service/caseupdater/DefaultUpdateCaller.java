@@ -89,6 +89,8 @@ public class DefaultUpdateCaller {
             );
         }
 
+        logger.info("CCD Callback Response DTO: {}", ccdCallbackResponseDto);
+
         if (ccdCallbackResponseDto.getErrors().isEmpty()) {
             return ResponseEntity.ok(ccdCallbackResponseDto);
         }
