@@ -55,4 +55,15 @@ public class CcdCallbackResponseDto {
     public void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
+
+    @Override
+    public String toString() {
+        return "CcdCallbackResponseDto{" +
+            "copyOfCcdData=" + copyOfCcdData +
+            ", data=" + data +
+            ", errors=" + errors +
+            ", warnings=" + warnings +
+            ", documentTaskId=" + documentTaskId +
+            '}';
+    }
 }

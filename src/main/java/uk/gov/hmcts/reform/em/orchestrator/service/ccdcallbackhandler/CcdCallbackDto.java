@@ -164,4 +164,19 @@ public class CcdCallbackDto {
         }
         return "";
     }
+
+    @Override
+    public String toString() {
+        return "CcdCallbackDto{" +
+            "propertyName=" + propertyName +
+            ", ccdPayload=" + ccdPayload +
+            ", caseData=" + caseData +
+            ", caseDetails=" + caseDetails +
+            ", jwt='" + jwt + '\'' +
+            ", enableCdamValidation=" + enableCdamValidation +
+            ", serviceAuth='" + serviceAuth + '\'' +
+            ", documentTaskId=" + documentTaskId +
+            ", enableEmailNotification=" + enableEmailNotification +
+            '}';
+    }
 }
