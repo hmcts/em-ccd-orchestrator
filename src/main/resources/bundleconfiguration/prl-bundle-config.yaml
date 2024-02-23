@@ -1,6 +1,6 @@
 title: PRL Bundle
 filename: Bundle
-filenameIdentifier: /case_details/id
+filenameIdentifier: /case_details/bundle_name
 coverpageTemplate: FL-PRL-LET-ENG-CoverPage.docx
 hasTableOfContents: true
 hasCoversheets: false
