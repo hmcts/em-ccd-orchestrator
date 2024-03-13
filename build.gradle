@@ -62,7 +62,7 @@ def versions = [
         springSecurity     : '6.2.2',
         springCloud        : '4.1.0',
         okhttp3            : '4.12.0',
-        fasterXmlJackson   : '2.16.2'
+        fasterXmlJackson   : '2.17.0'
 ]
 sourceSets {
     aat {
