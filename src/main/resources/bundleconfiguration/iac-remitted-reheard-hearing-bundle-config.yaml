@@ -27,18 +27,4 @@ folders:
   - name: Decisions and reasons documents
     documents:
     - type: documentSet
-      property: /finalDecisionAndReasonsDocuments
-  - name: Remittal documents
-    documents:
-    - type: documentSet
-      property: /remittalDocuments
-      filters:
-        - property: /decisionDocument
-          value: Decision Documents
-  - name: Remittal documents
-    documents:
-    - type: documentSet
-      property: /reheardHearingDocumentsCollection
-      filters:
-        - property: /reheardHearingDocs
-          value: Reheard hearing documents
+      property: /latestDecisionAndReasonsDocuments
