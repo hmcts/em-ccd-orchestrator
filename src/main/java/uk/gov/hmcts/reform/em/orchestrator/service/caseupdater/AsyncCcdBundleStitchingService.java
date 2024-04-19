@@ -54,7 +54,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                 .parallel()
                 .map(unchecked(this::bundleJsonToBundleValue))
                 .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                    ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
+                    ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
                 .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
                 .toList();
 
@@ -64,7 +64,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle,
+    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle,
                                                 CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
