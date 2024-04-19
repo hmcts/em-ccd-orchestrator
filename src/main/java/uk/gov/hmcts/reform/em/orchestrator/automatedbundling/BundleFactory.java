@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
