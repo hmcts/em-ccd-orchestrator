@@ -29,8 +29,6 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
 
-    private final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
-
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
@@ -224,7 +222,6 @@ public class BundleFactory {
                 return false;
             }
         }
-
         return true;
     }
 }

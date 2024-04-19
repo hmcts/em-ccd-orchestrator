@@ -33,8 +33,6 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Transactional
 public class CcdBundleStitchingService implements CcdCaseUpdater {
 
-    private final Logger logger = LoggerFactory.getLogger(CcdBundleStitchingService.class);
-
     private final ObjectMapper objectMapper;
     private final JavaType type;
     private final Validator validator;
