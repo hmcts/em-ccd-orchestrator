@@ -12,11 +12,11 @@ import java.net.URL;
 @Service
 public class ValidateYamlCommand {
 
+    private final LocalConfigurationLoader loader;
+
+    private static final Logger log = LoggerFactory.getLogger(ValidateYamlCommand.class);
+
     @Autowired
-    private LocalConfigurationLoader loader;
-
-    private static Logger log = LoggerFactory.getLogger(ValidateYamlCommand.class);
-
     public ValidateYamlCommand(LocalConfigurationLoader loader) {
         this.loader = loader;
     }

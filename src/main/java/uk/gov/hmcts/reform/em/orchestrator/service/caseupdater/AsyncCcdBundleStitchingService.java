@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static pl.touk.throwing.ThrowingFunction.unchecked;
@@ -55,9 +54,9 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                 .parallel()
                 .map(unchecked(this::bundleJsonToBundleValue))
                 .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                    ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
+                    ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
                 .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                .collect(Collectors.toList());
+                .toList();
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
@@ -66,7 +65,7 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle,
+    private CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle,
                                                 CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());

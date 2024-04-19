@@ -33,7 +33,7 @@ public class AsyncCcdBundleStitchingServiceTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         asyncCcdBundleStitchingService =

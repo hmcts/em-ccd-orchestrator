@@ -25,7 +25,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static pl.touk.throwing.ThrowingFunction.unchecked;
@@ -63,7 +62,7 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
                     .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
                             ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                    .collect(Collectors.toList());
+                    .toList();
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
@@ -89,9 +88,6 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             return bundle;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.error(String.format("Stitching Failed for caseId : %s with issue : %s ",
-                    StringUtilities.convertValidLog(cdamDto.getCaseId()),
-                    StringUtilities.convertValidLog(e.getMessage())));
             throw new StitchingServiceException(e.getMessage(), e);
         }
     }

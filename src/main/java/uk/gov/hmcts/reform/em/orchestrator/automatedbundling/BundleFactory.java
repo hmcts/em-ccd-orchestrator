@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -92,8 +91,9 @@ public class BundleFactory {
                               String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
-            List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
-                ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData,
+            List<CcdValue<CcdBundleDocumentDTO>> documents =
+                    selector instanceof BundleConfigurationDocument bundleConfigurationDocument
+                ? addDocument(bundleConfigurationDocument, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument)
                 : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument);
@@ -187,10 +187,7 @@ public class BundleFactory {
 
     private boolean getChildNode(JsonNode outerNode, String path) throws DocumentSelectorException {
         JsonNode innerNode = outerNode.at(path);
-        if (innerNode.isMissingNode()) {
-            return false;
-        }
-        return true;
+        return !innerNode.isMissingNode();
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(
@@ -210,32 +207,13 @@ public class BundleFactory {
             throw new DocumentSelectorException("Element is not an array: " + documentSelector.property);
         }
 
-        try {
-            return StreamSupport
-                    .stream(list.spliterator(), true)
-                    .map(n -> n.at("/value"))
-                    .filter(n -> anyFilterMatches(documentSelector.filters, n))
-                    .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
-                            customDocumentLinkValue, customDocument))
-                    .collect(Collectors.toList());
-        } catch (Exception ex) {
-            logger.error("addDocumentSet failed,"
-                            + "list:{},"
-                            + "documentSelector property:{},"
-                            + "documentNameValue:{},"
-                            + "documentLinkValue:{},"
-                            + "customDocumentLinkValue:{},"
-                            + "customDocument:{}",
-                    list,
-                    documentSelector.property,
-                    documentNameValue,
-                    documentLinkValue,
-                    customDocumentLinkValue,
-                    customDocument,
-                    ex
-            );
-            throw ex;
-        }
+        return StreamSupport
+                .stream(list.spliterator(), true)
+                .map(n -> n.at("/value"))
+                .filter(n -> anyFilterMatches(documentSelector.filters, n))
+                .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
+                        customDocumentLinkValue, customDocument))
+                .toList();
     }
 
     private boolean anyFilterMatches(List<BundleConfigurationDocumentSet.BundleConfigurationFilter> filters,
