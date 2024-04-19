@@ -51,8 +51,8 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
 
         if (maybeBundles.isPresent()) {
             List<JsonNode> newBundles = StreamSupport
-                    .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(),
-                        Spliterator.ORDERED), false)
+                    .stream(Spliterators.spliteratorUnknownSize(
+                            maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
                     .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
@@ -63,7 +63,6 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
-
         return ccdCallbackDto.getCaseData();
     }
 

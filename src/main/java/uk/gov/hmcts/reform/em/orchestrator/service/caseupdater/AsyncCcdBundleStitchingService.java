@@ -61,7 +61,6 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
-
         return ccdCallbackDto.getCaseData();
     }
 
