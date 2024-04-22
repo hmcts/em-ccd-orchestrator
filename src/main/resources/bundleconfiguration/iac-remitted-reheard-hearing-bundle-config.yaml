@@ -14,8 +14,8 @@ pageNumberFormat: numberOfPages
 folders:
   - name: Appellant FTPA documents
     documents:
-    - type: documentSet
-      property: /ftpaAppellantDocuments
+      - type: documentSet
+        property: /ftpaAppellantDocuments
   - name: Appellant evidence after the hearing bundle
     documents:
       - type: documentSet
@@ -26,19 +26,13 @@ folders:
         property: /respondentAddendumEvidenceDocs
   - name: Decisions and reasons documents
     documents:
-    - type: documentSet
-      property: /finalDecisionAndReasonsDocuments
+      - type: documentSet
+        property: /latestDecisionAndReasonsDocuments
   - name: Remittal documents
     documents:
-    - type: documentSet
-      property: /remittalDocuments
-      filters:
-        - property: /decisionDocument
-          value: Decision Documents
-  - name: Remittal documents
+      - type: documentSet
+        property: /latestRemittalDocuments
+  - name: Reheard hearing documents
     documents:
-    - type: documentSet
-      property: /reheardHearingDocumentsCollection
-      filters:
-        - property: /reheardHearingDocs
-          value: Reheard hearing documents
+      - type: documentSet
+        property: /latestReheardHearingDocuments
