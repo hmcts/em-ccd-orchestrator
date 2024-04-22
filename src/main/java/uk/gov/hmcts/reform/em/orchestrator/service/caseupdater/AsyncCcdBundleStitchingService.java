@@ -27,44 +27,25 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 @Service
 @Transactional
-public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
+public class AsyncCcdBundleStitchingService extends UpdateCase {
 
-    private final ObjectMapper objectMapper;
-    private final JavaType type;
     private final Validator validator;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
-    public AsyncCcdBundleStitchingService(ObjectMapper objectMapper,
-                                          AutomatedStitchingExecutor automatedStitchingExecutor,
+    public AsyncCcdBundleStitchingService(AutomatedStitchingExecutor automatedStitchingExecutor,
                                           Validator validator) {
-        this.objectMapper = objectMapper;
+        super(new ObjectMapper());
         this.automatedStitchingExecutor = automatedStitchingExecutor;
-        type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
         this.validator = validator;
     }
 
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
-
-        if (maybeBundles.isPresent()) {
-            List<JsonNode> newBundles = StreamSupport
-                .stream(Spliterators.spliteratorUnknownSize(
-                    maybeBundles.get().iterator(), Spliterator.ORDERED), false)
-                .parallel()
-                .map(unchecked(this::bundleJsonToBundleValue))
-                .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
-                    ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
-                .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                .toList();
-
-            maybeBundles.get().removeAll();
-            maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
-        }
-        return ccdCallbackDto.getCaseData();
+        return super.updateCase(ccdCallbackDto);
     }
 
-    private CcdValue<CcdBundleDTO> stitchBundle(String caseId, CcdValue<CcdBundleDTO> bundle,
+    @Override
+    protected CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle,
                                                 CcdCallbackDto ccdCallbackDto) {
         bundle.getValue().setCoverpageTemplateData(ccdCallbackDto.getCaseDetails());
         ccdCallbackDto.setEnableEmailNotification(bundle.getValue().getEnableEmailNotificationAsBoolean());
@@ -80,9 +61,5 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
         ccdCallbackDto.setDocumentTaskId(documentTaskId);
 
         return bundle;
-    }
-
-    private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) throws IOException {
-        return objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
     }
 }
