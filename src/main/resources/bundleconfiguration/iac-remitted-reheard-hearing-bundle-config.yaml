@@ -14,8 +14,8 @@ pageNumberFormat: numberOfPages
 folders:
   - name: Appellant FTPA documents
     documents:
-    - type: documentSet
-      property: /ftpaAppellantDocuments
+      - type: documentSet
+        property: /ftpaAppellantDocuments
   - name: Appellant evidence after the hearing bundle
     documents:
       - type: documentSet
