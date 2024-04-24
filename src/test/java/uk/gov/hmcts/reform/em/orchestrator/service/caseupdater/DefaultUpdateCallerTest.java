@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.BundleException;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
@@ -128,7 +129,7 @@ public class DefaultUpdateCallerTest {
     }
 
     @Test
-    public void executeUpdateInputValidationException() {
+    public void executeUpdateInputValidationException() throws BundleException {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);

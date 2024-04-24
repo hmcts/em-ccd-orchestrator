@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -29,9 +27,7 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
 
-    private final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
-
-    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
+    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException, BundleException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle(configuration.title);
@@ -64,7 +60,7 @@ public class BundleFactory {
                             BundleConfigurationSort sortOrder,
                             String documentNameValue,
                             JsonNode caseData, String documentLinkValue,
-                            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+                            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : sourceFolders) {
@@ -88,7 +84,7 @@ public class BundleFactory {
                               BundleConfigurationSort sortOrder,
                               String documentNameValue,
                               JsonNode caseData, String documentLinkValue,
-                              String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+                              String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents =
@@ -196,7 +192,7 @@ public class BundleFactory {
             BundleConfigurationSort sortOrder,
             String documentNameValue,
             JsonNode caseData, String documentLinkValue,
-            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
 
         JsonNode list = caseData.at(documentSelector.property);
 
@@ -217,22 +213,13 @@ public class BundleFactory {
                             customDocumentLinkValue, customDocument))
                     .toList();
         } catch (Exception ex) {
-            logger.error("addDocumentSet failed,"
-                            + "list:{},"
-                            + "documentSelector property:{},"
-                            + "documentNameValue:{},"
-                            + "documentLinkValue:{},"
-                            + "customDocumentLinkValue:{},"
-                            + "customDocument:{}",
-                    list,
+            throw new BundleException(list,
                     documentSelector.property,
                     documentNameValue,
                     documentLinkValue,
                     customDocumentLinkValue,
                     customDocument,
-                    ex
-            );
-            throw ex;
+                    ex);
         }
     }
 
