@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
@@ -15,15 +13,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
-
-import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 @Service
 @Transactional
@@ -32,9 +22,10 @@ public class AsyncCcdBundleStitchingService extends UpdateCase {
     private final Validator validator;
     private final AutomatedStitchingExecutor automatedStitchingExecutor;
 
-    public AsyncCcdBundleStitchingService(AutomatedStitchingExecutor automatedStitchingExecutor,
+    public AsyncCcdBundleStitchingService(ObjectMapper objectMapper,
+                                          AutomatedStitchingExecutor automatedStitchingExecutor,
                                           Validator validator) {
-        super(new ObjectMapper());
+        super(objectMapper);
         this.automatedStitchingExecutor = automatedStitchingExecutor;
         this.validator = validator;
     }
