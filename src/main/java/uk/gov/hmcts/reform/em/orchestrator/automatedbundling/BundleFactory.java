@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -26,6 +28,8 @@ import java.util.stream.StreamSupport;
  */
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
+
+    private final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
@@ -130,6 +134,7 @@ public class BundleFactory {
         return list;
     }
 
+    @SuppressWarnings("java:S2139")
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(
             JsonNode node,
             BundleConfigurationSort sortOrder,
@@ -203,13 +208,32 @@ public class BundleFactory {
             throw new DocumentSelectorException("Element is not an array: " + documentSelector.property);
         }
 
-        return StreamSupport
-                .stream(list.spliterator(), true)
-                .map(n -> n.at("/value"))
-                .filter(n -> anyFilterMatches(documentSelector.filters, n))
-                .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
-                        customDocumentLinkValue, customDocument))
-                .toList();
+        try {
+            return StreamSupport
+                    .stream(list.spliterator(), true)
+                    .map(n -> n.at("/value"))
+                    .filter(n -> anyFilterMatches(documentSelector.filters, n))
+                    .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
+                            customDocumentLinkValue, customDocument))
+                    .toList();
+        } catch (Exception ex) {
+            logger.error("addDocumentSet failed,"
+                            + "list:{},"
+                            + "documentSelector property:{},"
+                            + "documentNameValue:{},"
+                            + "documentLinkValue:{},"
+                            + "customDocumentLinkValue:{},"
+                            + "customDocument:{}",
+                    list,
+                    documentSelector.property,
+                    documentNameValue,
+                    documentLinkValue,
+                    customDocumentLinkValue,
+                    customDocument,
+                    ex
+            );
+            throw ex;
+        }
     }
 
     private boolean anyFilterMatches(List<BundleConfigurationDocumentSet.BundleConfigurationFilter> filters,

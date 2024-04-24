@@ -40,7 +40,8 @@ public class StitchingDTOMapper {
     }
 
     private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
-        return folders.stream()
+        return folders
+                .stream()
                 .map(this::getFolder)
                 .toList();
     }
@@ -56,7 +57,8 @@ public class StitchingDTOMapper {
     }
 
     private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> bundleDocument) {
-        return bundleDocument.stream()
+        return bundleDocument
+                .stream()
                 .map(this::getDocument)
                 .toList();
     }
