@@ -27,7 +27,8 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
 
-    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException, BundleException {
+    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson)
+                                throws DocumentSelectorException, BundleException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle(configuration.title);
@@ -60,7 +61,8 @@ public class BundleFactory {
                             BundleConfigurationSort sortOrder,
                             String documentNameValue,
                             JsonNode caseData, String documentLinkValue,
-                            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
+                            String customDocumentLinkValue, boolean customDocument)
+                        throws DocumentSelectorException, BundleException {
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : sourceFolders) {
@@ -84,7 +86,8 @@ public class BundleFactory {
                               BundleConfigurationSort sortOrder,
                               String documentNameValue,
                               JsonNode caseData, String documentLinkValue,
-                              String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
+                              String customDocumentLinkValue, boolean customDocument)
+                        throws DocumentSelectorException, BundleException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents =

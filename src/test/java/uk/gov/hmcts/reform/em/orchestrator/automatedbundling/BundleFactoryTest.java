@@ -132,7 +132,8 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithoutFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException, BundleException {
+    public void createWithoutFileNameIdentifierAndUndefinedFileName()
+            throws DocumentSelectorException, BundleException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 null,
@@ -266,7 +267,8 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocWithRedactedTrueAndWithoutRedactedDocNode() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithDocWithRedactedTrueAndWithoutRedactedDocNode()
+            throws IOException, DocumentSelectorException, BundleException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -548,7 +550,8 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithSortOrderDescendingAndMixOfDateTypes() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithSortOrderDescendingAndMixOfDateTypes()
+            throws IOException, DocumentSelectorException, BundleException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -585,7 +588,8 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithSortOrderAscendingWithNullDate() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithSortOrderAscendingWithNullDate()
+            throws IOException, DocumentSelectorException, BundleException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",

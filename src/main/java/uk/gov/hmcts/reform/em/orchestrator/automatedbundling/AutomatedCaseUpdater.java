@@ -77,7 +77,8 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations) throws BundleException {
+    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations)
+                                                    throws BundleException {
         List<CcdBundleDTO>  ccdBundleDtos = new ArrayList<>();
         for (String bundleConfig : bundleConfigurations) {
 
