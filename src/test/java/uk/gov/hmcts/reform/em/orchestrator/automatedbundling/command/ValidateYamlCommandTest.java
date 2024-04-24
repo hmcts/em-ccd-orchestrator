@@ -20,7 +20,6 @@ public class ValidateYamlCommandTest {
     @InjectMocks
     private ValidateYamlCommand command;
 
-
     @Test
     public void run() {
         Mockito
@@ -31,7 +30,6 @@ public class ValidateYamlCommandTest {
         boolean result = command.run();
 
         assertTrue(result);
-
     }
 
     @Test

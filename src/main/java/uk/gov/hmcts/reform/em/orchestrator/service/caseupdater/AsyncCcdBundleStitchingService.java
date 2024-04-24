@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static pl.touk.throwing.ThrowingFunction.unchecked;
@@ -57,12 +56,11 @@ public class AsyncCcdBundleStitchingService implements CcdCaseUpdater {
                 .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
                     ? this.stitchBundle(ccdCallbackDto.getCaseId(), bundle, ccdCallbackDto) : bundle)
                 .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                .collect(Collectors.toList());
+                .toList();
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
-
         return ccdCallbackDto.getCaseData();
     }
 

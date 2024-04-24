@@ -25,7 +25,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static pl.touk.throwing.ThrowingFunction.unchecked;
@@ -50,25 +49,25 @@ public class CcdBundleStitchingService implements CcdCaseUpdater {
         this.validator = validator;
     }
 
+    @SuppressWarnings("java:S2139")
     @Override
     public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
         Optional<ArrayNode> maybeBundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
 
         if (maybeBundles.isPresent()) {
             List<JsonNode> newBundles = StreamSupport
-                    .stream(Spliterators.spliteratorUnknownSize(maybeBundles.get().iterator(),
-                        Spliterator.ORDERED), false)
+                    .stream(Spliterators.spliteratorUnknownSize(
+                            maybeBundles.get().iterator(), Spliterator.ORDERED), false)
                     .parallel()
                     .map(unchecked(this::bundleJsonToBundleValue))
                     .map(bundle -> bundle.getValue().getEligibleForStitchingAsBoolean()
                             ? this.stitchBundle(bundle, ccdCallbackDto) : bundle)
                     .map(bundleDto -> objectMapper.convertValue(bundleDto, JsonNode.class))
-                    .collect(Collectors.toList());
+                    .toList();
 
             maybeBundles.get().removeAll();
             maybeBundles.get().addAll(CcdCaseUpdater.reorderBundles(newBundles, objectMapper, type));
         }
-
         return ccdCallbackDto.getCaseData();
     }
 

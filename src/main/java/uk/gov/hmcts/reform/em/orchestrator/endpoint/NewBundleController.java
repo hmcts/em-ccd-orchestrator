@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,8 +20,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 @Controller
 @Tag(name = "Bundle Stitching Service", description = "Endpoint to create and stitch a Bundle.")
 public class NewBundleController {
-
-    private final Logger log = LoggerFactory.getLogger(NewBundleController.class);
 
     private final DefaultUpdateCaller defaultUpdateCaller;
     private final AutomatedCaseUpdater automatedCaseUpdater;

@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -92,8 +91,9 @@ public class BundleFactory {
                               String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
-            List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
-                ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData,
+            List<CcdValue<CcdBundleDocumentDTO>> documents =
+                    selector instanceof BundleConfigurationDocument bundleConfigurationDocument
+                ? addDocument(bundleConfigurationDocument, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument)
                 : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument);
@@ -134,6 +134,7 @@ public class BundleFactory {
         return list;
     }
 
+    @SuppressWarnings("java:S2139")
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(
             JsonNode node,
             BundleConfigurationSort sortOrder,
@@ -187,10 +188,7 @@ public class BundleFactory {
 
     private boolean getChildNode(JsonNode outerNode, String path) throws DocumentSelectorException {
         JsonNode innerNode = outerNode.at(path);
-        if (innerNode.isMissingNode()) {
-            return false;
-        }
-        return true;
+        return !innerNode.isMissingNode();
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(
@@ -217,7 +215,7 @@ public class BundleFactory {
                     .filter(n -> anyFilterMatches(documentSelector.filters, n))
                     .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
                             customDocumentLinkValue, customDocument))
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (Exception ex) {
             logger.error("addDocumentSet failed,"
                             + "list:{},"
@@ -246,7 +244,6 @@ public class BundleFactory {
                 return false;
             }
         }
-
         return true;
     }
 }
