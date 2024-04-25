@@ -52,7 +52,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
      * If an error occurs during loading or processing the original case data will be returned with errors
      */
     @Override
-    public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) throws BundleException {
+    public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
 
         List<String> bundleConfigurations = prepareBundleConfigs(ccdCallbackDto);
 
@@ -77,8 +77,7 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations)
-                                                    throws BundleException {
+    private List<CcdBundleDTO> populateBundleConfigs(CcdCallbackDto ccdCallbackDto, List<String> bundleConfigurations) {
         List<CcdBundleDTO>  ccdBundleDtos = new ArrayList<>();
         for (String bundleConfig : bundleConfigurations) {
 
