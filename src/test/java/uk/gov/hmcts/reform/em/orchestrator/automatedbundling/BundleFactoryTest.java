@@ -332,7 +332,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentFails() throws IOException, DocumentSelectorException {
+    public void createWithDocumentFails() throws IOException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
