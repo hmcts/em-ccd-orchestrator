@@ -193,8 +193,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException,
-            DocumentSelectorException {
+    public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
