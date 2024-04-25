@@ -61,7 +61,7 @@ public class BundleFactory {
                             String documentNameValue,
                             JsonNode caseData, String documentLinkValue,
                             String customDocumentLinkValue, boolean customDocument)
-                        throws DocumentSelectorException, BundleException {
+                        throws DocumentSelectorException {
         int sortIndex = 0;
 
         for (BundleConfigurationFolder folder : sourceFolders) {
@@ -86,7 +86,7 @@ public class BundleFactory {
                               String documentNameValue,
                               JsonNode caseData, String documentLinkValue,
                               String customDocumentLinkValue, boolean customDocument)
-                        throws DocumentSelectorException, BundleException {
+                        throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents =
@@ -194,7 +194,7 @@ public class BundleFactory {
             BundleConfigurationSort sortOrder,
             String documentNameValue,
             JsonNode caseData, String documentLinkValue,
-            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException, BundleException {
+            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         JsonNode list = caseData.at(documentSelector.property);
 
