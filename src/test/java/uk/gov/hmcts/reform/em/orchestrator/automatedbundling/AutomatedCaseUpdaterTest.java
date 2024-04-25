@@ -81,7 +81,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithArrayBundleConfig() throws IOException  {
+    public void updateCaseWithArrayBundleConfig() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -112,7 +112,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithEmptyArrayBundleConfig() throws IOException  {
+    public void updateCaseWithEmptyArrayBundleConfig() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -133,7 +133,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithOutBundleConfig() throws IOException  {
+    public void updateCaseWithOutBundleConfig() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -153,7 +153,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithFileIdentifier() throws IOException  {
+    public void updateCaseWithFileIdentifier() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -174,7 +174,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void createCaseBundlesPropertyWhenItDoesntExist() throws IOException  {
+    public void createCaseBundlesPropertyWhenItDoesntExist() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito
@@ -195,7 +195,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void addBundleToHeadOfListIfOneAlreadyExists() throws IOException  {
+    public void addBundleToHeadOfListIfOneAlreadyExists() throws   IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
