@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BundleException extends Exception {
+public class BundleException extends RuntimeException {
 
     public BundleException(JsonNode list,
                            String documentSelectorProperty,

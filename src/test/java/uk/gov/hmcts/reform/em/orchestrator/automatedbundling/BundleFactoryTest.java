@@ -44,7 +44,7 @@ public class BundleFactoryTest {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void create() throws DocumentSelectorException, BundleException {
+    public void create() throws DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -76,7 +76,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithFileNameIdentifierAndDefinedFileName() throws DocumentSelectorException, BundleException {
+    public void createWithFileNameIdentifierAndDefinedFileName() throws DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -104,7 +104,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException, BundleException {
+    public void createWithFileNameIdentifierAndUndefinedFileName() throws DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 null,
@@ -133,7 +133,7 @@ public class BundleFactoryTest {
 
     @Test
     public void createWithoutFileNameIdentifierAndUndefinedFileName()
-            throws DocumentSelectorException, BundleException {
+            throws DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 null,
@@ -161,7 +161,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentSelect() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithDocumentSelect() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -195,7 +195,7 @@ public class BundleFactoryTest {
 
     @Test
     public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException,
-            DocumentSelectorException, BundleException {
+            DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -259,7 +259,7 @@ public class BundleFactoryTest {
         try {
             JsonNode json = mapper.readTree(customCaseJson);
             CcdBundleDTO bundle = factory.create(configuration, json);
-        } catch (DocumentSelectorException | BundleException docExp) {
+        } catch (DocumentSelectorException docExp) {
             assertTrue(docExp.getMessage()
                 .equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
         }
@@ -268,7 +268,7 @@ public class BundleFactoryTest {
 
     @Test
     public void createWithDocWithRedactedTrueAndWithoutRedactedDocNode()
-            throws IOException, DocumentSelectorException, BundleException {
+            throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -301,7 +301,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentSetSelect() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithDocumentSetSelect() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -365,7 +365,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentSetFilters() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithDocumentSetFilters() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -402,7 +402,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentSetRegex() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithDocumentSetRegex() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -439,7 +439,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithCustomDocumentNameDefined() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithCustomDocumentNameDefined() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -476,7 +476,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithSortOrderAscending() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithSortOrderAscending() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -513,7 +513,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithSortOrderDescending() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithSortOrderDescending() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -551,7 +551,7 @@ public class BundleFactoryTest {
 
     @Test
     public void createWithSortOrderDescendingAndMixOfDateTypes()
-            throws IOException, DocumentSelectorException, BundleException {
+            throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -589,7 +589,7 @@ public class BundleFactoryTest {
 
     @Test
     public void createWithSortOrderAscendingWithNullDate()
-            throws IOException, DocumentSelectorException, BundleException {
+            throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -626,7 +626,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithCustomDateFieldNotDefined() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithCustomDateFieldNotDefined() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -665,7 +665,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithImageRenderingDefined() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithImageRenderingDefined() throws IOException, DocumentSelectorException {
         DocumentImage docImg = new DocumentImage();
         docImg.setImageRendering(ImageRendering.opaque);
         docImg.setImageRenderingLocation(ImageRenderingLocation.allPages);
@@ -711,7 +711,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithCustomDocumentLinkDefined() throws IOException, DocumentSelectorException, BundleException {
+    public void createWithCustomDocumentLinkDefined() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",

@@ -27,8 +27,7 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
 
-    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson)
-                                throws DocumentSelectorException, BundleException {
+    public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle(configuration.title);
