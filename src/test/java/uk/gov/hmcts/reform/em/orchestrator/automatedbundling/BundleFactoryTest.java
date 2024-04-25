@@ -193,8 +193,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException,
-        DocumentSelectorException {
+    public void createWithDocWithRedactedFlagAndRedactedDocNode() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
             "Bundle title",
             "filename.pdf",
@@ -333,7 +332,7 @@ public class BundleFactoryTest {
     }
 
     @Test
-    public void createWithDocumentFails() throws IOException, DocumentSelectorException {
+    public void createWithDocumentFails() throws IOException {
         BundleConfiguration configuration = new BundleConfiguration(
                 "Bundle title",
                 "filename.pdf",
@@ -359,7 +358,7 @@ public class BundleFactoryTest {
         );
 
         JsonNode json = mapper.readTree(case7Json);
-        assertThrows(DocumentSelectorException.class, () -> factory.create(configuration, json));
+        assertThrows(BundleException.class, () -> factory.create(configuration, json));
     }
 
     @Test

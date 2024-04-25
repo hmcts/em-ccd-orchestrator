@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -28,8 +26,6 @@ import java.util.stream.StreamSupport;
  */
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
-
-    private final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
@@ -217,22 +213,13 @@ public class BundleFactory {
                             customDocumentLinkValue, customDocument))
                     .toList();
         } catch (Exception ex) {
-            logger.error("addDocumentSet failed,"
-                            + "list:{},"
-                            + "documentSelector property:{},"
-                            + "documentNameValue:{},"
-                            + "documentLinkValue:{},"
-                            + "customDocumentLinkValue:{},"
-                            + "customDocument:{}",
-                    list,
+            throw new BundleException(list,
                     documentSelector.property,
                     documentNameValue,
                     documentLinkValue,
                     customDocumentLinkValue,
                     customDocument,
-                    ex
-            );
-            throw ex;
+                    ex);
         }
     }
 
