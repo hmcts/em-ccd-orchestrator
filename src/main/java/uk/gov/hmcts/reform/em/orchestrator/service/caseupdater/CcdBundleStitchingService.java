@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -24,7 +22,6 @@ import java.util.Set;
 public class CcdBundleStitchingService extends UpdateCase {
 
     private final Logger logger = LoggerFactory.getLogger(CcdBundleStitchingService.class);
-
     private final Validator validator;
     private final StitchingService stitchingService;
 
@@ -58,10 +55,7 @@ public class CcdBundleStitchingService extends UpdateCase {
             return bundle;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.error(String.format("Stitching Failed for caseId : %s with issue : %s ",
-                    StringUtilities.convertValidLog(cdamDto.getCaseId()),
-                    StringUtilities.convertValidLog(e.getMessage())));
-            throw new StitchingServiceException(e.getMessage(), e);
+            throw new StitchingServiceException(cdamDto.getCaseId(), e.getMessage(), e);
         }
     }
 }
