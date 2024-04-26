@@ -21,7 +21,6 @@ import java.util.Set;
 @Transactional
 public class CcdBundleStitchingService extends UpdateCase {
 
-    private final Logger logger = LoggerFactory.getLogger(CcdBundleStitchingService.class);
     private final Validator validator;
     private final StitchingService stitchingService;
 
