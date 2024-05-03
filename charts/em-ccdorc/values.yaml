@@ -44,5 +44,3 @@ java:
     CALLBACK_HTTP_HOST_PORT: 80
     HTTPCLIENT_CALL_TIMEOUT: 30
     MAX_RETRY_TO_POLL_STITCHING: 7
-  spotInstances:
-    enabled: true
