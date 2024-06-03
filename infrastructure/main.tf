@@ -9,7 +9,7 @@ locals {
   shared_vault_name   = "${local.app_full_name}-${local.local_env}"
   s2s_key             = data.azurerm_key_vault_secret.s2s_key.value
   resource_group_name = "${local.app_full_name}-${var.env}"
-  additional_ia_mi    = var.env == "preview" ? data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id : null
+  additional_ia_mi    = var.env == "preview" ? data.azurerm_user_assigned_identity.ia_aat_identity.principal_id : null
 }
 
 provider "vault" {
