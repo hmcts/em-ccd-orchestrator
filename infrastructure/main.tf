@@ -22,12 +22,6 @@ resource "azurerm_resource_group" "rg" {
   tags = var.common_tags
 }
 
-data "azurerm_user_assigned_identity" "ia_aat_identity" {
-  count               = var.env == "aat" ? 1 : 0
-  name                = "ia-aat-mi"
-  resource_group_name = "managed-identities-aat-rg"
-}
-
 data "azurerm_key_vault" "s2s_vault" {
   name                = "s2s-${local.local_env}"
   resource_group_name = "rpe-service-auth-provider-${local.local_env}"
@@ -48,7 +42,7 @@ module "local_key_vault" {
   product_group_object_id              = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags                          = var.common_tags
   managed_identity_object_ids          = ["${data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id}"]
-  additional_managed_identities_access = var.env == "aat" ? [data.azurerm_user_assigned_identity.ia_aat_identity[0].principal_id] : []
+  additional_managed_identities_access = var.env == "aat" ? [ia] : []
 }
 
 data "azurerm_user_assigned_identity" "rpa-shared-identity" {
