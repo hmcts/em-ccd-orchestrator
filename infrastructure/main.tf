@@ -42,7 +42,7 @@ module "local_key_vault" {
   product_group_object_id              = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags                          = var.common_tags
   managed_identity_object_ids          = ["${data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id}"]
-  additional_managed_identities_access = var.env == "aat" ? [ia] : []
+  additional_managed_identities_access = var.additional_managed_identities_access
 }
 
 data "azurerm_user_assigned_identity" "rpa-shared-identity" {
