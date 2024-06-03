@@ -9,7 +9,6 @@ locals {
   shared_vault_name   = "${local.app_full_name}-${local.local_env}"
   s2s_key             = data.azurerm_key_vault_secret.s2s_key.value
   resource_group_name = "${local.app_full_name}-${var.env}"
-  additional_ia_mi    = var.env == "preview" ? data.azurerm_user_assigned_identity.ia_aat_identity.principal_id : null
 }
 
 provider "vault" {
@@ -49,7 +48,7 @@ module "local_key_vault" {
   product_group_object_id              = "5d9cd025-a293-4b97-a0e5-6f43efce02c0"
   common_tags                          = var.common_tags
   managed_identity_object_ids          = ["${data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id}"]
-  additional_managed_identities_access = [additional_ia_mi]
+  additional_managed_identities_access = var.env == "preview" ? [data.azurerm_user_assigned_identity.ia_aat_identity.principal_id] : []
 }
 
 data "azurerm_user_assigned_identity" "rpa-shared-identity" {
