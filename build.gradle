@@ -8,8 +8,8 @@ buildscript {
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.5'
-    id 'org.springframework.boot' version '3.2.5'
-    id 'uk.gov.hmcts.java' version '0.12.62'
+    id 'org.springframework.boot' version '3.3.0'
+    id 'uk.gov.hmcts.java' version '0.12.63'
     id 'com.github.ben-manes.versions' version '0.51.0'
     id 'org.sonarqube' version '5.0.0.4638'
     id 'jacoco'
@@ -108,7 +108,7 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
-    implementation group: 'com.google.guava', name: 'guava', version: '33.2.0-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.2.1-jre'
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.32'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.okhttp3
@@ -144,7 +144,7 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.32'
     aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.32'
 
-    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.1', classifier: 'all', {
+    testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.2', classifier: 'all', {
         exclude group: 'commons-io', module: 'commons-io'
         exclude group: 'org.apache.commons', module: 'commons-lang3'
     }
