@@ -137,7 +137,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
 
-    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '13.2.1'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '13.3'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.1.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
