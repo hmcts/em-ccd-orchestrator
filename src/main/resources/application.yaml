@@ -67,7 +67,7 @@ auth:
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:true}
   application-insights:
-    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:d30268e8-8979-4579-8d58-010dbe03a1e6}
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:dummy}
 
 app-insights:
   dev-mode: off
