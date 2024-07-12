@@ -68,7 +68,8 @@ sh ./publish-swagger-docs.sh
     }
     onMaster()
     {
-        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER,AppPipelineDsl.PactRoles.PROVIDER])
+
     }
 
     afterAlways('test') {
