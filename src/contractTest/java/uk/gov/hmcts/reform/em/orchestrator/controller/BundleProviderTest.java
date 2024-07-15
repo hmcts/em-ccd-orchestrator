@@ -20,7 +20,7 @@ import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
 
 
-@Provider("em_ccd_orc_bundling")
+@Provider("em_ccd_orchestrator_provider")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
         host = "${PACT_BROKER_URL:localhost}",
         port = "${PACT_BROKER_PORT:80}",
