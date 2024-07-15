@@ -167,10 +167,9 @@ dependencies {
     aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
     
     //pact contract testing
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-junit5', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer-java8', version: versions.pact_version, withoutPactExtras
-    contractTestImplementation group: 'au.com.dius', name: 'pact-jvm-consumer', version: versions.pact_version, withoutPactExtras
+
+
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: '4.1.7'
 
     contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.7'
     contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: '4.1.7'
@@ -395,22 +394,24 @@ task runAndPublishConsumerPactTests(type: Test){
     classpath = sourceSets.contractTest.runtimeClasspath
 }
 
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+
 task runProviderPactVerification(type: Test) {
     logger.lifecycle("Runnning contract Tests")
     useJUnitPlatform()
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
 }
+runProviderPactVerification.dependsOn contractTest
+runProviderPactVerification.finalizedBy pactVerify
+
 
 task fortifyScan(type: JavaExec)  {
     mainClass.set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
     classpath += sourceSets.test.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
-
-runAndPublishConsumerPactTests.dependsOn contract
-
-runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 project.ext {
     pactVersion = getCheckedOutGitCommitHash()
