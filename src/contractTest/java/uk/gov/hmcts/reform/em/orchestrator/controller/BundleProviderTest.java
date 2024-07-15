@@ -5,6 +5,7 @@ import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvide
 import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
+import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -22,7 +23,8 @@ import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCall
 @Provider("em_ccd_orc_bundling")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
         host = "${PACT_BROKER_URL:localhost}",
-        port = "${PACT_BROKER_PORT:80}")
+        port = "${PACT_BROKER_PORT:80}",
+        consumerVersionSelectors = {@VersionSelector(tag = "master")})
 @IgnoreNoPactsToVerify
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
