@@ -403,7 +403,7 @@ task runProviderPactVerification(type: Test) {
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
 }
-runProviderPactVerification.dependsOn contractTest
+runProviderPactVerification.dependsOn contract
 runProviderPactVerification.finalizedBy pactVerify
 
 
