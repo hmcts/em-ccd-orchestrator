@@ -47,7 +47,11 @@ env.DM_STORE_APP_URL = 'http://dm-store-aat.service.core-compute-aat.internal'
 env.CCD_DEF_API = 'http://ccd-definition-store-api-aat.service.core-compute-aat.internal'
 env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.internal'
 env.CDAM_URL = 'http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
+
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+env.PACT_BROKER_URL = "pact-broker.platform.hmcts.net"
+env.PACT_BROKER_PORT = "443"
+env.PACT_BROKER_SCHEME = "https"
 
 def vaultOverrides = [
         'preview' : 'aat',
@@ -66,9 +70,11 @@ curl https://raw.githubusercontent.com/hmcts/reform-api-docs/master/bin/publish-
 sh ./publish-swagger-docs.sh
 '''
     }
+
     onMaster()
     {
-        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER,AppPipelineDsl.PactRoles.PROVIDER])
+
     }
 
     afterAlways('test') {
