@@ -173,7 +173,7 @@ dependencies {
 
     contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.7'
     contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: '4.1.7'
-    contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.7'
+    contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.6.11'
     contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
 
