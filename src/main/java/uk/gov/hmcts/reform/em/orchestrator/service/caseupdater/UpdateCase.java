@@ -23,7 +23,7 @@ public abstract class UpdateCase implements CcdCaseUpdater {
 
     private final JavaType type;
 
-    public UpdateCase(ObjectMapper objectMapper) {
+    protected UpdateCase(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         type = objectMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
     }
