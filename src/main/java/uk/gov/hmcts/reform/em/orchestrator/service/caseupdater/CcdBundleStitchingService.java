@@ -54,7 +54,7 @@ public class CcdBundleStitchingService extends UpdateCase {
             return bundle;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new StitchingServiceException(e.getMessage(), e);
+            throw new StitchingServiceException(cdamDto.getCaseId(), e.getMessage(), e);
         }
     }
 }
