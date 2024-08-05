@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -21,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -29,8 +26,6 @@ import java.util.stream.StreamSupport;
  */
 @SuppressWarnings("squid:S107")
 public class BundleFactory {
-
-    private final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
 
     public CcdBundleDTO create(BundleConfiguration configuration, JsonNode caseJson) throws DocumentSelectorException {
         CcdBundleDTO bundle = new CcdBundleDTO();
@@ -92,8 +87,9 @@ public class BundleFactory {
                               String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
-            List<CcdValue<CcdBundleDocumentDTO>> documents = selector instanceof BundleConfigurationDocument
-                ? addDocument((BundleConfigurationDocument) selector, sortOrder, documentNameValue, caseData,
+            List<CcdValue<CcdBundleDocumentDTO>> documents =
+                    selector instanceof BundleConfigurationDocument bundleConfigurationDocument
+                ? addDocument(bundleConfigurationDocument, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument)
                 : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
                 documentLinkValue, customDocumentLinkValue, customDocument);
@@ -134,6 +130,7 @@ public class BundleFactory {
         return list;
     }
 
+    @SuppressWarnings("java:S2139")
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(
             JsonNode node,
             BundleConfigurationSort sortOrder,
@@ -187,10 +184,7 @@ public class BundleFactory {
 
     private boolean getChildNode(JsonNode outerNode, String path) throws DocumentSelectorException {
         JsonNode innerNode = outerNode.at(path);
-        if (innerNode.isMissingNode()) {
-            return false;
-        }
-        return true;
+        return !innerNode.isMissingNode();
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(
@@ -217,24 +211,15 @@ public class BundleFactory {
                     .filter(n -> anyFilterMatches(documentSelector.filters, n))
                     .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
                             customDocumentLinkValue, customDocument))
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (Exception ex) {
-            logger.error("addDocumentSet failed,"
-                            + "list:{},"
-                            + "documentSelector property:{},"
-                            + "documentNameValue:{},"
-                            + "documentLinkValue:{},"
-                            + "customDocumentLinkValue:{},"
-                            + "customDocument:{}",
-                    list,
+            throw new BundleException(list,
                     documentSelector.property,
                     documentNameValue,
                     documentLinkValue,
                     customDocumentLinkValue,
                     customDocument,
-                    ex
-            );
-            throw ex;
+                    ex);
         }
     }
 
@@ -246,7 +231,6 @@ public class BundleFactory {
                 return false;
             }
         }
-
         return true;
     }
 }

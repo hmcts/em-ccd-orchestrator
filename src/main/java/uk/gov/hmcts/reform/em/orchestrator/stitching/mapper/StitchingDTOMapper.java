@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDocument
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleFolderDTO;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class StitchingDTOMapper {
@@ -41,7 +40,10 @@ public class StitchingDTOMapper {
     }
 
     private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
-        return folders.stream().map(this::getFolder).collect(Collectors.toList());
+        return folders
+                .stream()
+                .map(this::getFolder)
+                .toList();
     }
 
     private StitchingBundleFolderDTO getFolder(CcdValue<CcdBundleFolderDTO> folderDto) {
@@ -55,7 +57,10 @@ public class StitchingDTOMapper {
     }
 
     private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> bundleDocument) {
-        return bundleDocument.stream().map(this::getDocument).collect(Collectors.toList());
+        return bundleDocument
+                .stream()
+                .map(this::getDocument)
+                .toList();
     }
 
     private StitchingBundleDocumentDTO getDocument(CcdValue<CcdBundleDocumentDTO> bundleDocument) {
