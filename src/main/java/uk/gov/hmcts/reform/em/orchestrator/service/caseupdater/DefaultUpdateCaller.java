@@ -49,6 +49,7 @@ public class DefaultUpdateCaller {
     public ResponseEntity<CcdCallbackResponseDto> executeUpdate(CcdCaseUpdater ccdCaseUpdater,
                                                                 HttpServletRequest request) {
         CcdCallbackDto dto = ccdCallbackDtoCreator.createDto(request, "caseBundles");
+        logger.info("CCD Callback DTO: {}", dto);
         dto.setServiceAuth(request.getHeader("ServiceAuthorization"));
 
         CcdCallbackResponseDto ccdCallbackResponseDto = new CcdCallbackResponseDto(dto.getCaseData());
@@ -88,6 +89,8 @@ public class DefaultUpdateCaller {
                     ccdCallbackResponseDto.getErrors().toString()
             );
         }
+
+        logger.info("CCD Callback Response DTO: {}", ccdCallbackResponseDto);
 
         if (ccdCallbackResponseDto.getErrors().isEmpty()) {
             return ResponseEntity.ok(ccdCallbackResponseDto);
