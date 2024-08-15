@@ -52,7 +52,7 @@ def versions = [
         serenityRestAssured: '3.7.0',
         pact_version       : '4.0.10',
         mockito            : '5.12.0',
-        jupiter            : '5.10.3',
+        jupiter            : '5.11.0',
         poi                : '5.2.4',
         springSecurity     : '6.3.1',
         okhttp3            : '4.12.0',
