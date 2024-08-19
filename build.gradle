@@ -209,6 +209,10 @@ dependencyManagement {
             entry 'jackson-annotations'
             entry 'jackson-core'
         }
+
+        dependencySet(group: 'org.junit.platform', version: '1.11.0') {
+            entry 'junit-platform-commons'
+        }
     }
 }
 
