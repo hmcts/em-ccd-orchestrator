@@ -1,0 +1,67 @@
+title: IAC Hearing Bundle
+filename: hearing-bundle.pdf
+filenameIdentifier: /case_details/case_data/bundleFileNamePrefix
+coverpageTemplate: TB-IAC-HRN-ENG-00514.docx
+hasTableOfContents: true
+hasCoversheets: true
+documentNameValue: /document/document_filename
+documentLinkValue: /document
+sort:
+  field: /dateUploaded
+  order: ascending
+hasFolderCoversheets: true
+pageNumberFormat: numberOfPages
+folders:
+  - name: Hearing documents
+    documents:
+      - type: documentSet
+        property: /hearingDocuments
+  - name: Appellant documents
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: caseArgument
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: appealSubmission
+  - name: Appeal Reasons
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: appealReasons
+  - name: Clarifying Questions
+    documents:
+      - type: documentSet
+        property: /legalRepresentativeDocuments
+        filters:
+          - property: /tag
+            value: clarifyingQuestions
+  - name: Additional evidence from appellant
+    documents:
+      - type: documentSet
+        property: /additionalEvidenceDocuments
+  - name: Home office documents
+    documents:
+      - type: documentSet
+        property: /respondentDocuments
+  - name: Tribunal documents
+    documents:
+      - type: documentSet
+        property: /tribunalDocuments
+        filters:
+          - property: /tag
+            value: adaSuitability
+  - name: Appellant evidence after the hearing bundle
+    documents:
+      - type: documentSet
+        property: /appellantAddendumEvidenceDocs
+  - name: Respondent evidence after the hearing bundle
+    documents:
+      - type: documentSet
+        property: /respondentAddendumEvidenceDocs
