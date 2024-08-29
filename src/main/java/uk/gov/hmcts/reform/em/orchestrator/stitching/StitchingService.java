@@ -177,7 +177,7 @@ public class StitchingService {
         } finally {
             HttpOkResponseCloser.closeResponse(response);
         }
-        throw new StitchingTaskMaxRetryException();
+        throw new StitchingTaskMaxRetryException(String.valueOf(taskId));
     }
 
 }
