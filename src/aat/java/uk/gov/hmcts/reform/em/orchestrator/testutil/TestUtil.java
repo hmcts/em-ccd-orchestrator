@@ -496,7 +496,7 @@ public class TestUtil {
                 Thread.sleep(sleepTime);
             }
         }
-        throw new StitchingTaskMaxRetryException();
+        throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
     }
 
     public String addCdamProperties(Object json) {
