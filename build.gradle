@@ -193,7 +193,7 @@ dependencyManagement {
         }
 
         //CVE-2022-1471
-        dependencySet(group: 'org.yaml', version: '2.2') {
+        dependencySet(group: 'org.yaml', version: '2.3') {
             entry 'snakeyaml'
         }
 
@@ -218,7 +218,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '10.18.0'
+    toolVersion = '10.18.1'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
