@@ -1,53 +1,23 @@
 title: PRL Bundle
-filename: PRLBundle
-filenameIdentifier: /case_details/id
+filename: Bundle
+filenameIdentifier: /case_details/bundle_name
+coverpageTemplate: FL-PRL-LET-ENG-CoverPage.docx
 hasTableOfContents: true
 hasCoversheets: false
 hasFolderCoversheets: true
-pageNumberFormat: numberOfPages
+paginationStyle: bottomRight
+pageNumberFormat: pageRange
 documentNameValue: /documentFileName
 folders:
-  - name: MainApplicationDocuments
+  - name: Applications and Orders
     documents:
       - type: documentSet
-        property: /data/furtherEvidences
+        property: /data/applications
         filters:
-          - property: /typeOfDocumentFurtherEvidence
-            value: consentOrder
+          - property: /documentGroup
+            value: applicantApplication
       - type: documentSet
-        property: /data/furtherEvidences
+        property: /data/applications
         filters:
-          - property: /typeOfDocumentFurtherEvidence
-            value: miamCertificate
-      - type: documentSet
-        property: /data/furtherEvidences
-        filters:
-          - property: /typeOfDocumentFurtherEvidence
-            value: previousOrders
-  - name: OtherDocuments
-    documents:
-      - type: documentSet
-        property: /data/otherDocuments
-        filters:
-          - property: /documentTypeOther
-            value: applicantStatement
-      - type: documentSet
-        property: /data/otherDocuments
-        filters:
-          - property: /documentTypeOther
-            value: cafcassReports
-      - type: documentSet
-        property: /data/otherDocuments
-        filters:
-          - property: /documentTypeOther
-            value: expertReports
-      - type: documentSet
-        property: /data/otherDocuments
-        filters:
-          - property: /documentTypeOther
-            value: respondentReports
-      - type: documentSet
-        property: /data/otherDocuments
-        filters:
-          - property: /documentTypeOther
-            value: otherReports
+          - property: /documentGroup
+            value: applicantC1AApplication
