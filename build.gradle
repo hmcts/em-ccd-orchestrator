@@ -52,7 +52,7 @@ def versions = [
         serenityRestAssured: '3.7.0',
         pact_version       : '4.0.10',
         mockito            : '5.13.0',
-        jupiter            : '5.11.0',
+        jupiter            : '5.11.1',
         poi                : '5.2.4',
         springSecurity     : '6.3.3',
         okhttp3            : '4.12.0',
@@ -210,7 +210,7 @@ dependencyManagement {
             entry 'jackson-core'
         }
 
-        dependencySet(group: 'org.junit.platform', version: '1.11.0') {
+        dependencySet(group: 'org.junit.platform', version: '1.11.1') {
             entry 'junit-platform-commons'
         }
     }
