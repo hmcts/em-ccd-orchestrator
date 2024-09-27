@@ -56,7 +56,7 @@ def versions = [
         poi                : '5.2.4',
         springSecurity     : '6.3.3',
         okhttp3            : '4.12.0',
-        fasterXmlJackson   : '2.17.2'
+        fasterXmlJackson   : '2.18.0'
 ]
 sourceSets {
     aat {
