@@ -51,7 +51,7 @@ def versions = [
         serenityreporter   : '3.7.0',
         serenityRestAssured: '3.7.0',
         pact_version       : '4.0.10',
-        mockito            : '5.13.0',
+        mockito            : '5.14.0',
         jupiter            : '5.11.1',
         poi                : '5.2.4',
         springSecurity     : '6.3.3',
@@ -218,7 +218,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '10.18.1'
+    toolVersion = '10.18.2'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
