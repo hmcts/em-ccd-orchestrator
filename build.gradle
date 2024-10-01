@@ -182,7 +182,7 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation 'com.github.hmcts:em-test-helper:2.0.8'
+    aatImplementation 'com.github.hmcts:em-test-helper:2.0.9'
 }
 
 dependencyManagement {
