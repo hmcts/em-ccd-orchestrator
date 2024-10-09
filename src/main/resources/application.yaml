@@ -15,7 +15,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: ${OPEN_ID_API_BASE_URI:https://idam-web-public.aat.platform.hmcts.net/o}
+            issuer-uri: ${OPEN_ID_API_BASE_URI:http://localhost:5062/o}
         registration:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
@@ -58,11 +58,11 @@ info:
 auth:
   idam:
     client:
-      baseUrl: ${IDAM_API_BASE_URI:https://idam-api.aat.platform.hmcts.net}
+      baseUrl: ${IDAM_API_BASE_URI:http://localhost:5062}
   provider:
     service:
       client:
-        baseUrl: ${S2S_BASE_URI:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
+        baseUrl: ${S2S_BASE_URI:http://localhost:8489}
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:true}
@@ -78,7 +78,7 @@ em-rpa-ccd-orchestrator:
   base-url: ${EM_CCD_ORCHESTRATOR_URL:http://localhost:8080}
 
 dm-store-app:
-  base-url: ${DM_STORE_APP_URL:http://dm-store-aat.service.core-compute-aat.internal}
+  base-url: ${DM_STORE_APP_URL:http://localhost:4603}
 
 em-rpa-stitching-api:
   base-url: ${EM_STITCHING_API_URL:http://localhost:4630}
@@ -86,7 +86,7 @@ em-rpa-stitching-api:
 
 idam:
   s2s-auth:
-    url: ${S2S_BASE_URI:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
+    url: ${S2S_BASE_URI:http://localhost:8489}
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
   s2s-authorised:
@@ -99,7 +99,7 @@ callbackUrlCreator:
 
 core_case_data:
   api:
-    url: ${CCD_DATA_API_URL:http://ccd-data-store-api-aat.service.core-compute-aat.internal}
+    url: ${CCD_DATA_API_URL:http://localhost:4452}
 
 endpoint-toggles:
   stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}
