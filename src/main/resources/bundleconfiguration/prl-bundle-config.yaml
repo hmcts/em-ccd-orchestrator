@@ -10,197 +10,192 @@ pageNumberFormat: pageRange
 documentNameValue: /documentFileName
 folders:
   - name: Preliminary Documents
-    folders:
-      - name: Position statements
-        folders:
-          - name: Applicant Position Statement
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantPositionStatements
-          - name: Respondent Position Statement
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: respondentPositionStatements
+    documents:
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: caseSummary
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: positionStatements
   - name: Applications and Orders
-    folders:
-      - name: Applicant Documents
-        folders:
-          - name: Applicant Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantApplication
-          - name: Applicant C1A Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantC1AApplication
-          - name: Miam Certificate
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantMiamCertificate
-          - name: Previous Orders Submitted With Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: applicantPreviousOrdersSubmittedWithApplication
-      - name: Respondent Documents
-        folders:
-          - name: Respondent Application
-            documents:
-              - type: documentSet
-                property: /data/applications
-                filters:
-                  - property: /documentGroup
-                    value: c7Documents
-
-      - name: Orders
-        folders:
-          - name: Orders Submitted with Application
-            documents:
-            - type: documentSet
-              property: /data/orders
-              filters:
-                - property: /documentGroup
-                  value: ordersSubmittedWithApplication
-
-  - name: Witness Statement And Evidence
-    folders:
-      - name: Applicant's Statements
-        folders:
-          - name: Witness Statements
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantWitnessStatements
-          - name: Letters from School
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantLettersFromSchool
-
-          - name: Statements of supporting evidence
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantStatementSupportingEvidence
-          - name: Digital or Mobile Phone Screenshots or Photographic Evidences
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantEmailsOrScreenshotsOrImagesOrOtherMediaFiles
-          - name: Other Evidences
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: applicantStatementDocsUploadedByCourtAdmin
-      - name: Respondent's Statements
-        folders:
-          - name: Witness Statements
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: respondentWitnessStatements
-          - name: Letters from School
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: respondentLettersFromSchool
-          - name: Other Evidences
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: respondentEmailsOrScreenshotsOrImagesOrOtherMediaFiles
-      - name: Other Witness Statements
-        documents:
-          - type: documentSet
-            property: /data/allOtherDocuments
-            filters:
-              - property: /documentGroup
-                value: otherWitnessStatements
+    documents:
+      - type: documentSet
+        property: /data/applications
+        filters:
+          - property: /documentGroup
+            value: applicantApplication
+      - type: documentSet
+        property: /data/applications
+        filters:
+          - property: /documentGroup
+            value: applicantC1AApplication
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: applicantC1AResponse
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: applicantAWPDocuments
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: applicantMiamCertificate
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: applicantPreviousOrdersSubmittedWithApplication
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentApplication
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentC1AApplication
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentC1AResponse
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentAWPDocuments
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentPreviousOrdersSubmittedWithApplication
+      - type: documentSet
+        property: /data/orders
+        filters:
+          - property: /documentGroup
+            value: ordersSubmittedWithApplication
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: transcriptsOfJudgements
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: magistrateFactAndReasons
+  - name: Witness statement and evidence
+    documents:
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: applicantWitnessStatements
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: respondentWitnessStatements
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: otherWitnessStatements
   - name: Expert Reports including Guardian (CAFCASS)
-    folders:
-      - name: CAFCASS Report and Guardian
-        folders:
-          - name: Other Documents
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: cafcassReportsUploadedByCourtAdmin
-      - name: Expert Reports
-        folders:
-          - name: Medical Reports
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: expertMedicalReports
-          - name: DNA Reports
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: expertDNAReports
-          - name: Medical Records
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: expertMedicalRecords
-          - name: Drug And Alcohol Tests(Toxicology)
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: expertReportsForDrugAndAlcholTest
-          - name: Police Reports
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: policeReports
-          - name: Other Reports
-            documents:
-              - type: documentSet
-                property: /data/allOtherDocuments
-                filters:
-                  - property: /documentGroup
-                    value: expertReportsUploadedByCourtAdmin
+    documents:
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: safeguardingLetter
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: section7Report
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: cafcassSection37Report
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: sixteenARiskAssessment
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: guardianReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: specialGuardianshipReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: cafcassOtherDocuments
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSection37Report
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laOtherDocuments
+  - name: Other Documents
+    documents:
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: medicalReports
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: dnaReports
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: resultsOfHairStrandBloodTests
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: policeDisclosures
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: medicalRecords
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: reportsForDrugAndAlcoholTest
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: policeReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: anyOtherDocuments
