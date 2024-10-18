@@ -90,7 +90,7 @@ idam:
     totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
     microservice: em_ccd_orchestrator
   s2s-authorised:
-    services: ${S2S_NAMES_WHITELIST:sscs,ccd,em_gw,ccd_data,iac,em_stitching_api,civil_service,prl_cos_api,ethos_repl_service,et_cos}
+    services: ${S2S_NAMES_WHITELIST:sscs,ccd,em_gw,ccd_data,iac,em_stitching_api,civil_service,prl_cos_api,ethos_repl_service,et_cos,et_msg_handler,ecm_consumer}
 
 callbackUrlCreator:
   scheme: ${CALLBACK_HTTP_SCHEME:http}
