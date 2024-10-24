@@ -10,7 +10,7 @@ plugins {
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.2.13'
     id "info.solidsoft.pitest" version '1.15.0'
-    id 'org.owasp.dependencycheck' version '9.2.0'
+    id 'org.owasp.dependencycheck' version '11.0.0'
     id 'net.serenity-bdd.serenity-gradle-plugin' version '3.0.0'
 }
 
