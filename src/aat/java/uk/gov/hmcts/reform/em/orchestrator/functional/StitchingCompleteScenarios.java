@@ -44,7 +44,7 @@ public class StitchingCompleteScenarios extends BaseTest {
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
-                .log().everything(true)
+                .log().all()
                 .post("/api/stitching-complete-callback/{caseId}/{triggerId}/{bundleId}",
                         caseId,
                         "asyncStitchingComplete",

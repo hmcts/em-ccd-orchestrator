@@ -101,7 +101,7 @@ public class CcdCloneScenarios extends BaseTest {
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(wrappedJson)
+                .body(wrappedJson).log().all()
                 .post("/api/clone-ccd-bundles")
                 .then();
     }

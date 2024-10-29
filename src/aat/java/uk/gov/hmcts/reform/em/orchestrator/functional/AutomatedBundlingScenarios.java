@@ -629,7 +629,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
 
     private ValidatableResponse postNewBundle(Object requestBody) {
         return request
-                .body(requestBody)
+                .body(requestBody).log().all()
                 .post("/api/new-bundle")
                 .then();
     }

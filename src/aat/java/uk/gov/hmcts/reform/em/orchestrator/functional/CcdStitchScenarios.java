@@ -280,7 +280,7 @@ public class CcdStitchScenarios extends BaseTest {
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(wrappedJson)
+                .body(wrappedJson).log().all()
                 .post("/api/stitch-ccd-bundles")
                 .then();
     }
@@ -290,7 +290,7 @@ public class CcdStitchScenarios extends BaseTest {
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(wrappedJson)
+                .body(wrappedJson).log().all()
                 .post("/api/async-stitch-ccd-bundles")
                 .then();
     }
