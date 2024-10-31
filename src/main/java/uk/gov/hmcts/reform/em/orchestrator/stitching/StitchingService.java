@@ -166,7 +166,7 @@ public class StitchingService {
                 final String responseBody = response.body().string();
                 final String taskState = JsonPath.read(responseBody, TASK_STATE);
 
-                if (!taskState.equals(TaskState.NEW.toString())) {
+                if (!taskState.equals(TaskState.NEW.toString()) && (!taskState.equals(TaskState.IN_PROGRESS.toString()))) {
                     return responseBody;
                 } else {
                     Thread.sleep(sleepTime);
