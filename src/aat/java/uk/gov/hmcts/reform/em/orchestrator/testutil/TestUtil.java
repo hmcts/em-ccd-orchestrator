@@ -490,7 +490,7 @@ public class TestUtil {
                     + stitchingResource + "/" + documentTaskId);
             final JsonPath jsonPath = response.body().jsonPath();
             final String taskState = jsonPath.getString("taskState");
-            if (!taskState.equals(TaskState.NEW.toString())) {
+            if (!taskState.equals(TaskState.NEW.toString()) && !taskState.equals(TaskState.IN_PROGRESS.toString())) {
                 return response.then();
             } else {
                 Thread.sleep(sleepTime);
