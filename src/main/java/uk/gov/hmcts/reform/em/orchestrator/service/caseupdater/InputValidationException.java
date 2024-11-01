@@ -11,7 +11,10 @@ public class InputValidationException extends RuntimeException {
     private final List<String> violations;
 
     public InputValidationException(Set<ConstraintViolation<CcdBundleDTO>> violations) {
-        super("Bundle input validation error");
+        super("Bundle input validation error, violations: "
+                + String.join(", ", violations.stream()
+                .map(ConstraintViolation::getMessage)
+                .toList()));
 
         this.violations = violations.stream()
             .map(ConstraintViolation::getMessage)
