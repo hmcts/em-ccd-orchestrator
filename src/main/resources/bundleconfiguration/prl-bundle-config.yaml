@@ -21,6 +21,11 @@ folders:
         filters:
           - property: /documentGroup
             value: positionStatements
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: fm5Statements
   - name: Applications and Orders
     documents:
       - type: documentSet
