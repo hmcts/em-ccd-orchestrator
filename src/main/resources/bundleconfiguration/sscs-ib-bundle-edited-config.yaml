@@ -1,0 +1,33 @@
+title: SSCS Bundle Edited
+filename: EditedSscsBundle.pdf
+filenameIdentifier: /case_details/id
+coverpageTemplate: TB-SCS-LET-ENG-Cover-Letter-IB.docx
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: false
+pageNumberFormat: numberOfPages
+documentNameValue: /documentFileName
+customDocument: true
+customDocumentLinkValue: /editedDocumentLink
+folders:
+  - name: FTA
+    documents:
+      - type: documentSet
+        property: /dwpDocuments
+        filters:
+          - property: /documentType
+            value: dwpResponse
+      - type: documentSet
+        property: /dwpDocuments
+        filters:
+          - property: /documentType
+            value: dwpEvidenceBundle
+  - name: Further additions
+    documents:
+      - type: documentSet
+        property: /sscsDocument
+        filters:
+          - property: /bundleAddition
+            value: \w+
+      - type: document
+        property: /audioVideoEvidenceBundleDocument
