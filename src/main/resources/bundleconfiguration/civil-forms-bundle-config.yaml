@@ -1,0 +1,14 @@
+title: Sealed Form
+filename: SealedForm.pdf
+filenameIdentifier: /case_details/filename_identifier
+hasTableOfContents: false
+hasCoversheets: false
+hasFolderCoversheets: false
+paginationStyle: bottomRight
+pageNumberFormat: pageRange
+documentNameValue: /documentFileName
+folders:
+  - name: Form Documents
+    documents:
+      - type: documentSet
+        property: /sealedFormDocuments
