@@ -1,1 +1,1 @@
-additional_managed_identities_access = ["ia", "sptribs", "sscs"]
+additional_managed_identities_access = ["ia", "sptribs", "sscs", "civil"]
