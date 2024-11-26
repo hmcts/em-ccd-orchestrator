@@ -47,9 +47,7 @@ repositories {
 }
 
 def versions = [
-        serenity           : '3.7.0',
-        serenityreporter   : '3.7.0',
-        serenityRestAssured: '3.7.0',
+        serenity           : '4.2.9',
         pact_version       : '4.0.10',
         mockito            : '5.14.2',
         jupiter            : '5.11.3',
@@ -152,11 +150,11 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-core', version: versions.mockito
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
 
-    testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityRestAssured, withoutStuff
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity, withoutStuff
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, withoutStuff
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
 
     testRuntimeOnly group: 'org.junit.vintage', name :'junit-vintage-engine', version: versions.jupiter
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
