@@ -15,7 +15,6 @@ plugins {
 }
 
 apply plugin: 'idea'
-//apply plugin: 'net.serenity-bdd.aggregator'
 
 
 if (!project.hasProperty('runList')) {
