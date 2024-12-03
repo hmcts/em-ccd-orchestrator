@@ -20,9 +20,9 @@ spring:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
             client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
-  cloud:
-    compatibility-verifier:
-      enabled: false
+  # cloud:
+  #   compatibility-verifier:
+  #     enabled: false
 
 management:
   endpoint:
