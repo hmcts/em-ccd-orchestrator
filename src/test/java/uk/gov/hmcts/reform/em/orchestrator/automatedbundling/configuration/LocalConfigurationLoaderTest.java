@@ -78,9 +78,8 @@ class LocalConfigurationLoaderTest {
 
     @Test
     void fileContainsIncorrectValueForField() {
-        BundleConfigurationException exception = assertThrows(BundleConfigurationException.class, () -> {
-            loader.load("example-incorrect-value-for-key.yaml");
-        });
+        BundleConfigurationException exception = assertThrows(BundleConfigurationException.class,
+            () -> loader.load("example-incorrect-value-for-key.yaml"));
         assertEquals("Invalid configuration file entry in: example-incorrect-value-for-key.yaml"
             + "; Configuration file parameter(s) and/or parameter value(s)", exception.getMessage());
     }

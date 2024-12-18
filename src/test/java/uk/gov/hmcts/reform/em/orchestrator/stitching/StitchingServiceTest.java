@@ -151,9 +151,7 @@ class StitchingServiceTest {
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
         CcdBundleDTO bundleDTO = new CcdBundleDTO();
-        assertThrows(StitchingServiceException.class, () -> {
-            service.stitch(bundleDTO, cdamDto);
-        });
+        assertThrows(StitchingServiceException.class, () -> service.stitch(bundleDTO, cdamDto));
     }
 
     @Test
@@ -169,9 +167,7 @@ class StitchingServiceTest {
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
         CcdBundleDTO bundleDTO = new CcdBundleDTO();
-        assertThrows(StitchingServiceException.class, () -> {
-            service.stitch(bundleDTO, cdamDto);
-        });
+        assertThrows(StitchingServiceException.class, () -> service.stitch(bundleDTO, cdamDto));
     }
 
     @Test
