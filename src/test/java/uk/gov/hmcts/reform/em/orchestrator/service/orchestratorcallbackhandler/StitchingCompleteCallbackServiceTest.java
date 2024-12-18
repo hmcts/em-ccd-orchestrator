@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdapi.CcdUpdateService;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StitchingCompleteCallbackServiceTest {
+@ExtendWith(MockitoExtension.class)
+class StitchingCompleteCallbackServiceTest {
 
     @Mock
     private CcdUpdateService ccdUpdateService;
@@ -29,7 +29,7 @@ public class StitchingCompleteCallbackServiceTest {
     private StitchingCompleteCallbackService stitchingCompleteCallbackService;
 
     @Test
-    public void handleCallback() {
+    void handleCallback() {
         Mockito
             .when(ccdUpdateService.startCcdEvent("a","1", "x"))
             .thenReturn(new CcdCallbackDto());
@@ -39,17 +39,18 @@ public class StitchingCompleteCallbackServiceTest {
     }
 
     @Test
-    public void handleCallbackException()  {
+    void handleCallbackException()  {
         Mockito
                 .when(ccdUpdateService.startCcdEvent("a","1", "x"))
                 .thenThrow(new CallbackException(111, "err body", "err"));
+        StitchingCompleteCallbackDto stitchingCompleteCallbackDto = new StitchingCompleteCallbackDto("x",
+            "a", "1", UUID.randomUUID().toString(), new DocumentTaskDTO());
         assertThrows(CallbackException.class, () ->
-                stitchingCompleteCallbackService.handleCallback(new StitchingCompleteCallbackDto("x",
-                        "a", "1", UUID.randomUUID().toString(), new DocumentTaskDTO())));
+                stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto));
     }
 
     @Test
-    public void handleCallbackExceptionFinally() {
+    void handleCallbackExceptionFinally() {
         Mockito
                 .when(ccdUpdateService.startCcdEvent(any(), any(), any()))
                 .thenReturn(new CcdCallbackDto());
@@ -57,13 +58,14 @@ public class StitchingCompleteCallbackServiceTest {
         Mockito.doThrow(new CallbackException(1, "", "")).when(ccdUpdateService)
                 .submitCcdEvent(anyString(), anyString(), any(CcdCallbackDto.class));
 
+        StitchingCompleteCallbackDto stitchingCompleteCallbackDto = new StitchingCompleteCallbackDto("x",
+            "a", "1", UUID.randomUUID().toString(), new DocumentTaskDTO());
         assertThrows(CallbackException.class, () ->
-                stitchingCompleteCallbackService.handleCallback(new StitchingCompleteCallbackDto("x",
-                        "a", "1", UUID.randomUUID().toString(), new DocumentTaskDTO())));
+                stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto));
     }
 
     @Test
-    public void handleCallbackExceptionFinallyNullCcdCallbackDto() {
+    void handleCallbackExceptionFinallyNullCcdCallbackDto() {
         Mockito
                 .when(ccdUpdateService.startCcdEvent(any(), any(), any()))
                 .thenReturn(null);
