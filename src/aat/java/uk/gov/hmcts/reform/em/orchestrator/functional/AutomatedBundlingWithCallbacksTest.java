@@ -5,7 +5,9 @@ import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -26,12 +28,15 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
+
+        Callable<JsonNode> callable = () -> extendedCcdHelper.getCase(caseId);
+        Predicate<JsonNode> predicate = jsonNode ->
+            !jsonNode.findPath("stitchStatus").asText().equals("NEW");
+
         Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
-            .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
-                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
-                return !caseJson.findPath("stitchStatus").asText().equals("NEW");
-            });
-        JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+            .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(callable, predicate);
+
+        JsonNode caseJson = callable.call();
         if (caseJson.findPath("stitchStatus").asText().equals("NEW")) {
             fail("Status was not retrieved.");
         }

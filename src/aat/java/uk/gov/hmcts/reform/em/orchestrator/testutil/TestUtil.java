@@ -46,6 +46,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -476,17 +478,23 @@ public class TestUtil {
             .baseUri(getTestUrl())
             .contentType(APPLICATION_JSON_VALUE);
 
-        Awaitility.await().pollInterval(sleepTime, MILLISECONDS)
-            .atMost(retryCount * sleepTime, MILLISECONDS)
-            .until(() -> {
-                final Response response = requestSpecification.get(stitchingBaseUrl
-                    + stitchingResource + "/" + documentTaskId);
-                final JsonPath jsonPath = response.body().jsonPath();
-                final String taskState = jsonPath.getString("taskState");
-                return !taskState.equals(TaskState.NEW.toString())
-                    && !taskState.equals(TaskState.IN_PROGRESS.toString());
-            });
-        throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
+        Callable<Response> responseCallable = () -> requestSpecification.get(stitchingBaseUrl
+            + stitchingResource + "/" + documentTaskId);
+        Predicate<Response> responsePredicate = response -> {
+            final JsonPath jsonPath = response.body().jsonPath();
+            final String taskState = jsonPath.getString("taskState");
+            return !taskState.equals(TaskState.NEW.toString())
+                && !taskState.equals(TaskState.IN_PROGRESS.toString());
+        };
+
+        try {
+            Awaitility.await().pollInterval(sleepTime, MILLISECONDS)
+                .atMost(retryCount * sleepTime, MILLISECONDS)
+                .until(responseCallable, responsePredicate);
+            return responseCallable.call().then();
+        } catch (Exception e) {
+            throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
+        }
     }
 
     public String addCdamProperties(Object json) {
