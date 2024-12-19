@@ -1,32 +1,27 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class CcdPrehookScenarios extends BaseTest {
+class CcdPrehookScenariosTest extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
-
-    @Before
-    public void setUp() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+    @BeforeEach
+    public void setUp() {
+        assumeFalse(enableCdamValidation);
     }
 
     @Test
-    public void testPostBundleStitch() {
+    void testPostBundleStitch() {
         testUtil
                 .authRequest()
                 .baseUri(testUtil.getTestUrl())
@@ -41,7 +36,7 @@ public class CcdPrehookScenarios extends BaseTest {
     }
 
     @Test
-    public void testEndToEnd() throws IOException {
+    void testEndToEnd() throws IOException {
         final HashMap<String, String> caseData =
                 testUtil
                         .authRequest()

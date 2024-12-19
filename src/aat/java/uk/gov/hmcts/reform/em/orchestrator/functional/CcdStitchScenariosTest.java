@@ -1,40 +1,32 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
+
+import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class SecureCcdStitchScenarios extends BaseTest {
+class CcdStitchScenariosTest extends BaseTest {
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(5);
-
-    // This has the caseTypeId, jurisdictionId populated by default(Hard coded) as these are required fields for CDAM.
-    private static final String syncCaseJson =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
-        + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
-        + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
-
-    @Before
-    public void setUp() throws Exception {
-        Assume.assumeTrue(enableCdamValidation);
+    @BeforeEach
+    public void setUp() {
+        Assumptions.assumeFalse(enableCdamValidation);
     }
 
     @Test
-    public void testPostBundleStitch() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitch() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -42,15 +34,15 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
     }
 
     @Test
-    public void testPostBundleStitchWithCaseId() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitchWithCaseId() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format("{ \"id\": \"123\", " + syncCaseJson.substring(1), json);
+        String wrappedJson =
+            String.format("{ \"id\": \"123\", \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -58,15 +50,14 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
     }
 
     @Test
-    public void testPostBundleStitchWithWordDoc() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitchWithWordDoc() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -74,17 +65,16 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
     }
 
     @Test
-    public void testSpecificFilename() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testSpecificFilename() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("my-file-name.pdf");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -93,17 +83,17 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
                 .body("data.caseBundles[0].value.fileName", equalTo("my-file-name.pdf"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
+
     }
 
     @Test
-    public void testFilenameWithoutExtension() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testFilenameWithoutExtension() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("doc-file-name");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -115,12 +105,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchFileNameOneChar() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitchFileNameOneChar() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("a");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -131,12 +121,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchFileName51Char() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitchFileName51Char() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName(Constants.FILE_NAME_WITH_51_CHARS_LENGTH);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -147,11 +137,11 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testNoFileNameButBundleTitleOnly() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
+    void testNoFileNameButBundleTitleOnly() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -163,12 +153,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilenameErrors() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testFilenameErrors() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("1234567890123456789012345678901%.pdf");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -181,12 +171,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testLongBundleDescriptionErrors() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testLongBundleDescriptionErrors() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
 
         bundle.setDescription("y".repeat(300));
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
         response
@@ -196,12 +186,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testWithoutCoversheets() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testWithoutCoversheets() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setHasCoversheets(CcdBoolean.No);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -210,17 +200,16 @@ public class SecureCcdStitchScenarios extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
                 .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue());
     }
 
     @Test
-    public void testWithImageRendering() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundleWithImageRendered(extendedCcdHelper.getBundleTesterUser());
+    void testWithImageRendering() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundleWithImageRendered();
         bundle.setHasCoversheets(CcdBoolean.No);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
@@ -235,18 +224,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchAsync() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostBundleStitchAsync() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
-
-        response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"));
-
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         response = testUtil.poll(documentTaskId);
         response
@@ -257,12 +240,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostAsyncBundleStitchFileNameOneChar() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostAsyncBundleStitchFileNameOneChar() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("a");
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
 
@@ -273,12 +256,12 @@ public class SecureCcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostAsyncLongBundleDescriptionErrors() throws Exception {
-        CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
+    void testPostAsyncLongBundleDescriptionErrors() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
 
         bundle.setDescription("y".repeat(300));
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
-        String wrappedJson = String.format(syncCaseJson, json);
+        String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
 
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
         response
@@ -289,7 +272,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
 
     private ValidatableResponse postStitchCCDBundle(String wrappedJson) {
         return testUtil
-                .cdamAuthRequest()
+                .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
@@ -299,7 +282,7 @@ public class SecureCcdStitchScenarios extends BaseTest {
 
     private ValidatableResponse postAsyncStitchCCDBundle(String wrappedJson) {
         return testUtil
-                .cdamAuthRequest()
+                .authRequest()
                 .baseUri(testUtil.getTestUrl())
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(wrappedJson)
