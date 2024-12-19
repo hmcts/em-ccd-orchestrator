@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AutomatedCaseUpdaterTest {
+@ExtendWith(MockitoExtension.class)
+class AutomatedCaseUpdaterTest {
 
     @Mock
     private AutomatedStitchingExecutor automatedStitchingExecutor;
@@ -34,7 +34,7 @@ public class AutomatedCaseUpdaterTest {
         new ObjectMapper()
     );
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         updater = new AutomatedCaseUpdater(
@@ -51,7 +51,7 @@ public class AutomatedCaseUpdaterTest {
 
 
     @Test
-    public void updateCase() throws IOException {
+    void updateCase() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -81,7 +81,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithArrayBundleConfig() throws IOException {
+    void updateCaseWithArrayBundleConfig() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -112,7 +112,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithEmptyArrayBundleConfig() throws IOException {
+    void updateCaseWithEmptyArrayBundleConfig() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -133,7 +133,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithOutBundleConfig() throws IOException {
+    void updateCaseWithOutBundleConfig() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -153,7 +153,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void updateCaseWithFileIdentifier() throws IOException {
+    void updateCaseWithFileIdentifier() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
@@ -174,7 +174,7 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void createCaseBundlesPropertyWhenItDoesntExist() throws IOException {
+    void createCaseBundlesPropertyWhenItDoesntExist() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito
@@ -195,49 +195,50 @@ public class AutomatedCaseUpdaterTest {
     }
 
     @Test
-    public void addBundleToHeadOfListIfOneAlreadyExists() throws IOException {
+    void addBundleToHeadOfListIfOneAlreadyExists() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader())
                 .thenReturn(
                         new BufferedReader(
-                                new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":"
-                                        + "\"testbundleconfiguration/example.yaml\","
-                                        + "\"caseBundles\": "
-                                        + "[{\n"
-                                        + "\"value\": {\n"
-                                        + "\"id\": \"19c9f411-e9a0-43f4-af13-e3d7ee98a50b\",\n"
-                                        + "\"title\": \"New bundle\",\n"
-                                        + "\"description\": null,\n"
-                                        + "\"eligibleForStitching\": \"no\",\n"
-                                        + "\"eligibleForCloning\": \"no\",\n"
-                                        + "\"stitchedDocument\": null,\n"
-                                        + "\"documents\": [],\n"
-                                        + "\"folders\": [{\n"
-                                        + "\"value\": {\n"
-                                        + "\"name\": \"Folder 1 Original\",\n"
-                                        + "\"documents\": [],\n"
-                                        + "\"folders\": [{\n"
-                                        + "\"value\": {\n"
-                                        + "\"name\": \"Folder 1.a Original\",\n"
-                                        + "\"documents\": [],\n"
-                                        + "\"sortIndex\": 0\n"
-                                        + "}\n"
-                                        + "}],\n"
-                                        + "\"sortIndex\": 0\n"
-                                        + "}\n"
-                                        + "}],\n"
-                                        + "\"fileName\": \"original_bundle.pdf\",\n"
-                                        + "\"coverpageTemplate\": \"FL-FRM-APP-ENG-00002.docx\",\n"
-                                        + "\"hasTableOfContents\": \"Yes\",\n"
-                                        + "\"hasCoversheets\": \"Yes\",\n"
-                                        + "\"hasFolderCoversheets\": \"No\",\n"
-                                        + "\"stitchStatus\": null,\n"
-                                        + "\"paginationStyle\": \"topLeft\",\n"
-                                        + "\"pageNumberFormat\": \"numberOfPages\",\n"
-                                        + "\"stitchingFailureMessage\": null\n"
-                                        + "}\n"
-                                        + "}]}}}")
+                                new StringReader("""
+                                    {"case_details":{"case_data": {"bundleConfiguration":\
+                                    "testbundleconfiguration/example.yaml",\
+                                    "caseBundles": \
+                                    [{
+                                    "value": {
+                                    "id": "19c9f411-e9a0-43f4-af13-e3d7ee98a50b",
+                                    "title": "New bundle",
+                                    "description": null,
+                                    "eligibleForStitching": "no",
+                                    "eligibleForCloning": "no",
+                                    "stitchedDocument": null,
+                                    "documents": [],
+                                    "folders": [{
+                                    "value": {
+                                    "name": "Folder 1 Original",
+                                    "documents": [],
+                                    "folders": [{
+                                    "value": {
+                                    "name": "Folder 1.a Original",
+                                    "documents": [],
+                                    "sortIndex": 0
+                                    }
+                                    }],
+                                    "sortIndex": 0
+                                    }
+                                    }],
+                                    "fileName": "original_bundle.pdf",
+                                    "coverpageTemplate": "FL-FRM-APP-ENG-00002.docx",
+                                    "hasTableOfContents": "Yes",
+                                    "hasCoversheets": "Yes",
+                                    "hasFolderCoversheets": "No",
+                                    "stitchStatus": null,
+                                    "paginationStyle": "topLeft",
+                                    "pageNumberFormat": "numberOfPages",
+                                    "stitchingFailureMessage": null
+                                    }
+                                    }]}}}""")
                         ));
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
