@@ -2,10 +2,8 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 class SecureStitchingCompleteScenariosTest extends BaseTest {
     String wrappedJson;
-
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
 
     @BeforeEach
     public void setup() throws Exception {

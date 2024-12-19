@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
@@ -475,14 +476,15 @@ public class TestUtil {
             .baseUri(getTestUrl())
             .contentType(APPLICATION_JSON_VALUE);
 
-        Awaitility.await().pollInterval(sleepTime, java.util.concurrent.TimeUnit.MILLISECONDS)
-            .atMost(retryCount * sleepTime, java.util.concurrent.TimeUnit.MILLISECONDS)
+        Awaitility.await().pollInterval(sleepTime, MILLISECONDS)
+            .atMost(retryCount * sleepTime, MILLISECONDS)
             .until(() -> {
                 final Response response = requestSpecification.get(stitchingBaseUrl
                     + stitchingResource + "/" + documentTaskId);
                 final JsonPath jsonPath = response.body().jsonPath();
                 final String taskState = jsonPath.getString("taskState");
-                return !taskState.equals(TaskState.NEW.toString()) && !taskState.equals(TaskState.IN_PROGRESS.toString());
+                return !taskState.equals(TaskState.NEW.toString())
+                    && !taskState.equals(TaskState.IN_PROGRESS.toString());
             });
         throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
     }

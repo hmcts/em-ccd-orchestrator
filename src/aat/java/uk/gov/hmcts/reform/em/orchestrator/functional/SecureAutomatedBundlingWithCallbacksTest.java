@@ -3,10 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +17,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class SecureAutomatedBundlingWithCallbacksTest extends BaseTest {
 
     private static final int WAIT_SECONDS = 60;
-
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
 
     @BeforeEach
     public void setUp() {

@@ -2,11 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,11 +16,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 class SecureCcdCloneScenariosTest extends BaseTest {
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
-
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         assumeTrue(enableCdamValidation);
     }
 

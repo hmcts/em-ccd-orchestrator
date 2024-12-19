@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,9 +28,9 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
         Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
             .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
-            JsonNode caseJson = extendedCcdHelper.getCase(caseId);
-            return !caseJson.findPath("stitchStatus").asText().equals("NEW");
-        });
+                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+                return !caseJson.findPath("stitchStatus").asText().equals("NEW");
+            });
         JsonNode caseJson = extendedCcdHelper.getCase(caseId);
         if (caseJson.findPath("stitchStatus").asText().equals("NEW")) {
             fail("Status was not retrieved.");
@@ -46,9 +47,9 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
         Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
             .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
-            JsonNode caseJson = extendedCcdHelper.getCase(caseId);
-            return !caseJson.findPath("stitchStatus").asText().equals("NEW");
-        });
+                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+                return !caseJson.findPath("stitchStatus").asText().equals("NEW");
+            });
         JsonNode caseJson = extendedCcdHelper.getCase(caseId);
         if (caseJson.findPath("stitchStatus").asText().equals("NEW")) {
             fail("Status was not retrieved.");

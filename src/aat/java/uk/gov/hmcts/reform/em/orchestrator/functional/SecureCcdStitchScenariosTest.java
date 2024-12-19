@@ -2,13 +2,11 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -17,16 +15,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 class SecureCcdStitchScenariosTest extends BaseTest {
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(5);
-
     // This has the caseTypeId, jurisdictionId populated by default(Hard coded) as these are required fields for CDAM.
     private static final String SYNC_CASE_JSON =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
         + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
         + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         assumeTrue(enableCdamValidation);
     }
 

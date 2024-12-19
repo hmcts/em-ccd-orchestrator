@@ -45,7 +45,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testCreateBundle() throws IOException, InterruptedException {
+    void testCreateBundle() {
         final ValidatableResponse response = postNewBundle(validJson);
         response
                 .assertThat().log().all()
@@ -90,7 +90,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testFilename() throws IOException, InterruptedException {
+    void testFilename() {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -109,7 +109,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testTableOfContentsAndCoversheet() throws IOException, InterruptedException {
+    void testTableOfContentsAndCoversheet() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -129,7 +129,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testFolderCoversheets() throws IOException, InterruptedException {
+    void testFolderCoversheets() {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -149,7 +149,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSubSubfolders() throws IOException, InterruptedException {
+    void testSubSubfolders() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -168,7 +168,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testAddFlatDocuments() throws IOException, InterruptedException {
+    void testAddFlatDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -195,7 +195,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testAddFlatFilteredDocuments() throws IOException, InterruptedException {
+    void testAddFlatFilteredDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -219,7 +219,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testAddFolderedDocuments() throws IOException, InterruptedException {
+    void testAddFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
         json = findDocumentUrl(json);
@@ -253,7 +253,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testAddFilteredFolderedDocuments() throws IOException, InterruptedException {
+    void testAddFilteredFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
         json = findDocumentUrl(json);
@@ -314,7 +314,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testDocumentNotPresent() throws IOException, InterruptedException {
+    void testDocumentNotPresent() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json
                 .replaceAll(
@@ -394,7 +394,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testMultipleFilters() throws IOException, InterruptedException {
+    void testMultipleFilters() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-9-multiple-filters.yaml");
         json = findDocumentUrl(json);
@@ -423,7 +423,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSortDocumentsAscending() throws IOException, InterruptedException {
+    void testSortDocumentsAscending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-10-sorting.yaml");
         json = findDocumentUrl(json);
@@ -457,7 +457,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSortDocumentsDescending() throws IOException, InterruptedException {
+     void testSortDocumentsDescending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-11-sorting.yaml");
         json = findDocumentUrl(json);
@@ -491,7 +491,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testEnableEmailNotificationIsNull() throws IOException, InterruptedException {
+    void testEnableEmailNotificationIsNull() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response.assertThat()
@@ -509,7 +509,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testRenderImageInStitchedDocument() throws IOException, InterruptedException {
+    void testRenderImageInStitchedDocument() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-13-render-image-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -536,7 +536,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testRedactedDocuments() throws IOException, InterruptedException {
+    void testRedactedDocuments() {
         String json = customDocumentsJson.toString();
         json = findDocumentUrl(json);
         final ValidatableResponse response = postNewBundle(json);
@@ -564,7 +564,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testNonRedactedDocuments() throws IOException, InterruptedException {
+    void testNonRedactedDocuments() {
         String json = nonCustomDocumentsJson.toString();
         json = findDocumentUrl(json);
         final ValidatableResponse response = postNewBundle(json);
@@ -590,7 +590,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testMultiBundleDocuments() throws IOException, InterruptedException {
+    void testMultiBundleDocuments() {
 
         String json = multiBundleDocumentsJson.toString();
         json = findDocumentUrl(json);

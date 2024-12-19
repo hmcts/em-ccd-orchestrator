@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,11 +14,8 @@ class SecureCcdPrehookScenariosTest extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case-cdam.json").getPath());
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
-
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         assumeTrue(enableCdamValidation);
     }
 

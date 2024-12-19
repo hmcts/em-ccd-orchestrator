@@ -224,7 +224,7 @@ class CcdStitchScenariosTest extends BaseTest {
     }
 
     @Test
-    void testPostBundleStitchAsync() throws IOException, InterruptedException {
+    void testPostBundleStitchAsync() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);

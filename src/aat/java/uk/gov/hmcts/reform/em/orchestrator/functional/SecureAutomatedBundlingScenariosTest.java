@@ -5,11 +5,9 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
@@ -33,8 +31,6 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     private static JsonNode nonCustomDocumentsJson;
     private static JsonNode multiBundleDocumentsJson;
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
 
     private RequestSpecification request;
     private RequestSpecification unAuthenticatedRequest;
@@ -54,7 +50,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testCreateBundle() throws IOException, InterruptedException {
+    void testCreateBundle() {
         String cdamJson = testUtil.addCdamProperties(validJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
         response
@@ -114,7 +110,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testFilename() throws IOException, InterruptedException {
+    void testFilename() {
         String cdamJson = testUtil.addCdamProperties(filenameJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
@@ -134,7 +130,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testTableOfContentsAndCoversheet() throws IOException, InterruptedException {
+    void testTableOfContentsAndCoversheet() {
         String cdamJson = testUtil.addCdamProperties(validJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
@@ -155,7 +151,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testFolderCoversheets() throws IOException, InterruptedException {
+    void testFolderCoversheets() {
         String cdamJson = testUtil.addCdamProperties(filenameJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
         response
@@ -177,7 +173,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSubSubfolders() throws IOException, InterruptedException {
+    void testSubSubfolders() {
         String cdamJson = testUtil.addCdamProperties(validJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
@@ -549,7 +545,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testEnableEmailNotificationIsNull() throws IOException, InterruptedException {
+    void testEnableEmailNotificationIsNull() {
         String cdamJson = testUtil.addCdamProperties(validJson);
         final ValidatableResponse response = postNewBundle(cdamJson);
 
@@ -597,7 +593,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testRedactedDocuments() throws Exception {
+    void testRedactedDocuments() {
         String json = customDocumentsJson.toString();
         json = findDocumentUrl(json);
 
@@ -627,7 +623,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testNonRedactedDocuments() throws Exception {
+    void testNonRedactedDocuments() {
         String json = nonCustomDocumentsJson.toString();
         json = findDocumentUrl(json);
 
@@ -655,7 +651,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testMultiBundleDocuments() throws Exception {
+    void testMultiBundleDocuments() {
 
         String json = multiBundleDocumentsJson.toString();
         json = findDocumentUrl(json);
@@ -706,7 +702,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @NotNull
-    private String findDocumentUrl(String json) throws Exception {
+    private String findDocumentUrl(String json) {
         Document.Links links = testUtil.uploadCdamDocument();
 
         json = json.replaceAll(

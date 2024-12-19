@@ -3,9 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -13,9 +11,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 class StitchingCompleteScenariosTest extends BaseTest {
     JsonNode jsonNode;
-
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
 
     @BeforeEach
     public void setup() throws Exception {
