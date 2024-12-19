@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingExecutor;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingServiceException;
@@ -19,10 +19,11 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AsyncCcdBundleStitchingServiceTest {
+@ExtendWith(MockitoExtension.class)
+class AsyncCcdBundleStitchingServiceTest {
 
     @Mock
     private AutomatedStitchingExecutor automatedStitchingExecutor;
@@ -31,7 +32,7 @@ public class AsyncCcdBundleStitchingServiceTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -41,7 +42,7 @@ public class AsyncCcdBundleStitchingServiceTest {
     }
 
     @Test
-    public void testUpdateCase() throws Exception {
+    void testUpdateCase() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
@@ -54,20 +55,19 @@ public class AsyncCcdBundleStitchingServiceTest {
                 .startStitching(Mockito.any(CdamDto.class), Mockito.any());
     }
 
-    @Test(expected = InputValidationException.class)
-    public void testInvalidFilename() throws Exception {
+    @Test
+    void testInvalidFilename() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
         ccdCallbackDto.setPropertyName(Optional.of("cb"));
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt("jwt");
-
-        asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertThrows(InputValidationException.class, () -> asyncCcdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
-    @Test(expected = StitchingServiceException.class)
-    public void testUpdateStitchingServiceException() throws Exception {
+    @Test
+    void testUpdateStitchingServiceException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
@@ -79,11 +79,11 @@ public class AsyncCcdBundleStitchingServiceTest {
                 .when(automatedStitchingExecutor)
                 .startStitching(Mockito.any(CdamDto.class), Mockito.any());
 
-        asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertThrows(StitchingServiceException.class, () -> asyncCcdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
     @Test
-    public void testUpdateCaseMissingBundles() {
+    void testUpdateCaseMissingBundles() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setCaseData(objectMapper.getNodeFactory().arrayNode());
         JsonNode node = asyncCcdBundleStitchingService.updateCase(ccdCallbackDto);

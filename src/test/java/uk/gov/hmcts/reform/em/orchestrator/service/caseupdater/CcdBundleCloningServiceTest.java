@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
@@ -17,8 +16,11 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import java.io.File;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CcdBundleCloningServiceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+@ExtendWith(MockitoExtension.class)
+class CcdBundleCloningServiceTest {
 
     private CcdBundleCloningService ccdBundleCloningService;
 
@@ -55,20 +57,20 @@ public class CcdBundleCloningServiceTest {
 
     private void checkIthBundleTitle(ArrayNode list, int i, String title) throws Exception {
         CcdBundleDTO bundle = getIthBundleDto(list, i);
-        Assert.assertEquals(title, bundle.getTitle());
+        assertEquals(title, bundle.getTitle());
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         ccdBundleCloningService = new CcdBundleCloningService(objectMapper);
     }
 
     @Test
-    public void testNameUpdated() throws Exception {
+    void testNameUpdated() throws Exception {
         JsonNode node = objectMapper.readTree(jsonOneEligible);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
 
-        Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
 
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
@@ -76,21 +78,21 @@ public class CcdBundleCloningServiceTest {
         CcdBundleDTO updatedFirstBundle = getIthBundleDto(updatedBundles, 0);
         CcdBundleDTO updatedSecondBundle = getIthBundleDto(updatedBundles, 1);
 
-        Assert.assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
-        Assert.assertEquals(updatedFirstBundle.getDescription(), updatedSecondBundle.getDescription());
+        assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(updatedFirstBundle.getDescription(), updatedSecondBundle.getDescription());
         checkIthBundleTitle(updatedBundles, 0, "CLONED_First Bundle");
         checkIthBundleTitle(updatedBundles, 1, "First Bundle");
     }
 
     @Test
-    public void testCloningSetsToFalse() throws Exception {
+    void testCloningSetsToFalse() throws Exception {
         JsonNode node = objectMapper.readTree(jsonOneEligible);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
 
         ArrayNode originalBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
         CcdBundleDTO originalFirstBundle = getIthBundleDto(originalBundles, 0);
 
-        Assert.assertEquals("yes", originalFirstBundle.getEligibleForCloning());
+        assertEquals("yes", originalFirstBundle.getEligibleForCloning());
 
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
@@ -99,43 +101,43 @@ public class CcdBundleCloningServiceTest {
         CcdBundleDTO updatedFirstBundle = getIthBundleDto(updatedBundles, 0);
         CcdBundleDTO updatedSecondBundle = getIthBundleDto(updatedBundles, 1);
 
-        Assert.assertFalse(updatedFirstBundle.getEligibleForCloningAsBoolean());
-        Assert.assertFalse(updatedSecondBundle.getEligibleForCloningAsBoolean());
+        assertFalse(updatedFirstBundle.getEligibleForCloningAsBoolean());
+        assertFalse(updatedSecondBundle.getEligibleForCloningAsBoolean());
     }
 
     @Test
-    public void testFalseBundlesNotCloned() throws Exception {
+    void testFalseBundlesNotCloned() throws Exception {
         JsonNode node = objectMapper.readTree(jsonOneNotEligible);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
 
         ArrayNode originalBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
         CcdBundleDTO originalBundle = getIthBundleDto(originalBundles, 0);
 
-        Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
-        Assert.assertEquals("no", originalBundle.getEligibleForCloning());
+        assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals("no", originalBundle.getEligibleForCloning());
 
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
-        Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
-        Assert.assertEquals(0, StringUtils.countMatches(updatedBundles.toString(), "CLONED"));
+        assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(0, StringUtils.countMatches(updatedBundles.toString(), "CLONED"));
     }
 
     @Test
-    public void testAllEligibleBundlesCloned() throws Exception {
+    void testAllEligibleBundlesCloned() throws Exception {
         JsonNode node = objectMapper.readTree(jsonTwoEligible);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
         ArrayNode originalBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
-        Assert.assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
-        Assert.assertEquals(0, StringUtils.countMatches(originalBundles.toString(), "CLONED"));
+        assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(0, StringUtils.countMatches(originalBundles.toString(), "CLONED"));
 
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
-        Assert.assertEquals(4, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(4, node.get("case_details").get("case_data").get("caseBundles").size());
         checkIthBundleTitle(updatedBundles, 0, "CLONED_Second Bundle");
         checkIthBundleTitle(updatedBundles, 1, "Second Bundle");
         checkIthBundleTitle(updatedBundles, 2, "CLONED_First Bundle");
@@ -143,34 +145,34 @@ public class CcdBundleCloningServiceTest {
     }
 
     @Test
-    public void testOnlyEligibleBundlesCloned() throws Exception {
+    void testOnlyEligibleBundlesCloned() throws Exception {
         JsonNode node = objectMapper.readTree(jsonOneEligibleOneNot);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
 
         ArrayNode originalBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
-        Assert.assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
-        Assert.assertEquals(0, StringUtils.countMatches(originalBundles.toString(), "CLONED"));
+        assertEquals(2, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(0, StringUtils.countMatches(originalBundles.toString(), "CLONED"));
 
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
         ArrayNode updatedBundles = (ArrayNode) node.path("case_details").path("case_data").path("caseBundles");
 
-        Assert.assertEquals(3, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(3, node.get("case_details").get("case_data").get("caseBundles").size());
         checkIthBundleTitle(updatedBundles, 0, "CLONED_First Bundle");
         checkIthBundleTitle(updatedBundles, 1, "First Bundle");
         checkIthBundleTitle(updatedBundles, 2, "Second Bundle");
     }
 
     @Test
-    public void testIfMaybeBundlesIsNotPresent() throws Exception {
+    void testIfMaybeBundlesIsNotPresent() throws Exception {
         JsonNode node = objectMapper.readTree(jsonOneEligible);
         CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
-        Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
 
         ccdCallbackDto.setPropertyName(Optional.of("non-existent property"));
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
-        Assert.assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+        assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
     }
 }
