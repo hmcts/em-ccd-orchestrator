@@ -1,15 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
@@ -17,18 +15,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class CcdStitchScenarios extends BaseTest {
+class CcdStitchScenariosTest extends BaseTest {
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(5);
-
-    @Before
-    public void setUp() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+    @BeforeEach
+    public void setUp() {
+        Assumptions.assumeFalse(enableCdamValidation);
     }
 
     @Test
-    public void testPostBundleStitch() throws IOException {
+    void testPostBundleStitch() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
@@ -43,7 +38,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchWithCaseId() throws IOException {
+    void testPostBundleStitchWithCaseId() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson =
@@ -59,7 +54,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchWithWordDoc() throws IOException {
+    void testPostBundleStitchWithWordDoc() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
@@ -74,7 +69,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testSpecificFilename() throws IOException {
+    void testSpecificFilename() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("my-file-name.pdf");
 
@@ -93,7 +88,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilenameWithoutExtension() throws IOException {
+    void testFilenameWithoutExtension() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("doc-file-name");
 
@@ -110,7 +105,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchFileNameOneChar() throws IOException {
+    void testPostBundleStitchFileNameOneChar() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("a");
 
@@ -126,7 +121,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchFileName51Char() throws IOException {
+    void testPostBundleStitchFileName51Char() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName(Constants.FILE_NAME_WITH_51_CHARS_LENGTH);
 
@@ -142,7 +137,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testNoFileNameButBundleTitleOnly() throws IOException {
+    void testNoFileNameButBundleTitleOnly() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundleWithWordDoc();
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
@@ -158,7 +153,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilenameErrors() throws IOException {
+    void testFilenameErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("1234567890123456789012345678901%.pdf");
 
@@ -176,7 +171,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testLongBundleDescriptionErrors() throws IOException {
+    void testLongBundleDescriptionErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
 
         bundle.setDescription("y".repeat(300));
@@ -191,7 +186,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testWithoutCoversheets() throws IOException {
+    void testWithoutCoversheets() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setHasCoversheets(CcdBoolean.No);
 
@@ -209,7 +204,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testWithImageRendering() throws IOException {
+    void testWithImageRendering() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundleWithImageRendered();
         bundle.setHasCoversheets(CcdBoolean.No);
 
@@ -229,7 +224,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostBundleStitchAsync() throws IOException, InterruptedException {
+    void testPostBundleStitchAsync() throws IOException, InterruptedException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
@@ -245,7 +240,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostAsyncBundleStitchFileNameOneChar() throws IOException {
+    void testPostAsyncBundleStitchFileNameOneChar() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         bundle.setFileName("a");
 
@@ -261,7 +256,7 @@ public class CcdStitchScenarios extends BaseTest {
     }
 
     @Test
-    public void testPostAsyncLongBundleDescriptionErrors() throws IOException {
+    void testPostAsyncLongBundleDescriptionErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
 
         bundle.setDescription("y".repeat(300));

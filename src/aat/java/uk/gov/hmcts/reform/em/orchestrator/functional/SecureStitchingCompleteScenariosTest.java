@@ -1,10 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
@@ -12,22 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class SecureStitchingCompleteScenarios extends BaseTest {
+class SecureStitchingCompleteScenariosTest extends BaseTest {
     String wrappedJson;
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        Assume.assumeTrue(enableCdamValidation);
+        assumeTrue(enableCdamValidation);
         wrappedJson = testUtil.addCdamProperties(extendedCcdHelper.loadCaseFromFile("automated-case.json"));
     }
 
     @Test
-    public void testPostBundleStitchRequestMissing() throws Exception {
+    void testPostBundleStitchRequestMissing() throws Exception {
         List<Pair<String, String>> fileDetails = new ArrayList<>();
         fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
         String documentString = testUtil.uploadCdamDocuments(fileDetails);

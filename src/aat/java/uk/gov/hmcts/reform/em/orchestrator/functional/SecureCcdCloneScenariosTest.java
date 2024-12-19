@@ -1,10 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.test.retry.RetryRule;
@@ -14,20 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class SecureCcdCloneScenarios extends BaseTest {
+class SecureCcdCloneScenariosTest extends BaseTest {
 
     @Rule
     public RetryRule retryRule = new RetryRule(3);
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        Assume.assumeTrue(enableCdamValidation);
+        assumeTrue(enableCdamValidation);
     }
 
     @Test
-    public void testSingleBundleClone() throws Exception {
+    void testSingleBundleClone() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
@@ -48,7 +48,7 @@ public class SecureCcdCloneScenarios extends BaseTest {
     }
 
     @Test
-    public void testSingleBundleCloneWithCaseId() throws Exception {
+    void testSingleBundleCloneWithCaseId() throws Exception {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
@@ -69,7 +69,7 @@ public class SecureCcdCloneScenarios extends BaseTest {
     }
 
     @Test
-    public void testMultipleBundlesClone() throws IOException {
+    void testMultipleBundlesClone() throws IOException {
         CcdBundleDTO bundle1 = testUtil.getTestBundle();
         bundle1.setTitle("Bundle 1");
 
