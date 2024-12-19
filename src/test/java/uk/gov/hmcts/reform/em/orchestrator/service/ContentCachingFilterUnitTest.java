@@ -2,24 +2,24 @@ package uk.gov.hmcts.reform.em.orchestrator.service;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 
-@RunWith(SpringRunner.class)
-public class ContentCachingFilterUnitTest {
+@ExtendWith(SpringExtension.class)
+class ContentCachingFilterUnitTest {
 
     @InjectMocks
     private ContentCachingFilter filterToTest;
 
     @Test
-    public void testGivenHttpRequest_WhenDoFilter_thenCreatesRequestWrapperObject() throws IOException,
+    void testGivenHttpRequest_WhenDoFilter_thenCreatesRequestWrapperObject() throws IOException,
             ServletException {
         // Given
         MockHttpServletRequest mockedRequest = new MockHttpServletRequest();

@@ -5,13 +5,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.em.orchestrator.config.HttpClientConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
@@ -23,23 +25,36 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {NotificationService.class, HttpClientConfiguration.class})
 @TestPropertySource("classpath:application.yaml")
-public class NotificationServiceTest {
+class NotificationServiceTest {
 
     @MockBean
     private NotificationClient notificationClient;
 
     private NotificationService notificationService;
 
+    private AutoCloseable openMocks;
+
+    @BeforeEach
+    void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
+    }
+
     @Test
-    public void sendEmailNotificationSuccessful() throws NotificationClientException {
+    void sendEmailNotificationSuccessful() throws NotificationClientException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
         OkHttpClient http = getMockHttpSuccess(responses);
@@ -61,8 +76,8 @@ public class NotificationServiceTest {
                         "Email Notification: string");
     }
 
-    @Test(expected = CallbackException.class)
-    public void sendEmailNotificationFailure() throws NotificationClientException {
+    @Test
+    void sendEmailNotificationFailure() throws NotificationClientException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
         OkHttpClient http = getMockHttpSuccess(responses);
@@ -76,34 +91,33 @@ public class NotificationServiceTest {
                 "Email Notification: string"
         )).thenThrow(NotificationClientException.class);
 
-        notificationService.sendEmailNotification(
+        assertThrows(CallbackException.class, () -> notificationService.sendEmailNotification(
                 "string",
                 "string",
                 "string",
                 "string",
                 "string"
-        );
+        ));
     }
 
-    @Test(expected = CallbackException.class)
-    public void getUserDetailsFailure() throws NotificationClientException {
+    @Test
+    void getUserDetailsFailure() {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
         OkHttpClient http = getMockHttpFailures(responses);
 
         setUpNotificationClient(http);
 
-        notificationService.sendEmailNotification(
-                "string",
-                "string",
-                "string",
-                "string",
-                "string"
-        );
+        assertThrows(CallbackException.class, () -> notificationService.sendEmailNotification(
+            "string",
+            "string",
+            "string",
+            "string",
+            "string"
+        ));
     }
 
     public void setUpNotificationClient(OkHttpClient http) {
-        MockitoAnnotations.initMocks(this);
         notificationService = new NotificationService(notificationClient, http);
         ReflectionTestUtils.setField(notificationService, "idamBaseUrl", "http://localhost:4501");
     }
@@ -114,7 +128,7 @@ public class NotificationServiceTest {
         return new OkHttpClient
                 .Builder()
                 .addInterceptor(chain -> new Response.Builder()
-                        .body(ResponseBody.create(MediaType.get("application/json"), iterator.next()))
+                        .body(ResponseBody.create(iterator.next(), MediaType.get("application/json")))
                         .request(chain.request())
                         .message("")
                         .code(200)
@@ -129,7 +143,7 @@ public class NotificationServiceTest {
         return new OkHttpClient
                 .Builder()
                 .addInterceptor(chain -> new Response.Builder()
-                        .body(ResponseBody.create(MediaType.get("application/json"), iterator.next()))
+                        .body(ResponseBody.create(iterator.next(), MediaType.get("application/json")))
                         .request(chain.request())
                         .message("")
                         .code(500)
