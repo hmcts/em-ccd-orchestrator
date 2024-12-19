@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
@@ -16,8 +16,8 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AutomatedStitchingExecutorTest {
+@ExtendWith(MockitoExtension.class)
+class AutomatedStitchingExecutorTest {
 
     @Mock
     private StitchingService stitchingService;
@@ -26,7 +26,7 @@ public class AutomatedStitchingExecutorTest {
     @Mock
     private CallbackUrlCreator callbackUrlCreator;
 
-    private CdamDto cdamDto = CdamDto.builder()
+    private final CdamDto cdamDto = CdamDto.builder()
             .jwt("jwt").caseId("123")
             .build();
 
@@ -34,7 +34,7 @@ public class AutomatedStitchingExecutorTest {
     private AutomatedStitchingExecutor automatedStitchingExecutor;
 
     @Test
-    public void startStitching() throws Exception {
+    void startStitching() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
@@ -58,7 +58,7 @@ public class AutomatedStitchingExecutorTest {
 
 
     @Test
-    public void startStitchingIOException() throws Exception {
+    void startStitchingIOException() throws Exception {
         CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
 
         Mockito.when(stitchingService.startStitchingTask(Mockito.any()))
