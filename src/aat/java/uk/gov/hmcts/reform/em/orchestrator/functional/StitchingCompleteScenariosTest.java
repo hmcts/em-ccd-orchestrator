@@ -2,29 +2,24 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class StitchingCompleteScenarios extends BaseTest {
+class StitchingCompleteScenariosTest extends BaseTest {
     JsonNode jsonNode;
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
-
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+        assumeFalse(enableCdamValidation);
         jsonNode = extendedCcdHelper.loadCaseFromFile("automated-case.json");
     }
 
     @Test
-    public void testPostBundleStitchRequestMissing() throws Exception {
+    void testPostBundleStitchRequestMissing() throws Exception {
         String uploadedUrl = testUtil.uploadDocument();
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = extendedCcdHelper.createCase(documentString).getId().toString();
