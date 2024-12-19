@@ -2,18 +2,18 @@ package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -24,12 +24,13 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CcdBundleStitchingServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CcdBundleStitchingServiceTest {
 
     @Mock
     private StitchingService stitchingService;
@@ -39,20 +40,32 @@ public class CcdBundleStitchingServiceTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String TOKEN = "jwt";
-    private static final String CASE_ID = "123456789";
 
-    @Before
-    public void setup() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        CcdDocument ccdDocument = new CcdDocument("", "", "");
-        BDDMockito.given(stitchingService.stitch(any(), any(CdamDto.class))).willReturn(ccdDocument);
+    private AutoCloseable openMocks;
+
+    private ValidatorFactory validatorFactory;
+
+    @BeforeEach
+    public void setup() {
+        openMocks = MockitoAnnotations.openMocks(this);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         ccdBundleStitchingService = new CcdBundleStitchingService(objectMapper, stitchingService, validator);
+        validatorFactory = factory;
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
+        if (validatorFactory != null) {
+            validatorFactory.close();
+        }
     }
 
     @Test
-    public void testUpdateCase() throws Exception {
+    void testUpdateCase() throws Exception {
+        CcdDocument ccdDocument = new CcdDocument("", "", "");
+        BDDMockito.given(stitchingService.stitch(any(), any(CdamDto.class))).willReturn(ccdDocument);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":{\"eligibleForStitching\":\"yes\"}},"
             + "{\"value\":{}}]}");
@@ -61,7 +74,7 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setJwt(TOKEN);
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
-        assertEquals(2, ((ArrayNode)node.get("cb")).size());
+        assertEquals(2, node.get("cb").size());
         assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
         assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
 
@@ -69,8 +82,8 @@ public class CcdBundleStitchingServiceTest {
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDto.class));
     }
 
-    @Test(expected = StitchingServiceException.class)
-    public void testUpdateCaseStitchingException() throws Exception {
+    @Test
+    void testUpdateCaseStitchingException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
@@ -81,11 +94,11 @@ public class CcdBundleStitchingServiceTest {
         Mockito.when(stitchingService.stitch(any(CcdBundleDTO.class), any(CdamDto.class)))
                 .thenThrow(new StitchingServiceException("x"));
 
-        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertThrows(StitchingServiceException.class, () -> ccdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
-    @Test(expected = InputValidationException.class)
-    public void testInvalidFilename() throws Exception {
+    @Test
+    void testInvalidFilename() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\", \"fileName\":\"$.pdf\"}}]}");
@@ -93,11 +106,11 @@ public class CcdBundleStitchingServiceTest {
         ccdCallbackDto.setCaseData(node);
         ccdCallbackDto.setJwt(TOKEN);
 
-        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertThrows(InputValidationException.class, () -> ccdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
-    @Test(expected = StitchingServiceException.class)
-    public void testUpdateCaseInterruptedException() throws Exception {
+    @Test
+    void testUpdateCaseInterruptedException() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode node = objectMapper.readTree("{\"cb\":[{\"value\":"
             + "{\"eligibleForStitching\":\"yes\"}},{\"value\":{}}]}");
@@ -108,11 +121,11 @@ public class CcdBundleStitchingServiceTest {
         Mockito.when(stitchingService.stitch(any(CcdBundleDTO.class), any(CdamDto.class)))
                 .thenThrow(new InterruptedException("x"));
 
-        ccdBundleStitchingService.updateCase(ccdCallbackDto);
+        assertThrows(StitchingServiceException.class, () -> ccdBundleStitchingService.updateCase(ccdCallbackDto));
     }
 
     @Test
-    public void testUpdateCaseMissingBundles() throws Exception {
+    void testUpdateCaseMissingBundles() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setCaseData(objectMapper.getNodeFactory().arrayNode());
         JsonNode node = ccdBundleStitchingService.updateCase(ccdCallbackDto);
@@ -120,7 +133,7 @@ public class CcdBundleStitchingServiceTest {
     }
 
     @Test
-    public void testUpdateCaseFileNameOneChar() throws Exception {
+    void testUpdateCaseFileNameOneChar() throws Exception {
 
         try {
             CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
@@ -132,12 +145,12 @@ public class CcdBundleStitchingServiceTest {
 
             ccdBundleStitchingService.updateCase(ccdCallbackDto);
         } catch (InputValidationException exc) {
-            assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG,exc.getViolations().get(0));
+            assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, exc.getViolations().getFirst());
         }
     }
 
     @Test
-    public void testUpdateCaseFileName51Char() throws Exception {
+    void testUpdateCaseFileName51Char() throws Exception {
 
         try {
             CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
@@ -149,7 +162,7 @@ public class CcdBundleStitchingServiceTest {
 
             ccdBundleStitchingService.updateCase(ccdCallbackDto);
         } catch (InputValidationException exc) {
-            assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG,exc.getViolations().get(0));
+            assertEquals(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG, exc.getViolations().getFirst());
         }
     }
 

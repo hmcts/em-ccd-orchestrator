@@ -4,18 +4,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
@@ -23,15 +23,16 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DefaultUpdateCallerTest {
+@ExtendWith(MockitoExtension.class)
+class DefaultUpdateCallerTest {
 
     @Mock
     private CcdCallbackDtoCreator ccdCallbackDtoCreator;
@@ -43,26 +44,36 @@ public class DefaultUpdateCallerTest {
     private HttpServletRequest httpServletRequest;
 
     @Mock
-    private HttpSession httpSession;
-
-    @Mock
     private NotificationService notificationService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     DefaultUpdateCaller defaultUpdateCaller;
 
-    @Before
-    public void setup() throws Exception {
-        MockitoAnnotations.openMocks(this);
+    private AutoCloseable openMocks;
+
+    private ValidatorFactory validatorFactory;
+
+    @BeforeEach
+    public void setup() {
+        openMocks = MockitoAnnotations.openMocks(this);
         //Below is required to create validator object. As mocking of validator does not work.
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         defaultUpdateCaller = new DefaultUpdateCaller(ccdCallbackDtoCreator, notificationService, validator);
+        validatorFactory = factory;
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
+        if (validatorFactory != null) {
+            validatorFactory.close();
+        }
     }
 
     @Test
-    public void executeUpdate() throws Exception {
+    void executeUpdate() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
@@ -75,14 +86,15 @@ public class DefaultUpdateCallerTest {
 
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-        Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
+        assertNotNull(ccdCallbackResponseDto);
+        assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
         Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
     }
 
     @Test
-    public void executeUpdateValidCdam() throws Exception {
+    void executeUpdateValidCdam() throws Exception {
         ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setEnableCdamValidation(true);
@@ -98,15 +110,15 @@ public class DefaultUpdateCallerTest {
 
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-        Assert.assertNotNull(ccdCallbackResponseDto);
-        Assert.assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
+        assertNotNull(ccdCallbackResponseDto);
+        assertEquals(1, ccdCallbackResponseDto.getData().get("p").asInt());
         Mockito.verify(httpServletRequest, Mockito.times(0)).getSession();
     }
 
     @Test
-    public void executeUpdatePropertyNotFoundException() throws Exception {
+    void executeUpdatePropertyNotFoundException() {
         ReflectionTestUtils.setField(defaultUpdateCaller, "enableCdamValidation", true);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setEnableCdamValidation(true);
@@ -117,18 +129,18 @@ public class DefaultUpdateCallerTest {
 
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-        Assert.assertNotNull(ccdCallbackResponseDto);
-        Assert.assertTrue(ccdCallbackResponseDto.getErrors()
+        assertNotNull(ccdCallbackResponseDto);
+        Assertions.assertTrue(ccdCallbackResponseDto.getErrors()
             .contains("caseTypeId or case_type_id is required attribute"));
-        Assert.assertTrue(ccdCallbackResponseDto.getErrors()
+        Assertions.assertTrue(ccdCallbackResponseDto.getErrors()
             .contains("jurisdictionId or jurisdiction is required attribute"));
 
     }
 
     @Test
-    public void executeUpdateInputValidationException() {
+    void executeUpdateInputValidationException() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
@@ -145,20 +157,20 @@ public class DefaultUpdateCallerTest {
         InputValidationException e = mock(InputValidationException.class);
 
         when(e.getViolations())
-                .thenReturn(Stream.of("abc").collect(Collectors.toList()));
+                .thenReturn(Stream.of("abc").toList());
 
         when(ccdCaseUpdater.updateCase(Mockito.any(CcdCallbackDto.class)))
                 .thenThrow(e);
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-
-        Assert.assertEquals("abc", ccdCallbackResponseDto.getErrors().get(0));
+        assertNotNull(ccdCallbackResponseDto);
+        assertEquals("abc", ccdCallbackResponseDto.getErrors().getFirst());
     }
 
     @Test
-    public void executeUpdateException() throws Exception {
+    void executeUpdateException() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
@@ -177,13 +189,14 @@ public class DefaultUpdateCallerTest {
 
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-        Assert.assertEquals("x", ccdCallbackResponseDto.getErrors().get(0));
+        assertNotNull(ccdCallbackResponseDto);
+        assertEquals("x", ccdCallbackResponseDto.getErrors().getFirst());
     }
 
     @Test
-    public void executeUpdateExceptionWithNoEmailNotification() throws Exception {
+    void executeUpdateExceptionWithNoEmailNotification() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         JsonNode caseData = mock(JsonNode.class);
         ccdCallbackDto.setCcdPayload(caseData);
@@ -198,10 +211,11 @@ public class DefaultUpdateCallerTest {
 
         ResponseEntity<CcdCallbackResponseDto> response =
                 defaultUpdateCaller.executeUpdate(ccdCaseUpdater, httpServletRequest);
-        Assert.assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
 
         CcdCallbackResponseDto ccdCallbackResponseDto = response.getBody();
-        Assert.assertEquals("x", ccdCallbackResponseDto.getErrors().get(0));
+        assertNotNull(ccdCallbackResponseDto);
+        assertEquals("x", ccdCallbackResponseDto.getErrors().getFirst());
     }
 
 }
