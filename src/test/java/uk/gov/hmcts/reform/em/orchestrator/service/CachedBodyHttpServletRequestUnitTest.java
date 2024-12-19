@@ -1,10 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.service;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
 import java.io.BufferedReader;
@@ -14,26 +13,17 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
-public class CachedBodyHttpServletRequestUnitTest {
-
-    private CachedBodyServletInputStream servletInputStream;
-
-    @After
-    public void cleanUp() throws IOException {
-        if (Objects.nonNull(servletInputStream)) {
-            servletInputStream.close();
-        }
-    }
+@ExtendWith(SpringExtension.class)
+class CachedBodyHttpServletRequestUnitTest {
 
     @Test
-    public void testGivenHttpServletRequestWithBody_whenCalledGetInputStream_ThenGetsServletInputStreamWithSameBody()
+    void testGivenHttpServletRequestWithBody_whenCalledGetInputStream_ThenGetsServletInputStreamWithSameBody()
             throws IOException {
         // Given
         byte[] cachedBody = "{\"firstName\" :\"abc\",\"lastName\" : \"xyz\",\"age\" : 30\"}".getBytes();
-        MockHttpServletRequest mockeddHttpServletRequest = new MockHttpServletRequest();
-        mockeddHttpServletRequest.setContent(cachedBody);
-        CachedBodyHttpServletRequest request = new CachedBodyHttpServletRequest(mockeddHttpServletRequest);
+        MockHttpServletRequest mockedHttpServletRequest = new MockHttpServletRequest();
+        mockedHttpServletRequest.setContent(cachedBody);
+        CachedBodyHttpServletRequest request = new CachedBodyHttpServletRequest(mockedHttpServletRequest);
 
         // when
         InputStream inputStream = request.getInputStream();
@@ -43,7 +33,7 @@ public class CachedBodyHttpServletRequestUnitTest {
     }
 
     @Test
-    public void testGivenHttpServletRequestWithBody_whenCalledGetReader_ThenGetBufferedReaderWithSameBody()
+    void testGivenHttpServletRequestWithBody_whenCalledGetReader_ThenGetBufferedReaderWithSameBody()
             throws IOException {
         // Given
         byte[] cachedBody = "{\"firstName\" :\"abc\",\"lastName\" : \"xyz\",\"age\" : 30\"}".getBytes();
@@ -55,7 +45,7 @@ public class CachedBodyHttpServletRequestUnitTest {
         BufferedReader bufferedReader = request.getReader();
 
         // then
-        String line = "";
+        String line;
         StringBuilder builder = new StringBuilder();
         while (Objects.nonNull(line = bufferedReader.readLine())) {
             builder.append(line);
