@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -46,38 +45,41 @@ public class ExtendedCcdHelper {
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    public final String createAutomatedBundlingCaseTemplate = "{\n"
-            + "    \"caseTitle\": null,\n"
-            + "    \"caseOwner\": null,\n"
-            + "    \"caseCreationDate\": null,\n"
-            + "    \"caseDescription\": null,\n"
-            + "    \"caseComments\": null,\n"
-            + "    \"caseDocuments\": [%s],\n"
-            + "    \"bundleConfiguration\": \"f-tests-1-flat-docs.yaml\"\n"
-            + "  }";
-    public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
-        + "    \"caseTitle\": null,\n"
-        + "    \"caseOwner\": null,\n"
-        + "    \"caseCreationDate\": null,\n"
-        + "    \"caseDescription\": null,\n"
-        + "    \"caseComments\": null,\n"
-        + "    \"caseDocuments\": %s,\n"
-        + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
-        + "  }";
-    public final String documentTemplate = "{\n"
-                    + "        \"value\": {\n"
-                    + "          \"documentName\": \"%s\",\n"
-                    + "          \"documentLink\": {\n"
-                    + "            \"document_url\": \"%s\",\n"
-                    + "            \"document_binary_url\": \"%s/binary\",\n"
-                    + "            \"document_filename\": \"%s\"\n"
-                    + "          }\n"
-                    + "        }\n"
-                    + "      }";
+    public final String createAutomatedBundlingCaseTemplate = """
+        {
+            "caseTitle": null,
+            "caseOwner": null,
+            "caseCreationDate": null,
+            "caseDescription": null,
+            "caseComments": null,
+            "caseDocuments": [%s],
+            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+          }""";
+    public final String createCdamAutomatedBundlingCaseTemplate = """
+        {
+            "caseTitle": null,
+            "caseOwner": null,
+            "caseCreationDate": null,
+            "caseDescription": null,
+            "caseComments": null,
+            "caseDocuments": %s,
+            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+          }""";
+    public final String documentTemplate = """
+        {
+                "value": {
+                  "documentName": "%s",
+                  "documentLink": {
+                    "document_url": "%s",
+                    "document_binary_url": "%s/binary",
+                    "document_filename": "%s"
+                  }
+                }
+              }""";
     @Getter
     private String bundleTesterUser;
-    private List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import")
-        .collect(Collectors.toList());
+    private final List<String> bundleTesterUserRoles = Stream.of("caseworker", "caseworker-publiclaw", "ccd-import")
+        .toList();
 
     @PostConstruct
     public void init() throws Exception {

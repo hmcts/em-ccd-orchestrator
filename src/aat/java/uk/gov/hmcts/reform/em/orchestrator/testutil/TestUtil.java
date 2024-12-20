@@ -101,7 +101,7 @@ public class TestUtil {
             "caseDescription": null,
             "caseComments": null,
             "caseDocuments": %s,
-            "bundleConfiguration": "testbundleconfiguration/f-tests-1-flat-docs.yaml"
+            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
           }""";
 
     @PostConstruct
