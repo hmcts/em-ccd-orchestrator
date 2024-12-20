@@ -75,7 +75,7 @@ public class TestUtil {
     private CdamHelper cdamHelper;
 
     @Autowired
-    @Qualifier("s2sHelper")
+    @Qualifier("xuiS2sHelper")
     private S2sHelper cdamS2sHelper;
 
     @Value("${test.url}")
