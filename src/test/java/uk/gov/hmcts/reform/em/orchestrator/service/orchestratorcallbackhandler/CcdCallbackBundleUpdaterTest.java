@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
@@ -16,14 +16,14 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CcdCallbackBundleUpdaterTest {
+class CcdCallbackBundleUpdaterTest {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private CcdCallbackBundleUpdater ccdCallbackBundleUpdater;
 
     @Test
-    public void updateBundle() throws Exception {
+    void updateBundle() throws Exception {
 
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
 
@@ -60,7 +60,7 @@ public class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
-    public void updateBundleTaskFailed() throws Exception {
+    void updateBundleTaskFailed() throws Exception {
 
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
 
@@ -95,7 +95,7 @@ public class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
-    public void updateBundleWithException() throws Exception {
+    void updateBundleWithException() throws Exception {
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundlesXXXXXXX"));
@@ -105,10 +105,10 @@ public class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
-    public void updateBundleWithJsonProcessingException() throws Exception {
+    void updateBundleWithJsonProcessingException() throws Exception {
         ObjectMapper mockObjectMapper = Mockito.mock(ObjectMapper.class);
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(mockObjectMapper);
-        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), (Class<Object>) Mockito.any()))
+        Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), Mockito.<Class<Object>>any()))
             .thenThrow(new JsonProcessingException("x"){});
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
@@ -124,7 +124,7 @@ public class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
-    public void updateBundleWithExceptionNoBundle() throws Exception {
+    void updateBundleWithExceptionNoBundle() throws Exception {
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(objectMapper);
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));

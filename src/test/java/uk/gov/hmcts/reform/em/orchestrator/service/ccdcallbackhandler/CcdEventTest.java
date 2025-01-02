@@ -1,22 +1,24 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class CcdEventTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+class CcdEventTest {
 
     @Test
-    public void testProperties() {
+    void testProperties() {
         CcdEvent ccdEvent = new CcdEvent("x");
-        Assert.assertEquals("x", ccdEvent.getEventId());
-        Assert.assertEquals("CcdEvent(eventId=x)", ccdEvent.toString());
+        assertEquals("x", ccdEvent.getEventId());
+        assertEquals("CcdEvent(eventId=x)", ccdEvent.toString());
     }
 
     @Test
-    public void testPropertiesNoArgConstructor() {
+    void testPropertiesNoArgConstructor() {
         CcdEvent ccdEvent = new CcdEvent();
-        Assert.assertNull(ccdEvent.getEventId());
-        Assert.assertEquals("CcdEvent(eventId=null)", ccdEvent.toString());
+        assertNull(ccdEvent.getEventId());
+        assertEquals("CcdEvent(eventId=null)", ccdEvent.toString());
     }
 
 }

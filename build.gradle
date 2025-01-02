@@ -196,7 +196,7 @@ dependencyManagement {
         }
 
         // CVE-2023-6378
-        dependencySet(group: 'ch.qos.logback', version: '1.5.13') {
+        dependencySet(group: 'ch.qos.logback', version: '1.5.15') {
             entry 'logback-classic'
             entry 'logback-core'
         }
@@ -216,7 +216,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '10.21.0'
+    toolVersion = '10.21.1'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }

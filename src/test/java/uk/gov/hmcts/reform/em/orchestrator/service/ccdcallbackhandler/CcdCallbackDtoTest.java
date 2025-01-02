@@ -2,28 +2,28 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class CcdCallbackDtoTest {
+class CcdCallbackDtoTest {
 
     @Test
-    public void getCaseIdNull() {
+    void getCaseIdNull() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         assertNull(ccdCallbackDto.getCaseId());
     }
 
     @Test
-    public void getEnableEmailNotificationNull() {
+    void getEnableEmailNotificationNull() {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         assertFalse(ccdCallbackDto.getEnableEmailNotification());
     }
 
     @Test
-    public void getPayloadStaticProperties() throws Exception {
+    void getPayloadStaticProperties() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -39,7 +39,7 @@ public class CcdCallbackDtoTest {
     }
 
     @Test
-    public void getInvalidIdentifier() throws Exception {
+    void getInvalidIdentifier() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -50,7 +50,7 @@ public class CcdCallbackDtoTest {
     }
 
     @Test
-    public void returnEmptyForNullIdentifier() throws Exception {
+    void returnEmptyForNullIdentifier() throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ObjectMapper objectMapper = new ObjectMapper();
 
