@@ -3,9 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -14,21 +13,23 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-public class CcdCallbackDtoCreatorTest {
+class CcdCallbackDtoCreatorTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
 
-    @Before
+    @BeforeEach
     public void setup() {
         ReflectionTestUtils.setField(ccdCallbackDtoCreator, "enableCdamValidation", false);
     }
 
     @Test
-    public void createDto() throws Exception {
+    void createDto() throws Exception {
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
@@ -39,13 +40,13 @@ public class CcdCallbackDtoCreatorTest {
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest);
 
-        Assert.assertEquals("a", ccdCallbackDto.getJwt());
-        Assert.assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
-        Assert.assertEquals(Optional.ofNullable("caseBundles"), ccdCallbackDto.getPropertyName());
+        assertEquals("a", ccdCallbackDto.getJwt());
+        assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
+        assertEquals(Optional.of("caseBundles"), ccdCallbackDto.getPropertyName());
     }
 
     @Test
-    public void createDtoWithParameter() throws Exception {
+    void createDtoWithParameter() throws Exception {
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
@@ -55,49 +56,48 @@ public class CcdCallbackDtoCreatorTest {
 
         CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
 
-        Assert.assertEquals("a", ccdCallbackDto.getJwt());
+        assertEquals("a", ccdCallbackDto.getJwt());
 
-        Assert.assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
+        assertEquals("b", ccdCallbackDto.getCaseData().at("/a").asText());
 
-        Assert.assertEquals(Optional.of("myProd"), ccdCallbackDto.getPropertyName());
+        assertEquals(Optional.of("myProd"), ccdCallbackDto.getPropertyName());
     }
 
-    @Test(expected = CantReadCcdPayloadException.class)
-    public void createDtoWithException() throws Exception {
+    @Test
+    void createDtoWithException() throws Exception {
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader()).thenThrow(new IOException("xxx"));
 
-        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
+        assertThrows(CantReadCcdPayloadException.class, () -> ccdCallbackDtoCreator.createDto(mockRequest, "myProd"));
     }
 
-    @Test(expected = CantReadCcdPayloadException.class)
-    public void createDtoWithEmptyMessage() throws Exception {
-        ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
-        CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
+    @Test
+    void createDtoWithEmptyMessage() throws Exception {
+        ObjectMapper mockMapper = Mockito.mock(ObjectMapper.class);
+        CcdCallbackDtoCreator callbackDtoCreator = new CcdCallbackDtoCreator(mockMapper);
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
         Mockito.when(mockRequest.getReader()).thenReturn(new BufferedReader(new StringReader("")));
 
-        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
+        assertThrows(CantReadCcdPayloadException.class, () -> callbackDtoCreator.createDto(mockRequest, "myProd"));
     }
 
-    @Test(expected = CantReadCcdPayloadException.class)
-    public void createDtoWithNull() throws Exception {
-        ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
-        CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(objectMapper);
+    @Test
+    void createDtoWithNull() throws Exception {
+        ObjectMapper mockMapper = Mockito.mock(ObjectMapper.class);
+        CcdCallbackDtoCreator callbackDtoCreator = new CcdCallbackDtoCreator(mockMapper);
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
 
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
-        Mockito.when(objectMapper.readTree(any(JsonParser.class))).thenReturn(null);
+        Mockito.when(mockMapper.readTree(any(JsonParser.class))).thenReturn(null);
 
-
-        ccdCallbackDtoCreator.createDto(mockRequest, "myProd");
+        assertThrows(CantReadCcdPayloadException.class, () -> callbackDtoCreator.createDto(mockRequest, "myProd"));
     }
 
 }
