@@ -5,8 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
@@ -18,7 +17,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class StitchingServiceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class StitchingServiceTest {
 
     private String stitchingBaseUrl = "http://localhost:4630";
 
@@ -27,7 +29,7 @@ public class StitchingServiceTest {
     private static final CdamDto cdamDto = CdamDto.builder().jwt("token").caseId("123456789").build();
 
     @Test
-    public void stitchSuccessful() throws StitchingServiceException, InterruptedException {
+    void stitchSuccessful() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
 
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -41,12 +43,12 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("stitched.pdf", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("stitched.pdf", docId.getFileName());
     }
 
     @Test
-    public void stitchCdamSuccessful() throws StitchingServiceException, InterruptedException {
+    void stitchCdamSuccessful() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
 
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -61,13 +63,13 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("2355678kggkhghgjhvhmgv345678", docId.getHash());
-        Assert.assertEquals("stitched.pdf", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("2355678kggkhghgjhvhmgv345678", docId.getHash());
+        assertEquals("stitched.pdf", docId.getFileName());
     }
 
     @Test
-    public void stitchSuccessfulWithFileName() throws StitchingServiceException, InterruptedException {
+    void stitchSuccessfulWithFileName() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -81,12 +83,12 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("Dummy.Bundle.01.docx", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("Dummy.Bundle.01.docx", docId.getFileName());
     }
 
     @Test
-    public void stitchSuccessfulWithFileNameWithoutSuffix() throws StitchingServiceException, InterruptedException {
+    void stitchSuccessfulWithFileNameWithoutSuffix() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -100,12 +102,12 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("Dummy-Bundle-01.pdf", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("Dummy-Bundle-01.pdf", docId.getFileName());
     }
 
     @Test
-    public void stitchSuccessfulWithEmptyFileName() throws StitchingServiceException, InterruptedException {
+    void stitchSuccessfulWithEmptyFileName() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -116,12 +118,12 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("stitched.pdf", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("stitched.pdf", docId.getFileName());
     }
 
     @Test
-    public void stitchSuccessfulWithNullFileName() throws StitchingServiceException, InterruptedException {
+    void stitchSuccessfulWithNullFileName() throws StitchingServiceException, InterruptedException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -131,12 +133,12 @@ public class StitchingServiceTest {
         StitchingService service = getStitchingService(http);
         CcdDocument docId = service.stitch(new CcdBundleDTO(), cdamDto);
 
-        Assert.assertEquals("AAAAAA", docId.getUrl());
-        Assert.assertEquals("stitched.pdf", docId.getFileName());
+        assertEquals("AAAAAA", docId.getUrl());
+        assertEquals("stitched.pdf", docId.getFileName());
     }
 
-    @Test(expected = StitchingServiceException.class)
-    public void stitchFailure() throws StitchingServiceException, InterruptedException {
+    @Test
+    void stitchFailure() throws StitchingServiceException {
         List<String> responses = new ArrayList<>();
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
@@ -144,15 +146,16 @@ public class StitchingServiceTest {
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"NEW\", \"bundle\": { \"stitchedDocumentURI\": null } }");
         responses.add("{ \"id\": 1, \"taskState\": \"FAILED\", \"failureDescription\": \"Something went wrong\", "
-                 + "\"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"a.pdf\" } }");
+            + "\"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\", \"fileName\": \"a.pdf\" } }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), cdamDto);
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        assertThrows(StitchingServiceException.class, () -> service.stitch(bundleDTO, cdamDto));
     }
 
-    @Test(expected = StitchingServiceException.class)
-    public void stitchTimeout() throws StitchingServiceException, InterruptedException {
+    @Test
+    void stitchTimeout() throws StitchingServiceException {
         List<String> responses = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -163,11 +166,12 @@ public class StitchingServiceTest {
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
-        service.stitch(new CcdBundleDTO(), cdamDto);
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        assertThrows(StitchingServiceException.class, () -> service.stitch(bundleDTO, cdamDto));
     }
 
     @Test
-    public void doesAppendBinary() throws Exception {
+    void doesAppendBinary() throws Exception {
         List<String> responses = new ArrayList<>();
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -178,11 +182,11 @@ public class StitchingServiceTest {
         binarySuffixAdder.setAccessible(true);
         String processedString = (String) binarySuffixAdder.invoke(service, testString);
 
-        Assert.assertEquals("testString/binary", processedString);
+        assertEquals("testString/binary", processedString);
     }
 
     @Test
-    public void doesNotAppendBinary() throws Exception {
+    void doesNotAppendBinary() throws Exception {
         List<String> responses = new ArrayList<>();
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -193,15 +197,15 @@ public class StitchingServiceTest {
         binarySuffixAdder.setAccessible(true);
         String processedString = (String) binarySuffixAdder.invoke(service, testString);
 
-        Assert.assertEquals("testString/binary", processedString);
+        assertEquals("testString/binary", processedString);
     }
 
     @Test
-    public void testCaseId() throws Exception {
+    void testCaseId() throws Exception {
         List<String> responses = new ArrayList<>();
 
         responses.add("{ \"id\": 2, \"taskState\": \"DONE\", \"bundle\": { \"stitchedDocumentURI\": \"AAAAAA\" }, "
-                + "" + "\"caseId\": " + cdamDto.getCaseId() + " }");
+                + "\"caseId\": " + cdamDto.getCaseId() + " }");
 
         OkHttpClient http = getMockHttp(responses);
         StitchingService service = getStitchingService(http);
@@ -210,8 +214,8 @@ public class StitchingServiceTest {
         documentTaskDTO.setJwt(cdamDto.getJwt());
 
         DocumentTaskDTO documentTaskDTO1 = service.startStitchingTask(documentTaskDTO);
-        Assert.assertEquals(documentTaskDTO1.getCaseId(), cdamDto.getCaseId());
-        Assert.assertEquals(documentTaskDTO.getCaseId(), cdamDto.getCaseId());
+        assertEquals(documentTaskDTO1.getCaseId(), cdamDto.getCaseId());
+        assertEquals(documentTaskDTO.getCaseId(), cdamDto.getCaseId());
 
     }
 
@@ -231,7 +235,7 @@ public class StitchingServiceTest {
         return new OkHttpClient
             .Builder()
             .addInterceptor(chain -> new Response.Builder()
-                .body(ResponseBody.create(MediaType.get("application/json"), iterator.next()))
+                .body(ResponseBody.create(iterator.next(), MediaType.get("application/json")))
                 .request(chain.request())
                 .message("")
                 .code(200)

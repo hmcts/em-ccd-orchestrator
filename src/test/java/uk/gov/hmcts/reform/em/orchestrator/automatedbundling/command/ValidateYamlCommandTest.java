@@ -1,18 +1,18 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.command;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ValidateYamlCommandTest {
+@ExtendWith(MockitoExtension.class)
+class ValidateYamlCommandTest {
 
     @Mock
     private LocalConfigurationLoader loader;
@@ -21,7 +21,7 @@ public class ValidateYamlCommandTest {
     private ValidateYamlCommand command;
 
     @Test
-    public void run() {
+    void run() {
         Mockito
             .when(loader.load(Mockito.any()))
 
@@ -33,7 +33,7 @@ public class ValidateYamlCommandTest {
     }
 
     @Test
-    public void runWithError() {
+    void runWithError() {
         Mockito
             .when(loader.load(Mockito.matches("example.yaml")))
             .thenThrow(new RuntimeException(""));
