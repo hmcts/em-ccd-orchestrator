@@ -155,7 +155,6 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
 
-    testRuntimeOnly group: 'org.junit.vintage', name :'junit-vintage-engine', version: versions.jupiter
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
 
@@ -299,6 +298,9 @@ pitest {
     timestampedReports = false
     failWhenNoMutations = false
     detectInlinedCode = true
+
+    junit5PluginVersion = '1.2.1'
+    pitestVersion = '1.17.3'
 }
 
 project.tasks['sonarqube'].group = "Verification"
