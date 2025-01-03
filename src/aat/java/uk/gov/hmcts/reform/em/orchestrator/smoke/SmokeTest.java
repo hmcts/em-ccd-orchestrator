@@ -2,18 +2,20 @@ package uk.gov.hmcts.reform.em.orchestrator.smoke;
 
 import net.serenitybdd.annotations.WithTag;
 import net.serenitybdd.annotations.WithTags;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import net.serenitybdd.rest.SerenityRest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestPropertySource(value = "classpath:application.yml")
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith({SerenityJUnit5Extension.class, SpringExtension.class})
 @WithTags({@WithTag("testType:Smoke")})
-public class SmokeTest {
+class SmokeTest {
 
     private static final String MESSAGE = "{\"message\":\"Welcome to EM Ccd Orchestrator API!\"}";
 
@@ -21,7 +23,7 @@ public class SmokeTest {
     private String testUrl;
 
     @Test
-    public void testHealthEndpoint() {
+    void testHealthEndpoint() {
 
         SerenityRest.useRelaxedHTTPSValidation();
 
@@ -33,7 +35,7 @@ public class SmokeTest {
                         .then()
                         .statusCode(200).extract().body().asString();
 
-        Assert.assertEquals(MESSAGE, response);
+        assertEquals(MESSAGE, response);
 
 
     }

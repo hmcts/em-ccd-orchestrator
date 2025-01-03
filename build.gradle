@@ -151,7 +151,7 @@ dependencies {
 
     testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity, withoutStuff
     testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity, withoutStuff
-    testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
 
@@ -355,6 +355,8 @@ task functional(type: Test) {
         exceptionFormat = 'full'
     }
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+
+    useJUnitPlatform()
 }
 
 // Serenity Single page Reports
@@ -368,6 +370,8 @@ task smoke(type: Test) {
     include "uk/gov/hmcts/reform/em/orchestrator/smoke/**"
 
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+
+    useJUnitPlatform()
 }
 
 task validateYaml(type: JavaExec){

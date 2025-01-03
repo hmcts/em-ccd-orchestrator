@@ -4,12 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
-import uk.gov.hmcts.reform.em.test.retry.RetryRule;
 
 import java.io.IOException;
 
@@ -18,33 +15,29 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class AutomatedBundlingScenarios extends BaseTest {
+class AutomatedBundlingScenariosTest extends BaseTest {
 
     private static JsonNode validJson;
     private static JsonNode invalidJson;
     private static JsonNode filenameJson;
     private static JsonNode invalidConfigJson;
-    private static JsonNode filenameWith51CharsJson;
     private static JsonNode customDocumentsJson;
     private static JsonNode nonCustomDocumentsJson;
     private static JsonNode multiBundleDocumentsJson;
 
-    @Rule
-    public RetryRule retryRule = new RetryRule(3);
-
     private RequestSpecification request;
     private RequestSpecification unAuthenticatedRequest;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        Assume.assumeFalse(enableCdamValidation);
+        assumeFalse(enableCdamValidation);
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
         filenameJson = extendedCcdHelper.loadCaseFromFile("filename-case.json");
         invalidConfigJson = extendedCcdHelper.loadCaseFromFile("automated-case-invalid-configuration.json");
-        filenameWith51CharsJson = extendedCcdHelper.loadCaseFromFile("filename-with-51-chars.json");
         customDocumentsJson = extendedCcdHelper.loadCaseFromFile("custom-documents-case.json");
         nonCustomDocumentsJson = extendedCcdHelper.loadCaseFromFile("non-custom-documents-case.json");
         multiBundleDocumentsJson = extendedCcdHelper.loadCaseFromFile("multi-bundle-case.json");
@@ -52,7 +45,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testCreateBundle() throws IOException, InterruptedException {
+    void testCreateBundle() {
         final ValidatableResponse response = postNewBundle(validJson);
         response
                 .assertThat().log().all()
@@ -74,7 +67,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testInvalidConfig() {
+    void testInvalidConfig() {
         final ValidatableResponse response = postNewBundle(invalidJson);
         response
                 .assertThat().log().all()
@@ -85,7 +78,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testCorruptConfig() {
+    void testCorruptConfig() {
         final ValidatableResponse response = postNewBundle(invalidConfigJson);
 
         response
@@ -97,7 +90,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testFilename() throws IOException, InterruptedException {
+    void testFilename() {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -116,7 +109,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testTableOfContentsAndCoversheet() throws IOException, InterruptedException {
+    void testTableOfContentsAndCoversheet() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -136,7 +129,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testFolderCoversheets() throws IOException, InterruptedException {
+    void testFolderCoversheets() {
         final ValidatableResponse response = postNewBundle(filenameJson);
 
         response
@@ -156,7 +149,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testSubSubfolders() throws IOException, InterruptedException {
+    void testSubSubfolders() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response
@@ -175,7 +168,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testAddFlatDocuments() throws IOException, InterruptedException {
+    void testAddFlatDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -202,7 +195,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testAddFlatFilteredDocuments() throws IOException, InterruptedException {
+    void testAddFlatFilteredDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -226,7 +219,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testAddFolderedDocuments() throws IOException, InterruptedException {
+    void testAddFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
         json = findDocumentUrl(json);
@@ -260,7 +253,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testAddFilteredFolderedDocuments() throws IOException, InterruptedException {
+    void testAddFilteredFolderedDocuments() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
         json = findDocumentUrl(json);
@@ -291,7 +284,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testTypoInConfigurationFile() throws IOException {
+    void testTypoInConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-6-has-typo.yaml");
 
@@ -308,7 +301,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDefaultFallBackConfigurationFile() throws IOException {
+    void testDefaultFallBackConfigurationFile() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
 
         final ValidatableResponse response = postNewBundle(json);
@@ -321,7 +314,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDocumentNotPresent() throws IOException, InterruptedException {
+    void testDocumentNotPresent() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json
                 .replaceAll(
@@ -347,7 +340,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDocumentPropertyIsAnArray() throws IOException {
+    void testDocumentPropertyIsAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-7-not-a-single-doc.yaml");
 
@@ -360,7 +353,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDocumentSetPropertyIsNotAnArray() throws IOException {
+    void testDocumentSetPropertyIsNotAnArray() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-8-not-an-array.yaml");
 
@@ -373,7 +366,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testDocumentStructureCorrupted() throws IOException {
+    void testDocumentStructureCorrupted() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("document_url", "incorrect_property_name");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-5-invalid-url.yaml");
@@ -387,7 +380,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testConfigurationFileDoesNotExist() throws IOException {
+    void testConfigurationFileDoesNotExist() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "nonexistent.yaml");
 
@@ -401,7 +394,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testMultipleFilters() throws IOException, InterruptedException {
+    void testMultipleFilters() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-9-multiple-filters.yaml");
         json = findDocumentUrl(json);
@@ -430,7 +423,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testSortDocumentsAscending() throws IOException, InterruptedException {
+    void testSortDocumentsAscending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-10-sorting.yaml");
         json = findDocumentUrl(json);
@@ -464,7 +457,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testSortDocumentsDescending() throws IOException, InterruptedException {
+     void testSortDocumentsDescending() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-11-sorting.yaml");
         json = findDocumentUrl(json);
@@ -498,7 +491,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testEnableEmailNotificationIsNull() throws IOException, InterruptedException {
+    void testEnableEmailNotificationIsNull() {
         final ValidatableResponse response = postNewBundle(validJson);
 
         response.assertThat()
@@ -516,7 +509,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testRenderImageInStitchedDocument() throws IOException, InterruptedException {
+    void testRenderImageInStitchedDocument() throws IOException {
         String json = TestUtil.readFile("src/aat/resources/documents-case.json");
         json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-13-render-image-flat-docs.yaml");
         json = findDocumentUrl(json);
@@ -543,7 +536,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testRedactedDocuments() throws IOException, InterruptedException {
+    void testRedactedDocuments() {
         String json = customDocumentsJson.toString();
         json = findDocumentUrl(json);
         final ValidatableResponse response = postNewBundle(json);
@@ -571,7 +564,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testNonRedactedDocuments() throws IOException, InterruptedException {
+    void testNonRedactedDocuments() {
         String json = nonCustomDocumentsJson.toString();
         json = findDocumentUrl(json);
         final ValidatableResponse response = postNewBundle(json);
@@ -597,7 +590,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void testMultiBundleDocuments() throws IOException, InterruptedException {
+    void testMultiBundleDocuments() {
 
         String json = multiBundleDocumentsJson.toString();
         json = findDocumentUrl(json);
@@ -618,7 +611,7 @@ public class AutomatedBundlingScenarios extends BaseTest {
     }
 
     @Test
-    public void shouldReturn401WhenUnAuthenticatedUserCreateBundle() {
+    void shouldReturn401WhenUnAuthenticatedUserCreateBundle() {
         unAuthenticatedRequest
                 .body(validJson)
                 .post("/api/new-bundle")

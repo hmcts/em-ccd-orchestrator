@@ -2,12 +2,14 @@ package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import jakarta.annotation.PostConstruct;
 import net.serenitybdd.rest.SerenityRest;
+import org.awaitility.Awaitility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,9 +46,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.Callable;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
@@ -89,30 +93,20 @@ public class TestUtil {
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    public final String createAutomatedBundlingCaseTemplate = "{\n"
-        + "    \"caseTitle\": null,\n"
-        + "    \"caseOwner\": null,\n"
-        + "    \"caseCreationDate\": null,\n"
-        + "    \"caseDescription\": null,\n"
-        + "    \"caseComments\": null,\n"
-        + "    \"caseDocuments\": [%s],\n"
-        + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
-        + "  }";
-
-    public final String createCdamAutomatedBundlingCaseTemplate = "{\n"
-        + "    \"caseTitle\": null,\n"
-        + "    \"caseOwner\": null,\n"
-        + "    \"caseCreationDate\": null,\n"
-        + "    \"caseDescription\": null,\n"
-        + "    \"caseComments\": null,\n"
-        + "    \"caseDocuments\": %s,\n"
-        + "    \"bundleConfiguration\": \"testbundleconfiguration/f-tests-1-flat-docs.yaml\"\n"
-        + "  }";
+    public final String createCdamAutomatedBundlingCaseTemplate = """
+        {
+            "caseTitle": null,
+            "caseOwner": null,
+            "caseCreationDate": null,
+            "caseDescription": null,
+            "caseComments": null,
+            "caseDocuments": %s,
+            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+          }""";
 
     @PostConstruct
     public void init() {
-        idamHelper.createUser(getUsername(), Stream.of("caseworker", "caseworker-publiclaw")
-            .collect(Collectors.toList()));
+        idamHelper.createUser(getUsername(), Stream.of("caseworker", "caseworker-publiclaw").toList());
         SerenityRest.useRelaxedHTTPSValidation();
         idamAuth = idamHelper.authenticateUser(getUsername());
         s2sAuth = s2sHelper.getS2sToken();
@@ -260,8 +254,8 @@ public class TestUtil {
     public RequestSpecification emptyIdamAuthAndEmptyS2SAuth() {
         return SerenityRest
                 .given()
-                .header("ServiceAuthorization", null)
-                .header("Authorization", null);
+                .header(new Header("ServiceAuthorization", null))
+                .header(new Header("Authorization", null));
     }
 
     public RequestSpecification validAuthRequestWithEmptyS2SAuth() {
@@ -269,7 +263,7 @@ public class TestUtil {
     }
 
     public RequestSpecification validS2SAuthWithEmptyIdamAuth() {
-        return s2sAuthRequest().header("Authorization", null);
+        return s2sAuthRequest().header(new Header("Authorization", null));
     }
 
     private RequestSpecification emptyS2sAuthRequest() {
@@ -307,7 +301,7 @@ public class TestUtil {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
-            .collect(Collectors.toList());
+            .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
@@ -316,10 +310,9 @@ public class TestUtil {
 
         createCaseAndUploadDocuments(uploadResponse, userName);
 
-        List<CcdValue<CcdBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
+        return uploadResponse.getDocuments().stream()
             .map(this::createBundleDocument)
-            .collect(Collectors.toList());
-        return bundleDocuments;
+            .toList();
     }
 
     /*
@@ -329,14 +322,14 @@ public class TestUtil {
     public List<String> createCaseAndUploadDocuments(UploadResponse uploadResponse, String userName) throws Exception {
         List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
             .map(this::createTestBundleDocument)
-            .collect(Collectors.toList());
+            .toList();
         String documentsString = objectMapper.writeValueAsString(bundleDocuments);
-        CaseDetails caseDetails = createBundleCase(documentsString, userName);
+        createBundleCase(documentsString, userName);
 
 
         return uploadResponse.getDocuments().stream()
             .map(document -> document.links.self.href)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public CcdValue<CcdBundleDocumentDTO> createBundleDocument(Document document) {
@@ -358,10 +351,10 @@ public class TestUtil {
             objectMapper.readTree(String.format(createCdamAutomatedBundlingCaseTemplate, documents)));
     }
 
-    public Document.Links uploadCdamDocument() throws Exception {
+    public Document.Links uploadCdamDocument() {
         List<MultipartFile> multipartFiles = Stream.of(Pair.of("annotationTemplate.pdf", "application/pdf"))
                 .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
-                .collect(Collectors.toList());
+                .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
@@ -374,7 +367,7 @@ public class TestUtil {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
-            .collect(Collectors.toList());
+            .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
@@ -383,7 +376,7 @@ public class TestUtil {
 
         List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
             .map(this::createTestBundleDocument)
-            .collect(Collectors.toList());
+            .toList();
         return objectMapper.writeValueAsString(bundleDocuments);
     }
 
@@ -480,23 +473,28 @@ public class TestUtil {
         return bundle;
     }
 
-    public ValidatableResponse poll(long documentTaskId) throws InterruptedException, IOException {
+    public ValidatableResponse poll(long documentTaskId) {
         final RequestSpecification requestSpecification = authRequest()
-                .baseUri(getTestUrl())
-                .contentType(APPLICATION_JSON_VALUE);
+            .baseUri(getTestUrl())
+            .contentType(APPLICATION_JSON_VALUE);
 
-        for (int i = 0; i < retryCount; i++) {
-            final Response response = requestSpecification.get(stitchingBaseUrl
-                    + stitchingResource + "/" + documentTaskId);
+        Callable<Response> responseCallable = () -> requestSpecification.get(stitchingBaseUrl
+            + stitchingResource + "/" + documentTaskId);
+        Predicate<Response> responsePredicate = response -> {
             final JsonPath jsonPath = response.body().jsonPath();
             final String taskState = jsonPath.getString("taskState");
-            if (!taskState.equals(TaskState.NEW.toString()) && !taskState.equals(TaskState.IN_PROGRESS.toString())) {
-                return response.then();
-            } else {
-                Thread.sleep(sleepTime);
-            }
+            return !taskState.equals(TaskState.NEW.toString())
+                && !taskState.equals(TaskState.IN_PROGRESS.toString());
+        };
+
+        try {
+            Awaitility.await().pollInterval(sleepTime, MILLISECONDS)
+                .atMost(retryCount * sleepTime, MILLISECONDS)
+                .until(responseCallable, responsePredicate);
+            return responseCallable.call().then();
+        } catch (Exception e) {
+            throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
         }
-        throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
     }
 
     public String addCdamProperties(Object json) {
