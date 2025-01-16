@@ -6,7 +6,7 @@ properties([
         displayName: 'Evidence Management CCD Orchestrator',
         projectUrlStr: 'https://github.com/hmcts/rpa-em-ccd-orchestrator'
     ],
-    pipelineTriggers([cron('H 9 * * 1-5')]), // scheduling to trigger jenkins job.
+    pipelineTriggers([cron('H 09 * * 1-5')]), // scheduling to trigger jenkins job.
     parameters([
             string(name: 'SecurityRules',
                     defaultValue: 'http://raw.githubusercontent.com/hmcts/security-test-rules/master/conf/security-rules.conf',
