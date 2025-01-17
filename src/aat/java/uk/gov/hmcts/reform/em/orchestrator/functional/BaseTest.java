@@ -5,6 +5,7 @@ import net.serenitybdd.annotations.WithTag;
 import net.serenitybdd.annotations.WithTags;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.em.EmTestConfig;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
+import uk.gov.hmcts.reform.em.test.retry.RetryExtension;
 
 @SpringBootTest(classes = {TestUtil.class, EmTestConfig.class, ExtendedCcdHelper.class, TestConfig.class})
 @TestPropertySource(value = "classpath:application.yml")
@@ -25,6 +27,9 @@ public abstract class BaseTest {
 
     @Autowired
     protected ExtendedCcdHelper extendedCcdHelper;
+
+    @RegisterExtension
+    RetryExtension retryExtension = new RetryExtension(3);
 
     ObjectMapper mapper = new ObjectMapper();
 
