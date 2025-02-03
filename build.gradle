@@ -46,7 +46,7 @@ repositories {
 }
 
 def versions = [
-        serenity           : '4.2.13',
+        serenity           : '4.2.16',
         pact_version       : '4.6.16',
         mockito            : '5.15.2',
         jupiter            : '5.11.4',
