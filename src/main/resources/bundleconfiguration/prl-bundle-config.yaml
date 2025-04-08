@@ -131,6 +131,16 @@ folders:
         property: /data/allOtherDocuments
         filters:
           - property: /documentGroup
+            value: childImpactReport1
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: childImpactReport2
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
             value: cafcassSection37Report
       - type: documentSet
         property: /data/allOtherDocuments
