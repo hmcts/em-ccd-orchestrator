@@ -1,11 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint.errors;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.endpoint.BaseTest;
 import uk.gov.hmcts.reform.em.orchestrator.endpoint.TestSecurityConfiguration;
@@ -20,9 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @see ExceptionTranslator
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
-public class ExceptionTranslatorIntTest extends BaseTest {
+class ExceptionTranslatorIntTest extends BaseTest {
 
     @Autowired
     private ExceptionTranslatorTestController controller;
@@ -31,7 +28,7 @@ public class ExceptionTranslatorIntTest extends BaseTest {
     private ExceptionTranslator exceptionTranslator;
 
     @Test
-    public void testMissingServletRequestPartException() throws Exception {
+    void testMissingServletRequestPartException() throws Exception {
         mockMvc.perform(get("/test/missing-servlet-request-part"))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
@@ -39,7 +36,7 @@ public class ExceptionTranslatorIntTest extends BaseTest {
     }
 
     @Test
-    public void testMissingServletRequestParameterException() throws Exception {
+    void testMissingServletRequestParameterException() throws Exception {
         mockMvc.perform(get("/test/missing-servlet-request-parameter"))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
@@ -47,17 +44,17 @@ public class ExceptionTranslatorIntTest extends BaseTest {
     }
 
     @Test
-    public void testFeignConflict() throws Exception {
+    void testFeignConflict() throws Exception {
         mockMvc.perform(get("/test/feign-conflict"))
-                .andExpect(status().isConflict())
-                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON));
+            .andExpect(status().isConflict())
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON));
     }
 
     @Test
-    public void testFeignBadGateway() throws Exception {
+    void testFeignBadGateway() throws Exception {
         mockMvc.perform(get("/test/feign-bad-gateway"))
-                .andExpect(status().isBadGateway())
-                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON));
+            .andExpect(status().isBadGateway())
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON));
     }
 
 
