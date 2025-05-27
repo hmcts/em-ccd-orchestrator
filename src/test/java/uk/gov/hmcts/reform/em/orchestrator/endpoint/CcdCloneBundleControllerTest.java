@@ -1,14 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleCloningService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
@@ -17,20 +15,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @TestPropertySource(
     properties = {
         "case_document_am.url=http://localhost:8090"
     }
 )
-public class CcdCloneBundleControllerTest extends BaseTest {
+class CcdCloneBundleControllerTest extends BaseTest {
 
-    @MockBean
+    @MockitoBean
     private DefaultUpdateCaller defaultUpdateCaller;
 
     @Test
-    public void shouldCallCcdCallbackHandlerService() throws Exception {
+    void shouldCallCcdCallbackHandlerService() throws Exception {
 
         mockMvc
             .perform(post("/api/clone-ccd-bundles")

@@ -1,21 +1,21 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class WelcomeControllerTest {
+class WelcomeControllerTest {
 
     private final WelcomeController welcomeController = new WelcomeController();
 
     @Test
-    public void testEndPointResponseCode() {
+    void testEndPointResponseCode() {
         ResponseEntity<Map<String, String>> responseEntity = welcomeController.welcome();
 
         assertNotNull(responseEntity);
@@ -23,7 +23,7 @@ public class WelcomeControllerTest {
     }
 
     @Test
-    public void testEndpointResponseMessage() {
+    void testEndpointResponseMessage() {
         ResponseEntity<Map<String, String>> responseEntity = welcomeController.welcome();
 
         Map<String,String> expectedResponse = new HashMap<>();

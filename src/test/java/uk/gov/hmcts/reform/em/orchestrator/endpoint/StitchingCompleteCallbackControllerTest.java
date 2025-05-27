@@ -2,14 +2,12 @@ package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +16,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
@@ -40,23 +38,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @AutoConfigureMockMvc
-public class StitchingCompleteCallbackControllerTest extends BaseTest {
+class StitchingCompleteCallbackControllerTest extends BaseTest {
 
-    @MockBean
+    @MockitoBean
     private StitchingCompleteCallbackService stitchingCompleteCallbackService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
     private String requestBody;
 
-    @Before
-    public void setUp() throws IOException {
+    @BeforeEach
+    void setUp() throws IOException {
 
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
@@ -73,42 +70,42 @@ public class StitchingCompleteCallbackControllerTest extends BaseTest {
     }
 
     @Test
-    public void stitchingCompleteCallback() throws Exception {
+    void stitchingCompleteCallback() throws Exception {
 
         Mockito
-                .doNothing()
-                .when(notificationService)
-                    .sendEmailNotification(
-                            Mockito.anyString(),
-                            Mockito.anyString(),
-                            Mockito.anyString(),
-                            Mockito.anyString(),
-                            Mockito.anyString());
+            .doNothing()
+            .when(notificationService)
+            .sendEmailNotification(
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.anyString());
 
         mockMvc
-                .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx"))
-                .andDo(print()).andExpect(status().isOk());
+            .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "xxx"))
+            .andDo(print()).andExpect(status().isOk());
 
     }
 
     @Test
-    public void stitchingCompleteCallbackWithException() throws Exception {
+    void stitchingCompleteCallbackWithException() throws Exception {
 
         Mockito.doThrow(new CallbackException(456, "error", "error message"))
-                .when(stitchingCompleteCallbackService).handleCallback(Mockito.any());
+            .when(stitchingCompleteCallbackService).handleCallback(Mockito.any());
 
         mockMvc
-                .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "xxx"))
-                .andDo(print())
-                .andExpect(status().is(456))
-                .andExpect(jsonPath("$.message", Matchers.is("error message")))
-                .andExpect(jsonPath("$.httpResponseBody", Matchers.is("error")));
+            .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "xxx"))
+            .andDo(print())
+            .andExpect(status().is(456))
+            .andExpect(jsonPath("$.message", Matchers.is("error message")))
+            .andExpect(jsonPath("$.httpResponseBody", Matchers.is("error")));
 
     }
 
