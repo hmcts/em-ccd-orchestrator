@@ -57,7 +57,8 @@ class StitchingCompleteCallbackControllerTest {
         when(request.getHeader("authorization")).thenReturn(JWT);
     }
 
-    private DocumentTaskDTO createDocumentTaskDTO(TaskState taskState, Boolean enableEmailNotification, String failureDescription) {
+    private DocumentTaskDTO createDocumentTaskDTO(TaskState taskState,
+                                                  Boolean enableEmailNotification, String failureDescription) {
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
         documentTaskDTO.setTaskState(taskState);
         StitchingBundleDTO bundleDTO = new StitchingBundleDTO();
@@ -146,7 +147,8 @@ class StitchingCompleteCallbackControllerTest {
     void stitchingCompleteCallbackServiceThrowsException() throws CallbackException {
         DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, true, null);
         CallbackException callbackException = new CallbackException(400, "Error from service", "Details");
-        doThrow(callbackException).when(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        doThrow(callbackException).when(stitchingCompleteCallbackService)
+            .handleCallback(any(StitchingCompleteCallbackDto.class));
 
         ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
             request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
@@ -160,7 +162,8 @@ class StitchingCompleteCallbackControllerTest {
     @Test
     void stitchingCompleteCallbackNotificationServiceThrowsException() throws CallbackException {
         DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, true, null);
-        CallbackException notificationException = new CallbackException(503, "Error from notification", "Notify unavailable");
+        CallbackException notificationException = new CallbackException(503,
+            "Error from notification", "Notify unavailable");
         doThrow(notificationException).when(notificationService).sendEmailNotification(
             SUCCESS_TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, null
         );

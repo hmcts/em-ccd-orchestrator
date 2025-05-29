@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -119,20 +121,21 @@ class CcdCallbackDtoTest {
     @ParameterizedTest
     @CsvSource({
         "true,  '{\"jurisdictionId\": \"jid_val\", \"jurisdiction\": \"j_val\"}', jid_val",
-        "true,  '{\"jurisdiction\": \"j_val\"}',                             j_val",
-        "true,  '{\"otherField\": \"value\"}',                              null",
-        "true,  null,                                                       null",
+        "true,  '{\"jurisdiction\": \"j_val\"}', j_val",
+        "true,  '{\"otherField\": \"value\"}', null",
+        "true,  '', null",
         "false, '{\"jurisdictionId\": \"jid_val\", \"jurisdiction\": \"j_val\"}', jid_val",
-        "false, '{\"jurisdiction\": \"j_val\"}',                             null",
-        "false, '{\"otherField\": \"value\"}',                              null",
-        "false, null,                                                       null"
+        "false, '{\"jurisdiction\": \"j_val\"}', null",
+        "false, '{\"otherField\": \"value\"}', null",
+        "false, '', null"
     })
-    void testGetJurisdictionId(boolean enableCdamValidation, String ccdPayloadFieldsJson, String expectedJurisdictionId) throws Exception {
+    void testGetJurisdictionId(boolean enableCdamValidation,
+                               String ccdPayloadFieldsJson, String expectedJurisdictionId) throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setEnableCdamValidation(enableCdamValidation);
         ObjectMapper objectMapper = new ObjectMapper();
 
-        if (ccdPayloadFieldsJson != null && !"null".equalsIgnoreCase(ccdPayloadFieldsJson)) {
+        if (Objects.nonNull(ccdPayloadFieldsJson) && !ccdPayloadFieldsJson.isBlank()) {
             JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": " + ccdPayloadFieldsJson + "}");
             ccdCallbackDto.setCcdPayload(ccdPayload);
         } else {
@@ -147,20 +150,21 @@ class CcdCallbackDtoTest {
     @ParameterizedTest
     @CsvSource({
         "true,  '{\"caseTypeId\": \"p_ctid\", \"case_type_id\": \"a_ctid\"}', p_ctid",
-        "true,  '{\"case_type_id\": \"a_ctid\"}',                          a_ctid",
-        "true,  '{\"otherField\": \"value\"}',                           null",
-        "true,  null,                                                    null",
+        "true,  '{\"case_type_id\": \"a_ctid\"}', a_ctid",
+        "true,  '{\"otherField\": \"value\"}', null",
+        "true,  '', null",
         "false, '{\"caseTypeId\": \"p_ctid\", \"case_type_id\": \"a_ctid\"}', p_ctid",
-        "false, '{\"case_type_id\": \"a_ctid\"}',                          null",
-        "false, '{\"otherField\": \"value\"}',                           null",
-        "false, null,                                                    null"
+        "false, '{\"case_type_id\": \"a_ctid\"}', null",
+        "false, '{\"otherField\": \"value\"}', null",
+        "false, '', null"
     })
-    void testGetCaseTypeId(boolean enableCdamValidation, String ccdPayloadFieldsJson, String expectedCaseTypeId) throws Exception {
+    void testGetCaseTypeId(boolean enableCdamValidation,
+                           String ccdPayloadFieldsJson, String expectedCaseTypeId) throws Exception {
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setEnableCdamValidation(enableCdamValidation);
         ObjectMapper objectMapper = new ObjectMapper();
 
-        if (ccdPayloadFieldsJson != null && !"null".equalsIgnoreCase(ccdPayloadFieldsJson)) {
+        if (Objects.nonNull(ccdPayloadFieldsJson) && !ccdPayloadFieldsJson.isBlank()) {
             JsonNode ccdPayload = objectMapper.readTree("{\"ccdPayload\": " + ccdPayloadFieldsJson + "}");
             ccdCallbackDto.setCcdPayload(ccdPayload);
         } else {

@@ -201,7 +201,8 @@ class CcdBundleCloningServiceTest {
             .readValue(any(JsonParser.class), eq(typeUsed));
 
         JsonNode resultCaseData = serviceWithSpy.updateCase(ccdCallbackDto);
-        ArrayNode updatedBundles = (ArrayNode) resultCaseData.path("case_details").path("case_data").path("caseBundles");
+        ArrayNode updatedBundles = (ArrayNode) resultCaseData
+            .path("case_details").path("case_data").path("caseBundles");
 
         assertEquals(0, updatedBundles.size());
     }
@@ -229,7 +230,8 @@ class CcdBundleCloningServiceTest {
         }).when(localSpyMapper).readValue(any(JsonParser.class), eq(typeUsed));
 
         JsonNode resultCaseData = serviceWithSpy.updateCase(ccdCallbackDto);
-        ArrayNode updatedBundles = (ArrayNode) resultCaseData.path("case_details").path("case_data").path("caseBundles");
+        ArrayNode updatedBundles = (ArrayNode) resultCaseData
+            .path("case_details").path("case_data").path("caseBundles");
 
         assertEquals(2, updatedBundles.size());
 

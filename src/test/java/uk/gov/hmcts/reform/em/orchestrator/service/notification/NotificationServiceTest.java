@@ -94,7 +94,8 @@ class NotificationServiceTest {
             "Email Notification: string"
         )).thenThrow(NotificationClientException.class);
 
-        CallbackException exception = assertThrows(CallbackException.class, () -> notificationService.sendEmailNotification(
+        CallbackException exception = assertThrows(CallbackException.class, () ->
+            notificationService.sendEmailNotification(
             "string",
             "string",
             "string",
@@ -126,7 +127,8 @@ class NotificationServiceTest {
         OkHttpClient http = getMockHttpIOException();
         setUpNotificationClient(http);
 
-        CallbackException exception = assertThrows(CallbackException.class, () -> notificationService.sendEmailNotification(
+        CallbackException exception = assertThrows(CallbackException.class, () ->
+            notificationService.sendEmailNotification(
             "string",
             "string",
             "string",

@@ -118,7 +118,8 @@ class CcdCallbackDtoCreatorTest {
         CaseDetails caseDetails = CaseDetails.builder().data(caseDataMap).build();
         Mockito.when(mockStartEventResponse.getCaseDetails()).thenReturn(caseDetails);
 
-        CcdCallbackDto ccdCallbackDto = creatorWithRealMapper.createDto("testProperty", "testJwt", mockStartEventResponse);
+        CcdCallbackDto ccdCallbackDto = creatorWithRealMapper.createDto("testProperty",
+            "testJwt", mockStartEventResponse);
 
         assertEquals("testJwt", ccdCallbackDto.getJwt());
         assertEquals(Optional.of("testProperty"), ccdCallbackDto.getPropertyName());
