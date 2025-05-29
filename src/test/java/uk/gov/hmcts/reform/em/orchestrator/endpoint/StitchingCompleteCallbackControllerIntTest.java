@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +22,11 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 import java.io.IOException;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,15 +67,14 @@ class StitchingCompleteCallbackControllerIntTest extends BaseTest {
     @Test
     void stitchingCompleteCallback() throws Exception {
 
-        Mockito
-            .doNothing()
+        doNothing()
             .when(notificationService)
             .sendEmailNotification(
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString());
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString());
 
         mockMvc
             .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
@@ -86,8 +88,8 @@ class StitchingCompleteCallbackControllerIntTest extends BaseTest {
     @Test
     void stitchingCompleteCallbackWithException() throws Exception {
 
-        Mockito.doThrow(new CallbackException(456, "error", "error message"))
-            .when(stitchingCompleteCallbackService).handleCallback(Mockito.any());
+        doThrow(new CallbackException(456, "error", "error message"))
+            .when(stitchingCompleteCallbackService).handleCallback(any());
 
         mockMvc
             .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
