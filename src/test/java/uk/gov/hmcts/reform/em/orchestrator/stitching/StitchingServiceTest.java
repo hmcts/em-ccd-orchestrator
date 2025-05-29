@@ -219,6 +219,61 @@ class StitchingServiceTest {
 
     }
 
+    @Test
+    void stitchMaxRetryException() {
+        List<String> responses = new ArrayList<>();
+        String taskId = "1";
+        responses.add(String.format("{ \"id\": %s, \"taskState\": \"NEW\", \"bundle\":"
+            + " { \"stitchedDocumentURI\": null } }", taskId));
+
+        int maxRetries = 5;
+        for (int i = 0; i < maxRetries; i++) {
+            responses.add(String.format("{ \"id\": %s, \"taskState\": \"IN_PROGRESS\","
+                + " \"bundle\": { \"stitchedDocumentURI\": null } }", taskId));
+        }
+
+        OkHttpClient http = getMockHttp(responses);
+        StitchingService service = getStitchingService(http);
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+
+        StitchingTaskMaxRetryException exception = assertThrows(
+            StitchingTaskMaxRetryException.class,
+            () -> service.stitch(bundleDTO, cdamDto)
+        );
+
+        assertEquals(
+            String.format("Task not complete after maximum number of retries for DocumentTaskId : %s", taskId),
+            exception.getMessage()
+        );
+    }
+
+    @Test
+    void httpCallFailsThrowsStitchingServiceException() {
+        String errorResponseBody = "{\"errorCode\":\"ST-001\",\"errorMessage\":\"Stitching service unavailable\"}";
+
+        OkHttpClient mockHttp = new OkHttpClient.Builder()
+            .addInterceptor(chain -> new Response.Builder()
+                .body(ResponseBody.create(errorResponseBody, MediaType.get("application/json")))
+                .request(chain.request())
+                .message("Server Error")
+                .code(500)
+                .protocol(Protocol.HTTP_2)
+                .build())
+            .build();
+
+        StitchingService service = getStitchingService(mockHttp);
+        DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
+        documentTaskDTO.setJwt(cdamDto.getJwt());
+        documentTaskDTO.setCaseId(cdamDto.getCaseId());
+
+        StitchingServiceException exception = assertThrows(
+            StitchingServiceException.class,
+            () -> service.startStitchingTask(documentTaskDTO)
+        );
+
+        assertEquals("Unable to create stitching task: " + errorResponseBody, exception.getMessage());
+    }
+
     public StitchingService getStitchingService(OkHttpClient http) {
         return new StitchingService(
             new StitchingDTOMapper(),
