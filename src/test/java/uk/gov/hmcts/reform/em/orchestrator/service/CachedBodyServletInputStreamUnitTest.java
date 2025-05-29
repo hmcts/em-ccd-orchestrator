@@ -6,15 +6,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -24,7 +26,7 @@ class CachedBodyServletInputStreamUnitTest {
     private CachedBodyServletInputStream servletInputStream;
 
     @AfterEach
-    public void cleanUp() throws IOException {
+    void cleanUp() throws IOException {
         if (Objects.nonNull(servletInputStream)) {
             servletInputStream.close();
         }
@@ -97,6 +99,21 @@ class CachedBodyServletInputStreamUnitTest {
         // when & then
         assertThrows(UnsupportedOperationException.class,
             () -> servletInputStream.setReadListener(Mockito.mock(ReadListener.class)));
+    }
+
+    @Test
+    void testIsFinishedWhenAvailableThrowsIOException() throws Exception {
+        byte[] cachedBody = "test data".getBytes();
+        servletInputStream = new CachedBodyServletInputStream(cachedBody);
+
+        InputStream mockInputStream = Mockito.mock(InputStream.class);
+        Mockito.when(mockInputStream.available()).thenThrow(new IOException("Simulated IOException"));
+
+        ReflectionTestUtils.setField(servletInputStream, "cachedBodyInputStream", mockInputStream);
+
+        boolean finished = servletInputStream.isFinished();
+
+        assertFalse(finished);
     }
 
 }

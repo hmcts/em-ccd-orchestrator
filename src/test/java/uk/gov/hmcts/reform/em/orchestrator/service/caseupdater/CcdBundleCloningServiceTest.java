@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,16 +9,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
 class CcdBundleCloningServiceTest {
@@ -61,7 +71,7 @@ class CcdBundleCloningServiceTest {
     }
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         ccdBundleCloningService = new CcdBundleCloningService(objectMapper);
     }
 
@@ -174,5 +184,64 @@ class CcdBundleCloningServiceTest {
         ccdBundleCloningService.updateCase(ccdCallbackDto);
 
         assertEquals(1, node.get("case_details").get("case_data").get("caseBundles").size());
+    }
+
+    @Test
+    void testUpdateCaseIOExceptionInProcessBundle() throws Exception {
+        ObjectMapper localSpyMapper = spy(new ObjectMapper());
+        CcdBundleCloningService serviceWithSpy = new CcdBundleCloningService(localSpyMapper);
+
+        JsonNode node = objectMapper.readTree(jsonOneEligible);
+        CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
+
+        JavaType typeUsed = localSpyMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
+
+        doThrow(new IOException("Test IOException during bundle processing"))
+            .when(localSpyMapper)
+            .readValue(any(JsonParser.class), eq(typeUsed));
+
+        JsonNode resultCaseData = serviceWithSpy.updateCase(ccdCallbackDto);
+        ArrayNode updatedBundles = (ArrayNode) resultCaseData
+            .path("case_details").path("case_data").path("caseBundles");
+
+        assertEquals(0, updatedBundles.size());
+    }
+
+    @Test
+    void testUpdateCaseIOExceptionInReorderBundles() throws Exception {
+        ObjectMapper localSpyMapper = spy(new ObjectMapper());
+        CcdBundleCloningService serviceWithSpy = new CcdBundleCloningService(localSpyMapper);
+
+        JsonNode node = objectMapper.readTree(jsonOneEligible);
+        CcdCallbackDto ccdCallbackDto = createCallbackDto(node);
+
+        JavaType typeUsed = localSpyMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
+
+        doAnswer(new Answer<CcdValue<CcdBundleDTO>>() {
+            private int count = 0;
+            @Override
+            public CcdValue<CcdBundleDTO> answer(InvocationOnMock invocation) throws Throwable {
+                count++;
+                if (count == 3) {
+                    throw new IOException("Test IOException during bundle reordering");
+                }
+                return (CcdValue<CcdBundleDTO>) invocation.callRealMethod();
+            }
+        }).when(localSpyMapper).readValue(any(JsonParser.class), eq(typeUsed));
+
+        JsonNode resultCaseData = serviceWithSpy.updateCase(ccdCallbackDto);
+        ArrayNode updatedBundles = (ArrayNode) resultCaseData
+            .path("case_details").path("case_data").path("caseBundles");
+
+        assertEquals(2, updatedBundles.size());
+
+        CcdBundleDTO bundle1 = getIthBundleDto(updatedBundles, 0);
+        CcdBundleDTO bundle2 = getIthBundleDto(updatedBundles, 1);
+
+        assertEquals("First Bundle", bundle1.getTitle());
+        assertTrue(bundle1.getEligibleForCloningAsBoolean());
+
+        assertEquals("CLONED_First Bundle", bundle2.getTitle());
+        assertTrue(bundle2.getEligibleForCloningAsBoolean());
     }
 }

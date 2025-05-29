@@ -142,9 +142,10 @@ public class StitchingService {
                                 StringUtilities.convertValidLog(documentTaskDTO.getId().toString())));
                 return documentTaskDTO;
             } else {
+                String responseBody = response.body().string();
                 logger.error(String.format(FAILURE_MSG, StringUtilities.convertValidLog(documentTask.getCaseId()),
-                        StringUtilities.convertValidLog(response.body().string())));
-                throw new StitchingServiceException("Unable to create stitching task: " + response.body().string());
+                        StringUtilities.convertValidLog(responseBody)));
+                throw new StitchingServiceException("Unable to create stitching task: " + responseBody);
             }
         } finally {
             HttpOkResponseCloser.closeResponse(response);

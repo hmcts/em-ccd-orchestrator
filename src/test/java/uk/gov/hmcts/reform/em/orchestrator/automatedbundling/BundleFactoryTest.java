@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -286,27 +287,27 @@ class BundleFactoryTest {
     @Test
     void createWithDocumentFails() throws IOException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                null,
-                null,
-                false,
-                null,
-                false,
-                null
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            false,
+            null
         );
 
         JsonNode json = mapper.readTree(case7Json);
@@ -390,25 +391,25 @@ class BundleFactoryTest {
     @Test
     void createWithCustomDocumentNameDefined() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                "/documentFileName",
-                null,
-                false,
-                null,
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            "/documentFileName",
+            null,
+            false,
+            null,
             false,
             null
         );
@@ -501,25 +502,25 @@ class BundleFactoryTest {
     @Test
     void createWithSortOrderDescendingAndMixOfDateTypes() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                null,
-                null,
-                false,
-                null,
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.descending),
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
             false,
             null
         );
@@ -538,25 +539,25 @@ class BundleFactoryTest {
     @Test
     void createWithSortOrderAscendingWithNullDate() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                null,
-                null,
-                false,
-                null,
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            new BundleConfigurationSort("/customTimeField", BundleConfigurationSortOrder.ascending),
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
             false,
             null
         );
@@ -575,25 +576,25 @@ class BundleFactoryTest {
     @Test
     void createWithCustomDateFieldNotDefined() throws IOException, DocumentSelectorException {
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                "/documentFileName",
-                null,
-                false,
-                null,
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            "/documentFileName",
+            null,
+            false,
+            null,
             false,
             null
         );
@@ -621,25 +622,25 @@ class BundleFactoryTest {
         docImg.setDocmosisAssetId("schmcts.png");
 
         BundleConfiguration configuration = new BundleConfiguration(
-                "Bundle title",
-                "filename.pdf",
-                "/case_details/id",
-                "FL-FRM-GOR-ENG-12345",
-                PageNumberFormat.numberOfPages,
-                null,
-                true,
-                true,
-                true,
-                new ArrayList<>(),
-                Arrays.asList(
-                        new BundleConfigurationDocument("/document1"),
-                        new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
-                ),
-                CcdBundlePaginationStyle.off,
-                "/documentFileName",
-                docImg,
-                false,
-                null,
+            "Bundle title",
+            "filename.pdf",
+            "/case_details/id",
+            "FL-FRM-GOR-ENG-12345",
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Arrays.asList(
+                new BundleConfigurationDocument("/document1"),
+                new BundleConfigurationDocumentSet("/caseDocuments", Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            "/documentFileName",
+            docImg,
+            false,
+            null,
             false,
             null
         );
@@ -696,4 +697,81 @@ class BundleFactoryTest {
         assertEquals(2, bundle.getDocuments().get(2).getValue().getSortIndex());
     }
 
+    @Test
+    void testAddDocumentThrowsExceptionForArrayProperty() {
+        final String arrayPropertyPath = "/arrayDocument";
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            null,
+            null,
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Collections.singletonList(
+                new BundleConfigurationDocument(arrayPropertyPath)
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            false,
+            null
+        );
+
+        ObjectNode caseData = JsonNodeFactory.instance.objectNode();
+        ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
+        arrayNode.add(JsonNodeFactory.instance.objectNode().put("field", "value"));
+        caseData.set(arrayPropertyPath.substring(1), arrayNode); // remove leading "/"
+
+        DocumentSelectorException exception = assertThrows(
+            DocumentSelectorException.class,
+            () -> factory.create(configuration, caseData)
+        );
+
+        assertEquals("Element is an array: " + arrayPropertyPath, exception.getMessage());
+    }
+
+    @Test
+    void testAddDocumentSetThrowsExceptionForNonArrayProperty() {
+        final String nonArrayPropertyPath = "/nonArrayDocumentSet";
+        BundleConfiguration configuration = new BundleConfiguration(
+            "Bundle title",
+            "filename.pdf",
+            null,
+            null,
+            PageNumberFormat.numberOfPages,
+            null,
+            true,
+            true,
+            true,
+            new ArrayList<>(),
+            Collections.singletonList(
+                new BundleConfigurationDocumentSet(nonArrayPropertyPath, Collections.emptyList())
+            ),
+            CcdBundlePaginationStyle.off,
+            null,
+            null,
+            false,
+            null,
+            false,
+            null
+        );
+
+        ObjectNode caseData = JsonNodeFactory.instance.objectNode();
+        ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+        objectNode.put("field", "value");
+        caseData.set(nonArrayPropertyPath.substring(1), objectNode); // remove leading "/"
+
+        DocumentSelectorException exception = assertThrows(
+            DocumentSelectorException.class,
+            () -> factory.create(configuration, caseData)
+        );
+
+        assertEquals("Element is not an array: " + nonArrayPropertyPath, exception.getMessage());
+    }
 }

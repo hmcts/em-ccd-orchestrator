@@ -1,121 +1,179 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import uk.gov.hmcts.reform.em.orchestrator.Application;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
+import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.StitchingCompleteCallbackService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.TaskState;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+@ExtendWith(MockitoExtension.class)
+class StitchingCompleteCallbackControllerTest {
 
-
-@SpringBootTest(classes = {Application.class})
-@AutoConfigureMockMvc
-class StitchingCompleteCallbackControllerTest extends BaseTest {
-
-    @MockitoBean
+    @Mock
     private StitchingCompleteCallbackService stitchingCompleteCallbackService;
 
-    @MockitoBean
+    @Mock
     private NotificationService notificationService;
 
-    private String requestBody;
+    @Mock
+    private HttpServletRequest request;
+
+    @InjectMocks
+    private StitchingCompleteCallbackController controller;
+
+    private static final String JWT = "testauthorization";
+    private static final String CASE_ID = "testcaseid";
+    private static final String TRIGGER_ID = "testtriggerid";
+    private static final String BUNDLE_ID = "testbundleid";
+    private static final String SUCCESS_TEMPLATE_ID = "successTemplate";
+    private static final String FAILURE_TEMPLATE_ID = "failureTemplate";
+    private static final String BUNDLE_TITLE = "Test Bundle Title";
+    private static final String FAILURE_DESCRIPTION = "It Broke";
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
+        ReflectionTestUtils.setField(controller, "successTemplateId", SUCCESS_TEMPLATE_ID);
+        ReflectionTestUtils.setField(controller, "failureTemplateId", FAILURE_TEMPLATE_ID);
+        when(request.getHeader("authorization")).thenReturn(JWT);
+    }
 
-        MockitoAnnotations.openMocks(this);
-
-        doReturn(authentication).when(securityContext).getAuthentication();
-        SecurityContextHolder.setContext(securityContext);
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-
+    private DocumentTaskDTO createDocumentTaskDTO(TaskState taskState,
+                                                  Boolean enableEmailNotification, String failureDescription) {
         DocumentTaskDTO documentTaskDTO = new DocumentTaskDTO();
-        StitchingBundleDTO stitchingBundleDTO = new StitchingBundleDTO();
-        stitchingBundleDTO.setEnableEmailNotification(true);
-        documentTaskDTO.setTaskState(TaskState.DONE);
-        documentTaskDTO.setBundle(stitchingBundleDTO);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        requestBody = objectMapper.writeValueAsString(documentTaskDTO);
+        documentTaskDTO.setTaskState(taskState);
+        StitchingBundleDTO bundleDTO = new StitchingBundleDTO();
+        bundleDTO.setBundleTitle(BUNDLE_TITLE);
+        bundleDTO.setEnableEmailNotification(enableEmailNotification);
+        documentTaskDTO.setBundle(bundleDTO);
+        documentTaskDTO.setFailureDescription(failureDescription);
+        return documentTaskDTO;
     }
 
     @Test
-    void stitchingCompleteCallback() throws Exception {
+    void stitchingCompleteCallbackDoneAndEmailEnabled() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, true, null);
 
-        Mockito
-            .doNothing()
-            .when(notificationService)
-            .sendEmailNotification(
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString());
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
 
-        mockMvc
-            .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                .content(requestBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "xxx"))
-            .andDo(print()).andExpect(status().isOk());
-
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        verify(notificationService).sendEmailNotification(
+            SUCCESS_TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, null
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
-    void stitchingCompleteCallbackWithException() throws Exception {
+    void stitchingCompleteCallbackFailedAndEmailEnabled() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.FAILED, true, FAILURE_DESCRIPTION);
 
-        Mockito.doThrow(new CallbackException(456, "error", "error message"))
-            .when(stitchingCompleteCallbackService).handleCallback(Mockito.any());
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
 
-        mockMvc
-            .perform(post("/api/stitching-complete-callback/abc/def/" + UUID.randomUUID())
-                .content(requestBody)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "xxx"))
-            .andDo(print())
-            .andExpect(status().is(456))
-            .andExpect(jsonPath("$.message", Matchers.is("error message")))
-            .andExpect(jsonPath("$.httpResponseBody", Matchers.is("error")));
-
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        verify(notificationService).sendEmailNotification(
+            FAILURE_TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, FAILURE_DESCRIPTION
+        );
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
-    private OAuth2AuthenticationToken authenticationToken(OidcIdToken idToken) {
+    @Test
+    void stitchingCompleteCallbackDoneAndEmailDisabled() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, false, null);
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        OidcUser user = new DefaultOidcUser(authorities, idToken);
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
 
-        return new OAuth2AuthenticationToken(user, authorities, "oidc");
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        verify(notificationService, never()).sendEmailNotification(any(), any(), any(), any(), any());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
+    }
 
+    @Test
+    void stitchingCompleteCallbackDoneAndEmailNull() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, null, null);
+
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
+
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        verify(notificationService, never()).sendEmailNotification(any(), any(), any(), any(), any());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void stitchingCompleteCallbackInProgressAndEmailEnabled() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.IN_PROGRESS, true, null);
+
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
+
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        verify(notificationService, never()).sendEmailNotification(any(), any(), any(), any(), any());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void stitchingCompleteCallbackServiceThrowsException() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, true, null);
+        CallbackException callbackException = new CallbackException(400, "Error from service", "Details");
+        doThrow(callbackException).when(stitchingCompleteCallbackService)
+            .handleCallback(any(StitchingCompleteCallbackDto.class));
+
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
+
+        verify(notificationService, never()).sendEmailNotification(any(), any(), any(), any(), any());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(callbackException, response.getBody());
+    }
+
+    @Test
+    void stitchingCompleteCallbackNotificationServiceThrowsException() throws CallbackException {
+        DocumentTaskDTO documentTaskDTO = createDocumentTaskDTO(TaskState.DONE, true, null);
+        CallbackException notificationException = new CallbackException(503,
+            "Error from notification", "Notify unavailable");
+        doThrow(notificationException).when(notificationService).sendEmailNotification(
+            SUCCESS_TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, null
+        );
+
+        ResponseEntity<CallbackException> response = controller.stitchingCompleteCallback(
+            request, CASE_ID, TRIGGER_ID, BUNDLE_ID, documentTaskDTO
+        );
+
+        verify(stitchingCompleteCallbackService).handleCallback(any(StitchingCompleteCallbackDto.class));
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertEquals(notificationException, response.getBody());
     }
 }
