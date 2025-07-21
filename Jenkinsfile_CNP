@@ -17,6 +17,7 @@ properties([
 def type = "java"
 def product = "em"
 def component = "ccdorc"
+GradleBuilder gradleBuilder = new uk.gov.hmcts.contino.GradleBuilder(this, product)
 
 def secrets = [
         's2s-${env}': [
@@ -78,7 +79,7 @@ sh ./publish-swagger-docs.sh
     }
 
     before('test') {
-        GradleBuilder.gradle('validateYaml')
+        gradleBuilder.gradle('validateYaml')
     }
 
     afterAlways('test') {
