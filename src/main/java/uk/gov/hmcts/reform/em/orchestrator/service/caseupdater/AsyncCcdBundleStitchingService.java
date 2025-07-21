@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -26,11 +25,6 @@ public class AsyncCcdBundleStitchingService extends UpdateCase {
         super(objectMapper);
         this.automatedStitchingExecutor = automatedStitchingExecutor;
         this.validator = validator;
-    }
-
-    @Override
-    public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        return super.updateCase(ccdCallbackDto);
     }
 
     @Override
