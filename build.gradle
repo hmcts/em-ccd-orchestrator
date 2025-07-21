@@ -246,7 +246,6 @@ bootJar {
 
 def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/Application*',
-        '**uk/gov/hmcts/reform/em/orchestrator/CliApplication*',
         '**uk/gov/hmcts/reform/em/orchestrator/config/**/*',
         '**uk/gov/hmcts/reform/em/orchestrator/domain/*',
         '**uk/gov/hmcts/reform/em/orchestrator/stitching/dto/*',
@@ -274,7 +273,6 @@ pitest {
             'uk.gov.hmcts.reform.em.orchestrator.config.*',
             'uk.gov.hmcts.reform.em.orchestrator.info.*',
             'uk.gov.hmcts.reform.em.orchestrator.Application.java',
-            'uk.gov.hmcts.reform.em.orchestrator.CliApplication.java'
     ]
 
     enableDefaultIncrementalAnalysis = true
@@ -371,7 +369,6 @@ task smoke(type: Test) {
 
 task validateYaml(type: JavaExec){
     description = "Validate the automated bundling YAML configuration"
-    mainClass.set("uk.gov.hmcts.reform.em.orchestrator.CliApplication")
     classpath = sourceSets.main.runtimeClasspath
     args '--validate'
 }
