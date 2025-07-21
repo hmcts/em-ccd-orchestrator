@@ -87,7 +87,6 @@ dependencies {
         exclude group: 'org.eclipse.jetty.alpn', module: 'alpn-api'
     }
 
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-batch'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
@@ -370,7 +369,9 @@ task smoke(type: Test) {
 task validateYaml(type: JavaExec){
     description = "Validate the automated bundling YAML configuration"
     classpath = sourceSets.main.runtimeClasspath
-    args '--validate'
+    mainClass.set("uk.gov.hmcts.reform.em.orchestrator.Application")
+    systemProperty 'spring.main.web-application-type', 'NONE'
+    systemProperty 'spring.profiles.active', 'validate'
 }
 
 compileJava.dependsOn processResources
