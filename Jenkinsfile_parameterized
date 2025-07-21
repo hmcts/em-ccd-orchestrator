@@ -1,4 +1,5 @@
 #!groovy
+import uk.gov.hmcts.contino.GradleBuilder
 
 properties([
         [
@@ -27,6 +28,9 @@ def secrets = [
                 secret('show-oauth2-token', 'FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET')
         ]]
 
+GradleBuilder builder = new GradleBuilder(this, product)
+
+
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     [ $class: 'AzureKeyVaultSecret',
       secretType: 'Secret',
@@ -45,6 +49,10 @@ withParameterizedPipeline(type, product, component, params.ENVIRONMENT, 'sandbox
     enableDockerBuild()
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
+
+    before('test') {
+        builder.gradle('validateYaml')
+    }
 
     afterAlways('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
