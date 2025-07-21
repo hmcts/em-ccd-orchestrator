@@ -78,7 +78,7 @@ sh ./publish-swagger-docs.sh
     }
 
     before('test') {
-        gradle('validateYaml')
+        GradleBuilder.gradle('validateYaml')
     }
 
     afterAlways('test') {
