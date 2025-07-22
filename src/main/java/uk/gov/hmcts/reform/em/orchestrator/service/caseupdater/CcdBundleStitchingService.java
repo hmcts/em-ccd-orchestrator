@@ -1,11 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -18,7 +16,6 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 import java.util.Set;
 
 @Service
-@Transactional
 public class CcdBundleStitchingService extends UpdateCase {
 
     private final Validator validator;
@@ -30,11 +27,6 @@ public class CcdBundleStitchingService extends UpdateCase {
         super(objectMapper);
         this.stitchingService = stitchingService;
         this.validator = validator;
-    }
-
-    @Override
-    public JsonNode updateCase(CcdCallbackDto ccdCallbackDto) {
-        return super.updateCase(ccdCallbackDto);
     }
 
     protected CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle, CcdCallbackDto ccdCallbackDto) {

@@ -1,5 +1,6 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
+import uk.gov.hmcts.contino.GradleBuilder
 
 properties([
     [
@@ -17,6 +18,7 @@ properties([
 def type = "java"
 def product = "em"
 def component = "ccdorc"
+GradleBuilder gradleBuilder = new GradleBuilder(this, product)
 
 def secrets = [
         's2s-${env}': [
@@ -75,6 +77,10 @@ sh ./publish-swagger-docs.sh
     {
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER,AppPipelineDsl.PactRoles.PROVIDER])
 
+    }
+
+    before('test') {
+        gradleBuilder.gradle('validateYaml')
     }
 
     afterAlways('test') {

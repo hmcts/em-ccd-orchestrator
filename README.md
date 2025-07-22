@@ -84,7 +84,7 @@ A list of our endpoints can be found here
 The bundle configuration files can be validated by executing the `validateYaml` task:
 
 ```
-./gradew validateYaml
+./gradlew validateYaml
 ```
 
 
