@@ -376,34 +376,96 @@ task validateYaml(type: JavaExec){
 
 compileJava.dependsOn processResources
 
-task contract(type: Test) {
+project.ext {
+    pacticipantVersion = getCheckedOutGitCommitHash()
+}
+
+static def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+
+tasks.register('contract', Test) {
     group = 'Delivery pipeline'
     description = 'Runs the consumer Pact tests'
     useJUnitPlatform()
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
-    include "uk/gov/hmcts/reform/em/orchestrator/**"
+    include '**/consumer/**'
     systemProperty 'pact.rootDir', "pacts"
     environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
 }
 
-task runAndPublishConsumerPactTests(type: Test){
+pact {
+    broker {
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+    }
+    publish {
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+        pactDirectory = 'pacts'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+        consumerBranch = System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
+        version = project.pacticipantVersion
+    }
+}
+
+pactPublish {
+    pactPublish = project.pact.publish
+}
+
+tasks.register('runAndPublishConsumerPactTests', Test) {
     logger.lifecycle("Runs pact Tests")
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
+    jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
 }
 
+runAndPublishConsumerPactTests.dependsOn contract
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
+tasks.register('providerContractTests', Test) {
+    description = 'Runs ONLY the provider Pact verification tests.'
+    group = 'Verification'
 
-task runProviderPactVerification(type: Test) {
-    logger.lifecycle("Runnning contract Tests")
     useJUnitPlatform()
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
+
+    include '**/provider/**'
+
+    testLogging {
+        exceptionFormat = 'full'
+        showStandardStreams = true
+    }
+
+    if (project.hasProperty('pact.verifier.publishResults')) {
+        systemProperty 'pact.verifier.publishResults', project.property('pact.verifier.publishResults')
+    }
+    if (project.hasProperty('pact.provider.version')) {
+        systemProperty 'pact.provider.version', project.property('pact.provider.version')
+    } else {
+        systemProperty 'pact.provider.version', project.pacticipantVersion
+    }
+
+    if (project.hasProperty('pact.provider.branch')) {
+        systemProperty 'pact.provider.branch', project.property('pact.provider.branch')
+    } else {
+        systemProperty 'pact.provider.branch', System.getenv("PACT_BRANCH_NAME") ?: "Dev"
+    }
+
+    doFirst {
+        println "--- Running 'providerContractTests' (including only **/provider/**) ---"
+        println "System properties for this run: ${systemProperties}"
+    }
 }
-runProviderPactVerification.dependsOn contract
-runProviderPactVerification.finalizedBy pactVerify
+
+tasks.register('runProviderPactVerification') {
+    description = 'Entry point for Jenkins to run provider contract tests.'
+    group = 'Verification'
+
+    dependsOn tasks.named('providerContractTests')
+}
+
 
 
 task fortifyScan(type: JavaExec)  {
@@ -412,29 +474,6 @@ task fortifyScan(type: JavaExec)  {
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
-project.ext {
-    pactVersion = getCheckedOutGitCommitHash()
-}
-
-static def getCheckedOutGitCommitHash() {
-    'git rev-parse --verify --short HEAD'.execute().text.trim()
-}
-
-serenity {
-    reports = ["single-page-html"]
-}
-
-pact {
-    publish {
-        pactDirectory = 'pacts'
-        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
-        version = project.pactVersion
-    }
-}
-
-pactPublish {
-    pactPublish = project.pact.publish
-}
 
 task loadEnvSecrets() {
     doLast {
