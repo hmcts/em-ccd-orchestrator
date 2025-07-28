@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.em.orchestrator.provider;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
 import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
-import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerConsumerVersionSelectors;
+import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import au.com.dius.pact.provider.junitsupport.loader.SelectorBuilder;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,11 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @IgnoreNoPactsToVerify
 @AutoConfigureMockMvc(addFilters = false)
-//@PactFolder("pacts")
-@PactBroker(
-    url = "${PACT_BROKER_FULL_URL:http://localhost:80}",
-    providerBranch = "${pact.provider.branch}"
-)
+@PactFolder("pacts")
+//@PactBroker(
+//    url = "${PACT_BROKER_FULL_URL:http://localhost:80}",
+//    providerBranch = "${pact.provider.branch}"
+//)
 public abstract class BaseProviderTest {
 
     @Autowired
