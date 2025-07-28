@@ -70,7 +70,7 @@ public final class ProviderTestUtil {
         bundle.put("description", "This is a test bundle description.");
         bundle.put("eligibleForStitching", "yes");
         bundle.put("eligibleForCloning", "no");
-        bundle.put("fileName", "bundle-filename"); // Value matches consumer's regex
+        bundle.put("fileName", "bundle-filename");
         bundle.put("fileNameIdentifier", "test-identifier");
         bundle.put("coverpageTemplate", "FL-FRM-APP-ENG-00002.docx");
         bundle.put("hasTableOfContents", "Yes");
