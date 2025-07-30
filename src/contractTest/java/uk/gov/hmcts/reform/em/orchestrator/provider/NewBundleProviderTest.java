@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.em.orchestrator.provider;
 
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration;
@@ -18,6 +16,7 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createNewBundleResponse;
 
 @Provider("em_orchestrator_new_bundle_provider")
 @WebMvcTest(value = NewBundleController.class, excludeAutoConfiguration = {
@@ -42,14 +41,7 @@ public class NewBundleProviderTest extends BaseProviderTest {
 
     @State("a request to prepare a new bundle is successful")
     public void prepareNewBundleSuccessState() {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode dataNode = mapper.createObjectNode();
-        dataNode.put("bundleTitle", "Bundle");
-
-        CcdCallbackResponseDto responseDto = new CcdCallbackResponseDto();
-        responseDto.setData(dataNode);
-        responseDto.setDocumentTaskId(12345L);
-
+        CcdCallbackResponseDto responseDto = createNewBundleResponse();
         when(defaultUpdateCaller.executeUpdate(any(AutomatedCaseUpdater.class), any(HttpServletRequest.class)))
             .thenReturn(ResponseEntity.ok(responseDto));
     }

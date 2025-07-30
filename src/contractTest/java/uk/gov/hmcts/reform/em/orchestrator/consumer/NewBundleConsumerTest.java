@@ -15,11 +15,14 @@ import org.springframework.http.HttpStatus;
 import java.util.UUID;
 
 import static au.com.dius.pact.consumer.dsl.LambdaDsl.newJsonBody;
+import static uk.gov.hmcts.reform.em.orchestrator.consumer.ConsumerTestUtil.buildCcdCallbackRequest;
+import static uk.gov.hmcts.reform.em.orchestrator.consumer.ConsumerTestUtil.buildCcdCallbackResponse;
 
 class NewBundleConsumerTest extends BaseConsumerTest {
 
     private static final String NEW_BUNDLE_PROVIDER_NAME = "em_orchestrator_new_bundle_provider";
     private static final String NEW_BUNDLE_API_PATH = "/api/new-bundle";
+    private static final String BUNDLE_ID = "a585a03b-a521-443b-826c-9411ebd44733";
 
     @Pact(provider = NEW_BUNDLE_PROVIDER_NAME, consumer = ORCHESTRATOR_CONSUMER)
     public V4Pact prepareNewBundle200(PactDslWithProvider builder) {
@@ -50,29 +53,25 @@ class NewBundleConsumerTest extends BaseConsumerTest {
     }
 
     private DslPart createNewBundleRequestDsl() {
-        return newJsonBody(body -> {
-            body.object("case_details", details -> {
-                details.object("case_data", data -> {
-                    data.stringType("caseTitle", "My Test Case");
-                    data.eachLike("caseBundles", bundle ->
-                        bundle.object("value", value -> {
-                            value.uuid("id", UUID.fromString("a585a03b-a521-443b-826c-9411ebd44733"));
-                            value.stringType("title", "Test Bundle");
-                        })
-                    );
-                });
-            });
-            body.stringType("event_id", "createBundle");
-        }).build();
+        return newJsonBody(body -> buildCcdCallbackRequest(body, data -> {
+            data.stringType("caseTitle", "My Test Case");
+            data.eachLike("caseBundles", bundle ->
+                bundle.object("value", value -> {
+                    value.uuid("id", UUID.fromString(BUNDLE_ID));
+                    value.stringType("title", "Test Bundle");
+                })
+            );
+        })).build();
     }
 
     private DslPart createPrepareNewBundleResponseDsl() {
         return newJsonBody(body -> {
-            body.object("data", data -> {
-                data.stringType("bundleTitle", "Bundle");
+            buildCcdCallbackResponse(body, data -> {
+                data.stringType("caseTitle", "My Test Case");
+                data.eachLike("caseBundles", bundle ->
+                    bundle.object("value", ConsumerTestUtil::buildCcdBundleDsl)
+                );
             });
-            body.array("errors", arr -> {});
-            body.array("warnings", arr -> {});
             body.numberType("documentTaskId", 12345L);
         }).build();
     }
