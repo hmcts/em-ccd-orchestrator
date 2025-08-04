@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
+import java.util.UUID;
+
 public final class ProviderTestUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -50,6 +52,28 @@ public final class ProviderTestUtil {
         ArrayNode caseBundles = caseData.putArray("caseBundles");
 
         caseBundles.add(MAPPER.createObjectNode().set("value", buildCcdBundle()));
+        response.setData(caseData);
+        return response;
+    }
+
+    public static CcdCallbackResponseDto createCloneBundleResponse() {
+        CcdCallbackResponseDto response = new CcdCallbackResponseDto();
+        ObjectNode caseData = MAPPER.createObjectNode();
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
+
+        ObjectNode originalBundle = buildCcdBundle();
+        originalBundle.put("eligibleForCloning", "no");
+
+        ObjectNode clonedBundle = buildCcdBundle();
+        clonedBundle.put("id", UUID.randomUUID().toString()); // It gets a new ID
+        clonedBundle.put("title", "CLONED_" + originalBundle.get("title").asText());
+        clonedBundle.put("fileName", "CLONED_" + originalBundle.get("fileName").asText());
+        clonedBundle.put("eligibleForCloning", "no");
+
+
+        caseBundles.add(MAPPER.createObjectNode().set("value", originalBundle));
+        caseBundles.add(MAPPER.createObjectNode().set("value", clonedBundle));
+
         response.setData(caseData);
         return response;
     }

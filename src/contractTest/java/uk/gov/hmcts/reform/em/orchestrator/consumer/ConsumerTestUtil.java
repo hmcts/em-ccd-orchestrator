@@ -1,11 +1,14 @@
 package uk.gov.hmcts.reform.em.orchestrator.consumer;
 
+import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.LambdaDslObject;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+
+import static au.com.dius.pact.consumer.dsl.LambdaDsl.newJsonBody;
 
 
 public final class ConsumerTestUtil {
@@ -59,6 +62,28 @@ public final class ConsumerTestUtil {
             .object("data", dataBuilder)
             .array("errors", arr -> {})
             .array("warnings", arr -> {});
+    }
+
+    public static DslPart createCloneRequestDsl() {
+        return newJsonBody(body -> buildCcdCallbackRequest(body, data ->
+            data.eachLike("caseBundles", bundle ->
+                bundle.object("value", value -> {
+                    buildCcdBundleDsl(value);
+                    value.stringMatcher("eligibleForCloning", "Yes|No", "yes");
+                })
+            )
+        )).build();
+    }
+
+    public static DslPart createCloneResponseDsl() {
+        return newJsonBody(body -> buildCcdCallbackResponse(body, data ->
+            data.minArrayLike("caseBundles", 2, bundle ->
+                bundle.object("value", value -> {
+                    buildCcdBundleDsl(value);
+                    value.stringMatcher("eligibleForCloning", "Yes|No", "no");
+                })
+            )
+        )).build();
     }
 
     private static String buildEnumRegex(Class<? extends Enum<?>> enumClass) {
