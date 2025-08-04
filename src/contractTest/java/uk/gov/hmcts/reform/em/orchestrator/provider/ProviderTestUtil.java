@@ -57,7 +57,6 @@ public final class ProviderTestUtil {
     }
 
     public static CcdCallbackResponseDto createCloneBundleResponse() {
-        ObjectNode caseData = MAPPER.createObjectNode();
         ObjectNode originalBundle = buildCcdBundle();
         originalBundle.put("eligibleForCloning", "no");
 
@@ -67,6 +66,7 @@ public final class ProviderTestUtil {
         clonedBundle.put("fileName", "CLONED_" + originalBundle.get("fileName").asText());
         clonedBundle.put("eligibleForCloning", "no");
 
+        ObjectNode caseData = MAPPER.createObjectNode();
         ArrayNode caseBundles = caseData.putArray("caseBundles");
         caseBundles.add(MAPPER.createObjectNode().set("value", originalBundle));
         caseBundles.add(MAPPER.createObjectNode().set("value", clonedBundle));
