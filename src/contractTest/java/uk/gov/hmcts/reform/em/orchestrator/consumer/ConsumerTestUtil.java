@@ -69,7 +69,7 @@ public final class ConsumerTestUtil {
             data.eachLike("caseBundles", bundle ->
                 bundle.object("value", value -> {
                     buildCcdBundleDsl(value);
-                    value.stringMatcher("eligibleForCloning", "Yes|No", "yes");
+                    value.stringMatcher("eligibleForCloning", "Yes|No", "Yes");
                 })
             )
         )).build();
@@ -80,7 +80,7 @@ public final class ConsumerTestUtil {
             data.minArrayLike("caseBundles", 2, bundle ->
                 bundle.object("value", value -> {
                     buildCcdBundleDsl(value);
-                    value.stringMatcher("eligibleForCloning", "Yes|No", "no");
+                    value.stringMatcher("eligibleForCloning", "Yes|No", "No");
                 })
             )
         )).build();
