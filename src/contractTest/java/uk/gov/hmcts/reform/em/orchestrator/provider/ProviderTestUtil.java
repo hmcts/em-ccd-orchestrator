@@ -58,13 +58,13 @@ public final class ProviderTestUtil {
 
     public static CcdCallbackResponseDto createCloneBundleResponse() {
         ObjectNode originalBundle = buildCcdBundle();
-        originalBundle.put("eligibleForCloning", "no");
+        originalBundle.put("eligibleForCloning", "No");
 
         ObjectNode clonedBundle = buildCcdBundle();
         clonedBundle.put("id", UUID.randomUUID().toString()); // It gets a new ID
         clonedBundle.put("title", "CLONED_" + originalBundle.get("title").asText());
         clonedBundle.put("fileName", "CLONED_" + originalBundle.get("fileName").asText());
-        clonedBundle.put("eligibleForCloning", "no");
+        clonedBundle.put("eligibleForCloning", "No");
 
         ObjectNode caseData = MAPPER.createObjectNode();
         ArrayNode caseBundles = caseData.putArray("caseBundles");
@@ -90,8 +90,8 @@ public final class ProviderTestUtil {
         bundle.put("id", "a585a03b-a521-443b-826c-9411ebd44733");
         bundle.put("title", "Test Bundle");
         bundle.put("description", "This is a test bundle description.");
-        bundle.put("eligibleForStitching", "yes");
-        bundle.put("eligibleForCloning", "no");
+        bundle.put("eligibleForStitching", "Yes");
+        bundle.put("eligibleForCloning", "No");
         bundle.put("fileName", "bundle-filename");
         bundle.put("fileNameIdentifier", "test-identifier");
         bundle.put("coverpageTemplate", "FL-FRM-APP-ENG-00002.docx");
