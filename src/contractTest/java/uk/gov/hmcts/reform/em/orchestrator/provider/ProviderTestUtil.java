@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
+import java.util.UUID;
+
 public final class ProviderTestUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -54,6 +56,26 @@ public final class ProviderTestUtil {
         return response;
     }
 
+    public static CcdCallbackResponseDto createCloneBundleResponse() {
+        ObjectNode originalBundle = buildCcdBundle();
+        originalBundle.put("eligibleForCloning", "No");
+
+        ObjectNode clonedBundle = buildCcdBundle();
+        clonedBundle.put("id", UUID.randomUUID().toString()); // It gets a new ID
+        clonedBundle.put("title", "CLONED_" + originalBundle.get("title").asText());
+        clonedBundle.put("fileName", "CLONED_" + originalBundle.get("fileName").asText());
+        clonedBundle.put("eligibleForCloning", "No");
+
+        ObjectNode caseData = MAPPER.createObjectNode();
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
+        caseBundles.add(MAPPER.createObjectNode().set("value", originalBundle));
+        caseBundles.add(MAPPER.createObjectNode().set("value", clonedBundle));
+
+        CcdCallbackResponseDto response = new CcdCallbackResponseDto();
+        response.setData(caseData);
+        return response;
+    }
+
     private static JsonNode buildCcdDocument() {
         ObjectNode doc = MAPPER.createObjectNode();
         doc.put("document_url", "http://dm-store:8080/documents/b9a3416c-66d4-4a24-9580-a631e78d1275");
@@ -68,8 +90,8 @@ public final class ProviderTestUtil {
         bundle.put("id", "a585a03b-a521-443b-826c-9411ebd44733");
         bundle.put("title", "Test Bundle");
         bundle.put("description", "This is a test bundle description.");
-        bundle.put("eligibleForStitching", "yes");
-        bundle.put("eligibleForCloning", "no");
+        bundle.put("eligibleForStitching", "Yes");
+        bundle.put("eligibleForCloning", "No");
         bundle.put("fileName", "bundle-filename");
         bundle.put("fileNameIdentifier", "test-identifier");
         bundle.put("coverpageTemplate", "FL-FRM-APP-ENG-00002.docx");
