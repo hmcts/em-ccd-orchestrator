@@ -1,3 +1,5 @@
+import javax.inject.Inject
+import java.nio.charset.StandardCharsets
 
 plugins {
     id 'application'
@@ -14,15 +16,13 @@ plugins {
     id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
 }
 
-apply plugin: 'idea'
-
 
 if (!project.hasProperty('runList')) {
     project.ext.runList = 'main'
 }
 
-group 'uk.gov.hmcts.reform.em.orchestrator'
-version '1.0.0'
+group = 'uk.gov.hmcts.reform.em.orchestrator'
+version = '1.0.0'
 
 java {
     toolchain {
@@ -30,11 +30,8 @@ java {
     }
 }
 
-mainClassName = 'uk.gov.hmcts.reform.em.orchestrator.Application'
-
-configurations {
-    aatImplementation.extendsFrom(testImplementation)
-    aatRuntimeOnly.extendsFrom(testRuntimeOnly)
+application {
+    mainClass = 'uk.gov.hmcts.reform.em.orchestrator.Application'
 }
 
 def versions = [
@@ -65,7 +62,12 @@ sourceSets {
     }
 }
 
-configurations.all {
+configurations {
+    aatImplementation.extendsFrom(testImplementation)
+    aatRuntimeOnly.extendsFrom(testRuntimeOnly)
+}
+
+configurations.configureEach {
     exclude group: 'com.vaadin.external.google', module: 'android-json'
     exclude group: 'org.glassfish', module: 'jakarta.el'
     exclude group: 'org.springframework.retry', module: 'spring-retry'
@@ -261,7 +263,7 @@ jacocoTestReport {
         xml.required = true
         csv.required = false
 
-        xml.outputLocation = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+        xml.outputLocation = file("${project.getLayout().getBuildDirectory()}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -293,8 +295,6 @@ pitest {
     pitestVersion = '1.17.3'
 }
 
-project.tasks['sonarqube'].group = "Verification"
-
 project.tasks['sonarqube'].dependsOn test, jacocoTestReport
 
 sonarqube {
@@ -317,16 +317,6 @@ configurations {
     contractTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
-
-idea {
-    module {
-        testSourceDirs += project.sourceSets.aat.java.srcDirs
-        testResourceDirs += project.sourceSets.aat.resources.srcDirs
-        testSourceDirs += project.sourceSets.contractTest.java.srcDirs
-        testResourceDirs += project.sourceSets.contractTest.resources.srcDirs
-    }
-}
-
 // https://github.com/gradle/gradle/issues/16791
 tasks.withType(JavaExec).configureEach {
     javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
@@ -336,7 +326,7 @@ test {
     useJUnitPlatform()
 }
 
-task functional(type: Test) {
+tasks.register('functional', Test) {
     group = 'Delivery pipeline'
     description = 'Executes functional tests'
     setTestClassesDirs(sourceSets.aat.output.classesDirs)
@@ -354,7 +344,7 @@ task functional(type: Test) {
 // Serenity Single page Reports
 // functional.finalizedBy(aggregate)
 
-task smoke(type: Test) {
+tasks.register('smoke', Test) {
     group = 'Delivery pipeline'
     description = 'Executes non-destructive smoke tests'
     setTestClassesDirs(sourceSets.aat.output.classesDirs)
@@ -366,7 +356,7 @@ task smoke(type: Test) {
     useJUnitPlatform()
 }
 
-task validateYaml(type: JavaExec){
+tasks.register('validateYaml', JavaExec) {
     description = "Validate the automated bundling YAML configuration"
     classpath = sourceSets.main.runtimeClasspath
     mainClass.set("uk.gov.hmcts.reform.em.orchestrator.Application")
@@ -467,23 +457,28 @@ tasks.register('runProviderPactVerification') {
 }
 
 
-
-task fortifyScan(type: JavaExec)  {
+tasks.register('fortifyScan', JavaExec) {
     mainClass.set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
     classpath += sourceSets.test.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
+interface ExecOperationsProvider {
+    @Inject
+    ExecOperations getExecOperations()
+}
 
-task loadEnvSecrets() {
+tasks.register('loadEnvSecrets') {
     doLast {
         if (!project.file('./.aat-env').exists()) {
+            def execOps = project.objects.newInstance(ExecOperationsProvider).getExecOperations()
+
             new ByteArrayOutputStream().withStream { os ->
-                exec {
+                execOps.exec {
                     commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'em-ccdorc-aat', '-o', 'tsv', '--query', 'value', '--name', 'em-ccdorc-dot-env'
                     standardOutput = os
                 }
-                project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
+                project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), StandardCharsets.UTF_8))
             }
         }
     }
