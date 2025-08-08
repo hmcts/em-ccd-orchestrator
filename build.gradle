@@ -263,7 +263,7 @@ jacocoTestReport {
         xml.required = true
         csv.required = false
 
-        xml.outputLocation = file("${project.getLayout().getBuildDirectory()}/reports/jacoco/test/jacocoTestReport.xml")
+        xml.outputLocation = layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
