@@ -418,6 +418,14 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
     classpath = sourceSets.contractTest.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
     useJUnitPlatform()
+    testLogging {
+        exceptionFormat = 'full'  // shows message + stack trace
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = true // includes System.out/System.err
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
+    }
 }
 
 runAndPublishConsumerPactTests.dependsOn contract
@@ -434,8 +442,12 @@ tasks.register('providerContractTests', Test) {
     include '**/provider/**'
 
     testLogging {
-        exceptionFormat = 'full'
-        showStandardStreams = true
+        exceptionFormat = 'full'  // shows message + stack trace
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = true // includes System.out/System.err
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
     }
 
     if (project.hasProperty('pact.verifier.publishResults')) {
@@ -464,6 +476,14 @@ tasks.register('runProviderPactVerification') {
     group = 'Verification'
 
     dependsOn tasks.named('providerContractTests')
+    testLogging {
+        exceptionFormat = 'full'  // shows message + stack trace
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
+        showStandardStreams = true // includes System.out/System.err
+        events "passed", "skipped", "failed", "standard_out", "standard_error"
+    }
 }
 
 
