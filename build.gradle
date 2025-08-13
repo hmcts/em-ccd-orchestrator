@@ -417,15 +417,6 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
-    useJUnitPlatform()
-    testLogging {
-        exceptionFormat = 'full'  // shows message + stack trace
-        showCauses = true
-        showExceptions = true
-        showStackTraces = true
-        showStandardStreams = true // includes System.out/System.err
-        events "passed", "skipped", "failed", "standard_out", "standard_error"
-    }
 }
 
 runAndPublishConsumerPactTests.dependsOn contract
