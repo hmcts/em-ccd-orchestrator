@@ -487,14 +487,6 @@ tasks.register('runProviderPactVerification') {
     group = 'Verification'
 
     dependsOn tasks.named('providerContractTests')
-    testLogging {
-        exceptionFormat = 'full'  // shows message + stack trace
-        showCauses = true
-        showExceptions = true
-        showStackTraces = true
-        showStandardStreams = true // includes System.out/System.err
-        events "passed", "skipped", "failed", "standard_out", "standard_error"
-    }
 }
 
 
