@@ -408,6 +408,7 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
+    useJUnitPlatform()
 }
 
 runAndPublishConsumerPactTests.dependsOn contract
