@@ -414,6 +414,16 @@ tasks.register('runAndPublishConsumerPactTests', Test) {
 runAndPublishConsumerPactTests.dependsOn contract
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 
+tasks.register('providerContractTests', Test) {
+    description = 'Runs ONLY the provider Pact verification tests.'
+    group = 'Verification'
+
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+
+    include '**/provider/**'
+}
 
 // Centralized Pact system property setup for all Test tasks
 tasks.withType(Test).configureEach { t ->
@@ -427,42 +437,26 @@ tasks.withType(Test).configureEach { t ->
         events "passed", "skipped", "failed", "standard_out", "standard_error"
     }
 
-    // pact.verifier.publishResults
     if (project.hasProperty('pact.verifier.publishResults')) {
         systemProperty 'pact.verifier.publishResults', project.property('pact.verifier.publishResults')
     }
 
-    // pact.provider.version
     if (project.hasProperty('pact.provider.version')) {
         systemProperty 'pact.provider.version', project.property('pact.provider.version')
-    } else if (project.hasProperty('pacticipantVersion')) {
+    } else {
         systemProperty 'pact.provider.version', project.pacticipantVersion
     }
 
-    // pact.provider.branch
     if (project.hasProperty('pact.provider.branch')) {
         systemProperty 'pact.provider.branch', project.property('pact.provider.branch')
     } else {
         systemProperty 'pact.provider.branch', System.getenv("PACT_BRANCH_NAME") ?: "Dev"
     }
 
-    // Debug print to confirm values before running
     doFirst {
         println "--- Running '${t.name}' ---"
         println "System properties for this run: ${systemProperties}"
     }
-}
-
-
-tasks.register('providerContractTests', Test) {
-    description = 'Runs ONLY the provider Pact verification tests.'
-    group = 'Verification'
-
-    useJUnitPlatform()
-    testClassesDirs = sourceSets.contractTest.output.classesDirs
-    classpath = sourceSets.contractTest.runtimeClasspath
-
-    include '**/provider/**'
 }
 
 tasks.register('runProviderPactVerification') {
