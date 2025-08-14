@@ -440,7 +440,6 @@ tasks.withType(Test).configureEach { t ->
     if (project.hasProperty('pact.verifier.publishResults')) {
         systemProperty 'pact.verifier.publishResults', project.property('pact.verifier.publishResults')
     }
-
     if (project.hasProperty('pact.provider.version')) {
         systemProperty 'pact.provider.version', project.property('pact.provider.version')
     } else {
