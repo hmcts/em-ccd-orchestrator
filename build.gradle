@@ -37,10 +37,10 @@ application {
 def versions = [
         serenity           : '4.2.33',
         pact_version       : '4.6.17',
-        mockito            : '5.18.0',
+        mockito            : '5.19.0',
         jupiter            : '5.13.4',
         poi                : '5.4.1',
-        springSecurity     : '6.5.2',
+        springSecurity     : '6.5.3',
         okhttp3            : '5.1.0',
         fasterXmlJackson   : '2.19.2'
 ]
@@ -172,7 +172,7 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation group: 'uk.gov.hmcts.reform', name: 'em-test-helper', version:'2.2.0'
+    aatImplementation group: 'uk.gov.hmcts.reform', name: 'em-test-helper', version:'2.2.1'
 }
 
 dependencyManagement {
