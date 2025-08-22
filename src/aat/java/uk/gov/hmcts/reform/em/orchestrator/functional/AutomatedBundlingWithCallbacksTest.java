@@ -60,7 +60,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
             fail("Status was not retrieved.");
         }
         assertEquals("FAILED", caseJson.findPath("stitchStatus").asText());
-        assertEquals("Unknown file type: text/csv",
+        assertEquals("Error converting document: my doc text with file type: text/csv",
             caseJson.findPath("stitchingFailureMessage").asText());
     }
 }
