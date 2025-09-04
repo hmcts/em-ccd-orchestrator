@@ -191,13 +191,6 @@ dependencyManagement {
             entry 'logback-core'
         }
 
-        // CVE-2023-35116
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.fasterXmlJackson) {
-            entry 'jackson-databind'
-            entry 'jackson-annotations'
-            entry 'jackson-core'
-        }
-
         dependencySet(group: 'org.junit.platform', version: '1.13.4') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
