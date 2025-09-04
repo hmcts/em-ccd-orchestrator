@@ -42,7 +42,7 @@ def versions = [
         poi                : '5.4.1',
         springSecurity     : '6.5.3',
         okhttp3            : '5.1.0',
-        fasterXmlJackson   : '2.19.2'
+        fasterXmlJackson   : '2.20.0'
 ]
 sourceSets {
     aat {
@@ -189,13 +189,6 @@ dependencyManagement {
         dependencySet(group: 'ch.qos.logback', version: '1.5.18') {
             entry 'logback-classic'
             entry 'logback-core'
-        }
-
-        // CVE-2023-35116
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.fasterXmlJackson) {
-            entry 'jackson-databind'
-            entry 'jackson-annotations'
-            entry 'jackson-core'
         }
 
         dependencySet(group: 'org.junit.platform', version: '1.13.4') {
