@@ -152,7 +152,7 @@ dependencies {
     aatImplementation group: 'org.apache.poi', name: 'poi', version: versions.poi
     aatImplementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
     aatRuntimeOnly group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.4'
-    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
+    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.6'
     
     //pact contract testing
 
