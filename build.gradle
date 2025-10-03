@@ -38,7 +38,7 @@ def versions = [
         serenity           : '4.2.33',
         pact_version       : '4.6.17',
         mockito            : '5.20.0',
-        jupiter            : '5.14.0',
+        jupiter            : '6.0.0',
         poi                : '5.4.1',
         springSecurity     : '6.5.5',
         okhttp3            : '5.1.0',
@@ -145,7 +145,8 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
-
+  
+    testImplementation group: 'org.junit.jupiter', name:  'junit-jupiter-params', version: versions.jupiter
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
 
@@ -191,7 +192,7 @@ dependencyManagement {
             entry 'logback-core'
         }
 
-        dependencySet(group: 'org.junit.platform', version: '1.14.0') {
+        dependencySet(group: 'org.junit.platform', version: '6.0.0') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
         }
