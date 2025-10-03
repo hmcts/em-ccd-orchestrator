@@ -145,7 +145,8 @@ dependencies {
     testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     testImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
-
+  
+    testImplementation group: 'org.junit.jupiter', name:  'junit-jupiter-params', version: versions.junit
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.jupiter
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.jupiter
 
