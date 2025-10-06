@@ -72,3 +72,8 @@ folders:
         filters:
           - property: /documentLink/category_id
             value: TG
+  - name: Further Documents
+    documents:
+      - type: documentSet
+        property: /furtherCaseDocuments
+
