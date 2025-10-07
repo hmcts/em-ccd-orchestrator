@@ -8,6 +8,9 @@ hasFolderCoversheets: true
 pageNumberFormat: pageRange
 documentNameValue: /documentLink/document_filename
 paginationStyle: topRight
+sort:
+  field: /date
+  order: ascending
 folders:
   - name: Application Documents
     documents:
