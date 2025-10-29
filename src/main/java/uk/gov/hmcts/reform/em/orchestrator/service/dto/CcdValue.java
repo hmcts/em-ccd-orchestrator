@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CcdValue<T> implements Serializable {
+public class CcdValue<T extends Serializable> implements Serializable {
     private T value;
 
     public T getValue() {

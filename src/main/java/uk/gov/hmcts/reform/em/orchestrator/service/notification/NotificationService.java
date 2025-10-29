@@ -48,7 +48,9 @@ public class NotificationService {
                     createPersonalisation(caseId, bundleTitle, failureMessage),
                     "Email Notification: " + caseId);
 
-            log.info("Notification email sent for caseId: {}", StringUtilities.convertValidLog(caseId));
+            if (log.isInfoEnabled()) {
+                log.info("Notification email sent for caseId: {}", StringUtilities.convertValidLog(caseId));
+            }
 
         } catch (NotificationClientException e) {
             throw new CallbackException(500, null, String.format("NotificationClientException: %s", e.getMessage()));

@@ -2,13 +2,14 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the DocumentTask entity.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CallbackDto {
+public class CallbackDto implements Serializable {
 
     private Long id;
 
