@@ -297,9 +297,6 @@ sonarqube {
         property "sonar.test.exclusions", "**/test/**"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-        property "sonar.java.binaries", "${project.buildDir}/classes/java/main"
-        property "sonar.java.libraries", "${configurations.runtimeClasspath.asPath}"
-
         property "sonar.issue.ignore.multicriteria", "e1"
         property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S2629"
         property "sonar.issue.ignore.multicriteria.e1.resourceKey", "src/main/java/uk/gov/hmcts/reform/em/orchestrator/**"
