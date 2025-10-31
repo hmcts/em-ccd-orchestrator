@@ -34,9 +34,9 @@ public class ValidateYamlCommand {
             if (file.isFile()) {
                 try {
                     loader.load(file.getName());
-                    log.info(String.format("Validating %s succeeded", file.getName()));
+                    log.info("Validating {} succeeded", file.getName());
                 } catch (Exception e) {
-                    log.error(String.format("Validating %s failed", file.getName()),e.getCause());
+                    log.error("Validating {} failed", file.getName(), e.getCause());
                     numErrors++;
                 }
             }

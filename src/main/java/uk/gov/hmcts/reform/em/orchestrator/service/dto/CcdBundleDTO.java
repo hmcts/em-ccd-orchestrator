@@ -10,11 +10,12 @@ import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CcdBundleDTO {
+public class CcdBundleDTO implements Serializable {
 
     private String id;
     private String title;
@@ -32,6 +33,7 @@ public class CcdBundleDTO {
     private String fileNameIdentifier;
     private String coverpageTemplate;
     @JsonIgnore
+    @SuppressWarnings("java:S1948")
     private JsonNode coverpageTemplateData;
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;

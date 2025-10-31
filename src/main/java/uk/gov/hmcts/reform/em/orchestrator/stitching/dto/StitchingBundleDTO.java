@@ -7,12 +7,13 @@ import lombok.ToString;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundlePaginationStyle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
-public class StitchingBundleDTO {
+public class StitchingBundleDTO implements Serializable {
 
     private String bundleTitle;
     private String description;
@@ -23,6 +24,7 @@ public class StitchingBundleDTO {
     private String fileName;
     private String fileNameIdentifier;
     private String coverpageTemplate;
+    @SuppressWarnings("java:S1948")
     private JsonNode coverpageTemplateData;
     private boolean hasTableOfContents;
     private boolean hasCoversheets;

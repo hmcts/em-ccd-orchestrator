@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRendering;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.ImageRenderingLocation;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class DocumentImage {
+public class DocumentImage implements Serializable {
     private String docmosisAssetId;
     private ImageRenderingLocation imageRenderingLocation;
     private Integer coordinateX;

@@ -2,8 +2,10 @@ package uk.gov.hmcts.reform.em.orchestrator.stitching.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StitchingBundleDocumentDTO {
+public class StitchingBundleDocumentDTO implements Serializable {
 
     private String documentId;
     private String documentURI;
