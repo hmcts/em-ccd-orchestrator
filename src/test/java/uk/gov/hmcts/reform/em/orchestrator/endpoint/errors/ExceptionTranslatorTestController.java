@@ -31,10 +31,12 @@ public class ExceptionTranslatorTestController {
 
     @GetMapping("/test/missing-servlet-request-part")
     public void missingServletRequestPartException(@RequestPart String part) {
+        // for testing
     }
 
     @GetMapping("/test/missing-servlet-request-parameter")
     public void missingServletRequestParameterException(@RequestParam String param) {
+        // for testing
     }
 
 }

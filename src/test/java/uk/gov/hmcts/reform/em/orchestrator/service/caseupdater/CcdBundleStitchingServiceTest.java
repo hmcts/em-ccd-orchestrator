@@ -46,7 +46,7 @@ class CcdBundleStitchingServiceTest {
     private ValidatorFactory validatorFactory;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         openMocks = MockitoAnnotations.openMocks(this);
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -55,7 +55,7 @@ class CcdBundleStitchingServiceTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         openMocks.close();
         if (validatorFactory != null) {
             validatorFactory.close();

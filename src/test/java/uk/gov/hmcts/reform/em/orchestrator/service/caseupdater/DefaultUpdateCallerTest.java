@@ -55,7 +55,7 @@ class DefaultUpdateCallerTest {
     private ValidatorFactory validatorFactory;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         openMocks = MockitoAnnotations.openMocks(this);
         //Below is required to create validator object. As mocking of validator does not work.
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -65,7 +65,7 @@ class DefaultUpdateCallerTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         openMocks.close();
         if (validatorFactory != null) {
             validatorFactory.close();
