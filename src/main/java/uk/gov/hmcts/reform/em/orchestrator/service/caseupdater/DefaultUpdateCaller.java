@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,8 +78,8 @@ public class DefaultUpdateCaller {
         String ccdEvent = dto.getEventId();
         if (CollectionUtils.isNotEmpty(ccdCallbackResponseDto.getErrors())
                 && BooleanUtils.isTrue(dto.getEnableEmailNotification())
-                && !StringUtils.equals(ccdEvent, CLONE_BUNDLE_EVENT)
-                && !StringUtils.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
+                && !Strings.CS.equals(ccdEvent, CLONE_BUNDLE_EVENT)
+                && !Strings.CS.equals(ccdEvent, ASYNC_STITCHING_COMPLETE_EVENT)) {
             notificationService.sendEmailNotification(
                     failureTemplateId,
                     dto.getJwt(),
