@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class CcdTestDocument {
+public class CcdTestDocument implements Serializable {
 
     @JsonProperty("document_url")
     private String url;

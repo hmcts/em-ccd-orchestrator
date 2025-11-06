@@ -94,9 +94,12 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            log.info("Successful callback for caseId: {} and triggerId {}", StringUtilities.convertValidLog(caseId),
-                StringUtilities.convertValidLog(triggerId));
-
+            if (log.isInfoEnabled()) {
+                log.info("Successful callback for caseId: {} and triggerId {}",
+                        StringUtilities.convertValidLog(caseId),
+                        StringUtilities.convertValidLog(triggerId)
+                );
+            }
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                 && documentTaskDTO.getBundle().getEnableEmailNotification())
                 && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {

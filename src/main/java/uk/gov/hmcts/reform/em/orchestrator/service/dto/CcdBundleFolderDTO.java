@@ -3,14 +3,16 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CcdBundleFolderDTO {
+public class CcdBundleFolderDTO implements Serializable {
 
     private String name;
-    private ArrayList<CcdValue<CcdBundleDocumentDTO>> documents = new ArrayList<>();
-    private ArrayList<CcdValue<CcdBundleFolderDTO>> folders = new ArrayList<>();
+    private List<CcdValue<CcdBundleDocumentDTO>> documents = new ArrayList<>();
+    private List<CcdValue<CcdBundleFolderDTO>> folders = new ArrayList<>();
     private int sortIndex;
 
     public String getName() {
@@ -21,20 +23,20 @@ public class CcdBundleFolderDTO {
         this.name = name;
     }
 
-    public ArrayList<CcdValue<CcdBundleDocumentDTO>> getDocuments() {
+    public List<CcdValue<CcdBundleDocumentDTO>> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(ArrayList<CcdValue<CcdBundleDocumentDTO>> documents) {
+    public void setDocuments(List<CcdValue<CcdBundleDocumentDTO>> documents) {
         this.documents = documents;
     }
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public ArrayList<CcdValue<CcdBundleFolderDTO>> getFolders() {
+    public List<CcdValue<CcdBundleFolderDTO>> getFolders() {
         return folders;
     }
 
-    public void setFolders(ArrayList<CcdValue<CcdBundleFolderDTO>> folders) {
+    public void setFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
         this.folders = folders;
     }
 

@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.config;
 
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +12,6 @@ import uk.gov.service.notify.NotificationClient;
 @Configuration
 public class Config {
 
-    @Autowired
-    private OkHttpClient http;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
 
     @Value("${em-rpa-stitching-api.base-url}")
     private String stitchingBaseUrl;
@@ -32,7 +26,7 @@ public class Config {
     int maxRetryToPollStitching;
 
     @Bean
-    public StitchingService getStitchingService() {
+    public StitchingService getStitchingService(AuthTokenGenerator authTokenGenerator, OkHttpClient http) {
         return new StitchingService(
                 new StitchingDTOMapper(),
                 http,
