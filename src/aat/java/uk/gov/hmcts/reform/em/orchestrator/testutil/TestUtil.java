@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.http.Header;
@@ -11,7 +12,6 @@ import jakarta.annotation.PostConstruct;
 import net.serenitybdd.rest.SerenityRest;
 import org.awaitility.Awaitility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -40,6 +40,7 @@ import uk.gov.hmcts.reform.em.test.idam.IdamHelper;
 import uk.gov.hmcts.reform.em.test.s2s.S2sHelper;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,25 +58,25 @@ import static pl.touk.throwing.ThrowingFunction.unchecked;
 @Service
 public class TestUtil {
 
-    private final int retryCount = 6;
-    private final int sleepTime = 2000;
+    public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String FILE_NAME = "fileName";
+    public static final String APPLICATION_PDF = "application/pdf";
+    public static final String PDF_FILE_NAME = "annotationTemplate.pdf";
+    public static final String PUBLICLAW = "PUBLICLAW";
+    public static final String BUNDLE_DESCRIPTION = "Test bundle";
+    public static final String BUNDLE_TITLE = "Bundle title";
+    private static final int RETRY_COUNT = 6;
+    private static final int SLEEP_TIME = 2000;
+
     private String idamAuth;
     private String s2sAuth;
 
-    @Autowired
     private IdamHelper idamHelper;
-    @Autowired
     private S2sHelper s2sHelper;
-    @Autowired
     private DmHelper dmHelper;
-    @Autowired
     private CcdDataHelper ccdDataHelper;
-
-    @Autowired
     private CdamHelper cdamHelper;
-
-    @Autowired
-    @Qualifier("xuiS2sHelper")
     private S2sHelper cdamS2sHelper;
 
     @Value("${test.url}")
@@ -93,7 +94,7 @@ public class TestUtil {
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    public final String createCdamAutomatedBundlingCaseTemplate = """
+    public static final String CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE = """
         {
             "caseTitle": null,
             "caseOwner": null,
@@ -103,6 +104,22 @@ public class TestUtil {
             "caseDocuments": %s,
             "bundleConfiguration": "f-tests-1-flat-docs.yaml"
           }""";
+
+    @Autowired
+    public TestUtil(IdamHelper idamHelper,
+                    S2sHelper s2sHelper,
+                    DmHelper dmHelper,
+                    CcdDataHelper ccdDataHelper,
+                    CdamHelper cdamHelper,
+                    S2sHelper cdamS2sHelper
+    ) {
+        this.idamHelper = idamHelper;
+        this.s2sHelper = s2sHelper;
+        this.dmHelper = dmHelper;
+        this.ccdDataHelper = ccdDataHelper;
+        this.cdamHelper = cdamHelper;
+        this.cdamS2sHelper = cdamS2sHelper;
+    }
 
     @PostConstruct
     public void init() {
@@ -123,23 +140,23 @@ public class TestUtil {
                     ? url.replaceAll(getDmApiUrl(), getDmDocumentApiUrl())
                     : url;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
     public String uploadDocument() {
-        return uploadDocument("annotationTemplate.pdf", "application/pdf");
+        return uploadDocument(PDF_FILE_NAME, APPLICATION_PDF);
     }
 
     public RequestSpecification s2sAuthRequest() {
         return SerenityRest
                 .given()
-                .header("ServiceAuthorization", s2sAuth);
+                .header(SERVICE_AUTHORIZATION, s2sAuth);
     }
 
     public RequestSpecification authRequest() {
         return s2sAuthRequest()
-                .header("Authorization", idamAuth);
+                .header(AUTHORIZATION, idamAuth);
     }
 
     public RequestSpecification unauthenticatedRequest() {
@@ -149,8 +166,8 @@ public class TestUtil {
     public CcdBundleDTO getTestBundle() {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
         bundle.setEligibleForCloningAsBoolean(false);
 
@@ -158,7 +175,7 @@ public class TestUtil {
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
 
-        bundle.setFileName("fileName");
+        bundle.setFileName(FILE_NAME);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setStitchStatus("");
@@ -178,8 +195,8 @@ public class TestUtil {
 
     public CcdBundleDTO getTestBundleWithWordDoc() {
         CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
         List<CcdValue<CcdBundleDocumentDTO>> docs = new ArrayList<>();
         docs.add(getTestBundleDocument(uploadDocX("wordDocument2.docx")));
@@ -222,8 +239,8 @@ public class TestUtil {
         documentImage.setDocmosisAssetId("schmcts.png");
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setDocumentImage(documentImage);
@@ -238,7 +255,7 @@ public class TestUtil {
         docs.add(getTestBundleDocument(uploadDocument()));
         bundle.setDocuments(docs);
 
-        bundle.setFileName("fileName");
+        bundle.setFileName(FILE_NAME);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setStitchStatus("");
@@ -248,63 +265,61 @@ public class TestUtil {
 
     public RequestSpecification emptyIdamAuthRequest() {
         return s2sAuthRequest()
-                .header("Authorization", null);
+                .header(AUTHORIZATION, null);
     }
 
     public RequestSpecification emptyIdamAuthAndEmptyS2SAuth() {
         return SerenityRest
                 .given()
-                .header(new Header("ServiceAuthorization", null))
-                .header(new Header("Authorization", null));
+                .header(new Header(SERVICE_AUTHORIZATION, null))
+                .header(new Header(AUTHORIZATION, null));
     }
 
     public RequestSpecification validAuthRequestWithEmptyS2SAuth() {
-        return emptyS2sAuthRequest().header("Authorization", idamAuth);
+        return emptyS2sAuthRequest().header(AUTHORIZATION, idamAuth);
     }
 
     public RequestSpecification validS2SAuthWithEmptyIdamAuth() {
-        return s2sAuthRequest().header(new Header("Authorization", null));
+        return s2sAuthRequest().header(new Header(AUTHORIZATION, null));
     }
 
     private RequestSpecification emptyS2sAuthRequest() {
-        return SerenityRest.given().header("ServiceAuthorization", null);
+        return SerenityRest.given().header(SERVICE_AUTHORIZATION, null);
     }
 
     public RequestSpecification invalidIdamAuthrequest() {
-        return s2sAuthRequest().header("Authorization", "invalidIDAMAuthRequest");
+        return s2sAuthRequest().header(AUTHORIZATION, "invalidIDAMAuthRequest");
     }
 
     public RequestSpecification invalidS2SAuth() {
-        return invalidS2sAuthRequest().header("Authorization", idamAuth);
+        return invalidS2sAuthRequest().header(AUTHORIZATION, idamAuth);
     }
 
     private RequestSpecification invalidS2sAuthRequest() {
-        return SerenityRest.given().header("ServiceAuthorization", "invalidS2SAuthorization");
+        return SerenityRest.given().header(SERVICE_AUTHORIZATION, "invalidS2SAuthorization");
     }
-
-    //////////// CDAM //////////////////
 
     public RequestSpecification cdamAuthRequest() {
         return cdamS2sAuthRequest()
-            .header("Authorization", idamAuth);
+            .header(AUTHORIZATION, idamAuth);
     }
 
     public RequestSpecification cdamS2sAuthRequest() {
         return SerenityRest
             .given()
             .log().all()
-            .header("ServiceAuthorization", cdamS2sHelper.getS2sToken());
+            .header(SERVICE_AUTHORIZATION, cdamS2sHelper.getS2sToken());
     }
 
     public List<CcdValue<CcdBundleDocumentDTO>> uploadCdamBundleDocuments(
-                    List<Pair<String, String>> fileDetails, String userName) throws Exception {
+                    List<Pair<String, String>> fileDetails, String userName) throws JsonProcessingException {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
             .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
-            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
 
@@ -319,7 +334,8 @@ public class TestUtil {
     Uploads Documents through CDAM and attachs the response DocUrl & Hash against the case. And creates/submits the
     case.
      */
-    public List<String> createCaseAndUploadDocuments(UploadResponse uploadResponse, String userName) throws Exception {
+    public List<String> createCaseAndUploadDocuments(UploadResponse uploadResponse, String userName)
+            throws JsonProcessingException {
         List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
             .map(this::createTestBundleDocument)
             .toList();
@@ -346,31 +362,31 @@ public class TestUtil {
         return new CcdValue<>(ccdBundleDocumentDTO);
     }
 
-    public CaseDetails createBundleCase(String documents, String userName) throws Exception {
-        return ccdDataHelper.createCase(userName, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
-            objectMapper.readTree(String.format(createCdamAutomatedBundlingCaseTemplate, documents)));
+    public CaseDetails createBundleCase(String documents, String userName) throws JsonProcessingException {
+        return ccdDataHelper.createCase(userName, PUBLICLAW, getEnvCcdCaseTypeId(), "createCase",
+            objectMapper.readTree(String.format(CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents)));
     }
 
     public Document.Links uploadCdamDocument() {
-        List<MultipartFile> multipartFiles = Stream.of(Pair.of("annotationTemplate.pdf", "application/pdf"))
+        List<MultipartFile> multipartFiles = Stream.of(Pair.of(PDF_FILE_NAME, APPLICATION_PDF))
                 .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
                 .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
-            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
         return uploadResponse.getDocuments().get(0).links;
     }
 
-    public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws Exception {
+    public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws JsonProcessingException {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
             .toList();
 
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
-            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), "PUBLICLAW", multipartFiles);
+            Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
         UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
 
@@ -404,36 +420,36 @@ public class TestUtil {
         return ExtendedCcdHelper.CCD_BUNDLE_MVP_TYPE_ASYNC;
     }
 
-    public CcdBundleDTO getCdamTestBundle(String userName) throws Exception {
+    public CcdBundleDTO getCdamTestBundle(String userName) throws JsonProcessingException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
         bundle.setEligibleForCloningAsBoolean(false);
 
         List<Pair<String, String>> fileDetails = new ArrayList<>();
-        fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
-        fileDetails.add(Pair.of("hundred-page.pdf", "application/pdf"));
+        fileDetails.add(Pair.of(PDF_FILE_NAME, APPLICATION_PDF));
+        fileDetails.add(Pair.of("hundred-page.pdf", APPLICATION_PDF));
 
         List<CcdValue<CcdBundleDocumentDTO>> docs = uploadCdamBundleDocuments(fileDetails, userName);
         bundle.setDocuments(docs);
 
-        bundle.setFileName("fileName");
+        bundle.setFileName(FILE_NAME);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setStitchStatus("");
         return bundle;
     }
 
-    public CcdBundleDTO getCdamTestBundleWithWordDoc(String userName) throws Exception {
+    public CcdBundleDTO getCdamTestBundleWithWordDoc(String userName) throws JsonProcessingException {
         CcdBundleDTO bundle = new CcdBundleDTO();
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
 
         List<Pair<String, String>> fileDetails = new ArrayList<>();
-        fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
+        fileDetails.add(Pair.of(PDF_FILE_NAME, APPLICATION_PDF));
         fileDetails.add(Pair.of("wordDocument2.docx",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
 
@@ -443,7 +459,7 @@ public class TestUtil {
         return bundle;
     }
 
-    public CcdBundleDTO getCdamTestBundleWithImageRendered(String userName) throws Exception {
+    public CcdBundleDTO getCdamTestBundleWithImageRendered(String userName) throws JsonProcessingException {
         DocumentImage documentImage = new DocumentImage();
         documentImage.setImageRendering(ImageRendering.translucent);
         documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);
@@ -452,20 +468,20 @@ public class TestUtil {
         documentImage.setDocmosisAssetId("schmcts.png");
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
-        bundle.setTitle("Bundle title");
-        bundle.setDescription("Test bundle");
+        bundle.setTitle(BUNDLE_TITLE);
+        bundle.setDescription(BUNDLE_DESCRIPTION);
         bundle.setEligibleForStitchingAsBoolean(true);
         bundle.setEligibleForCloningAsBoolean(false);
         bundle.setDocumentImage(documentImage);
 
         List<Pair<String, String>> fileDetails = new ArrayList<>();
-        fileDetails.add(Pair.of("annotationTemplate.pdf", "application/pdf"));
-        fileDetails.add(Pair.of("hundred-page.pdf", "application/pdf"));
+        fileDetails.add(Pair.of(PDF_FILE_NAME, APPLICATION_PDF));
+        fileDetails.add(Pair.of("hundred-page.pdf", APPLICATION_PDF));
 
         List<CcdValue<CcdBundleDocumentDTO>> docs = uploadCdamBundleDocuments(fileDetails, userName);
         bundle.setDocuments(docs);
 
-        bundle.setFileName("fileName");
+        bundle.setFileName(FILE_NAME);
         bundle.setHasTableOfContents(CcdBoolean.Yes);
         bundle.setHasCoversheets(CcdBoolean.Yes);
         bundle.setStitchStatus("");
@@ -488,8 +504,8 @@ public class TestUtil {
         };
 
         try {
-            Awaitility.await().pollInterval(sleepTime, MILLISECONDS)
-                .atMost(retryCount * sleepTime, MILLISECONDS)
+            Awaitility.await().pollInterval(SLEEP_TIME, MILLISECONDS)
+                    .atMost(RETRY_COUNT * (long) SLEEP_TIME, MILLISECONDS)
                 .until(responseCallable, responsePredicate);
             return responseCallable.call().then();
         } catch (Exception e) {

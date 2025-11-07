@@ -1,7 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,6 +17,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 class SecureCcdPrehookScenariosTest extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case-cdam.json").getPath());
+
+    @Autowired
+    protected SecureCcdPrehookScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper) {
+        super(testUtil, extendedCcdHelper);
+    }
 
     @BeforeEach
     public void setUp() {
@@ -36,7 +47,7 @@ class SecureCcdPrehookScenariosTest extends BaseTest {
     }
 
     @Test
-    void testEndToEnd() throws Exception {
+    void testEndToEnd() throws JsonProcessingException {
         final HashMap<String, String> caseData =
                 testUtil
                         .cdamAuthRequest()
