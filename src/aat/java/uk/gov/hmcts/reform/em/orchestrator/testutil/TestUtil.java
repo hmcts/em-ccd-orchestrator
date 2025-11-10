@@ -12,6 +12,7 @@ import jakarta.annotation.PostConstruct;
 import net.serenitybdd.rest.SerenityRest;
 import org.awaitility.Awaitility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -110,7 +111,7 @@ public class TestUtil {
                     S2sHelper s2sHelper,
                     DmHelper dmHelper,
                     CcdDataHelper ccdDataHelper,
-                    CdamHelper cdamHelper,
+                    @Qualifier("xuiS2sHelper") CdamHelper cdamHelper,
                     S2sHelper cdamS2sHelper
     ) {
         this.idamHelper = idamHelper;
