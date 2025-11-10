@@ -17,17 +17,15 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FILE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_TITLE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS_0;
 
 class CcdStitchScenariosTest extends BaseTest {
 
     public static final String BUNDLE_TITLE = "Bundle title";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL =
-            "data.caseBundles[0].value.stitchedDocument.document_url";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_TITLE = "data.caseBundles[0].value.title";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FILE_NAME = "data.caseBundles[0].value.fileName";
-    public static final String CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S =
-            "{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }";
-    public static final String ERRORS_0 = "errors[0]";
 
     @Autowired
     protected CcdStitchScenariosTest(

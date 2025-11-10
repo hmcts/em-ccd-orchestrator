@@ -21,39 +21,31 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.CONFIGURATION_FILE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DEFENDANT_DOC_1;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DOCUMENT_TASK_ID;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH;
 
 class SecureAutomatedBundlingScenariosTest extends BaseTest {
 
-    public static final String CONFIGURATION_FILE = "configurationFile";
-    public static final String ERRORS = "errors";
     public static final String SINGLE_DOC_1 = "Single doc 1";
     public static final String EVIDENCE_DOC = "Evidence doc";
     public static final String PROSECUTION_DOC_2 = "Prosecution doc 2";
     public static final String PROSECUTION_DOC_1 = "Prosecution doc 1";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME =
-            "data.caseBundles[0].value.folders[0].value.documents[1].value.name";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME =
-            "data.caseBundles[0].value.folders[0].value.documents[0].value.name";
-    public static final String DEFENDANT_DOC_1 = "Defendant doc 1";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME =
-            "data.caseBundles[0].value.folders[0].value.documents[2].value.name";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME =
-            "data.caseBundles[0].value.folders[0].value.documents[3].value.name";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME =
-            "data.caseBundles[0].value.folders[1].value.documents[0].value.name";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS =
-            "data.caseBundles[0].value.folders[1].value.documents";
-    public static final String SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH =
-            "src/aat/resources/documents-case.json";
     public static final String BUNDLE_WITH_FILENAME = "Bundle with filename";
     public static final String BUNDLE_TITLE = "Functional tests bundle 3";
     public static final String BUNDLE_BUNDLE_TITLE = "bundle.bundleTitle";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS = "data.caseBundles[0].value.folders";
     public static final String BUNDLE_STITCHED_DOCUMENT_URI = "bundle.stitchedDocumentURI";
     public static final String NEW_BUNDLE = "New bundle";
-    public static final String DOCUMENT_TASK_ID = "documentTaskId";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS =
-            "data.caseBundles[0].value.folders[0].value.documents";
     public static final String REDACTED_BUNDLE = "Redacted Bundle";
 
     private JsonNode validJson;

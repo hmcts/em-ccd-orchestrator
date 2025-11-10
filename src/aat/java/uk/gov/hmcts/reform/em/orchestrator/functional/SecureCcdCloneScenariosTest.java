@@ -17,13 +17,11 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_TITLE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_TITLE;
 
 class SecureCcdCloneScenariosTest extends BaseTest {
-
-    public static final String DATA_CASE_BUNDLES_0_VALUE_TITLE = "data.caseBundles[0].value.title";
-    public static final String DATA_CASE_BUNDLES_1_VALUE_TITLE = "data.caseBundles[1].value.title";
-    public static final String DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING =
-            "data.caseBundles[1].value.eligibleForCloning";
 
     @Autowired
     protected SecureCcdCloneScenariosTest(

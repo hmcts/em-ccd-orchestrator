@@ -17,6 +17,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FILE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_TITLE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS_0;
 
 class SecureCcdStitchScenariosTest extends BaseTest {
 
@@ -25,13 +30,6 @@ class SecureCcdStitchScenariosTest extends BaseTest {
             + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
             + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
     public static final String BUNDLE_TITLE = "Bundle title";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_TITLE = "data.caseBundles[0].value.title";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL =
-            "data.caseBundles[0].value.stitchedDocument.document_url";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH =
-            "data.caseBundles[0].value.stitchedDocument.document_hash";
-    public static final String DATA_CASE_BUNDLES_0_VALUE_FILE_NAME = "data.caseBundles[0].value.fileName";
-    public static final String ERRORS_0 = "errors[0]";
 
     @Autowired
     protected SecureCcdStitchScenariosTest(

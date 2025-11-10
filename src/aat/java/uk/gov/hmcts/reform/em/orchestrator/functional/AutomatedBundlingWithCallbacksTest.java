@@ -16,11 +16,11 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.STITCH_STATUS;
 
 class AutomatedBundlingWithCallbacksTest extends BaseTest {
 
     private static final int WAIT_SECONDS = 60;
-    public static final String STITCH_STATUS = "stitchStatus";
 
     @Autowired
     protected AutomatedBundlingWithCallbacksTest(
