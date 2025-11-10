@@ -63,7 +63,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() throws IOException {
         assumeFalse(enableCdamValidation);
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
