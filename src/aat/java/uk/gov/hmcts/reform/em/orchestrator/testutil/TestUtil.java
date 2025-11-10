@@ -111,8 +111,8 @@ public class TestUtil {
                     S2sHelper s2sHelper,
                     DmHelper dmHelper,
                     CcdDataHelper ccdDataHelper,
-                    @Qualifier("xuiS2sHelper") CdamHelper cdamHelper,
-                    S2sHelper cdamS2sHelper
+                    CdamHelper cdamHelper,
+                    @Qualifier("xuiS2sHelper") S2sHelper cdamS2sHelper
     ) {
         this.idamHelper = idamHelper;
         this.s2sHelper = s2sHelper;
