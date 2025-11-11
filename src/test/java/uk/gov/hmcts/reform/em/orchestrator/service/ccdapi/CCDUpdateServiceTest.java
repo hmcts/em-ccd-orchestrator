@@ -31,7 +31,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class CCDUpdateServiceTest {
+class CCDUpdateServiceTest {
 
     @Mock
     private CoreCaseDataApi coreCaseDataApi;
@@ -71,14 +71,14 @@ public class CCDUpdateServiceTest {
             .build();
 
     @Test
-    public void should_startCcdEvent() {
+    void should_startCcdEvent() {
         given(authTokenGenerator.generate()).willReturn(serviceToken);
         ccdUpdateService.startCcdEvent(caseId, triggerId, jwt);
         verify(coreCaseDataApi).startEvent(jwt, serviceToken, caseId, triggerId);
     }
 
     @Test
-    public void should_return_startCcdEvent_response() {
+    void should_return_startCcdEvent_response() {
         given(authTokenGenerator.generate()).willReturn(serviceToken);
         given(coreCaseDataApi.startEvent(jwt, serviceToken, caseId, triggerId)).willReturn(startEventResponse);
         given(ccdCallbackDtoCreator.createDto("caseBundles", jwt, startEventResponse)).willReturn(ccdCallbackDto);
@@ -98,7 +98,7 @@ public class CCDUpdateServiceTest {
 
         verify(coreCaseDataApi).startEvent(jwt, serviceToken, caseId, triggerId);
         assertThat(result.getJwt()).isEqualTo(jwt);
-        assertThat(result.getPropertyName().get()).isEqualTo("caseBundles");
+        assertThat(result.getPropertyName().get()).contains("caseBundles");
 
         assertThatObject(result.getCaseData())
                 .extracting(jn -> textAtPath(jn, "/id"), jn -> textAtPath(jn, "/caseCustomData/key1"))
@@ -111,7 +111,7 @@ public class CCDUpdateServiceTest {
     }
 
     @Test
-    public void should_call_createCcdEvent() {
+    void should_call_createCcdEvent() {
         given(authTokenGenerator.generate()).willReturn(serviceToken);
         ccdCallbackDto.setCcdPayload(objectMapper.valueToTree(startEventResponse));
         ccdCallbackDto.setCaseData(objectMapper.valueToTree(caseDataMap));

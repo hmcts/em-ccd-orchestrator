@@ -33,7 +33,7 @@ class AsyncCcdBundleStitchingServiceTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

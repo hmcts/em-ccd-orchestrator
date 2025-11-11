@@ -35,7 +35,7 @@ class AutomatedCaseUpdaterTest {
     );
 
     @BeforeEach
-    public void setup() {
+    void setup() {
 
         updater = new AutomatedCaseUpdater(
             new LocalConfigurationLoader(
