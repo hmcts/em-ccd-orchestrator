@@ -3,8 +3,11 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
 
@@ -16,6 +19,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class OpenIdConnectScenariosTest extends BaseTest {
 
     public static final String API_STITCH_CCD_BUNDLES = "/api/stitch-ccd-bundles";
+
+    @Autowired
+    protected OpenIdConnectScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
 
 
     @Test
@@ -35,7 +46,7 @@ public class OpenIdConnectScenariosTest extends BaseTest {
     }
 
     @Test
-    void testCdamValidAuthenticationAndAuthorisation() throws Exception {
+    void testCdamValidAuthenticationAndAuthorisation() throws IOException {
         assumeTrue(enableCdamValidation);
         String wrappedJson = cdamBundleJsonPayload();
 
@@ -116,7 +127,7 @@ public class OpenIdConnectScenariosTest extends BaseTest {
         return String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
     }
 
-    private String cdamBundleJsonPayload() throws Exception {
+    private String cdamBundleJsonPayload() throws JsonProcessingException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String caseDetails = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);

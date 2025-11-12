@@ -6,7 +6,9 @@ import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
@@ -19,24 +21,56 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.CONFIGURATION_FILE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DEFENDANT_DOC_1;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DOCUMENT_TASK_ID;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH;
 
 class SecureAutomatedBundlingScenariosTest extends BaseTest {
 
-    private static JsonNode validJson;
-    private static JsonNode invalidJson;
-    private static JsonNode missingPropertiesJson;
-    private static JsonNode filenameJson;
-    private static JsonNode invalidConfigJson;
-    private static JsonNode customDocumentsJson;
-    private static JsonNode nonCustomDocumentsJson;
-    private static JsonNode multiBundleDocumentsJson;
+    public static final String SINGLE_DOC_1 = "Single doc 1";
+    public static final String EVIDENCE_DOC = "Evidence doc";
+    public static final String PROSECUTION_DOC_2 = "Prosecution doc 2";
+    public static final String PROSECUTION_DOC_1 = "Prosecution doc 1";
+    public static final String BUNDLE_WITH_FILENAME = "Bundle with filename";
+    public static final String BUNDLE_TITLE = "Functional tests bundle 3";
+    public static final String BUNDLE_BUNDLE_TITLE = "bundle.bundleTitle";
+    public static final String BUNDLE_STITCHED_DOCUMENT_URI = "bundle.stitchedDocumentURI";
+    public static final String NEW_BUNDLE = "New bundle";
+    public static final String REDACTED_BUNDLE = "Redacted Bundle";
+
+    private JsonNode validJson;
+    private JsonNode invalidJson;
+    private JsonNode missingPropertiesJson;
+    private JsonNode filenameJson;
+    private JsonNode invalidConfigJson;
+    private JsonNode customDocumentsJson;
+    private JsonNode nonCustomDocumentsJson;
+    private JsonNode multiBundleDocumentsJson;
 
 
     private RequestSpecification request;
     private RequestSpecification unAuthenticatedRequest;
 
+    @Autowired
+    protected SecureAutomatedBundlingScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
+
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() throws IOException {
         assumeTrue(enableCdamValidation);
         validJson = extendedCcdHelper.loadCaseFromFile("automated-case.json");
         invalidJson = extendedCcdHelper.loadCaseFromFile("invalid-automated-case.json");
@@ -56,7 +90,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("New bundle"))
+                .body("data.caseBundles[0].value.title", equalTo(NEW_BUNDLE))
                 .body("data.caseBundles[0].value.folders[0].value.name", equalTo("Folder 1"))
                 .body("data.caseBundles[0].value.folders[0].value.folders[0].value.name",
                     equalTo("Folder 1.a"))
@@ -65,13 +99,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .body("data.caseBundles[0].value.folders[1].value.name", equalTo("Folder 2"))
                 .body("data.caseBundles[0].value.fileName", equalTo("stitched.pdf"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(NEW_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -80,7 +114,7 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors", containsInAnyOrder("caseTypeId or case_type_id is required attribute",
+                .body(ERRORS, containsInAnyOrder("caseTypeId or case_type_id is required attribute",
                         "jurisdictionId or jurisdiction is required attribute"));
 
     }
@@ -118,16 +152,16 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle with filename"))
+                .body("data.caseBundles[0].value.title", equalTo(BUNDLE_WITH_FILENAME))
                 .body("data.caseBundles[0].value.fileName", equalTo("bundle.pdf"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Bundle with filename"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(BUNDLE_WITH_FILENAME))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -142,13 +176,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .body("data.caseBundles[0].value.hasTableOfContents", equalTo("Yes"))
                 .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("No"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(NEW_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -162,15 +196,15 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .body("data.caseBundles[0].value.hasTableOfContents", equalTo("No"))
                 .body("data.caseBundles[0].value.hasFolderCoversheets", equalTo("Yes"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat()
                 .log()
                 .all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Bundle with filename"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(BUNDLE_WITH_FILENAME))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -184,22 +218,22 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .body("data.caseBundles[0].value.folders[0].value.folders[0].value.folders", nullValue())
                 .body("data.caseBundles[0].value.folders[0].value.folders[0].value.documents", notNullValue());
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat()
                 .log()
                 .all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(NEW_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testAddFlatDocuments() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+    void testAddFlatDocuments() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
         json = json
-                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-1-flat-docs.yaml");
+                .replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-1-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -210,26 +244,26 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.documents[2].value.name", equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.documents[3].value.name", equalTo("Defendant doc 1"));
+                .body("data.caseBundles[0].value.documents[0].value.name", equalTo(PROSECUTION_DOC_1))
+                .body("data.caseBundles[0].value.documents[1].value.name", equalTo(PROSECUTION_DOC_2))
+                .body("data.caseBundles[0].value.documents[2].value.name", equalTo(EVIDENCE_DOC))
+                .body("data.caseBundles[0].value.documents[3].value.name", equalTo(DEFENDANT_DOC_1));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional tests bundle 1"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
 
     }
 
     @Test
-    void testAddFlatFilteredDocuments() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+    void testAddFlatFilteredDocuments() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
         json = json
-                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
+                .replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-2-filter-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -239,25 +273,25 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.documents", hasSize(2))
-                .body("data.caseBundles[0].value.documents[0].value.name", equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.documents[1].value.name", equalTo("Prosecution doc 2"));
+                .body("data.caseBundles[0].value.documents[0].value.name", equalTo(PROSECUTION_DOC_1))
+                .body("data.caseBundles[0].value.documents[1].value.name", equalTo(PROSECUTION_DOC_2));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat()
                 .log()
                 .all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 2"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional tests bundle 2"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testAddFolderedDocuments() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+    void testAddFolderedDocuments() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
         json = json
-                .replaceAll("configurationFile", "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
+                .replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-3-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -266,35 +300,35 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
-                    equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
-                    equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
-                    equalTo("Defendant doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
-                    equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
-                    equalTo("Single doc 1"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(4))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
+                    equalTo(DEFENDANT_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME,
+                    equalTo(EVIDENCE_DOC))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS, hasSize(1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(SINGLE_DOC_1));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat()
                 .log()
                 .all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testAddFilteredFolderedDocuments() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile",
+    void testAddFilteredFolderedDocuments() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE,
                 "testbundleconfiguration/f-tests-4-filtered-foldered-docs.yaml");
         json = findDocumentUrl(json);
 
@@ -304,32 +338,32 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
-                    equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
-                    equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
-                    equalTo("Single doc 1"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS, hasSize(1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(SINGLE_DOC_1));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat()
                 .log()
                 .all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 4"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional tests bundle 4"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
     void testTypoInConfigurationFile() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-6-has-typo.yaml");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-6-has-typo.yaml");
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -339,14 +373,14 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .log()
                 .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: "
+                .body(ERRORS, contains("Invalid configuration file entry in: "
                         + "testbundleconfiguration/f-tests-6-has-typo.yaml; "
                         + "Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
     void testDefaultFallBackConfigurationFile() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -356,15 +390,15 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .log()
                 .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: configurationFile;"
+                .body(ERRORS, contains("Invalid configuration file entry in: configurationFile;"
                         + " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
-    void testDocumentNotPresent() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
+    void testDocumentNotPresent() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
         json = json
-                .replaceAll("configurationFile",
+                .replace(CONFIGURATION_FILE,
                         "testbundleconfiguration/f-tests-12-invalid-document-property.yaml");
         json = findDocumentUrl(json);
 
@@ -374,21 +408,21 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(2));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(2));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 1"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional tests bundle 1"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
     void testDocumentPropertyIsAnArray() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-7-not-a-single-doc.yaml");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-7-not-a-single-doc.yaml");
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -396,13 +430,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Element is an array: /caseDocuments"));
+                .body(ERRORS, contains("Element is an array: /caseDocuments"));
     }
 
     @Test
     void testDocumentSetPropertyIsNotAnArray() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-8-not-an-array.yaml");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-8-not-an-array.yaml");
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -410,14 +444,14 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Element is not an array: /singleDocument"));
+                .body(ERRORS, contains("Element is not an array: /singleDocument"));
     }
 
     @Test
     void testDocumentStructureCorrupted() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("document_url", "incorrect_property_name");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-5-invalid-url.yaml");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace("document_url", "incorrect_property_name");
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-5-invalid-url.yaml");
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -425,13 +459,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body("errors", contains("Could not find the property /documentLink/document_url in the node: "));
+                .body(ERRORS, contains("Could not find the property /documentLink/document_url in the node: "));
     }
 
     @Test
     void testConfigurationFileDoesNotExist() throws IOException {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "nonexistent.yaml");
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "nonexistent.yaml");
 
         String cdamJson = testUtil.addCdamProperties(json);
         final ValidatableResponse response = postNewBundle(cdamJson);
@@ -441,14 +475,14 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .log()
                 .all()
                 .statusCode(400)
-                .body("errors", contains("Invalid configuration file entry in: nonexistent.yaml;"
+                .body(ERRORS, contains("Invalid configuration file entry in: nonexistent.yaml;"
                         + " Configuration file parameter(s) and/or parameter value(s)"));
     }
 
     @Test
-    void testMultipleFilters() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-9-multiple-filters.yaml");
+    void testMultipleFilters() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-9-multiple-filters.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -457,28 +491,28 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders", hasSize(1))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
-                    equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
-                    equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
-                    equalTo("Evidence doc"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS, hasSize(1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(3))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
+                    equalTo(EVIDENCE_DOC));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional Test 11"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional Test 11"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testSortDocumentsAscending() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-10-sorting.yaml");
+    void testSortDocumentsAscending() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-10-sorting.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -487,33 +521,33 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
-                    equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
-                    equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
-                    equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
-                    equalTo("Defendant doc 1"))
-                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
-                    equalTo("Single doc 1"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(4))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
+                    equalTo(EVIDENCE_DOC))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME,
+                    equalTo(DEFENDANT_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS, hasSize(1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(SINGLE_DOC_1));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testSortDocumentsDescending() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-11-sorting.yaml");
+    void testSortDocumentsDescending() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-11-sorting.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -522,27 +556,27 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders", hasSize(2))
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
-                    equalTo("Defendant doc 1"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
-                    equalTo("Evidence doc"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
-                    equalTo("Prosecution doc 2"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
-                    equalTo("Prosecution doc 1"))
-                .body("data.caseBundles[0].value.folders[1].value.documents", hasSize(1))
-                .body("data.caseBundles[0].value.folders[1].value.documents[0].value.name",
-                    equalTo("Single doc 1"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS, hasSize(2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(4))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(DEFENDANT_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
+                    equalTo(EVIDENCE_DOC))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_2))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME,
+                    equalTo(PROSECUTION_DOC_1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS, hasSize(1))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_1_VALUE_DOCUMENTS_0_VALUE_NAME,
+                    equalTo(SINGLE_DOC_1));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional tests bundle 3"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -555,19 +589,19 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles[0].value.enableEmailNotification", nullValue());
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("New bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(NEW_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
-    void testRenderImageInStitchedDocument() throws Exception {
-        String json = TestUtil.readFile("src/aat/resources/documents-case.json");
-        json = json.replaceAll("configurationFile", "testbundleconfiguration/f-tests-13-render-image-flat-docs.yaml");
+    void testRenderImageInStitchedDocument() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-13-render-image-flat-docs.yaml");
         json = findDocumentUrl(json);
 
         String cdamJson = testUtil.addCdamProperties(json);
@@ -584,13 +618,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
                 .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Functional test For Image Rendering"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional test For Image Rendering"))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -604,23 +638,23 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(4))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(4))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
                     equalTo("Non Redacted Doc1.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
                     equalTo("Redacted Doc2.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
                     equalTo("Redacted Doc3.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[3].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_3_VALUE_NAME,
                     equalTo("AT38.png"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(REDACTED_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -634,21 +668,21 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.folders[0].value.documents", hasSize(3))
-                .body("data.caseBundles[0].value.folders[0].value.documents[0].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS, hasSize(3))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_0_VALUE_NAME,
                     equalTo("Non Redacted Doc1.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[1].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_1_VALUE_NAME,
                     equalTo("DWP response.pdf"))
-                .body("data.caseBundles[0].value.folders[0].value.documents[2].value.name",
+                .body(DATA_CASE_BUNDLES_0_VALUE_FOLDERS_0_VALUE_DOCUMENTS_2_VALUE_NAME,
                     equalTo("DWP evidence.pdf"));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(REDACTED_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -664,13 +698,13 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
                 .statusCode(200)
                 .body("data.caseBundles", hasSize(2));
 
-        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
         pollResponse
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Redacted Bundle"))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+                .body(BUNDLE_BUNDLE_TITLE, equalTo(REDACTED_BUNDLE))
+                .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
     }
 
     @Test
@@ -706,11 +740,11 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
     private String findDocumentUrl(String json) {
         Document.Links links = testUtil.uploadCdamDocument();
 
-        json = json.replaceAll(
+        json = json.replace(
                 "\"document_url\":\"documentUrl\"",
                 String.format("\"document_url\":\"%s\"", links.self.href)
         );
-        json = json.replaceAll(
+        json = json.replace(
                 "\"document_binary_url\":\"documentUrl",
                 String.format("\"document_binary_url\":\"%s", links.binary.href)
         );

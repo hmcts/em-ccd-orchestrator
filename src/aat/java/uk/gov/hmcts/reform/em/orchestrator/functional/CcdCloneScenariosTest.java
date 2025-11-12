@@ -3,8 +3,11 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +16,19 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_TITLE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_TITLE;
 
 class CcdCloneScenariosTest extends BaseTest {
+
+    @Autowired
+    protected CcdCloneScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
 
     @BeforeEach
     public void setUp() {
@@ -35,10 +49,10 @@ class CcdCloneScenariosTest extends BaseTest {
         response
                 .assertThat()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle title"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo("CLONED_Bundle title"))
                 .body("data.caseBundles[0].value.eligibleForCloning", equalTo("no"))
-                .body("data.caseBundles[1].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"));
+                .body(DATA_CASE_BUNDLES_1_VALUE_TITLE, equalTo("Bundle title"))
+                .body(DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING, equalTo("no"));
     }
 
     @Test
@@ -56,10 +70,10 @@ class CcdCloneScenariosTest extends BaseTest {
         response
                 .assertThat()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle title"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo("CLONED_Bundle title"))
                 .body("data.caseBundles[0].value.eligibleForCloning", equalTo("no"))
-                .body("data.caseBundles[1].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"));
+                .body(DATA_CASE_BUNDLES_1_VALUE_TITLE, equalTo("Bundle title"))
+                .body(DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING, equalTo("no"));
     }
 
     @Test
@@ -84,10 +98,10 @@ class CcdCloneScenariosTest extends BaseTest {
         response
                 .assertThat()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("CLONED_Bundle 2"))
-                .body("data.caseBundles[1].value.title", equalTo("Bundle 2"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo("CLONED_Bundle 2"))
+                .body(DATA_CASE_BUNDLES_1_VALUE_TITLE, equalTo("Bundle 2"))
                 .body("data.caseBundles[2].value.title", equalTo("Bundle 1"))
-                .body("data.caseBundles[1].value.eligibleForCloning", equalTo("no"))
+                .body(DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING, equalTo("no"))
                 .body("data.caseBundles[0].value.fileName", equalTo("CLONED_FilenameBundle2"));
     }
 

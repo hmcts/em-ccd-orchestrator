@@ -22,11 +22,9 @@ import uk.gov.hmcts.reform.em.test.retry.RetryExtension;
 @WithTags({@WithTag("testType:Functional")})
 public abstract class BaseTest {
 
-    @Autowired
-    protected TestUtil testUtil;
+    protected final TestUtil testUtil;
 
-    @Autowired
-    protected ExtendedCcdHelper extendedCcdHelper;
+    protected final ExtendedCcdHelper extendedCcdHelper;
 
     @RegisterExtension
     RetryExtension retryExtension = new RetryExtension(3);
@@ -36,4 +34,9 @@ public abstract class BaseTest {
     @Value("${cdam.validation.enabled}")
     protected boolean enableCdamValidation;
 
+    @Autowired
+    protected BaseTest(TestUtil testUtil, ExtendedCcdHelper extendedCcdHelper) {
+        this.testUtil = testUtil;
+        this.extendedCcdHelper = extendedCcdHelper;
+    }
 }

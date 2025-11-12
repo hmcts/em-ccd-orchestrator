@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class CcdTestBundleDocumentDTO implements Serializable {
 
     private String documentName;
+    @SuppressWarnings("java:S1948")
     private CcdTestDocument documentLink;
 
 }

@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +17,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 class CcdPrehookScenariosTest extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case.json").getPath());
+
+    @Autowired
+    protected CcdPrehookScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
 
     @BeforeEach
     public void setUp() {

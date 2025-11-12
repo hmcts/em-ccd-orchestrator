@@ -4,6 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
+
+import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -12,14 +17,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 class StitchingCompleteScenariosTest extends BaseTest {
     JsonNode jsonNode;
 
+    @Autowired
+    protected StitchingCompleteScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
+
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() throws IOException {
         assumeFalse(enableCdamValidation);
         jsonNode = extendedCcdHelper.loadCaseFromFile("automated-case.json");
     }
 
     @Test
-    void testPostBundleStitchRequestMissing() throws Exception {
+    void testPostBundleStitchRequestMissing() throws IOException {
         String uploadedUrl = testUtil.uploadDocument();
         String documentString = extendedCcdHelper.getCcdDocumentJson("my doc text", uploadedUrl, "mydoc.txt");
         String caseId = extendedCcdHelper.createCase(documentString).getId().toString();

@@ -3,22 +3,41 @@ package uk.gov.hmcts.reform.em.orchestrator.functional;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBoolean;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
+import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
+
+import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_FILE_NAME;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_0_VALUE_TITLE;
+import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS_0;
 
 class SecureCcdStitchScenariosTest extends BaseTest {
 
     // This has the caseTypeId, jurisdictionId populated by default(Hard coded) as these are required fields for CDAM.
-    private static final String SYNC_CASE_JSON =  "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
-        + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
-        + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
+    private static final String SYNC_CASE_JSON = "{ \"caseTypeId\":\"CCD_BUNDLE_MVP_TYPE\", "
+            + "\"jurisdictionId\":\"BENEFIT\",\"case_details\":{ "
+            + "\"case_data\":{ \"caseBundles\":[%s ] } } }";
+    public static final String BUNDLE_TITLE = "Bundle title";
+
+    @Autowired
+    protected SecureCcdStitchScenariosTest(
+            TestUtil testUtil,
+            ExtendedCcdHelper extendedCcdHelper
+    ) {
+        super(testUtil, extendedCcdHelper);
+    }
 
     @BeforeEach
     public void setUp() {
@@ -26,7 +45,7 @@ class SecureCcdStitchScenariosTest extends BaseTest {
     }
 
     @Test
-    void testPostBundleStitch() throws Exception {
+    void testPostBundleStitch() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format(SYNC_CASE_JSON, json);
@@ -36,13 +55,13 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue())
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH, notNullValue());
     }
 
     @Test
-    void testPostBundleStitchWithCaseId() throws Exception {
+    void testPostBundleStitchWithCaseId() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String caseJson = String.format(SYNC_CASE_JSON.substring(1), json);
@@ -53,13 +72,13 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue())
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH, notNullValue());
     }
 
     @Test
-    void testPostBundleStitchWithWordDoc() throws Exception {
+    void testPostBundleStitchWithWordDoc() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format(SYNC_CASE_JSON, json);
@@ -69,13 +88,13 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue())
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH, notNullValue());
     }
 
     @Test
-    void testSpecificFilename() throws Exception {
+    void testSpecificFilename() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName("my-file-name.pdf");
 
@@ -87,14 +106,14 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.fileName", equalTo("my-file-name.pdf"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("my-file-name.pdf"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue())
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH, notNullValue());
     }
 
     @Test
-    void testFilenameWithoutExtension() throws Exception {
+    void testFilenameWithoutExtension() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName("doc-file-name");
 
@@ -107,11 +126,11 @@ class SecureCcdStitchScenariosTest extends BaseTest {
                 .assertThat().log().all()
                 .statusCode(200)
                 .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("doc-file-name.pdf"))
-                .body("data.caseBundles[0].value.fileName", equalTo("doc-file-name"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("doc-file-name"));
     }
 
     @Test
-    void testPostBundleStitchFileNameOneChar() throws Exception {
+    void testPostBundleStitchFileNameOneChar() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName("a");
 
@@ -123,11 +142,11 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
-    void testPostBundleStitchFileName51Char() throws Exception {
+    void testPostBundleStitchFileName51Char() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName(Constants.FILE_NAME_WITH_51_CHARS_LENGTH);
 
@@ -139,11 +158,11 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
-    void testNoFileNameButBundleTitleOnly() throws Exception {
+    void testNoFileNameButBundleTitleOnly() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithWordDoc(extendedCcdHelper.getBundleTesterUser());
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
@@ -154,12 +173,12 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
                 .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("Bundle title.pdf"));
     }
 
     @Test
-    void testFilenameErrors() throws Exception {
+    void testFilenameErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName("1234567890123456789012345678901%.pdf");
 
@@ -171,13 +190,13 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
-                .body("data.caseBundles[0].value.fileName", equalTo("1234567890123456789012345678901%.pdf"))
-                .body("errors[0]", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("1234567890123456789012345678901%.pdf"))
+                .body(ERRORS_0, notNullValue());
     }
 
     @Test
-    void testLongBundleDescriptionErrors() throws Exception {
+    void testLongBundleDescriptionErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
 
         bundle.setDescription("y".repeat(300));
@@ -188,11 +207,11 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", notNullValue());
+                .body(ERRORS_0, notNullValue());
     }
 
     @Test
-    void testWithoutCoversheets() throws Exception {
+    void testWithoutCoversheets() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setHasCoversheets(CcdBoolean.No);
 
@@ -204,14 +223,14 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"))
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
                 .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
-                .body("data.caseBundles[0].value.stitchedDocument.document_url", notNullValue())
-                .body("data.caseBundles[0].value.stitchedDocument.document_hash", notNullValue());
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue())
+                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_HASH, notNullValue());
     }
 
     @Test
-    void testWithImageRendering() throws Exception {
+    void testWithImageRendering() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundleWithImageRendered(extendedCcdHelper.getBundleTesterUser());
         bundle.setHasCoversheets(CcdBoolean.No);
 
@@ -231,7 +250,7 @@ class SecureCcdStitchScenariosTest extends BaseTest {
     }
 
     @Test
-    void testPostBundleStitchAsync() throws Exception {
+    void testPostBundleStitchAsync() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format(SYNC_CASE_JSON, json);
@@ -241,19 +260,19 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("data.caseBundles[0].value.title", equalTo("Bundle title"));
+                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE));
 
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         response = testUtil.poll(documentTaskId);
         response
                 .assertThat().log().all()
                 .statusCode(200)
-                .body("bundle.bundleTitle", equalTo("Bundle title"))
+                .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
                 .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
-    void testPostAsyncBundleStitchFileNameOneChar() throws Exception {
+    void testPostAsyncBundleStitchFileNameOneChar() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setFileName("a");
 
@@ -265,11 +284,11 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
-    void testPostAsyncLongBundleDescriptionErrors() throws Exception {
+    void testPostAsyncLongBundleDescriptionErrors() throws IOException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
 
         bundle.setDescription("y".repeat(300));
@@ -280,7 +299,7 @@ class SecureCcdStitchScenariosTest extends BaseTest {
         response
                 .assertThat().log().all()
                 .statusCode(400)
-                .body("errors[0]", notNullValue());
+                .body(ERRORS_0, notNullValue());
     }
 
     private ValidatableResponse postStitchCCDBundle(String wrappedJson) {
