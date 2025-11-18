@@ -40,7 +40,7 @@ def versions = [
         mockito            : '5.20.0',
         jupiter            : '6.0.1',
         poi                : '5.5.0',
-        springSecurity     : '6.5.6',
+        springSecurity     : '6.5.7',
         okhttp3            : '5.3.1',
         fasterXmlJackson   : '2.20.1'
 ]
