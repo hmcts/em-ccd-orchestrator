@@ -136,6 +136,7 @@ dependencies {
     }
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', withoutStuff
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc-test', withoutStuff
     testImplementation group: 'com.github.gmazzo', name:'okhttp-mock', version:'2.1.0'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: versions.mockito
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
