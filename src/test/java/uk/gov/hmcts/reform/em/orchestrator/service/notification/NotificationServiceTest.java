@@ -1,192 +1,137 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import uk.gov.hmcts.reform.em.orchestrator.config.HttpClientConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {NotificationService.class, HttpClientConfiguration.class})
-@TestPropertySource("classpath:application.yaml")
+@ExtendWith(MockitoExtension.class)
 class NotificationServiceTest {
 
-    @MockitoBean
+    @Mock
     private NotificationClient notificationClient;
 
     private NotificationService notificationService;
 
-    private AutoCloseable openMocks;
+    @Captor
+    private ArgumentCaptor<Map<String, String>> personalizationCaptor;
 
-    @BeforeEach
-    void setUp() {
-        openMocks = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        openMocks.close();
-    }
+    private static final String IDAM_BASE_URL = "http://localhost:4501";
+    private static final String JWT = "Bearer test-token";
+    private static final String TEMPLATE_ID = "template-id-123";
+    private static final String CASE_ID = "case-123";
+    private static final String BUNDLE_TITLE = "My Bundle";
+    private static final String FAILURE_MSG = "Something went wrong";
+    private static final String EMAIL = "email@email.com";
 
     @Test
-    void sendEmailNotificationSuccessful() throws NotificationClientException {
-        List<String> responses = new ArrayList<>();
-        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
-        OkHttpClient http = getMockHttpSuccess(responses);
+    void sendEmailNotificationSuccessful() throws Exception {
+        String successBody = "{ \"id\": 1, \"email\": \"" + EMAIL
+            + "\", \"forename\": \"test\", \"surname\": \"user\" }";
 
-        setUpNotificationClient(http);
+        setUpServiceWithResponse(200, successBody);
 
-        notificationService.sendEmailNotification(
-            "string",
-            "string",
-            "string",
-            "string",
-            "string"
+        notificationService.sendEmailNotification(TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, FAILURE_MSG);
+
+        verify(notificationClient).sendEmail(
+            eq(TEMPLATE_ID),
+            eq(EMAIL),
+            personalizationCaptor.capture(),
+            eq("Email Notification: " + CASE_ID)
         );
-        verify(notificationClient, times(1))
-            .sendEmail(
-                "string",
-                "email@email.com",
-                getPersonalisation(),
-                "Email Notification: string");
+
+        Map<String, String> p = personalizationCaptor.getValue();
+        assertEquals(CASE_ID, p.get("case_reference"));
+        assertEquals(BUNDLE_TITLE, p.get("bundle_name"));
+        assertEquals(FAILURE_MSG, p.get("system_error_message"));
     }
 
     @Test
-    void sendEmailNotificationFailure() throws NotificationClientException {
-        List<String> responses = new ArrayList<>();
-        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
-        OkHttpClient http = getMockHttpSuccess(responses);
+    void sendEmailNotificationIdamFailure() {
+        setUpServiceWithResponse(500, "Internal Server Error");
 
-        setUpNotificationClient(http);
+        CallbackException ex = assertThrows(CallbackException.class, () ->
+            notificationService.sendEmailNotification(TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, FAILURE_MSG)
+        );
 
-        when(notificationClient.sendEmail(
-            "string",
-            "email@email.com",
-            getPersonalisation(),
-            "Email Notification: string"
-        )).thenThrow(NotificationClientException.class);
-
-        CallbackException exception = assertThrows(CallbackException.class, () ->
-            notificationService.sendEmailNotification(
-            "string",
-            "string",
-            "string",
-            "string",
-            "string"
-        ));
-        assertTrue(exception.getMessage().contains("NotificationClientException"));
+        assertEquals(500, ex.getHttpStatus());
+        assertEquals("Unable to retrieve user details", ex.getMessage());
     }
 
     @Test
-    void getUserDetailsFailure() {
-        List<String> responses = new ArrayList<>();
-        responses.add("{ \"id\": 1, \"email\": \"email@email.com\", \"forename\": \"test\", \"surname\": \"user\" }");
-        OkHttpClient http = getMockHttpFailures(responses);
+    void sendEmailNotificationNetworkIOException() {
+        setUpServiceWithNetworkFailure();
 
-        setUpNotificationClient(http);
+        CallbackException ex = assertThrows(CallbackException.class, () ->
+            notificationService.sendEmailNotification(TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, FAILURE_MSG)
+        );
 
-        assertThrows(CallbackException.class, () -> notificationService.sendEmailNotification(
-            "string",
-            "string",
-            "string",
-            "string",
-            "string"
-        ));
+        assertEquals(500, ex.getHttpStatus());
+        assertTrue(ex.getMessage().contains("IOException"));
     }
 
     @Test
-    void getUserDetailsIOException() {
-        OkHttpClient http = getMockHttpIOException();
-        setUpNotificationClient(http);
+    void sendEmailNotificationNotifyClientException() throws Exception {
+        String successBody = "{ \"email\": \"" + EMAIL + "\" }";
+        setUpServiceWithResponse(200, successBody);
 
-        CallbackException exception = assertThrows(CallbackException.class, () ->
-            notificationService.sendEmailNotification(
-            "string",
-            "string",
-            "string",
-            "string",
-            "string"
-        ));
-        assertTrue(exception.getMessage().contains("IOException: Simulated network problem"));
+        doThrow(new NotificationClientException("GovNotify Error"))
+            .when(notificationClient)
+            .sendEmail(anyString(), anyString(), any(), anyString());
+
+        CallbackException ex = assertThrows(CallbackException.class, () ->
+            notificationService.sendEmailNotification(TEMPLATE_ID, JWT, CASE_ID, BUNDLE_TITLE, FAILURE_MSG)
+        );
+
+        assertTrue(ex.getMessage().contains("NotificationClientException"));
     }
 
-
-    public void setUpNotificationClient(OkHttpClient http) {
-        notificationService = new NotificationService(notificationClient, http);
-        ReflectionTestUtils.setField(notificationService, "idamBaseUrl", "http://localhost:4501");
-    }
-
-    public OkHttpClient getMockHttpSuccess(List<String> body) {
-        Iterator<String> iterator = body.iterator();
-
-        return new OkHttpClient
-            .Builder()
+    private void setUpServiceWithResponse(int statusCode, String jsonBody) {
+        OkHttpClient mockHttp = new OkHttpClient.Builder()
             .addInterceptor(chain -> new Response.Builder()
-                .body(ResponseBody.create(iterator.next(), MediaType.get("application/json")))
                 .request(chain.request())
-                .message("")
-                .code(200)
-                .protocol(Protocol.HTTP_2)
+                .protocol(Protocol.HTTP_1_1)
+                .code(statusCode)
+                .message("Mock Message")
+                .body(ResponseBody.create(jsonBody, MediaType.get("application/json")))
                 .build())
             .build();
+
+        notificationService = new NotificationService(notificationClient, mockHttp);
+        ReflectionTestUtils.setField(notificationService, "idamBaseUrl", IDAM_BASE_URL);
     }
 
-    public OkHttpClient getMockHttpFailures(List<String> body) {
-        Iterator<String> iterator = body.iterator();
-
-        return new OkHttpClient
-            .Builder()
-            .addInterceptor(chain -> new Response.Builder()
-                .body(ResponseBody.create(iterator.next(), MediaType.get("application/json")))
-                .request(chain.request())
-                .message("")
-                .code(500)
-                .protocol(Protocol.HTTP_2)
-                .build())
-            .build();
-    }
-
-    public OkHttpClient getMockHttpIOException() {
-        return new OkHttpClient.Builder()
-            .addInterceptor((Interceptor.Chain chain) -> {
+    private void setUpServiceWithNetworkFailure() {
+        OkHttpClient mockHttp = new OkHttpClient.Builder()
+            .addInterceptor(chain -> {
                 throw new IOException("Simulated network problem");
             })
             .build();
-    }
 
-    public HashMap<String, String> getPersonalisation() {
-        HashMap<String, String> personalisation = new HashMap<>();
-        personalisation.put("case_reference", "string");
-        personalisation.put("bundle_name", "string");
-        personalisation.put("system_error_message", "string");
-        return personalisation;
+        notificationService = new NotificationService(notificationClient, mockHttp);
+        ReflectionTestUtils.setField(notificationService, "idamBaseUrl", IDAM_BASE_URL);
     }
 }

@@ -2,42 +2,46 @@ package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import uk.gov.hmcts.reform.em.orchestrator.Application;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleCloningService;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.DefaultUpdateCaller;
+import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackResponseDto;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = {Application.class})
-@TestPropertySource(
-    properties = {
-        "case_document_am.url=http://localhost:8090"
-    }
-)
-class CcdCloneBundleControllerTest extends BaseTest {
+@ExtendWith(MockitoExtension.class)
+class CcdCloneBundleControllerTest {
 
-    @MockitoBean
+    @Mock
     private DefaultUpdateCaller defaultUpdateCaller;
 
+    @Mock
+    private CcdBundleCloningService ccdBundleCloningService;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @InjectMocks
+    private CcdCloneBundleController ccdCloneBundleController;
+
     @Test
-    void shouldCallCcdCallbackHandlerService() throws Exception {
+    void shouldCallDefaultUpdateCallerWithCloningService() {
+        CcdCallbackResponseDto responseDto = new CcdCallbackResponseDto();
+        ResponseEntity<CcdCallbackResponseDto> expectedResponse = ResponseEntity.ok(responseDto);
 
-        mockMvc
-            .perform(post("/api/clone-ccd-bundles")
-                .content("[]")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "xxx"))
-            .andDo(print()).andExpect(status().isOk());
+        when(defaultUpdateCaller.executeUpdate(ccdBundleCloningService, request))
+                .thenReturn(expectedResponse);
 
-        Mockito
-            .verify(defaultUpdateCaller, Mockito.times(1))
-            .executeUpdate(Mockito.any(CcdBundleCloningService.class), Mockito.any(HttpServletRequest.class));
+        ResponseEntity<CcdCallbackResponseDto> actualResponse = ccdCloneBundleController.cloneCcdBundles(request);
+
+        assertEquals(expectedResponse, actualResponse);
+        
+        verify(defaultUpdateCaller).executeUpdate(ccdBundleCloningService, request);
     }
 }

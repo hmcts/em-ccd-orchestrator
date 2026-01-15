@@ -54,6 +54,12 @@ sourceSets {
     test {
         java.srcDir 'src/test/java'
     }
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+        }
+    }
     contractTest {
         java {
             compileClasspath += main.output
@@ -171,6 +177,9 @@ dependencies {
     contractTestImplementation sourceSets.main.runtimeClasspath
     contractTestImplementation sourceSets.test.runtimeClasspath
 
+    integrationTestImplementation sourceSets.main.runtimeClasspath
+    integrationTestImplementation sourceSets.test.runtimeClasspath
+
     aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'2.3.0'
 }
 
@@ -237,6 +246,15 @@ bootJar {
     }
 }
 
+tasks.register('integration', Test) {
+    failFast = true
+    useJUnitPlatform()
+    description = "Runs integration tests"
+    group = "Verification"
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
 def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/Application*',
         '**uk/gov/hmcts/reform/em/orchestrator/config/**/*',
@@ -249,7 +267,8 @@ def coverageExclusionList = [
 ]
 
 jacocoTestReport {
-    executionData(test)
+    dependsOn test, integration
+    executionData(test, integration)
 
     reports {
         xml.required = true
