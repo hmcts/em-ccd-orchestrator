@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.endpoint.BaseTest;
 import uk.gov.hmcts.reform.em.orchestrator.endpoint.TestSecurityConfiguration;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ExceptionTranslator
  */
 @SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
+@ActiveProfiles("exception-test-controller-enabled")
 class ExceptionTranslatorIntTest extends BaseTest {
 
     @Autowired
