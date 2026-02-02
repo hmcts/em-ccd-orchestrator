@@ -35,7 +35,7 @@ application {
 }
 
 def versions = [
-        serenity           : '5.1.0',
+        serenity           : '5.2.1',
         pact_version       : '4.6.19',
         mockito            : '5.21.0',
         jupiter            : '6.0.2',
