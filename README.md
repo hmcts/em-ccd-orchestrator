@@ -1,41 +1,63 @@
 # EVIDENCE MANAGEMENT CCD Orchestrator
 
-[![Build Status](https://travis-ci.org/hmcts/rpa-em-ccd-orchestrator.svg?branch=master)](https://travis-ci.org/hmcts/rpa-em-ccd-orchestrator)
-[![codecov](https://codecov.io/gh/hmcts/rpa-em-ccd-orchestrator/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/rpa-em-ccd-orchestrator)
+[![codecov](https://codecov.io/gh/hmcts/em-ccd-orchestrator/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/em-ccd-orchestrator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 CCD Orchestrator is a backend service that facilitates interactions between CCD, the EM Stitching service, and a calling service.
 
+## Prerequisites
+
+Before setting up the project, ensure you have the following installed:
+
+- **Java 21** - Required for building and running the application
+- **jq** - JSON processor for command-line
+  - Linux: `sudo apt-get install jq`
+  - Mac: `brew install jq`
+- **Azure CLI** - Required for loading environment secrets from Azure Key Vault
+  - Install: `brew install azure-cli` (Mac) or follow [Azure CLI installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+- **VPN Connection** - Required for running the application locally and accessing HMCTS infrastructure
+- **Docker** (optional) - For running containerized services
 
 # Setup
-Install `https://stedolan.github.io/jq/`
-
-For linux: `sudo apt-get install jq`
-
-For mac: `brew install jq`
 
 #### To clone repo and prepare to pull containers:
-```
+```bash
 git clone https://github.com/hmcts/em-ccd-orchestrator.git
 cd em-ccd-orchestrator
 ```
 
 #### Clean and build the application:
-```
+```bash
 ./gradlew clean
 ./gradlew build
 ```
 
 #### To run the application:
 
-VPN connection is required
+**Important**: VPN connection is required
 
-```
+em-stitching-api must also be running.
+Please follow the instructions in the README for em-stitching-api on how to do so.
+
+
+The application will automatically load environment secrets from Azure Key Vault (requires Azure CLI authentication):
+
+```bash
 ./gradlew bootRun
 ```
 
-To run functional tests, em-stitching-api must also be running.
-Please follow the instructions in the README for em-stitching-api on how to do so.
+#### Environment Configuration
+
+The application uses environment variables stored in Azure Key Vault. When running `bootRun`, the `loadEnvSecrets` task automatically:
+1. Connects to Azure Key Vault (`em-ccdorc-aat`)
+2. Downloads the secrets
+3. Creates a `.aat-env` file locally
+4. Loads the variables into the application
+
+To manually authenticate with Azure:
+```bash
+az login
+```
 
 
 This will start the API container exposing the application's port
@@ -43,16 +65,31 @@ This will start the API container exposing the application's port
 
 In order to test if the application is up, you can call its health endpoint:
 
-```
-  curl http://localhost:8080/health
+```bash
+curl http://localhost:8080/health
 ```
 
 You should get a response similar to this:
 
-```
-  {"status":"UP","components":{"discoveryComposite":{"description":"Discovery Client not initialized","status":"UNKNOWN",
-"components":{"discoveryClient":{"description":"Discovery Client not initialized","status":"UNKNOWN"}}},
-"ping":{"status":"UP"},"refreshScope":{"status":"UP"},"serviceAuth":{"status":"UP"}}}
+```json
+{
+  "status": "UP",
+  "components": {
+    "discoveryComposite": {
+      "description": "Discovery Client not initialized",
+      "status": "UNKNOWN",
+      "components": {
+        "discoveryClient": {
+          "description": "Discovery Client not initialized",
+          "status": "UNKNOWN"
+        }
+      }
+    },
+    "ping": {"status": "UP"},
+    "refreshScope": {"status": "UP"},
+    "serviceAuth": {"status": "UP"}
+  }
+}
 ```
 
 
@@ -60,11 +97,13 @@ You should get a response similar to this:
 
 It uses:
 
-* Java 11
-* Spring boot
-* Junit, Mockito and SpringBootTest and Powermockito
+* Java 21
+* Spring Boot 3.5.10
+* JUnit 5 (Jupiter), Mockito, and Spring Boot Test
 * Gradle
-* [lombok project](https://projectlombok.org/) - Lombok project
+* [Lombok](https://projectlombok.org/) - Reduces boilerplate code
+* Serenity BDD - For functional testing
+* Pact - For contract testing
 
 ### Plugins
 * [lombok plugin](https://plugins.jetbrains.com/idea/plugin/6317-lombok-plugin) - Lombok IDEA plugin
@@ -83,8 +122,74 @@ A list of our endpoints can be found here
 
 The bundle configuration files can be validated by executing the `validateYaml` task:
 
-```
+```bash
 ./gradlew validateYaml
+```
+
+## Testing
+
+The project includes multiple types of tests:
+
+### Unit Tests
+Run standard unit tests:
+```bash
+./gradlew test
+```
+
+### Integration Tests
+Run integration tests:
+```bash
+./gradlew integration
+```
+
+### Functional Tests
+Run functional/acceptance tests (requires VPN and `.aat-env` configuration):
+```bash
+./gradlew functional
+```
+
+**Note**: To run functional tests, `em-stitching-api` must also be running. Please follow the instructions in the em-stitching-api README.
+
+### Smoke Tests
+Run non-destructive smoke tests:
+```bash
+./gradlew smoke
+```
+
+### Contract Tests (Pact)
+
+#### Consumer Contract Tests
+Run consumer pact tests:
+```bash
+./gradlew contract
+```
+
+#### Provider Contract Tests
+Run provider pact verification tests:
+```bash
+./gradlew providerContractTests
+```
+
+#### Publishing Pact Tests
+Publish pact tests to the Pact Broker:
+```bash
+./gradlew pactPublish
+```
+
+**Note**: Ensure `PACT_BROKER_FULL_URL` environment variable is set, or the default `http://localhost:80` will be used.
+
+### Code Coverage
+Generate JaCoCo test coverage report:
+```bash
+./gradlew jacocoTestReport
+```
+
+The report will be available at `build/reports/jacoco/test/jacocoTestReport.xml`
+
+### Mutation Testing
+Run PITest mutation testing:
+```bash
+./gradlew pitest
 ```
 
 
@@ -109,10 +214,10 @@ The template contains the following plugins:
     You can create the report by running the following command:
 
     ```bash
-      ./gradlew jacocoTestReport
+    ./gradlew jacocoTestReport
     ```
 
-    The report will be created in build/reports subdirectory in your project directory.
+    The report will be created in the build/reports subdirectory in your project directory.
 
   * io.spring.dependency-management
 
@@ -146,31 +251,22 @@ The template contains the following plugins:
       ./gradlew dependencyUpdates -Drevision=release
     ```
 
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: `bootRun` fails with Azure authentication error
+- **Solution**: Run `az login` to authenticate with Azure CLI
+
+**Issue**: Application fails to start due to missing environment variables
+- **Solution**: Ensure VPN is connected and Azure CLI is authenticated. Delete `.aat-env` file and run `./gradlew bootRun` again to reload secrets.
+
+**Issue**: Functional tests fail
+- **Solution**: Ensure `em-stitching-api` is running and `.aat-env` file is properly configured
+
+**Issue**: Port 8080 already in use
+- **Solution**: Check if another instance is running: `lsof -i :8080` and kill the process if needed
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-### Check the build
-
-### Running contract or pact tests:
-
-You can run contract or pact tests as follows:
-```
-./gradlew clean
-```
-
-```
-./gradlew contract
-```
-
-You can then publish your pact tests locally by first running the pact docker-compose:
-
-```
-docker-compose -f docker-pactbroker-compose.yml up
-```
-
-and then using it to publish your tests:
-
-```
-./gradlew pactPublish
-```
