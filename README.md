@@ -36,6 +36,10 @@ cd em-ccd-orchestrator
 
 **Important**: VPN connection is required
 
+em-stitching-api must also be running.
+Please follow the instructions in the README for em-stitching-api on how to do so.
+
+
 The application will automatically load environment secrets from Azure Key Vault (requires Azure CLI authentication):
 
 ```bash
@@ -54,9 +58,6 @@ To manually authenticate with Azure:
 ```bash
 az login
 ```
-
-To run functional tests, em-stitching-api must also be running.
-Please follow the instructions in the README for em-stitching-api on how to do so.
 
 
 This will start the API container exposing the application's port
