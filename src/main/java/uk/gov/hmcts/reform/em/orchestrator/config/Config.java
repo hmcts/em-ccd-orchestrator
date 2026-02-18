@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.StitchingService;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.mapper.StitchingDTOMapper;
+import uk.gov.service.notify.NotificationClient;
 
 @Configuration
 public class Config {
@@ -17,6 +18,9 @@ public class Config {
 
     @Value("${em-rpa-stitching-api.resource}")
     private String stitchingResource;
+
+    @Value("${notify.apiKey}")
+    String notificationApiKey;
 
     @Value("${max-retry-to-poll-stitching}")
     int maxRetryToPollStitching;
@@ -32,4 +36,8 @@ public class Config {
         );
     }
 
+    @Bean
+    public NotificationClient notificationClient() {
+        return new NotificationClient(notificationApiKey);
+    }
 }
