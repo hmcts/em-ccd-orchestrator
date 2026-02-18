@@ -516,6 +516,7 @@ bootRun {
                 environment key, value
             }
         }
+        environment "NOTIFICATION_API_KEY", "test-key"
     }
 }
 
