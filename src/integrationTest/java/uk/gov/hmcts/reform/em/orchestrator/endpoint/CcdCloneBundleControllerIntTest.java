@@ -19,7 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {Application.class})
 @TestPropertySource(
     properties = {
-        "case_document_am.url=http://localhost:8090"
+        "case_document_am.url=http://localhost:8090",
+        "notify.apiKey=test-api-key-dummy"
     }
 )
 class CcdCloneBundleControllerIntTest extends BaseTest {
