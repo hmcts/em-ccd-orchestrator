@@ -19,7 +19,7 @@ spring:
         registration:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
-            client-secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
+            client-secret: ${S2S_KEY}
   # cloud:
   #   compatibility-verifier:
   #     enabled: false
@@ -90,7 +90,7 @@ em-rpa-stitching-api:
 idam:
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:8489}
-    totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
+    totp_secret: ${S2S_KEY}
     microservice: em_ccd_orchestrator
   s2s-authorised:
     services: ${S2S_NAMES_WHITELIST:sscs,ccd,em_gw,ccd_data,iac,em_stitching_api,xui_webapp,civil_service,prl_cos_api,ethos_repl_service,et_cos}
@@ -108,7 +108,7 @@ endpoint-toggles:
   stitching-complete-callback: ${ENABLE_STITCHING_COMPLETE_CALLBACK:true}
 
 notify:
-  apiKey: ${NOTIFICATION_API_KEY:test_key-86d79f79-5045-4df2-87d1-6b7d87b41f6b-a703ea6c-9869-42a7-aaa8-38c98a0cc044}
+  apiKey: ${NOTIFICATION_API_KEY}
   successTemplateId: 58f6384c-64f9-4ddc-a409-259fe04d1836
   failureTemplateId: 2f133f4e-5adc-418c-9554-b18968db253e
 
