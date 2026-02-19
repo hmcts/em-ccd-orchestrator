@@ -86,5 +86,10 @@ app-insights:
 cdam:
   validation:
     enabled: ${ENABLE_CDAM_VALIDATION:false}
+
+idam:
+  s2s-auth:
+    totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
+
 notify:
   apiKey: ${NOTIFICATION_API_KEY:test-api-key-dummy}
