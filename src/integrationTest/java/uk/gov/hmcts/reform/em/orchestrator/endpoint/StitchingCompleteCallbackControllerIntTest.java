@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = {Application.class})
 @AutoConfigureMockMvc
-@TestPropertySource(properties = {"notify.apiKey=test-api-key-dummy"})
 class StitchingCompleteCallbackControllerIntTest extends BaseTest {
 
     @MockitoBean

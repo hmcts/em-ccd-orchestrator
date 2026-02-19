@@ -29,7 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableAutoConfiguration(exclude = {
     FlywayAutoConfiguration.class
 })
-@TestPropertySource(properties = {"notify.apiKey=test-api-key-dummy"})
+@TestPropertySource(properties = {
+    "notify.apiKey=test-api-key-dummy",
+    "idam.s2s-auth.totp_secret=test-s2s-key-dummy"
+})
 class OpenAPIPublisherTest {
 
     private final MockMvc mockMvc;
