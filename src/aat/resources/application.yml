@@ -39,6 +39,8 @@ idam:
     redirect_uri: ${IDAM_WEBSHOW_WHITELIST:https://em-show-aat.service.core-compute-aat.internal/oauth2/callback}
     grant_type: 'password'
     scope: 'openid roles profile'
+  s2s-auth:
+    totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
 s2s:
   api:
@@ -86,10 +88,6 @@ app-insights:
 cdam:
   validation:
     enabled: ${ENABLE_CDAM_VALIDATION:false}
-
-idam:
-  s2s-auth:
-    totp_secret: ${S2S_KEY:AAAAAAAAAAAAAAAA}
 
 notify:
   apiKey: ${NOTIFICATION_API_KEY:test-api-key-dummy}
