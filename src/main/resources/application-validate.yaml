@@ -1,0 +1,17 @@
+# Configuration for validate profile - provides dummy values for required environment variables
+# This allows the validateYaml task to run without setting actual credentials
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          oidc:
+            client-secret: dummy-s2s-key-for-validation
+
+idam:
+  s2s-auth:
+    totp_secret: dummy-s2s-key-for-validation
+
+notify:
+  apiKey: dummy-notification-key-for-validation

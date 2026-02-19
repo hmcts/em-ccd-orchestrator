@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdBundleCloningService;
@@ -17,11 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = {Application.class})
-@TestPropertySource(
-    properties = {
-        "case_document_am.url=http://localhost:8090"
-    }
-)
 class CcdCloneBundleControllerIntTest extends BaseTest {
 
     @MockitoBean
