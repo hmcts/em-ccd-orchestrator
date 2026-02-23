@@ -74,9 +74,12 @@ sh ./publish-swagger-docs.sh
     }
 
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER,AppPipelineDsl.PactRoles.PROVIDER])
-    enableFortifyScan('em-ccdorc-aat')
-    afterAlways('fortify-scan') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+    onMaster {
+        enableFortifyScan('em-ccdorc-aat')
+
+        afterAlways('fortify-scan') {
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+        }
     }
 
     before('test') {
