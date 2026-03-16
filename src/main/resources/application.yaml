@@ -40,16 +40,6 @@ management:
       enabled: false
     diskspace:
       enabled: false
-  info:
-     build:
-       enabled: true # Whether to enable build info.
-     defaults:
-       enabled: true # Whether to enable default info contributors.
-     env:
-       enabled: true # Whether to enable environment info.
-     git:
-       enabled: true # Whether to enable git info.
-       mode: simple # Mode to use to expose git information.
 
 info:
   app:
