@@ -20,9 +20,8 @@ spring:
           oidc:
             client-id: microservicekey-em-ccd-orchestrator
             client-secret: ${S2S_KEY}
-  # cloud:
-  #   compatibility-verifier:
-  #     enabled: false
+  lifecycle:
+    timeout-per-shutdown-phase: ${TIMEOUT_SERVER_SHUTDOWN_PHASE:1m}
 
 management:
   endpoint:
