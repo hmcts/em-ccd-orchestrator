@@ -146,11 +146,6 @@ folders:
         property: /data/allOtherDocuments
         filters:
           - property: /documentGroup
-            value: sixteenARiskAssessment
-      - type: documentSet
-        property: /data/allOtherDocuments
-        filters:
-          - property: /documentGroup
             value: guardianReport
       - type: documentSet
         property: /data/allOtherDocuments
