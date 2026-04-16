@@ -54,6 +54,7 @@ env.CDAM_URL = 'http://ccd-case-document-am-api-aat.service.core-compute-aat.int
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 env.PACT_BROKER_URL = "pact-broker.platform.hmcts.net"
 env.TEST_USER_PASSWORD = 'W!' + UUID.randomUUID().toString().replace('-', '').take(20)
+echo "Generated TEST_USER_PASSWORD: ${env.TEST_USER_PASSWORD}"
 env.PACT_BROKER_PORT = "443"
 env.PACT_BROKER_SCHEME = "https"
 
