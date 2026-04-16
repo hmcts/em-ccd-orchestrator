@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 public class ExtendedCcdHelper {
 
     public static final String CCD_BUNDLE_MVP_TYPE_ASYNC = "CCD_BUNDLE_MVP_TYPE_ASYNC";
+    public static final String TEST_USER_PASSWORD = "Wd!012eaf51043cf9259";
 
     @Value("${test.url}")
     private String testUrl;
@@ -101,28 +102,32 @@ public class ExtendedCcdHelper {
 
         ccdDefinitionHelper.importDefinitionFile(
                 bundleTesterUser,
+                TEST_USER_PASSWORD,
                 "caseworker-publiclaw",
                 getEnvSpecificDefinitionFile());
 
     }
 
     public CaseDetails createCase(String documents) throws JsonProcessingException {
-        return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
+        return ccdDataHelper.createCase(bundleTesterUser, TEST_USER_PASSWORD,
+                "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
                 objectMapper.readTree(String.format(CREATE_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents)));
     }
 
     public CaseDetails createCdamCase(String documents) throws JsonProcessingException {
-        return ccdDataHelper.createCase(bundleTesterUser, "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
+        return ccdDataHelper.createCase(bundleTesterUser, TEST_USER_PASSWORD,
+                "PUBLICLAW", getEnvCcdCaseTypeId(), "createCase",
             objectMapper.readTree(String.format(CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents)));
     }
 
     public JsonNode triggerEvent(String caseId, String eventId) throws JsonProcessingException {
         return objectMapper.readTree(objectMapper.writeValueAsString(
-            ccdDataHelper.triggerEvent(bundleTesterUser, caseId, eventId)));
+            ccdDataHelper.triggerEvent(bundleTesterUser, TEST_USER_PASSWORD, caseId, eventId)));
     }
 
     public JsonNode getCase(String caseId) throws JsonProcessingException {
-        return objectMapper.readTree(objectMapper.writeValueAsString(ccdDataHelper.getCase(bundleTesterUser, caseId)));
+        return objectMapper.readTree(objectMapper.writeValueAsString(
+                ccdDataHelper.getCase(bundleTesterUser, TEST_USER_PASSWORD, caseId)));
     }
 
     public String getEnvCcdCaseTypeId() {
@@ -163,7 +168,7 @@ public class ExtendedCcdHelper {
 
     public void initBundleTesterUser() {
         bundleTesterUser = "bundle-tester@gmail.com";
-        idamHelper.createUser(bundleTesterUser, bundleTesterUserRoles);
+        idamHelper.createUser(bundleTesterUser, TEST_USER_PASSWORD, bundleTesterUserRoles);
     }
 
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {

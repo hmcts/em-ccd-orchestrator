@@ -67,6 +67,7 @@ public class TestUtil {
     public static final String PUBLICLAW = "PUBLICLAW";
     public static final String BUNDLE_DESCRIPTION = "Test bundle";
     public static final String BUNDLE_TITLE = "Bundle title";
+    public static final String TEST_USER_PASSWORD = ExtendedCcdHelper.TEST_USER_PASSWORD;
     private static final int RETRY_COUNT = 6;
     private static final int SLEEP_TIME = 2000;
 
@@ -124,9 +125,11 @@ public class TestUtil {
 
     @PostConstruct
     public void init() {
-        idamHelper.createUser(getUsername(), Stream.of("caseworker", "caseworker-publiclaw").toList());
+        String username = getUsername();
+        List<String> roles = Stream.of("caseworker", "caseworker-publiclaw").toList();
+        idamHelper.createUser(username, TEST_USER_PASSWORD, roles);
         SerenityRest.useRelaxedHTTPSValidation();
-        idamAuth = idamHelper.authenticateUser(getUsername());
+        idamAuth = idamHelper.authenticateUser(username, TEST_USER_PASSWORD);
         s2sAuth = s2sHelper.getS2sToken();
     }
 
@@ -322,7 +325,7 @@ public class TestUtil {
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
-        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
+        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), TEST_USER_PASSWORD, uploadRequest);
 
         createCaseAndUploadDocuments(uploadResponse, userName);
 
@@ -364,7 +367,8 @@ public class TestUtil {
     }
 
     public CaseDetails createBundleCase(String documents, String userName) throws JsonProcessingException {
-        return ccdDataHelper.createCase(userName, PUBLICLAW, getEnvCcdCaseTypeId(), "createCase",
+        return ccdDataHelper.createCase(userName, TEST_USER_PASSWORD,
+                PUBLICLAW, getEnvCcdCaseTypeId(), "createCase",
             objectMapper.readTree(String.format(CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents)));
     }
 
@@ -376,7 +380,7 @@ public class TestUtil {
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
-        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
+        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), TEST_USER_PASSWORD, uploadRequest);
         return uploadResponse.getDocuments().get(0).links;
     }
 
@@ -389,7 +393,7 @@ public class TestUtil {
         DocumentUploadRequest uploadRequest = new DocumentUploadRequest(
             Classification.PUBLIC.toString(), getEnvCcdCaseTypeId(), PUBLICLAW, multipartFiles);
 
-        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), uploadRequest);
+        UploadResponse uploadResponse =  cdamHelper.uploadDocuments(getUsername(), TEST_USER_PASSWORD, uploadRequest);
 
         List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
             .map(this::createTestBundleDocument)
