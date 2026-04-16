@@ -14,7 +14,7 @@ properties([
     ])
 ])
 
-@Library("Infrastructure@enable-logging-on-ft")
+@Library("Infrastructure")
 
 def type = "java"
 def product = "em"
