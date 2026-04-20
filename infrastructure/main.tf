@@ -43,6 +43,12 @@ module "local_key_vault" {
   common_tags                          = var.common_tags
   managed_identity_object_ids          = ["${data.azurerm_user_assigned_identity.rpa-shared-identity.principal_id}"]
   additional_managed_identities_access = var.additional_managed_identities_access
+  jenkins_object_id                    = data.azurerm_user_assigned_identity.jenkins.principal_id
+}
+
+data "azurerm_user_assigned_identity" "jenkins" {
+  name                = "jenkins-${var.env}-mi"
+  resource_group_name = "managed-identities-${var.env}-rg"
 }
 
 data "azurerm_user_assigned_identity" "rpa-shared-identity" {
