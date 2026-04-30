@@ -9,7 +9,6 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
 import org.awaitility.Awaitility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +57,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
 @Service
-@Slf4j
 public class TestUtil {
 
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
@@ -130,17 +128,11 @@ public class TestUtil {
     @PostConstruct
     public void init() {
         String username = getUsername();
-        List<String> roles = Stream.of("caseworker", "caseworker-publiclaw").toList();
-        try {
-            log.info("Creating IDAM user: {}, password present: {}, roles: {}",
-                    username, testUserPassword != null && !testUserPassword.isEmpty(), roles);
-            idamHelper.createUser(username, testUserPassword, roles);
-            log.info("Successfully created IDAM user: {}", username);
-        } catch (Exception e) {
-            log.error("Failed to create IDAM user: {}, password present: {}, error: {}",
-                    username, testUserPassword != null && !testUserPassword.isEmpty(), e.getMessage(), e);
-            throw e;
-        }
+        idamHelper.createUser(
+                username,
+                testUserPassword,
+                Stream.of("caseworker", "caseworker-publiclaw").toList()
+        );
         SerenityRest.useRelaxedHTTPSValidation();
         idamAuth = idamHelper.authenticateUser(username, testUserPassword);
         s2sAuth = s2sHelper.getS2sToken();

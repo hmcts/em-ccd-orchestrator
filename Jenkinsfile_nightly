@@ -1,5 +1,4 @@
 #!groovy
-import java.util.UUID
 
 properties([
     [

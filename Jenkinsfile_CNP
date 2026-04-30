@@ -1,7 +1,6 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GradleBuilder
-import java.util.UUID
 
 properties([
     [

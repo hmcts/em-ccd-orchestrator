@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
-@Slf4j
 public class ExtendedCcdHelper {
 
     public static final String CCD_BUNDLE_MVP_TYPE_ASYNC = "CCD_BUNDLE_MVP_TYPE_ASYNC";
@@ -181,16 +179,7 @@ public class ExtendedCcdHelper {
 
     public void initBundleTesterUser() {
         bundleTesterUser = "bundle-tester@gmail.com";
-        try {
-            log.info("Creating IDAM user: {}, password present: {}, roles: {}",
-                    bundleTesterUser, testUserPassword != null && !testUserPassword.isEmpty(), bundleTesterUserRoles);
-            idamHelper.createUser(bundleTesterUser, testUserPassword, bundleTesterUserRoles);
-            log.info("Successfully created IDAM user: {}", bundleTesterUser);
-        } catch (Exception e) {
-            log.error("Failed to create IDAM user: {}, password present: {}, error: {}",
-                    bundleTesterUser, testUserPassword != null && !testUserPassword.isEmpty(), e.getMessage(), e);
-            throw e;
-        }
+        idamHelper.createUser(bundleTesterUser, testUserPassword, bundleTesterUserRoles);
     }
 
     public String getCcdDocumentJson(String documentName, String dmUrl, String fileName) {
