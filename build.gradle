@@ -508,6 +508,7 @@ bootRun {
     dependsOn(loadEnvSecrets)
 
     doFirst() {
+        environment 'TEST_USER_PASSWORD', 'FB!' + UUID.randomUUID().toString().replace('-', '').take(20)
         if (project.file('./.aat-env').exists()) {
             project.file('./.aat-env').readLines().each() {
                 def index = it.indexOf("=")
