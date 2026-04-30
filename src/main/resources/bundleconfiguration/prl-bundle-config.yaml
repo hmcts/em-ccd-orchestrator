@@ -171,6 +171,36 @@ folders:
         property: /data/allOtherDocuments
         filters:
           - property: /documentGroup
+            value: laSectionChildImpactReport1Report
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSectionChildImpactReport2Report
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSectionSection7ReportReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSectionSection7AddendumReportReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSectionLocalAuthorityInvolvementReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: laSectionSection47EnquiryReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
             value: laOtherDocuments
   - name: Other Documents
     documents:
