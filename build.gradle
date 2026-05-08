@@ -4,13 +4,13 @@ import java.nio.charset.StandardCharsets
 plugins {
     id 'application'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.springframework.boot' version '3.5.13'
+    id 'org.springframework.boot' version '3.5.14'
     id 'uk.gov.hmcts.java' version '0.12.68'
-    id 'com.github.ben-manes.versions' version '0.53.0'
-    id 'org.sonarqube' version '7.2.3.7755'
+    id 'com.github.ben-manes.versions' version '0.54.0'
+    id 'org.sonarqube' version '7.3.0.8198'
     id 'jacoco'
     id 'checkstyle'
-    id 'au.com.dius.pact' version '4.6.20'
+    id 'au.com.dius.pact' version '4.7.1'
     id 'info.solidsoft.pitest' version '1.19.0'
     id 'org.owasp.dependencycheck' version '12.2.1'
     id 'net.serenity-bdd.serenity-gradle-plugin' version '5.3.9'
@@ -36,13 +36,13 @@ application {
 
 def versions = [
         serenity           : '5.3.10',
-        pact_version       : '4.6.20',
+        pact_version       : '4.7.1',
         mockito            : '5.23.0',
         jupiter            : '6.0.3',
         poi                : '5.5.1',
-        springSecurity     : '6.5.9',
+        springSecurity     : '6.5.10',
         okhttp3            : '5.3.2',
-        fasterXmlJackson   : '2.21.2'
+        fasterXmlJackson   : '2.21.3'
 ]
 sourceSets {
     aat {
@@ -100,10 +100,10 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
     implementation group: 'com.google.guava', name: 'guava', version: '33.6.0-jre'
-    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.44'
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.46'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: versions.okhttp3
     implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.okhttp3
-    implementation group: "commons-io", name: "commons-io", version: "2.21.0"
+    implementation group: "commons-io", name: "commons-io", version: "2.22.0"
 
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '4.3.2'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.3.2'
@@ -129,12 +129,12 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurity
     implementation group: 'org.springframework.security', name: 'spring-security-web', version: versions.springSecurity
 
-    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '13.11'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '13.12'
     implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '6.0.0-RELEASE'
 
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', withoutStuff
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.44'
-    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.44'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.46'
+    aatAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: '1.18.46'
 
     testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all', {
         exclude group: 'commons-io', module: 'commons-io'
@@ -159,7 +159,7 @@ dependencies {
     aatImplementation group: 'org.apache.poi', name: 'poi', version: versions.poi
     aatImplementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
     aatRuntimeOnly group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.5'
-    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.7'
+    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.8'
     
     //pact contract testing
 
@@ -180,7 +180,7 @@ dependencies {
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'2.3.0'
+    aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'3.1.0'
 }
 
 dependencyManagement {
@@ -210,7 +210,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '13.4.0'
+    toolVersion = '13.4.2'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
@@ -508,6 +508,7 @@ bootRun {
     dependsOn(loadEnvSecrets)
 
     doFirst() {
+        environment 'TEST_USER_PASSWORD', 'FB!' + UUID.randomUUID().toString().replace('-', '').take(20)
         if (project.file('./.aat-env').exists()) {
             project.file('./.aat-env').readLines().each() {
                 def index = it.indexOf("=")

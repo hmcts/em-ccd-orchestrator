@@ -57,6 +57,8 @@ withNightlyPipeline(type, product, component) {
     env.CDAM_URL = 'http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
 
     env.TEST_URL = "http://em-ccd-orchestrator-aat.service.core-compute-aat.internal"
+    env.TEST_USER_PASSWORD = 'M!' + UUID.randomUUID().toString().replace('-', '').take(20)
+    echo "Generated TEST_USER_PASSWORD: ${env.TEST_USER_PASSWORD}"
 
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
