@@ -56,6 +56,35 @@ public final class ProviderTestUtil {
         return response;
     }
 
+    public static CcdCallbackResponseDto createEmStitchBundle() {
+        CcdCallbackResponseDto response = new CcdCallbackResponseDto();
+        response.setDocumentTaskId(123L);
+
+        ObjectNode caseData = MAPPER.createObjectNode();
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
+
+        ObjectNode bundleValue = MAPPER.createObjectNode();
+        bundleValue.put("bundleHearingDate", "2000-01-31");
+        bundleValue.put("createdOn", "2020-10-06T18:54:48.785000");
+        bundleValue.put("description", "description");
+        bundleValue.put("fileName", "fileName");
+        bundleValue.put("id", "id");
+        bundleValue.put("stitchStatus", "stitchStatus");
+        bundleValue.put("title", "title");
+
+        ObjectNode stitchedDocument = MAPPER.createObjectNode();
+        stitchedDocument.put("category_id", "categoryID");
+        stitchedDocument.put("document_binary_url", "documentBinaryUrl");
+        stitchedDocument.put("document_filename", "documentFileName");
+        stitchedDocument.put("document_hash", "documentHash");
+        stitchedDocument.put("document_url", "documentStitchedUrl");
+        bundleValue.set("stitchedDocument", stitchedDocument);
+
+        caseBundles.add(MAPPER.createObjectNode().set("value", bundleValue));
+        response.setData(caseData);
+        return response;
+    }
+
     public static CcdCallbackResponseDto createCloneBundleResponse() {
         ObjectNode originalBundle = buildCcdBundle();
         originalBundle.put("eligibleForCloning", "No");
