@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.em.orchestrator.provider;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -40,18 +39,13 @@ public class NewBundleProviderTest extends BaseProviderTest {
         return new Object[]{newBundleController};
     }
 
-    @BeforeEach
-    public void setUpMocks() {
+    @State("a request to prepare a new bundle is successful")
+    public void prepareNewBundleSuccessState() {
         CcdCallbackResponseDto responseDto = createNewBundleResponse();
         when(defaultUpdateCaller.executeUpdate(
             any(AutomatedCaseUpdater.class),
             any(HttpServletRequest.class)
         ))
             .thenReturn(ResponseEntity.ok(responseDto));
-    }
-
-    @State("a request to prepare a new bundle is successful")
-    public void prepareNewBundleSuccessState() {
-        // Mock configured in @BeforeEach because the civil_service pact has no provider state.
     }
 }
