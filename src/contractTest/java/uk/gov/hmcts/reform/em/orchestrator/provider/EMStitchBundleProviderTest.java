@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createEmStitchBundle;
 
-@Provider("em_stitchBundle")
+@Provider("em_stitchBundle_civil_service")
 @WebMvcTest(value = CcdStitchBundleCallbackController.class, excludeAutoConfiguration = {
     SecurityAutoConfiguration.class,
     OAuth2ClientAutoConfiguration.class
