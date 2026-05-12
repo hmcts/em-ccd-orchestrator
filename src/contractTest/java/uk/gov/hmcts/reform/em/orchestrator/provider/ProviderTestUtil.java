@@ -62,6 +62,7 @@ public final class ProviderTestUtil {
 
         ObjectNode caseData = MAPPER.createObjectNode();
         ArrayNode caseBundles = caseData.putArray("caseBundles");
+        response.setData(caseData);
 
         ObjectNode bundleValue = MAPPER.createObjectNode();
         bundleValue.put("bundleHearingDate", "2000-01-31");
@@ -81,7 +82,6 @@ public final class ProviderTestUtil {
         bundleValue.set("stitchedDocument", stitchedDocument);
 
         caseBundles.add(MAPPER.createObjectNode().set("value", bundleValue));
-        response.setData(caseData);
         return response;
     }
 
