@@ -61,10 +61,10 @@ public final class ProviderTestUtil {
         response.setDocumentTaskId(123L);
 
         ObjectNode caseData = MAPPER.createObjectNode();
-        ArrayNode caseBundles = caseData.putArray("caseBundles");
+        final ArrayNode caseBundles = caseData.putArray("caseBundles");
         response.setData(caseData);
 
-        ObjectNode bundleValue = MAPPER.createObjectNode();
+        final ObjectNode bundleValue = MAPPER.createObjectNode();
         bundleValue.put("bundleHearingDate", "2000-01-31");
         bundleValue.put("createdOn", "2020-10-06T18:54:48.785000");
         bundleValue.put("description", "description");
@@ -73,7 +73,7 @@ public final class ProviderTestUtil {
         bundleValue.put("stitchStatus", "stitchStatus");
         bundleValue.put("title", "title");
 
-        ObjectNode stitchedDocument = MAPPER.createObjectNode();
+        final ObjectNode stitchedDocument = MAPPER.createObjectNode();
         stitchedDocument.put("category_id", "categoryID");
         stitchedDocument.put("document_binary_url", "documentBinaryUrl");
         stitchedDocument.put("document_filename", "documentFileName");
