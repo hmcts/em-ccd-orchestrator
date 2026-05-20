@@ -38,7 +38,7 @@ def versions = [
         serenity           : '5.3.10',
         pact_version       : '4.7.1',
         mockito            : '5.23.0',
-        jupiter            : '6.0.3',
+        jupiter            : '6.1.0',
         poi                : '5.5.1',
         springSecurity     : '6.5.10',
         okhttp3            : '5.3.2',
@@ -185,7 +185,7 @@ dependencies {
 
 dependencyManagement {
     dependencies {
-        dependencySet(group: 'org.junit.platform', version: '6.0.3') {
+        dependencySet(group: 'org.junit.platform', version: '6.1.0') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
         }
