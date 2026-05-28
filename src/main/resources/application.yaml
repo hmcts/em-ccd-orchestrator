@@ -83,6 +83,9 @@ idam:
     microservice: em_ccd_orchestrator
   s2s-authorised:
     services: ${S2S_NAMES_WHITELIST:sscs,ccd,em_gw,ccd_data,iac,em_stitching_api,xui_webapp,civil_service,prl_cos_api,ethos_repl_service,et_cos}
+  security:
+    allowed-issuers:
+      - http://localhost:5062/o
 
 callbackUrlCreator:
   scheme: ${CALLBACK_HTTP_SCHEME:http}
