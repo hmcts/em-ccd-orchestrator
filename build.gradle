@@ -42,7 +42,7 @@ def versions = [
         poi                : '5.5.1',
         springSecurity     : '6.5.10',
         okhttp3            : '5.3.2',
-        fasterXmlJackson   : '2.21.3'
+        fasterXmlJackson   : '2.22.0'
 ]
 sourceSets {
     aat {
@@ -114,10 +114,10 @@ dependencies {
     implementation group: "org.apache.commons", name: "commons-lang3", version: "3.20.0"
     implementation group: "commons-validator", name: "commons-validator", version: "1.10.1"
 
-    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.3'
+    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.3.4'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
     implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '1.59.2'
-    implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '5.2.0'
+    implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '5.3.0'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: versions.fasterXmlJackson
@@ -159,7 +159,7 @@ dependencies {
     aatImplementation group: 'org.apache.poi', name: 'poi', version: versions.poi
     aatImplementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
     aatRuntimeOnly group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.5'
-    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.8'
+    aatRuntimeOnly group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.9'
     
     //pact contract testing
 
@@ -205,7 +205,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '13.4.2'
+    toolVersion = '13.5.0'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
