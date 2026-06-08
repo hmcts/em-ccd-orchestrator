@@ -156,6 +156,16 @@ folders:
         property: /data/allOtherDocuments
         filters:
           - property: /documentGroup
+            value: enforcementOrderSuitabilityReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
+            value: parentalOrderReporterReport
+      - type: documentSet
+        property: /data/allOtherDocuments
+        filters:
+          - property: /documentGroup
             value: cafcassOtherDocuments
       - type: documentSet
         property: /data/allOtherDocuments
