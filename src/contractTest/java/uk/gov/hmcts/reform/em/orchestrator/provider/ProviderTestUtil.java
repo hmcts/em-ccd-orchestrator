@@ -48,17 +48,14 @@ public final class ProviderTestUtil {
         response.setDocumentTaskId(12345L);
 
         ObjectNode caseData = MAPPER.createObjectNode();
-        ObjectNode bundle = MAPPER.createObjectNode();
+        caseData.put("caseTitle", "My Test Case");
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
+
+        ObjectNode bundle = buildCcdBundle();
         bundle.put("bundleHearingDate", "2000-01-31");
         bundle.put("createdOn", "2020-10-06T18:54:48.785000");
-        bundle.put("description", "description");
-        bundle.put("fileName", "fileName");
-        bundle.put("id", "id");
         bundle.put("stitchStatus", "stitchStatus");
-        bundle.put("title", "title");
-        bundle.set("stitchedDocument", buildNewBundleDocument());
-
-        ArrayNode caseBundles = caseData.putArray("caseBundles");
+        bundle.set("stitchedDocument", buildCcdDocument());
         caseBundles.add(MAPPER.createObjectNode().set("value", bundle));
         response.setData(caseData);
         return response;
@@ -91,16 +88,6 @@ public final class ProviderTestUtil {
         doc.put("document_filename", "stitched.pdf");
         doc.put("document_hash", "sha256-c38944298e827135e533f7c4621d34b4139f408990c6d7a5a894769a6c9d7491");
         doc.put("category_id", "categoryID");
-        return doc;
-    }
-
-    private static JsonNode buildNewBundleDocument() {
-        ObjectNode doc = MAPPER.createObjectNode();
-        doc.put("category_id", "categoryID");
-        doc.put("document_binary_url", "documentBinaryUrl");
-        doc.put("document_filename", "documentFileName");
-        doc.put("document_hash", "documentHash");
-        doc.put("document_url", "documentStitchedUrl");
         return doc;
     }
 
