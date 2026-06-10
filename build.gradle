@@ -183,6 +183,9 @@ dependencies {
     aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'3.1.0'
 }
 
+//CVE-2026-41840, CVE-2026-41841, CVE-2026-41842, CVE-2026-41843, CVE-2026-41850, CVE-2026-41851
+ext['spring-framework.version'] = '6.2.19'
+
 dependencyManagement {
     dependencies {
         dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.0'
