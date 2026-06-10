@@ -45,7 +45,7 @@ public final class ProviderTestUtil {
 
     public static CcdCallbackResponseDto createNewBundleResponse() {
         CcdCallbackResponseDto response = new CcdCallbackResponseDto();
-        response.setDocumentTaskId(123L);
+        response.setDocumentTaskId(12345L);
 
         ObjectNode caseData = MAPPER.createObjectNode();
         ObjectNode bundle = MAPPER.createObjectNode();

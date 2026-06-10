@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createNewBundleResponse;
 
-@Provider("em_newBundle")
+@Provider("em_orchestrator_new_bundle_provider")
 @WebMvcTest(value = NewBundleController.class, excludeAutoConfiguration = {
     SecurityAutoConfiguration.class,
     OAuth2ClientAutoConfiguration.class
