@@ -49,13 +49,13 @@ public final class ProviderTestUtil {
 
         ObjectNode caseData = MAPPER.createObjectNode();
         caseData.put("caseTitle", "My Test Case");
-        ArrayNode caseBundles = caseData.putArray("caseBundles");
-
         ObjectNode bundle = buildCcdBundle();
         bundle.put("bundleHearingDate", "2000-01-31");
         bundle.put("createdOn", "2020-10-06T18:54:48.785000");
         bundle.put("stitchStatus", "stitchStatus");
         bundle.set("stitchedDocument", buildCcdDocument());
+
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
         caseBundles.add(MAPPER.createObjectNode().set("value", bundle));
         response.setData(caseData);
         return response;
