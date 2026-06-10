@@ -42,10 +42,7 @@ public class NewBundleProviderTest extends BaseProviderTest {
     @State("a request to prepare a new bundle is successful")
     public void prepareNewBundleSuccessState() {
         CcdCallbackResponseDto responseDto = createNewBundleResponse();
-        when(defaultUpdateCaller.executeUpdate(
-            any(AutomatedCaseUpdater.class),
-            any(HttpServletRequest.class)
-        ))
+        when(defaultUpdateCaller.executeUpdate(any(AutomatedCaseUpdater.class), any(HttpServletRequest.class)))
             .thenReturn(ResponseEntity.ok(responseDto));
     }
 }
