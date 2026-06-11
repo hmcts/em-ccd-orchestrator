@@ -77,6 +77,8 @@ em-rpa-stitching-api:
   resource: '/api/document-tasks'
 
 idam:
+  api:
+    url: ${IDAM_API_BASE_URI:http://localhost:5062}
   s2s-auth:
     url: ${S2S_BASE_URI:http://localhost:8489}
     totp_secret: ${S2S_KEY}
