@@ -1,21 +1,16 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.notification;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
-import uk.gov.hmcts.reform.em.orchestrator.util.HttpOkResponseCloser;
 import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
+import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +21,7 @@ public class NotificationService {
     private String idamBaseUrl;
 
     private NotificationClient notificationClient;
-    private OkHttpClient http;
+    private IdamClient idamClient;
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
@@ -34,9 +29,9 @@ public class NotificationService {
 
     private final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
-    public NotificationService(NotificationClient notificationClient, OkHttpClient http) {
+    public NotificationService(NotificationClient notificationClient, IdamClient idamClient) {
         this.notificationClient = notificationClient;
-        this.http = http;
+        this.idamClient = idamClient;
     }
 
     public void sendEmailNotification(String templateId, String jwt,
@@ -66,28 +61,6 @@ public class NotificationService {
     }
 
     private String getUserEmail(String jwt) {
-        Response response = null;
-        try {
-            final Request request = new Request.Builder()
-                    .addHeader("authorization", jwt)
-                    .url(idamBaseUrl + IDAM_USER_DETAILS_ENDPOINT)
-                    .get()
-                    .build();
-
-
-            response = http.newCall(request).execute();
-
-            if (response.isSuccessful()) {
-                JsonNode userDetails = jsonMapper.readValue(response.body().byteStream(), JsonNode.class);
-                return userDetails.get("email").asText();
-            } else {
-                throw new CallbackException(500, response.body().string(), "Unable to retrieve user details");
-            }
-
-        } catch (IOException e) {
-            throw new CallbackException(500, null, String.format("IOException: %s", e.getMessage()));
-        } finally {
-            HttpOkResponseCloser.closeResponse(response);
-        }
+        return idamClient.getUserInfo(jwt).getSub();
     }
 }
