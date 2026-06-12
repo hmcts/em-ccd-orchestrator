@@ -49,9 +49,14 @@ public final class ProviderTestUtil {
 
         ObjectNode caseData = MAPPER.createObjectNode();
         caseData.put("caseTitle", "My Test Case");
-        ArrayNode caseBundles = caseData.putArray("caseBundles");
+        ObjectNode bundle = buildCcdBundle();
+        bundle.put("bundleHearingDate", "2000-01-31");
+        bundle.put("createdOn", "2020-10-06T18:54:48.785000");
+        bundle.put("stitchStatus", "stitchStatus");
+        bundle.set("stitchedDocument", buildCcdDocument());
 
-        caseBundles.add(MAPPER.createObjectNode().set("value", buildCcdBundle()));
+        ArrayNode caseBundles = caseData.putArray("caseBundles");
+        caseBundles.add(MAPPER.createObjectNode().set("value", bundle));
         response.setData(caseData);
         return response;
     }
@@ -82,6 +87,7 @@ public final class ProviderTestUtil {
         doc.put("document_binary_url", "http://dm-store:8080/documents/b9a3416c-66d4-4a24-9580-a631e78d1275/binary");
         doc.put("document_filename", "stitched.pdf");
         doc.put("document_hash", "sha256-c38944298e827135e533f7c4621d34b4139f408990c6d7a5a894769a6c9d7491");
+        doc.put("category_id", "categoryID");
         return doc;
     }
 

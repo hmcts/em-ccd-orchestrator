@@ -22,7 +22,8 @@ public final class ConsumerTestUtil {
             .stringType("document_url", "http://dm-store:8080/documents/b9a3416c-66d4-4a24-9580-a631e78d1275")
             .stringType("document_binary_url", "http://dm-store:8080/documents/b9a3416c-66d4-4a24-9580-a631e78d1275/binary")
             .stringType("document_filename", "stitched.pdf")
-            .stringType("document_hash", "sha256-c38944298e827135e533f7c4621d34b4139f408990c6d7a5a894769a6c9d7491");
+            .stringType("document_hash", "sha256-c38944298e827135e533f7c4621d34b4139f408990c6d7a5a894769a6c9d7491")
+            .stringType("category_id", "categoryID");
     }
 
     public static void buildCcdBundleDsl(LambdaDslObject bundle) {

@@ -69,7 +69,13 @@ class NewBundleConsumerTest extends BaseConsumerTest {
             buildCcdCallbackResponse(body, data -> {
                 data.stringType("caseTitle", "My Test Case");
                 data.eachLike("caseBundles", bundle ->
-                    bundle.object("value", ConsumerTestUtil::buildCcdBundleDsl)
+                    bundle.object("value", value -> {
+                        ConsumerTestUtil.buildCcdBundleDsl(value);
+                        value.stringType("bundleHearingDate", "2000-01-31");
+                        value.stringType("createdOn", "2020-10-06T18:54:48.785000");
+                        value.stringType("stitchStatus", "stitchStatus");
+                        value.object("stitchedDocument", ConsumerTestUtil::buildCcdDocumentDsl);
+                    })
                 );
             });
             body.numberType("documentTaskId", 12345L);
