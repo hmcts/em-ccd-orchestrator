@@ -186,12 +186,8 @@ dependencies {
 
 dependencyManagement {
     dependencies {
-        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.10'
-        dependencySet(group: 'com.fasterxml.jackson.core', version: versions.fasterXmlJackson) {
-            entry 'jackson-databind'
-            entry 'jackson-core'
-            entry 'jackson-annotations'
-        }
+        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.0'
+        dependency "com.fasterxml.jackson.core:jackson-databind:${versions.fasterXmlJackson}"
         dependencySet(group: 'org.junit.platform', version: '6.1.0') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
