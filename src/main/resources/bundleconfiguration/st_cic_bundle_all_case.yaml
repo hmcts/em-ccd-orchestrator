@@ -128,44 +128,46 @@ folders:
                 filters:
                   - property: /documentLink/category_id
                     value: A
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: B
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: C
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: D
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: E
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: L
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: S
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: TD
-      - type: documentSet
-        property: /furtherCaseDocuments
-        filters:
-          - property: /documentLink/category_id
-            value: TG
+      - name: Other
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: B
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: E
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: L
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: S
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TD
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
 
