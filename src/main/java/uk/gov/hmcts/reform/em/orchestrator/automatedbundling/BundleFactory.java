@@ -43,6 +43,7 @@ public class BundleFactory {
         bundle.setEligibleForStitchingAsBoolean(false);
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
         bundle.setDocumentImage(configuration.documentImage);
+        bundle.setHasDocumentSubtitlesAsBoolean(configuration.hasDocumentSubtitles);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue,
             caseJson, configuration.documentLinkValue, configuration.customDocumentLinkValue,
