@@ -90,6 +90,7 @@ public class StitchingCompleteCallbackController {
             triggerId != null ? triggerId.replaceAll(regex, "_") : null,
             taskState != null ? taskState.toString().replaceAll(regex, "_") : null);
 
+
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
                 new StitchingCompleteCallbackDto(
@@ -124,6 +125,9 @@ public class StitchingCompleteCallbackController {
         } catch (CallbackException e) {
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
             return ResponseEntity.status(e.getHttpStatus()).body(e);
+        } catch (Exception e) {
+            log.error("ERROR in callback: ", e);
+            throw e;
         }
     }
 }
