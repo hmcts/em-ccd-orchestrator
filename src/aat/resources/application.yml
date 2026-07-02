@@ -34,7 +34,7 @@ test:
 
 idam:
   api:
-    url: ${IDAM_API_BASE_URI:http://localhost:5062}
+    url: ${TEST_IDAM_API_BASE_URI:http://localhost:5062}
   client:
     id: ${OAUTH_CLIENT:webshow}
     secret: ${FUNCTIONAL_TEST_CLIENT_OAUTH_SECRET:AAAAAAAAAAAAAAAA}
