@@ -509,17 +509,25 @@ public class TestUtil {
 
         Callable<Response> responseCallable = () -> requestSpecification.get(stitchingBaseUrl
             + stitchingResource + "/" + documentTaskId);
+
         Predicate<Response> responsePredicate = response -> {
+            if (response.statusCode() != 200) {
+                return false;
+            }
+
             final JsonPath jsonPath = response.body().jsonPath();
             final String taskState = jsonPath.getString("taskState");
-            return !taskState.equals(TaskState.NEW.toString())
+
+            return taskState != null
+                && !taskState.equals(TaskState.NEW.toString())
                 && !taskState.equals(TaskState.IN_PROGRESS.toString());
         };
 
         try {
-            Awaitility.await().pollInterval(SLEEP_TIME, MILLISECONDS)
+            Awaitility.await().ignoreExceptions().pollInterval(SLEEP_TIME, MILLISECONDS)
                     .atMost(RETRY_COUNT * (long) SLEEP_TIME, MILLISECONDS)
                 .until(responseCallable, responsePredicate);
+
             return responseCallable.call().then();
         } catch (Exception e) {
             throw new StitchingTaskMaxRetryException(String.valueOf(documentTaskId));
