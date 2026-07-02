@@ -67,7 +67,7 @@ public class TestUtil {
     public static final String PUBLICLAW = "PUBLICLAW";
     public static final String BUNDLE_DESCRIPTION = "Test bundle";
     public static final String BUNDLE_TITLE = "Bundle title";
-    private static final int RETRY_COUNT = 6;
+    private static final int RETRY_COUNT = 15;
     private static final int SLEEP_TIME = 2000;
 
     private String idamAuth;
