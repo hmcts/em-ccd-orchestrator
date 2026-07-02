@@ -83,8 +83,12 @@ public class StitchingCompleteCallbackController {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
+        String regex = "[\r\n]";
         log.info("starting callback for caseid {}, bundleid {}, triggerid {}, taskstate {}",
-            caseId, bundleId, triggerId, taskState);
+            caseId != null ? caseId.replaceAll(regex, "_") : null,
+            bundleId != null ? bundleId.replaceAll(regex, "_") : null,
+            triggerId != null ? triggerId.replaceAll(regex, "_") : null,
+            taskState != null ? taskState.toString().replaceAll(regex, "_") : null);
 
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
