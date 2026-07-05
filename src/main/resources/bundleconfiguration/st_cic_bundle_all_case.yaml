@@ -77,261 +77,213 @@ folders:
             value: TG
   - name: Further Documents
     folders:
-      - name: A Docs
-        folders:
-          - name: Application Form
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: First decision
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: Application for review
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: Review decision
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: Notice of appeal
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: Evidence/correspondence from the Appellant
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-          - name: Correspondence from the CICA
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: A
-      - name: Direction / decision notes
-        folders:
-          - name: Direction / decision notes
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TD
-      - name: Police Evidence
-        folders:
-          - name: Police Evidence
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: B
-      - name: Medical records
-        folders:
-          - name: GP records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: C
-          - name: Hospital records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: C
-          - name: Mental Health records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: C
-          - name: Expert evidence
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: C
-          - name: Other medical records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: C
-      - name: Financial records
-        folders:
-          - name: DWP records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-          - name: HMRC records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-          - name: Employment records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-          - name: Schedule of Loss
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-          - name: Counter Schedule
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-          - name: Other
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: D
-      - name: Other evidence
-        folders:
-          - name: Care plan
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: E
-          - name: Local Authority/care records
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: E
-          - name: Other
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: E
-      - name: Linked documents
-        folders:
-          - name: Linked docs
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: L
-      - name: Witness Statements
-        folders:
-          - name: Witness Statement
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: S
-      - name: General evidence
-        folders:
-          - name: Application for an extension of time
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TG
-          - name: Application for a postponement
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TG
-          - name: Submission from appellant
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TG
-          - name: Submission from respondent
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TG
-          - name: Other
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: TG
-      - name: Correspondence documents
+      - name: Application Form
         documents:
           - type: documentSet
             property: /furtherCaseDocuments
             filters:
               - property: /documentLink/category_id
-                value: Correspondence
-      - name: DSS
-        folders:
-          - name: DSS Tribunal form uploaded documents
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: DSS
-          - name: DSS Supporting uploaded documents
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: DSS
-          - name: DSS Other information documents
-            documents:
-              - type: documentSet
-                property: /furtherCaseDocuments
-                filters:
-                  - property: /documentLink/category_id
-                    value: DSS
+                value: A
+      - name: First decision
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Application for review
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Review decision
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Notice of appeal
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Evidence/correspondence from the Appellant
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Correspondence from the CICA
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: A
+      - name: Direction / decision notes
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TD
+      - name: Police Evidence
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: B
+      - name: GP records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+      - name: Hospital records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+      - name: Mental Health records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+      - name: Expert evidence
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+      - name: Other medical records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: C
+      - name: DWP records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: HMRC records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: Employment records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: Schedule of Loss
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: Counter Schedule
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: Other
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: D
+      - name: Care plan
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: E
+      - name: Local Authority/care records
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: E
+      - name: Other
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: E
+      - name: Linked docs
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: L
+      - name: Witness Statement
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: S
+      - name: Application for an extension of time
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
+      - name: Application for a postponement
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
+      - name: Submission from appellant
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
+      - name: Submission from respondent
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
+      - name: Other
+        documents:
+          - type: documentSet
+            property: /furtherCaseDocuments
+            filters:
+              - property: /documentLink/category_id
+                value: TG
