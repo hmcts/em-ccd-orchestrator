@@ -288,6 +288,45 @@ class CcdStitchScenariosTest extends BaseTest {
                 .body(ERRORS_0, notNullValue());
     }
 
+    @Test
+    void testWithoutDocumentSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasDocumentSubtitles(CcdBoolean.No);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postStitchCCDBundle(wrappedJson);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("No"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+    }
+
+    @Test
+    void testPostAsyncBundleStitchWithoutDocumentSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasDocumentSubtitles(CcdBoolean.No);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+
+        response = testUtil.poll(documentTaskId);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
+            .body("bundle.hasDocumentSubtitles", equalTo(false))
+            .body("bundle.stitchedDocumentURI", notNullValue());
+    }
+
     private ValidatableResponse postStitchCCDBundle(String wrappedJson) {
         return testUtil
                 .authRequest()
