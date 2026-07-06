@@ -14,7 +14,9 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StitchingDTOMapperTest {
 
@@ -190,6 +192,39 @@ class StitchingDTOMapperTest {
         StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
 
         assertEquals(false, stitchingBundleDTO.getEnableEmailNotification());
+    }
+
+    @Test
+    void testHasDocumentSubtitlesDefaultToTrueWhenNull() {
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        bundleDTO.setHasDocumentSubtitles(null);
+
+        StitchingDTOMapper mapper = new StitchingDTOMapper();
+        StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
+
+        assertTrue(stitchingBundleDTO.getHasDocumentSubtitles());
+    }
+
+    @Test
+    void testHasDocumentSubtitlesYes() {
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        bundleDTO.setHasDocumentSubtitles(CcdBoolean.Yes);
+
+        StitchingDTOMapper mapper = new StitchingDTOMapper();
+        StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
+
+        assertTrue(stitchingBundleDTO.getHasDocumentSubtitles());
+    }
+
+    @Test
+    void testHasDocumentSubtitlesNo() {
+        CcdBundleDTO bundleDTO = new CcdBundleDTO();
+        bundleDTO.setHasDocumentSubtitles(CcdBoolean.No);
+
+        StitchingDTOMapper mapper = new StitchingDTOMapper();
+        StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
+
+        assertFalse(stitchingBundleDTO.getHasDocumentSubtitles());
     }
 
     private CcdBundleFolderDTO getFolder(int index) {
