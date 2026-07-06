@@ -83,14 +83,6 @@ public class StitchingCompleteCallbackController {
         String jwt = request.getHeader("authorization");
         TaskState taskState = documentTaskDTO.getTaskState();
 
-        String regex = "[\r\n]";
-        log.info("starting callback for caseid {}, bundleid {}, triggerid {}, taskstate {}",
-            caseId != null ? caseId.replaceAll(regex, "_") : null,
-            bundleId != null ? bundleId.replaceAll(regex, "_") : null,
-            triggerId != null ? triggerId.replaceAll(regex, "_") : null,
-            taskState != null ? taskState.toString().replaceAll(regex, "_") : null);
-
-
         try {
             StitchingCompleteCallbackDto stitchingCompleteCallbackDto =
                 new StitchingCompleteCallbackDto(
@@ -125,9 +117,6 @@ public class StitchingCompleteCallbackController {
         } catch (CallbackException e) {
             log.error(String.format("Unsuccessful callback: %s", e.toString()));
             return ResponseEntity.status(e.getHttpStatus()).body(e);
-        } catch (Exception e) {
-            log.error("ERROR in callback: ", e);
-            throw e;
         }
     }
 }
