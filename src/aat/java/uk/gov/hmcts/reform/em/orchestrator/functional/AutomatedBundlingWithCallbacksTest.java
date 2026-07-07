@@ -81,7 +81,8 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
     @Test
     void testAsyncStitchingWithSubtitlesDisabled() throws JsonProcessingException {
         String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
-        String documentString = extendedCcdHelper.getCcdDocumentJson("Document With Outlines", uploadedUrl, "hundred-page.pdf");
+        String documentString = extendedCcdHelper.getCcdDocumentJson(
+            "Document With Outlines", uploadedUrl, "hundred-page.pdf");
 
         String caseId = extendedCcdHelper.createCase(
             documentString,
