@@ -12,4 +12,14 @@
         <gav regex="true">^org\.jetbrains\.kotlin:kotlin-stdlib:.*$</gav>
         <cve>CVE-2026-53914</cve>
     </suppress>
+    <suppress>
+        <notes>CVE-2026-54399 and CVE-2026-54428 - no fix available in httpcore 4.x. Latest version 4.4.16 is affected.</notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpcore@.*$</packageUrl>
+        <cve>CVE-2026-54399</cve>
+    </suppress>
+    <suppress>
+        <notes>CVE-2026-54399 and CVE-2026-54428 - no fix available in httpcore 4.x. Latest version 4.4.16 is affected.</notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpcore@.*$</packageUrl>
+        <cve>CVE-2026-54428</cve>
+    </suppress>
 </suppressions>
