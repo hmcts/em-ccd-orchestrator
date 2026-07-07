@@ -12,4 +12,9 @@
         <gav regex="true">^org\.jetbrains\.kotlin:kotlin-stdlib:.*$</gav>
         <cve>CVE-2026-53914</cve>
     </suppress>
+    <suppress until="2026-10-07Z">
+        <gav regex="true">^org\.apache\.httpcomponents:httpcore:.*$</gav>
+        <cve>CVE-2026-54399</cve>
+        <cve>CVE-2026-54428</cve>
+    </suppress>
 </suppressions>
