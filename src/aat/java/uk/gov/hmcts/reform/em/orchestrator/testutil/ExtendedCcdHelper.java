@@ -53,7 +53,7 @@ public class ExtendedCcdHelper {
             "caseDescription": null,
             "caseComments": null,
             "caseDocuments": [%s],
-            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+            "bundleConfiguration": "%s"
           }""";
     public static final String CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE = """
         {
@@ -112,12 +112,26 @@ public class ExtendedCcdHelper {
 
     public CaseDetails createCase(String documents) throws JsonProcessingException {
         return ccdDataHelper.createCase(
-                bundleTesterUser,
-                testUserPassword,
-                "PUBLICLAW",
-                getEnvCcdCaseTypeId(),
-                "createCase",
-                objectMapper.readTree(String.format(CREATE_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents))
+            bundleTesterUser,
+            testUserPassword,
+            "PUBLICLAW",
+            getEnvCcdCaseTypeId(),
+            "createCase",
+            objectMapper.readTree(String.format(CREATE_AUTOMATED_BUNDLING_CASE_TEMPLATE,
+                documents, "testbundleconfiguration/f-tests-1-flat-docs.yaml"))
+        );
+    }
+
+
+    public CaseDetails createCase(String documents, String bundleConfiguration) throws JsonProcessingException {
+        return ccdDataHelper.createCase(
+            bundleTesterUser,
+            testUserPassword,
+            "PUBLICLAW",
+            getEnvCcdCaseTypeId(),
+            "createCase",
+            objectMapper.readTree(String.format(CREATE_AUTOMATED_BUNDLING_CASE_TEMPLATE,
+                documents, bundleConfiguration))
         );
     }
 

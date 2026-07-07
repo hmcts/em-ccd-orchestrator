@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,5 +76,33 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         assertEquals("FAILED", caseJson.findPath(STITCH_STATUS).asText());
         assertEquals("Error converting document: my doc text with file type: text/csv",
             caseJson.findPath("stitchingFailureMessage").asText());
+    }
+
+    @Test
+    void testAsyncStitchingWithSubtitlesDisabled() throws JsonProcessingException {
+        String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
+        String documentString = extendedCcdHelper.getCcdDocumentJson("Document With Outlines", uploadedUrl, "hundred-page.pdf");
+
+        String caseId = extendedCcdHelper.createCase(
+            documentString,
+            "testbundleconfiguration/f-tests-14-subtitles-off.yaml"
+        ).getId().toString();
+
+        extendedCcdHelper.triggerEvent(caseId, "createBundle");
+
+        Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+            .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
+                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+                return !caseJson.findPath(STITCH_STATUS).asText().equals("NEW");
+            });
+        JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+        if (caseJson.findPath(STITCH_STATUS).asText().equals("NEW")) {
+            fail("Status was not retrieved.");
+        }
+
+        assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
+        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+
+        assertEquals("No", caseJson.findPath("hasDocumentSubtitles").asText());
     }
 }
