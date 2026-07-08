@@ -67,7 +67,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
 
@@ -105,7 +105,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         CcdBundleDTO bundle = factory.create(configuration, emptyJson);
 
@@ -136,7 +136,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case1Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -169,7 +169,7 @@ class BundleFactoryTest {
             null,
             true,
             "/customDocumentLink",
-            true);
+            false);
 
         JsonNode json = mapper.readTree(customCaseJson);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -205,7 +205,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         try {
             JsonNode json = mapper.readTree(customCaseJson);
@@ -241,7 +241,7 @@ class BundleFactoryTest {
             null,
             true,
             "/customDocumentLink",
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case1Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -274,7 +274,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case2Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -308,7 +308,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case7Json);
         assertThrows(BundleException.class, () -> factory.create(configuration, json));
@@ -341,7 +341,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case3Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -378,7 +378,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case3Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -412,7 +412,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case4Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -449,7 +449,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case2Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -486,7 +486,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case2Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -523,7 +523,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case5Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -560,7 +560,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case3Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -597,7 +597,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case4Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -643,7 +643,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         JsonNode json = mapper.readTree(case4Json);
         CcdBundleDTO bundle = factory.create(configuration, json);
@@ -682,7 +682,7 @@ class BundleFactoryTest {
             "/document",
             false,
             null,
-            true);
+            false);
 
 
         JsonNode json = mapper.readTree(case6Json);
@@ -721,7 +721,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         ObjectNode caseData = JsonNodeFactory.instance.objectNode();
         ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
@@ -760,7 +760,7 @@ class BundleFactoryTest {
             null,
             false,
             null,
-            true);
+            false);
 
         ObjectNode caseData = JsonNodeFactory.instance.objectNode();
         ObjectNode objectNode = JsonNodeFactory.instance.objectNode();

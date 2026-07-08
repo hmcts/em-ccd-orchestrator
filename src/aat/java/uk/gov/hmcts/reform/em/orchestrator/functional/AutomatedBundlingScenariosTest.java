@@ -642,7 +642,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
-    void testBundleWithDocumentSubtitlesOff() throws IOException {
+    void testBundleWithDocumentSubtitlesOn() throws IOException {
         String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
         json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-14-subtitles-off.yaml");
         json = findDocumentUrl(json);
@@ -653,7 +653,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
             .assertThat().log().all()
             .statusCode(200)
             .body("data.caseBundles[0].value.documents", hasSize(1))
-            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("No"));
+            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("Yes"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
         final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);

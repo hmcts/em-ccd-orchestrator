@@ -195,14 +195,14 @@ class StitchingDTOMapperTest {
     }
 
     @Test
-    void testHasDocumentSubtitlesDefaultToTrueWhenNull() {
+    void testHasDocumentSubtitlesDefaultToFalseWhenNull() {
         CcdBundleDTO bundleDTO = new CcdBundleDTO();
         bundleDTO.setHasDocumentSubtitles(null);
 
         StitchingDTOMapper mapper = new StitchingDTOMapper();
         StitchingBundleDTO stitchingBundleDTO = mapper.toStitchingDTO(bundleDTO);
 
-        assertTrue(stitchingBundleDTO.getHasDocumentSubtitles());
+        assertFalse(stitchingBundleDTO.getHasDocumentSubtitles());
     }
 
     @Test

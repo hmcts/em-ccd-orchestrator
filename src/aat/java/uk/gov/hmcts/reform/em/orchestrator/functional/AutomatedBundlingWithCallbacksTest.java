@@ -79,7 +79,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
     }
 
     @Test
-    void testAsyncStitchingWithSubtitlesDisabled() throws JsonProcessingException {
+    void testAsyncStitchingWithSubtitlesEnabled() throws JsonProcessingException {
         String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
         String documentString = extendedCcdHelper.getCcdDocumentJson(
             "Document With Outlines", uploadedUrl, "hundred-page.pdf");
@@ -104,6 +104,6 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
         assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
 
-        assertEquals("No", caseJson.findPath("hasDocumentSubtitles").asText());
+        assertEquals("Yes", caseJson.findPath("hasDocumentSubtitles").asText());
     }
 }

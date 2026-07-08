@@ -289,9 +289,9 @@ class CcdStitchScenariosTest extends BaseTest {
     }
 
     @Test
-    void testWithoutDocumentSubtitles() throws IOException {
+    void testWithDocumentSubtitles() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
-        bundle.setHasDocumentSubtitles(CcdBoolean.No);
+        bundle.setHasDocumentSubtitles(CcdBoolean.Yes);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
@@ -302,14 +302,14 @@ class CcdStitchScenariosTest extends BaseTest {
             .assertThat().log().all()
             .statusCode(200)
             .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("No"))
+            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("Yes"))
             .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
     }
 
     @Test
-    void testPostAsyncBundleStitchWithoutDocumentSubtitles() throws IOException {
+    void testPostAsyncBundleStitchWithDocumentSubtitles() throws IOException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
-        bundle.setHasDocumentSubtitles(CcdBoolean.No);
+        bundle.setHasDocumentSubtitles(CcdBoolean.Yes);
 
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
@@ -323,7 +323,7 @@ class CcdStitchScenariosTest extends BaseTest {
             .assertThat().log().all()
             .statusCode(200)
             .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
-            .body("bundle.hasDocumentSubtitles", equalTo(false))
+            .body("bundle.hasDocumentSubtitles", equalTo(true))
             .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
