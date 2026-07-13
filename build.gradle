@@ -38,11 +38,11 @@ def versions = [
         serenity           : '5.3.10',
         pact_version       : '4.7.3',
         mockito            : '5.23.0',
-        jupiter            : '6.1.1',
+        jupiter            : '6.1.2',
         poi                : '5.5.1',
         springSecurity     : '6.5.11',
         okhttp3            : '5.4.0',
-        fasterXmlJackson   : '2.22.0'
+        fasterXmlJackson   : '2.22.1'
 ]
 sourceSets {
     aat {
@@ -187,11 +187,11 @@ dependencies {
 dependencyManagement {
     dependencies {
         dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.0'
-        dependencySet(group: 'org.junit.platform', version: '6.1.1') {
+        dependencySet(group: 'org.junit.platform', version: '6.1.2') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
         }
-        dependencySet(group: 'org.apache.tomcat.embed', version: '11.0.23') {
+        dependencySet(group: 'org.apache.tomcat.embed', version: '11.0.24') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
@@ -207,7 +207,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '13.7.0'
+    toolVersion = '13.8.0'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
