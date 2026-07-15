@@ -29,7 +29,7 @@ public class StitchingBundleDTO implements Serializable {
     private boolean hasTableOfContents;
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
-    private boolean hasDocumentSubtitles = true;
+    private boolean hasDocumentSubtitles = false;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
 
