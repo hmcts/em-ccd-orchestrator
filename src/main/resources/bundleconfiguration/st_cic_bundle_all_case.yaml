@@ -5,6 +5,7 @@ coverpageTemplate: ST-CIC-ASS-ENG-Cover-Page.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: true
+hasDocumentSubtitles: true
 pageNumberFormat: pageRange
 documentNameValue: /documentLink/document_filename
 paginationStyle: topRight
