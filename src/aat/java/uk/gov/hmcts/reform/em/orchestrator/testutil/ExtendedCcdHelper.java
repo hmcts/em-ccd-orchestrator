@@ -63,7 +63,7 @@ public class ExtendedCcdHelper {
             "caseDescription": null,
             "caseComments": null,
             "caseDocuments": %s,
-            "bundleConfiguration": "f-tests-1-flat-docs.yaml"
+            "bundleConfiguration": "testbundleconfiguration/f-tests-1-flat-docs.yaml"
           }""";
     public static final String DOCUMENT_TEMPLATE = """
         {
