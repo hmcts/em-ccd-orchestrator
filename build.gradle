@@ -35,7 +35,7 @@ application {
 }
 
 def versions = [
-        serenity           : '5.3.10',
+        serenity           : '5.3.11',
         pact_version       : '4.7.3',
         mockito            : '5.23.0',
         jupiter            : '6.1.2',
@@ -186,7 +186,7 @@ dependencies {
 
 dependencyManagement {
     dependencies {
-        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.0'
+        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.10'
         dependencySet(group: 'org.junit.platform', version: '6.1.2') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
