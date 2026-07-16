@@ -644,7 +644,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     @Test
     void testBundleWithDocumentSubtitlesOn() throws IOException {
         String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
-        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-14-subtitles-off.yaml");
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-14-subtitles-on.yaml");
         json = findDocumentUrl(json);
 
         final ValidatableResponse response = postNewBundle(json);

@@ -86,7 +86,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
 
         String caseId = extendedCcdHelper.createCase(
             documentString,
-            "testbundleconfiguration/f-tests-14-subtitles-off.yaml"
+            "testbundleconfiguration/f-tests-14-subtitles-on.yaml"
         ).getId().toString();
 
         extendedCcdHelper.triggerEvent(caseId, "createBundle");
