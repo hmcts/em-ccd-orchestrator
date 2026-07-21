@@ -38,6 +38,8 @@ public class CcdBundleDTO implements Serializable {
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private CcdBoolean hasDocumentSubtitles;
     private String stitchStatus;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
@@ -211,6 +213,29 @@ public class CcdBundleDTO implements Serializable {
     public void setHasFolderCoversheetsAsBoolean(boolean hasFolderCoversheets) {
         this.hasFolderCoversheets = hasFolderCoversheets ? CcdBoolean.Yes : CcdBoolean.No;
     }
+
+    public CcdBoolean getHasDocumentSubtitles() {
+        return hasDocumentSubtitles;
+    }
+
+    public void setHasDocumentSubtitles(CcdBoolean hasDocumentSubtitles) {
+        this.hasDocumentSubtitles = hasDocumentSubtitles;
+    }
+
+    @JsonIgnore
+    public void setHasDocumentSubtitlesAsBoolean(Boolean hasDocumentSubtitles) {
+        if (hasDocumentSubtitles == null) {
+            this.hasDocumentSubtitles = null;
+        } else {
+            this.hasDocumentSubtitles = hasDocumentSubtitles ? CcdBoolean.Yes : CcdBoolean.No;
+        }
+    }
+
+    @JsonIgnore
+    public Boolean getHasDocumentSubtitlesAsBoolean() {
+        return hasDocumentSubtitles != null ? hasDocumentSubtitles == CcdBoolean.Yes : null;
+    }
+
 
     public CcdBundlePaginationStyle getPaginationStyle() {
         return paginationStyle;

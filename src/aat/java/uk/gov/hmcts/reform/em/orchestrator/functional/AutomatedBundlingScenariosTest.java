@@ -642,6 +642,30 @@ class AutomatedBundlingScenariosTest extends BaseTest {
     }
 
     @Test
+    void testBundleWithDocumentSubtitlesOn() throws IOException {
+        String json = TestUtil.readFile(SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH);
+        json = json.replace(CONFIGURATION_FILE, "testbundleconfiguration/f-tests-14-subtitles-on.yaml");
+        json = findDocumentUrl(json);
+
+        final ValidatableResponse response = postNewBundle(json);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("data.caseBundles[0].value.documents", hasSize(1))
+            .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("Yes"));
+
+        long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
+        final ValidatableResponse pollResponse = testUtil.poll(documentTaskId);
+
+        pollResponse
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(BUNDLE_BUNDLE_TITLE, equalTo("Functional tests bundle 14"))
+            .body(BUNDLE_STITCHED_DOCUMENT_URI, notNullValue());
+    }
+
+    @Test
     void shouldReturn401WhenUnAuthenticatedUserCreateBundle() {
         unAuthenticatedRequest
                 .body(validJson)

@@ -518,7 +518,7 @@ public class TestUtil {
 
         try {
             Awaitility.await().pollInterval(SLEEP_TIME, MILLISECONDS)
-                    .atMost(RETRY_COUNT * (long) SLEEP_TIME, MILLISECONDS)
+                .atMost(RETRY_COUNT * (long) SLEEP_TIME, MILLISECONDS)
                 .until(responseCallable, responsePredicate);
             return responseCallable.call().then();
         } catch (Exception e) {
