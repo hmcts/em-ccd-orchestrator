@@ -5,6 +5,7 @@ coverpageTemplate: TB-SCS-LET-ENG-Cover-Letter-IB.docx
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: false
+hasDocumentSubtitles: true
 pageNumberFormat: numberOfPages
 documentNameValue: /documentFileName
 customDocument: true
