@@ -181,7 +181,7 @@ dependencies {
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
 
-    aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'3.1.0'
+    aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version:'3.1.1'
 }
 
 dependencyManagement {
