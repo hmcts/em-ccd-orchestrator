@@ -57,6 +57,16 @@ folders:
         filters:
           - property: /tag
             value: adaSuitability
+      - type: documentSet
+        property: /tribunalDocuments
+        filters:
+          - property: /tag
+            value: stf24WeeksRemovalDecisionDocument
+      - type: documentSet
+        property: /tribunalDocuments
+        filters:
+          - property: /tag
+            value: stf24WeeksRemovalRefusedDecisionDocument
   - name: Appellant evidence after the hearing bundle
     documents:
       - type: documentSet
