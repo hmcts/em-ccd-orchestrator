@@ -122,4 +122,7 @@ folders:
         filters:
           - property: /documentLink/category_id
             value: TG
-
+  - name: Audio/video evidence documents
+    documents:
+      - type: document
+        property: /audioVideoEvidenceBundleDocument
