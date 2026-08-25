@@ -44,6 +44,8 @@ public class BundleFactory {
         bundle.setEnableEmailNotificationAsBoolean(configuration.enableEmailNotification);
         bundle.setDocumentImage(configuration.documentImage);
         bundle.setHasDocumentSubtitlesAsBoolean(configuration.hasDocumentSubtitles);
+        bundle.setHasDocumentOutlineSubtitlesAsBoolean(configuration.hasDocumentOutlineSubtitles);
+        bundle.setHasTableOfContentsSubtitlesAsBoolean(configuration.hasTableOfContentsSubtitles);
 
         addFolders(configuration.folders, bundle.getFolders(), configuration.sortOrder, configuration.documentNameValue,
             caseJson, configuration.documentLinkValue, configuration.customDocumentLinkValue,
@@ -89,11 +91,11 @@ public class BundleFactory {
 
         for (BundleConfigurationDocumentSelector selector : sourceDocuments) {
             List<CcdValue<CcdBundleDocumentDTO>> documents =
-                    selector instanceof BundleConfigurationDocument bundleConfigurationDocument
-                ? addDocument(bundleConfigurationDocument, sortOrder, documentNameValue, caseData,
-                documentLinkValue, customDocumentLinkValue, customDocument)
-                : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
-                documentLinkValue, customDocumentLinkValue, customDocument);
+                selector instanceof BundleConfigurationDocument bundleConfigurationDocument
+                    ? addDocument(bundleConfigurationDocument, sortOrder, documentNameValue, caseData,
+                    documentLinkValue, customDocumentLinkValue, customDocument)
+                    : addDocumentSet((BundleConfigurationDocumentSet) selector, sortOrder, documentNameValue, caseData,
+                    documentLinkValue, customDocumentLinkValue, customDocument);
 
             destinationDocuments.addAll(documents);
         }
@@ -108,11 +110,11 @@ public class BundleFactory {
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocument(
-            BundleConfigurationDocument documentSelector,
-            BundleConfigurationSort sortOrder,
-            String documentNameValue,
-            JsonNode caseData, String documentLinkValue,
-            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+        BundleConfigurationDocument documentSelector,
+        BundleConfigurationSort sortOrder,
+        String documentNameValue,
+        JsonNode caseData, String documentLinkValue,
+        String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         ArrayList<CcdValue<CcdBundleDocumentDTO>> list = new ArrayList<>();
         JsonNode node = caseData.at(documentSelector.property);
@@ -133,10 +135,10 @@ public class BundleFactory {
 
     @SuppressWarnings("java:S2139")
     private CcdValue<CcdBundleDocumentDTO> getDocumentFromNode(
-            JsonNode node,
-            BundleConfigurationSort sortOrder,
-            String documentNameValue, String documentLinkValue,
-            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+        JsonNode node,
+        BundleConfigurationSort sortOrder,
+        String documentNameValue, String documentLinkValue,
+        String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         CcdDocument sourceDocument = new CcdDocument();
 
@@ -189,11 +191,11 @@ public class BundleFactory {
     }
 
     private List<CcdValue<CcdBundleDocumentDTO>> addDocumentSet(
-            BundleConfigurationDocumentSet documentSelector,
-            BundleConfigurationSort sortOrder,
-            String documentNameValue,
-            JsonNode caseData, String documentLinkValue,
-            String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
+        BundleConfigurationDocumentSet documentSelector,
+        BundleConfigurationSort sortOrder,
+        String documentNameValue,
+        JsonNode caseData, String documentLinkValue,
+        String customDocumentLinkValue, boolean customDocument) throws DocumentSelectorException {
 
         JsonNode list = caseData.at(documentSelector.property);
 
@@ -207,20 +209,20 @@ public class BundleFactory {
 
         try {
             return StreamSupport
-                    .stream(list.spliterator(), true)
-                    .map(n -> n.at("/value"))
-                    .filter(n -> anyFilterMatches(documentSelector.filters, n))
-                    .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
-                            customDocumentLinkValue, customDocument))
-                    .toList();
+                .stream(list.spliterator(), true)
+                .map(n -> n.at("/value"))
+                .filter(n -> anyFilterMatches(documentSelector.filters, n))
+                .map(node -> this.getDocumentFromNode(node, sortOrder, documentNameValue, documentLinkValue,
+                    customDocumentLinkValue, customDocument))
+                .toList();
         } catch (Exception ex) {
             throw new BundleException(list,
-                    documentSelector.property,
-                    documentNameValue,
-                    documentLinkValue,
-                    customDocumentLinkValue,
-                    customDocument,
-                    ex);
+                documentSelector.property,
+                documentNameValue,
+                documentLinkValue,
+                customDocumentLinkValue,
+                customDocument,
+                ex);
         }
     }
 

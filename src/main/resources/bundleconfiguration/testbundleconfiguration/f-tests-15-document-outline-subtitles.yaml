@@ -1,0 +1,8 @@
+title: Functional tests bundle 15
+hasTableOfContents: true
+hasCoversheets: true
+hasFolderCoversheets: false
+hasDocumentOutlineSubtitles: true
+documents:
+  - type: document
+    property: /singleDocument

@@ -30,6 +30,8 @@ public class StitchingBundleDTO implements Serializable {
     private boolean hasCoversheets;
     private boolean hasFolderCoversheets;
     private boolean hasDocumentSubtitles = false;
+    private boolean hasDocumentOutlineSubtitles = false;
+    private boolean hasTableOfContentsSubtitles = false;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
 
@@ -135,6 +137,22 @@ public class StitchingBundleDTO implements Serializable {
         this.hasDocumentSubtitles = hasDocumentSubtitles;
     }
 
+    public boolean getHasDocumentOutlineSubtitles() {
+        return hasDocumentOutlineSubtitles;
+    }
+
+    public void setHasDocumentOutlineSubtitles(boolean hasDocumentOutlineSubtitles) {
+        this.hasDocumentOutlineSubtitles = hasDocumentOutlineSubtitles;
+    }
+
+    public boolean getHasTableOfContentsSubtitles() {
+        return hasTableOfContentsSubtitles;
+    }
+
+    public void setHasTableOfContentsSubtitles(boolean hasTableOfContentsSubtitles) {
+        this.hasTableOfContentsSubtitles = hasTableOfContentsSubtitles;
+    }
+
     public CcdBundlePaginationStyle getPaginationStyle() {
         return paginationStyle;
     }
@@ -142,7 +160,7 @@ public class StitchingBundleDTO implements Serializable {
     public void setPaginationStyle(CcdBundlePaginationStyle paginationStyle) {
         this.paginationStyle = paginationStyle;
     }
-  
+
     public PageNumberFormat getPageNumberFormat() {
         return pageNumberFormat;
     }
@@ -183,4 +201,3 @@ public class StitchingBundleDTO implements Serializable {
         this.hashToken = hashToken;
     }
 }
-
