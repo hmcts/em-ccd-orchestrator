@@ -20,7 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @PactBroker(
     url = "${PACT_BROKER_FULL_URL:http://localhost:80}",
     providerBranch = "${pact.provider.branch}",
-    enablePendingPacts = "${pactbroker.enablePending:true}"
+    enablePendingPacts = "${pactbroker.enablePending:true}",
+    includeWipPactsSince = "2023-01-01"
 )
 public abstract class BaseProviderTest {
 
@@ -50,7 +51,9 @@ public abstract class BaseProviderTest {
     @PactBrokerConsumerVersionSelectors
     public static SelectorBuilder consumerVersionSelectors() {
         return new SelectorBuilder()
-            .branch("DTSCCI-5484");
+            .matchingBranch()
+            .mainBranch()
+            .deployedOrReleased();
     }
 
 }
