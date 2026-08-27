@@ -50,8 +50,7 @@ public abstract class BaseProviderTest {
     @PactBrokerConsumerVersionSelectors
     public static SelectorBuilder consumerVersionSelectors() {
         return new SelectorBuilder()
-            .matchingBranch()
-            .mainBranch()
-            .deployedOrReleased();
+            .branch("master");
     }
+
 }
