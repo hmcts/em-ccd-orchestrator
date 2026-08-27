@@ -263,6 +263,7 @@ def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CdamDetailsDto*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
+        '**uk/gov/hmcts/reform/em/orchestrator/health/**',
 ]
 
 jacocoTestReport {
