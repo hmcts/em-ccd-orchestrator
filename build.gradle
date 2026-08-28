@@ -207,7 +207,7 @@ dependencyManagement {
 
 checkstyle {
 //    ignoreFailures = true
-    toolVersion = '13.11.0'
+    toolVersion = '14.0.0'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
     getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
@@ -263,6 +263,7 @@ def coverageExclusionList = [
         '**uk/gov/hmcts/reform/em/orchestrator/service/dto/*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CdamDetailsDto*',
         '**uk/gov/hmcts/reform/em/orchestrator/service/ccdcallbackhandler/CcdCallbackResponseDto*',
+        '**uk/gov/hmcts/reform/em/orchestrator/health/**',
 ]
 
 jacocoTestReport {
