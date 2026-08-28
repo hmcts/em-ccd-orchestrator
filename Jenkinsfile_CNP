@@ -49,7 +49,6 @@ env.DM_STORE_APP_URL = 'http://dm-store-aat.service.core-compute-aat.internal'
 env.CCD_DEF_API = 'http://ccd-definition-store-api-aat.service.core-compute-aat.internal'
 env.CCD_DATA_API = 'http://ccd-data-store-api-aat.service.core-compute-aat.internal'
 env.CDAM_URL = 'http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
-env.EM_STITCHING_API_URL = 'https://em-stitching-pr-3422.preview.platform.hmcts.net'
 
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 env.PACT_BROKER_URL = "pact-broker.platform.hmcts.net"
