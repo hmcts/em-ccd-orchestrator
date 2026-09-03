@@ -1,8 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.em.orchestrator.config.JacksonMapperFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 class LocalConfigurationLoaderTest {
-    private final LocalConfigurationLoader loader = new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
+    private final LocalConfigurationLoader loader =
+            new LocalConfigurationLoader(JacksonMapperFactory.createYamlMapper());
 
     private static final String CUSTOM_DOCUMENT_LINK_VALUE_MISSING_MSG =
         "customDocumentLinkValue should be provided in testbundleconfiguration/custom-bundle-wrong-config.yaml "

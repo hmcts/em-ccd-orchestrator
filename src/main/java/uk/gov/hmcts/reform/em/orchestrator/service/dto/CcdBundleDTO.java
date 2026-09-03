@@ -3,9 +3,9 @@ package uk.gov.hmcts.reform.em.orchestrator.service.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.domain.enumeration.PageNumberFormat;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentImage;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO implements Serializable {

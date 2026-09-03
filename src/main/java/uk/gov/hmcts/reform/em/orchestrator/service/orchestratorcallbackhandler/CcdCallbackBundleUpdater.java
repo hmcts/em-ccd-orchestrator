@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 import java.util.stream.StreamSupport;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
+
 
 @Service
 public class CcdCallbackBundleUpdater {
@@ -80,7 +81,7 @@ public class CcdCallbackBundleUpdater {
             ccdBundleObjectNode.set("stitchingFailureMessage", updatedCcdBundle.get("stitchingFailureMessage"));
             ccdBundleObjectNode.set("stitchedDocument", updatedCcdBundle.get("stitchedDocument"));
             return ccdBundle;
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new CallbackException(400, null, String.format("Error processing JSON %s", e.getMessage()));
         }
 

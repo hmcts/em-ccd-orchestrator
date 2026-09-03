@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
@@ -34,6 +34,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DEFENDANT_
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DOCUMENT_TASK_ID;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH;
+
 
 class SecureAutomatedBundlingScenariosTest extends BaseTest {
 

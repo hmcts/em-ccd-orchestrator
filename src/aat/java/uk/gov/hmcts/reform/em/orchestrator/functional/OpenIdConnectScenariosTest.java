@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 public class OpenIdConnectScenariosTest extends BaseTest {
 
@@ -121,13 +122,13 @@ public class OpenIdConnectScenariosTest extends BaseTest {
 
     }
 
-    private String caseBundleJsonPayload() throws JsonProcessingException {
+    private String caseBundleJsonPayload() throws JacksonException {
         CcdBundleDTO bundle = testUtil.getTestBundle();
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         return String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);
     }
 
-    private String cdamBundleJsonPayload() throws JsonProcessingException {
+    private String cdamBundleJsonPayload() throws JacksonException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         String json = mapper.writeValueAsString(new CcdValue<>(bundle));
         String caseDetails = String.format("{ \"case_details\":{ \"case_data\":{ \"caseBundles\":[ %s ] } } }", json);

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.stitching;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -13,7 +12,9 @@ import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.em.orchestrator.config.JacksonMapperFactory;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdDocument;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.CdamDto;
@@ -28,6 +29,7 @@ import java.io.IOException;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
+
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */
@@ -37,7 +39,7 @@ public class StitchingService {
     private final Logger logger = LoggerFactory.getLogger(StitchingService.class);
 
     private static final int SLEEP_TIME = 1000;
-    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private final ObjectMapper jsonMapper = JacksonMapperFactory.createJsonMapper();
     private final StitchingDTOMapper dtoMapper;
     private final OkHttpClient http;
     private final String documentTaskEndpoint;
@@ -113,7 +115,7 @@ public class StitchingService {
                 throw new StitchingServiceException(
                         "Stitching failed: " + json.read("$.failureDescription"));
             }
-        } catch (IOException e) {
+        } catch (IOException | tools.jackson.core.JacksonException e) {
             logger.error(FAILURE_MSG,
                     StringUtilities.convertValidLog(cdamDto.getCaseId()),
                     StringUtilities.convertValidLog(e.getMessage())

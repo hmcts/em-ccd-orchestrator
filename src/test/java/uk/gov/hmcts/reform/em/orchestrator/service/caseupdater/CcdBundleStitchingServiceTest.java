@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -14,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+
 
 @ExtendWith(MockitoExtension.class)
 class CcdBundleStitchingServiceTest {
@@ -75,8 +76,10 @@ class CcdBundleStitchingServiceTest {
         ccdBundleStitchingService.updateCase(ccdCallbackDto);
 
         assertEquals(2, node.get("cb").size());
-        assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument").path("document_url").textValue());
-        assertNull(node.get("cb").get(1).path("value").path("stitchedDocument").path("document_url").textValue());
+        assertEquals("", node.get("cb").get(0).path("value").path("stitchedDocument")
+                .path("document_url").asString(""));
+        assertNull(node.get("cb").get(1).path("value").path("stitchedDocument")
+                .path("document_url").asString(null));
 
         Mockito.verify(stitchingService, Mockito.times(1))
                 .stitch(Mockito.any(CcdBundleDTO.class), Mockito.any(CdamDto.class));

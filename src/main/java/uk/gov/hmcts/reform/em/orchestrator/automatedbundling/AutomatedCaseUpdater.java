@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.ConfigurationLoader;
 import uk.gov.hmcts.reform.em.orchestrator.service.caseupdater.CcdCaseUpdater;
@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
@@ -110,9 +111,10 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
 
         } else if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
-            && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText().equals("null")) {
+                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isNull()
+                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isMissingNode()) {
 
-            bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asText());
+            bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asString());
         }
 
         if (CollectionUtils.isEmpty(bundleConfigurations)) {

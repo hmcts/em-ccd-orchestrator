@@ -1,18 +1,19 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class CcdBundleCloningService implements CcdCaseUpdater {
@@ -37,7 +38,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
                     processedBundles.addAll(processedBundleOrBundles);
                 }
                 return processedBundles;
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 return bundles;
             }
         });
@@ -50,7 +51,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         return ccdCallbackDto.getCaseData();
     }
 
-    private List<JsonNode> processBundle(JsonNode originalJson) throws IOException {
+    private List<JsonNode> processBundle(JsonNode originalJson) {
         List<JsonNode> returnList = new ArrayList<>();
 
         CcdBundleDTO originalBundle = bundleJsonToBundleDto(originalJson);
@@ -67,7 +68,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         return returnList;
     }
 
-    private JsonNode cloneBundle(JsonNode originalJson) throws IOException {
+    private JsonNode cloneBundle(JsonNode originalJson) {
         JsonNode unprocessedClonedJson = originalJson.deepCopy();
         CcdBundleDTO clonedBundle = bundleJsonToBundleDto(unprocessedClonedJson);
         clonedBundle.setTitle("CLONED_" + clonedBundle.getTitle());
@@ -75,7 +76,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
         return bundleDtoToBundleJson(clonedBundle);
     }
 
-    private CcdBundleDTO bundleJsonToBundleDto(JsonNode jsonNode) throws IOException {
+    private CcdBundleDTO bundleJsonToBundleDto(JsonNode jsonNode) {
         CcdValue<CcdBundleDTO> ccdValue = objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
         return ccdValue.getValue();
     }
@@ -98,7 +99,7 @@ public class CcdBundleCloningService implements CcdCaseUpdater {
                 } else {
                     reorderedBundles.add(objectMapper.convertValue(ccdBundleDTO, JsonNode.class));
                 }
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 return bundles;
             }
         }
