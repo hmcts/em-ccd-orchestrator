@@ -652,7 +652,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
         response
             .assertThat().log().all()
             .statusCode(200)
-            .body("data.caseBundles[0].value.documents", hasSize(1))
+            .body("data.caseBundles[0].value.documents", hasSize(4))
             .body("data.caseBundles[0].value.hasDocumentSubtitles", equalTo("Yes"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
@@ -676,7 +676,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
         response
             .assertThat().log().all()
             .statusCode(200)
-            .body("data.caseBundles[0].value.documents", hasSize(1))
+            .body("data.caseBundles[0].value.documents", hasSize(4))
             .body("data.caseBundles[0].value.hasDocumentOutlineSubtitles", equalTo("Yes"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
@@ -700,7 +700,7 @@ class AutomatedBundlingScenariosTest extends BaseTest {
         response
             .assertThat().log().all()
             .statusCode(200)
-            .body("data.caseBundles[0].value.documents", hasSize(1))
+            .body("data.caseBundles[0].value.documents", hasSize(4))
             .body("data.caseBundles[0].value.hasTableOfContentsSubtitles", equalTo("Yes"));
 
         long documentTaskId = response.extract().body().jsonPath().getLong(DOCUMENT_TASK_ID);
