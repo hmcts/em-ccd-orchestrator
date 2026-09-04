@@ -25,8 +25,8 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
 
     @Autowired
     protected AutomatedBundlingWithCallbacksTest(
-            TestUtil testUtil,
-            ExtendedCcdHelper extendedCcdHelper
+        TestUtil testUtil,
+        ExtendedCcdHelper extendedCcdHelper
     ) {
         super(testUtil, extendedCcdHelper);
     }
@@ -105,5 +105,63 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
 
         assertEquals("Yes", caseJson.findPath("hasDocumentSubtitles").asText());
+    }
+
+    @Test
+    void testAsyncStitchingWithDocumentOutlineSubtitlesEnabled() throws JsonProcessingException {
+        String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
+        String documentString = extendedCcdHelper.getCcdDocumentJson(
+            "Document With Outlines", uploadedUrl, "hundred-page.pdf");
+
+        String caseId = extendedCcdHelper.createCase(
+            documentString,
+            "testbundleconfiguration/f-tests-15-document-outline-subtitles.yaml"
+        ).getId().toString();
+
+        extendedCcdHelper.triggerEvent(caseId, "createBundle");
+
+        Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+            .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
+                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+                return !caseJson.findPath(STITCH_STATUS).asText().equals("NEW");
+            });
+        JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+        if (caseJson.findPath(STITCH_STATUS).asText().equals("NEW")) {
+            fail("Status was not retrieved.");
+        }
+
+        assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
+        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+
+        assertEquals("Yes", caseJson.findPath("hasDocumentOutlineSubtitles").asText());
+    }
+
+    @Test
+    void testAsyncStitchingWithTableOfContentsSubtitlesEnabled() throws JsonProcessingException {
+        String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
+        String documentString = extendedCcdHelper.getCcdDocumentJson(
+            "Document With Outlines", uploadedUrl, "hundred-page.pdf");
+
+        String caseId = extendedCcdHelper.createCase(
+            documentString,
+            "testbundleconfiguration/f-tests-16-toc-subtitles.yaml"
+        ).getId().toString();
+
+        extendedCcdHelper.triggerEvent(caseId, "createBundle");
+
+        Awaitility.await().pollInterval(1, TimeUnit.SECONDS)
+            .atMost(WAIT_SECONDS, TimeUnit.SECONDS).until(() -> {
+                JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+                return !caseJson.findPath(STITCH_STATUS).asText().equals("NEW");
+            });
+        JsonNode caseJson = extendedCcdHelper.getCase(caseId);
+        if (caseJson.findPath(STITCH_STATUS).asText().equals("NEW")) {
+            fail("Status was not retrieved.");
+        }
+
+        assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
+        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+
+        assertEquals("Yes", caseJson.findPath("hasTableOfContentsSubtitles").asText());
     }
 }
