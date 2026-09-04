@@ -16,9 +16,11 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.CONFIGURATION_FILE;
@@ -460,7 +462,9 @@ class SecureAutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body(ERRORS, contains("Could not find the property /documentLink/document_url in the node: "));
+                // Jackson 3 includes JsonNode.toString() after the prefix; assert prefix only.
+                .body(ERRORS, hasItem(startsWith(
+                        "Could not find the property /documentLink/document_url in the node: ")));
     }
 
     @Test
