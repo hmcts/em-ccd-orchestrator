@@ -169,8 +169,7 @@ dependencies {
     contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
 
     contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
-    contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
-    contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring7', version: versions.pact_version
     contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-webmvc-test'
 
 
@@ -417,11 +416,12 @@ pactPublish {
 }
 
 tasks.register('runAndPublishConsumerPactTests', Test) {
-    logger.lifecycle("Runs pact Tests")
+    logger.lifecycle("Runs consumer pact Tests")
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
     useJUnitPlatform()
+    include '**/consumer/**'
 }
 
 runAndPublishConsumerPactTests.dependsOn contract

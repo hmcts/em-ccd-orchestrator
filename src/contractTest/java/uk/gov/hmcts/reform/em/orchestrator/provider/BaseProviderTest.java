@@ -6,7 +6,7 @@ import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactBrokerConsumerVersionSelectors;
 import au.com.dius.pact.provider.junitsupport.loader.SelectorBuilder;
-import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
+import au.com.dius.pact.provider.spring.spring7.Spring7MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ public abstract class BaseProviderTest {
 
     @BeforeEach
     void setupPactVerification(PactVerificationContext context) {
-        MockMvcTestTarget testTarget = new MockMvcTestTarget(mockMvc);
+        Spring7MockMvcTestTarget testTarget = new Spring7MockMvcTestTarget(mockMvc);
         testTarget.setControllers(getControllersUnderTest());
 
         if (context != null) {
