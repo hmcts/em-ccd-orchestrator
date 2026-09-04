@@ -125,7 +125,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '4.0.0'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
     implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '2.0.0'
-    implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.1.0'
+    implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.2.0-rc1'
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
     implementation group: 'tools.jackson.dataformat', name: 'jackson-dataformat-yaml'
@@ -183,7 +183,7 @@ dependencies {
 
     aatImplementation group: 'com.github.hmcts', name: 'em-test-helper', version: '3.5.0'
     // Ensure Boot 4 health API clients win over any older transitive AAT copies.
-    aatImplementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.1.0'
+    aatImplementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: '6.2.0-rc1'
     aatImplementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: '2.0.0'
 }
 
