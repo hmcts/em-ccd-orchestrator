@@ -4,5 +4,5 @@ hasCoversheets: true
 hasFolderCoversheets: false
 hasDocumentOutlineSubtitles: true
 documents:
-  - type: document
-    property: /singleDocument
+  - type: documentSet
+    property: /caseDocuments
