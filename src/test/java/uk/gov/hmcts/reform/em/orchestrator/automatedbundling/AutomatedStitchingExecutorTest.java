@@ -78,4 +78,19 @@ class AutomatedStitchingExecutorTest {
                 .createCallbackUrl(Mockito.anyString(), Mockito.anyString(),Mockito.any());
 
     }
+
+    @Test
+    void startStitchingRuntimeException() throws Exception {
+        CcdBundleDTO ccdBundleDTO = new CcdBundleDTO();
+
+        Mockito.when(stitchingService.startStitchingTask(Mockito.any()))
+                .thenThrow(new RuntimeException("jackson failure"));
+
+        assertThrows(StartStitchingException.class, () ->
+            automatedStitchingExecutor.startStitching(cdamDto, "1234", ccdBundleDTO)
+        );
+
+        Mockito.verify(stitchingService, Mockito.times(1))
+                .startStitchingTask(Mockito.any(DocumentTaskDTO.class));
+    }
 }

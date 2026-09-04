@@ -151,6 +151,27 @@ class AutomatedCaseUpdaterTest {
     }
 
     @Test
+    void updateCaseWithNullBundleConfigFallsBackToDefault() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":null, "
+                        + "\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
+
+    @Test
     void updateCaseWithFileIdentifier() throws IOException {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");

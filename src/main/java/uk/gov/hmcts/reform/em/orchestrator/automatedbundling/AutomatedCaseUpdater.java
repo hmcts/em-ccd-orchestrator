@@ -107,12 +107,11 @@ public class AutomatedCaseUpdater implements CcdCaseUpdater {
 
 
             ccdCallbackDto.getCaseData().get(MULTI_BUNDLE_CONFIG_FIELD)
-                .forEach(bundleConfig -> bundleConfigurations.add(bundleConfig.get(VALUE).textValue()));
+                .forEach(bundleConfig -> bundleConfigurations.add(bundleConfig.get(VALUE).asString(null)));
 
 
         } else if (ccdCallbackDto.getCaseData().has(CONFIG_FIELD)
-                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isNull()
-                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isMissingNode()) {
+                && !ccdCallbackDto.getCaseData().get(CONFIG_FIELD).isNull()) {
 
             bundleConfigurations.add(ccdCallbackDto.getCaseData().get(CONFIG_FIELD).asString());
         }
