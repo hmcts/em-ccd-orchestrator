@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +7,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
+
 
 @ExtendWith(MockitoExtension.class)
 class CcdBundleCloningServiceTest {
@@ -187,7 +188,7 @@ class CcdBundleCloningServiceTest {
     }
 
     @Test
-    void testUpdateCaseIOExceptionInProcessBundle() throws Exception {
+    void testUpdateCaseJacksonExceptionInProcessBundle() throws Exception {
         ObjectMapper localSpyMapper = spy(new ObjectMapper());
         CcdBundleCloningService serviceWithSpy = new CcdBundleCloningService(localSpyMapper);
 
@@ -196,7 +197,8 @@ class CcdBundleCloningServiceTest {
 
         JavaType typeUsed = localSpyMapper.getTypeFactory().constructParametricType(CcdValue.class, CcdBundleDTO.class);
 
-        doThrow(new IOException("Test IOException during bundle processing"))
+        doThrow(new JacksonException("Test JacksonException during bundle processing") {
+        })
             .when(localSpyMapper)
             .readValue(any(JsonParser.class), eq(typeUsed));
 
@@ -208,7 +210,7 @@ class CcdBundleCloningServiceTest {
     }
 
     @Test
-    void testUpdateCaseIOExceptionInReorderBundles() throws Exception {
+    void testUpdateCaseJacksonExceptionInReorderBundles() throws Exception {
         ObjectMapper localSpyMapper = spy(new ObjectMapper());
         CcdBundleCloningService serviceWithSpy = new CcdBundleCloningService(localSpyMapper);
 
@@ -223,7 +225,8 @@ class CcdBundleCloningServiceTest {
             public CcdValue<CcdBundleDTO> answer(InvocationOnMock invocation) throws Throwable {
                 count++;
                 if (count == 3) {
-                    throw new IOException("Test IOException during bundle reordering");
+                    throw new JacksonException("Test JacksonException during bundle reordering") {
+                    };
                 }
                 return (CcdValue<CcdBundleDTO>) invocation.callRealMethod();
             }

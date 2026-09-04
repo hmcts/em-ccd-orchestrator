@@ -1,11 +1,11 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.STITCH_STATUS;
+
 
 class AutomatedBundlingWithCallbacksTest extends BaseTest {
 
@@ -55,7 +56,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
             fail("Status was not retrieved.");
         }
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
-        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+        assertEquals("", caseJson.findPath("stitchingFailureMessage").asText());
     }
 
     @Test
@@ -79,7 +80,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
     }
 
     @Test
-    void testAsyncStitchingWithSubtitlesEnabled() throws JsonProcessingException {
+    void testAsyncStitchingWithSubtitlesEnabled() throws JacksonException {
         String uploadedUrl = testUtil.uploadDocument("hundred-page.pdf", "application/pdf");
         String documentString = extendedCcdHelper.getCcdDocumentJson(
             "Document With Outlines", uploadedUrl, "hundred-page.pdf");
@@ -102,7 +103,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         }
 
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
-        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+        assertEquals("", caseJson.findPath("stitchingFailureMessage").asText());
 
         assertEquals("Yes", caseJson.findPath("hasDocumentSubtitles").asText());
     }

@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
@@ -16,7 +16,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.BUNDLE_STITCHED_DOCUMENT_URI;
@@ -32,6 +34,7 @@ import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DOCUMENT_TASK_ID;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH;
+
 
 class AutomatedBundlingScenariosTest extends BaseTest {
 
@@ -407,7 +410,9 @@ class AutomatedBundlingScenariosTest extends BaseTest {
         response.assertThat()
                 .log().all()
                 .statusCode(400)
-                .body(ERRORS, contains("Could not find the property /documentLink/document_url in the node: "));
+                // Jackson 3 includes JsonNode.toString() after the prefix; assert prefix only.
+                .body(ERRORS, hasItem(startsWith(
+                        "Could not find the property /documentLink/document_url in the node: ")));
     }
 
     @Test

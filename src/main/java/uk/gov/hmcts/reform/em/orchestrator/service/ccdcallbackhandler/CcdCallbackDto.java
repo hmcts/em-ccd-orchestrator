@@ -1,14 +1,15 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import pl.touk.throwing.ThrowingFunction;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
 import java.util.Optional;
+
 
 public class CcdCallbackDto {
 

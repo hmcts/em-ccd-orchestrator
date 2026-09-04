@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.DocumentTaskDTO;
 import uk.gov.hmcts.reform.em.orchestrator.stitching.dto.StitchingBundleDTO;
@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 class CcdCallbackBundleUpdaterTest {
 
@@ -90,7 +91,7 @@ class CcdCallbackBundleUpdaterTest {
             .get(0).findValue("stitchStatus").asText());
         assertEquals("err", ccdCallbackDto.getCaseData().findPath("caseBundles")
             .get(0).findValue("stitchingFailureMessage").asText());
-        assertEquals("null", ccdCallbackDto.getCaseData().findPath("caseBundles")
+        assertEquals("", ccdCallbackDto.getCaseData().findPath("caseBundles")
             .get(0).findValue("stitchedDocument").asText());
     }
 
@@ -105,11 +106,12 @@ class CcdCallbackBundleUpdaterTest {
     }
 
     @Test
-    void updateBundleWithJsonProcessingException() throws Exception {
+    void updateBundleWithJacksonException() throws Exception {
         ObjectMapper mockObjectMapper = Mockito.mock(ObjectMapper.class);
         ccdCallbackBundleUpdater = new CcdCallbackBundleUpdater(mockObjectMapper);
         Mockito.when(mockObjectMapper.treeToValue(Mockito.any(), Mockito.<Class<Object>>any()))
-            .thenThrow(new JsonProcessingException("x"){});
+                .thenThrow(new JacksonException("x") {
+                });
         CcdCallbackDto ccdCallbackDto = new CcdCallbackDto();
         ccdCallbackDto.setPropertyName(Optional.of("caseBundles"));
         ccdCallbackDto.setCaseData(objectMapper.readTree("{\"caseBundles\": [ { \"value\": "

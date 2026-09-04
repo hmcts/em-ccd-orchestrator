@@ -1,8 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.document.am.model.Classification;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
@@ -55,6 +54,7 @@ import java.util.stream.Stream;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 
 @Service
 public class TestUtil {
@@ -96,7 +96,7 @@ public class TestUtil {
     @Value("${test.user.password}")
     private String testUserPassword;
 
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public static final String CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE = """
         {
@@ -325,7 +325,7 @@ public class TestUtil {
     }
 
     public List<CcdValue<CcdBundleDocumentDTO>> uploadCdamBundleDocuments(
-                    List<Pair<String, String>> fileDetails, String userName) throws JsonProcessingException {
+            List<Pair<String, String>> fileDetails, String userName) throws JacksonException {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
@@ -348,7 +348,7 @@ public class TestUtil {
     case.
      */
     public List<String> createCaseAndUploadDocuments(UploadResponse uploadResponse, String userName)
-            throws JsonProcessingException {
+            throws JacksonException {
         List<CcdValue<CcdTestBundleDocumentDTO>> bundleDocuments = uploadResponse.getDocuments().stream()
             .map(this::createTestBundleDocument)
             .toList();
@@ -375,7 +375,7 @@ public class TestUtil {
         return new CcdValue<>(ccdBundleDocumentDTO);
     }
 
-    public CaseDetails createBundleCase(String documents, String userName) throws JsonProcessingException {
+    public CaseDetails createBundleCase(String documents, String userName) throws JacksonException {
         return ccdDataHelper.createCase(userName, testUserPassword, PUBLICLAW, getEnvCcdCaseTypeId(), "createCase",
             objectMapper.readTree(String.format(CREATE_CDAM_AUTOMATED_BUNDLING_CASE_TEMPLATE, documents)));
     }
@@ -392,7 +392,7 @@ public class TestUtil {
         return uploadResponse.getDocuments().get(0).links;
     }
 
-    public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws JsonProcessingException {
+    public String uploadCdamDocuments(List<Pair<String, String>> fileDetails) throws JacksonException {
 
         List<MultipartFile> multipartFiles = fileDetails.stream()
             .map(unchecked(pair -> createMultipartFile(pair.getFirst(), pair.getSecond())))
@@ -433,7 +433,7 @@ public class TestUtil {
         return ExtendedCcdHelper.CCD_BUNDLE_MVP_TYPE_ASYNC;
     }
 
-    public CcdBundleDTO getCdamTestBundle(String userName) throws JsonProcessingException {
+    public CcdBundleDTO getCdamTestBundle(String userName) throws JacksonException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setId(UUID.randomUUID().toString());
         bundle.setTitle(BUNDLE_TITLE);
@@ -455,7 +455,7 @@ public class TestUtil {
         return bundle;
     }
 
-    public CcdBundleDTO getCdamTestBundleWithWordDoc(String userName) throws JsonProcessingException {
+    public CcdBundleDTO getCdamTestBundleWithWordDoc(String userName) throws JacksonException {
         CcdBundleDTO bundle = new CcdBundleDTO();
         bundle.setTitle(BUNDLE_TITLE);
         bundle.setDescription(BUNDLE_DESCRIPTION);
@@ -472,7 +472,7 @@ public class TestUtil {
         return bundle;
     }
 
-    public CcdBundleDTO getCdamTestBundleWithImageRendered(String userName) throws JsonProcessingException {
+    public CcdBundleDTO getCdamTestBundleWithImageRendered(String userName) throws JacksonException {
         DocumentImage documentImage = new DocumentImage();
         documentImage.setImageRendering(ImageRendering.translucent);
         documentImage.setImageRenderingLocation(ImageRenderingLocation.firstPage);

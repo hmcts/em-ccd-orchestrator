@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.testutil;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,6 +8,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.em.test.ccddata.CcdDataHelper;
 import uk.gov.hmcts.reform.em.test.ccddefinition.CcdDefinitionHelper;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Stream;
+
 
 @Service
 public class ExtendedCcdHelper {
@@ -43,7 +43,7 @@ public class ExtendedCcdHelper {
 
     private CcdDefinitionHelper ccdDefinitionHelper;
 
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public static final String CREATE_AUTOMATED_BUNDLING_CASE_TEMPLATE = """
         {
@@ -110,7 +110,7 @@ public class ExtendedCcdHelper {
 
     }
 
-    public CaseDetails createCase(String documents) throws JsonProcessingException {
+    public CaseDetails createCase(String documents) throws JacksonException {
         return ccdDataHelper.createCase(
             bundleTesterUser,
             testUserPassword,
@@ -123,7 +123,7 @@ public class ExtendedCcdHelper {
     }
 
 
-    public CaseDetails createCase(String documents, String bundleConfiguration) throws JsonProcessingException {
+    public CaseDetails createCase(String documents, String bundleConfiguration) throws JacksonException {
         return ccdDataHelper.createCase(
             bundleTesterUser,
             testUserPassword,
@@ -135,7 +135,7 @@ public class ExtendedCcdHelper {
         );
     }
 
-    public CaseDetails createCdamCase(String documents) throws JsonProcessingException {
+    public CaseDetails createCdamCase(String documents) throws JacksonException {
         return ccdDataHelper.createCase(bundleTesterUser,
                 testUserPassword,
                 "PUBLICLAW",
@@ -145,12 +145,12 @@ public class ExtendedCcdHelper {
         );
     }
 
-    public JsonNode triggerEvent(String caseId, String eventId) throws JsonProcessingException {
+    public JsonNode triggerEvent(String caseId, String eventId) throws JacksonException {
         return objectMapper.readTree(objectMapper.writeValueAsString(
             ccdDataHelper.triggerEvent(bundleTesterUser, testUserPassword, caseId, eventId)));
     }
 
-    public JsonNode getCase(String caseId) throws JsonProcessingException {
+    public JsonNode getCase(String caseId) throws JacksonException {
         return objectMapper.readTree(
                 objectMapper.writeValueAsString(ccdDataHelper.getCase(bundleTesterUser, testUserPassword, caseId)));
     }
@@ -207,11 +207,11 @@ public class ExtendedCcdHelper {
 
     public JsonNode loadCaseFromFile(String file) throws IOException {
         return assignEnvCcdCaseTypeIdToCase(
-                objectMapper.readTree(ClassLoader.getSystemResource(file)));
+                objectMapper.readTree(ClassLoader.getSystemResource(file).openStream()));
     }
 
     public JsonNode loadMissingPropertiesCase(String file) throws IOException {
-        return objectMapper.readTree(ClassLoader.getSystemResource(file));
+        return objectMapper.readTree(ClassLoader.getSystemResource(file).openStream());
     }
 
 }

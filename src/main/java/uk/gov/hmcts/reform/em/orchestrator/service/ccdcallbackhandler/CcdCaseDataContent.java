@@ -2,8 +2,9 @@ package uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.ToString;
+import tools.jackson.databind.JsonNode;
+
 
 @ToString
 public class CcdCaseDataContent {

@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSet;
@@ -32,10 +32,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
+
 class BundleFactoryTest {
 
     private final BundleFactory factory = new BundleFactory();
-    private final ObjectNode emptyJson = new ObjectNode(new JsonNodeFactory(false));
+    private final ObjectNode emptyJson = JsonNodeFactory.instance.objectNode();
     private final File case1Json = new File(ClassLoader.getSystemResource("case-data1.json").getPath());
     private final File case2Json = new File(ClassLoader.getSystemResource("case-data2.json").getPath());
     private final File case3Json = new File(ClassLoader.getSystemResource("case-data3.json").getPath());
@@ -212,7 +213,7 @@ class BundleFactoryTest {
             factory.create(configuration, json);
         } catch (DocumentSelectorException docExp) {
             assertTrue(docExp.getMessage()
-                .equalsIgnoreCase("Could not find the property /documentLink/document_url in the node: "));
+                    .startsWith("Could not find the property /documentLink/document_url in the node: "));
         }
 
     }

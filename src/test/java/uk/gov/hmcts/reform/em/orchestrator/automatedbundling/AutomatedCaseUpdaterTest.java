@@ -1,8 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.databind.node.ArrayNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
+import uk.gov.hmcts.reform.em.orchestrator.config.JacksonMapperFactory;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDtoCreator;
 
@@ -22,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @ExtendWith(MockitoExtension.class)
 class AutomatedCaseUpdaterTest {
 
@@ -31,7 +31,7 @@ class AutomatedCaseUpdaterTest {
     private AutomatedCaseUpdater updater;
 
     private final CcdCallbackDtoCreator ccdCallbackDtoCreator = new CcdCallbackDtoCreator(
-        new ObjectMapper()
+            JacksonMapperFactory.createJsonMapper()
     );
 
     @BeforeEach
@@ -39,11 +39,9 @@ class AutomatedCaseUpdaterTest {
 
         updater = new AutomatedCaseUpdater(
             new LocalConfigurationLoader(
-                new ObjectMapper(
-                    new YAMLFactory()
-                )
+                    JacksonMapperFactory.createYamlMapper()
             ),
-            new ObjectMapper(),
+                JacksonMapperFactory.createJsonMapper(),
             new BundleFactory(),
             automatedStitchingExecutor
         );
@@ -140,6 +138,27 @@ class AutomatedCaseUpdaterTest {
             .thenReturn(
                 new BufferedReader(
                     new StringReader("{\"case_details\":{\"case_data\": {\"caseBundles\": []}}}")
+                )
+            );
+
+        CcdCallbackDto ccdCallbackDto = ccdCallbackDtoCreator.createDto(mockRequest, "caseBundles");
+        updater.updateCase(ccdCallbackDto);
+
+        Optional<ArrayNode> bundles = ccdCallbackDto.findCaseProperty(ArrayNode.class);
+
+        assertTrue(bundles.isPresent());
+        assertEquals(1, bundles.get().size());
+    }
+
+    @Test
+    void updateCaseWithNullBundleConfigFallsBackToDefault() throws IOException {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getHeader("Authorization")).thenReturn("a");
+        Mockito.when(mockRequest.getReader())
+            .thenReturn(
+                new BufferedReader(
+                    new StringReader("{\"case_details\":{\"case_data\": {\"bundleConfiguration\":null, "
+                        + "\"caseBundles\": []}}}")
                 )
             );
 
