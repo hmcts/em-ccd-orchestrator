@@ -81,3 +81,8 @@ folders:
         filters:
           - property: /tag
             value: stf24WeeksRemovalRefusedDecisionDocument
+      - type: documentSet
+        property: /tribunalDocuments
+        filters:
+          - property: /tag
+            value: stf24WeeksCaseReviewAppeallantDocument
