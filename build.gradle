@@ -192,7 +192,7 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${versions.springCloud}"
     }
     dependencies {
-        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.10'
+        dependency 'org.jetbrains.kotlin:kotlin-stdlib:2.4.20'
         dependencySet(group: 'org.junit.platform', version: '6.1.3') {
             entry 'junit-platform-commons'
             entry 'junit-platform-engine'
