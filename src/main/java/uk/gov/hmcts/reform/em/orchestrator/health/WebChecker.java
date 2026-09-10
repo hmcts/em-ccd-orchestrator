@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.em.orchestrator.health.model.HealthCheckResponse;
 
 import java.util.Objects;
 
-
 public class WebChecker {
 
     private final String name;

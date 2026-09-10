@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public interface CcdCaseUpdater {
 
     JsonNode updateCase(CcdCallbackDto ccdCallbackDto);

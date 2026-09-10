@@ -7,7 +7,6 @@ import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedStitchingE
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.BundleFactory;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.LocalConfigurationLoader;
 
-
 @Configuration
 public class AutomatedCaseConfiguration {
 

@@ -8,7 +8,6 @@ import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-
 @Component
 @ConditionalOnProperty("toggle.includeidamhealth")
 public class IdamServiceHealth implements HealthIndicator {

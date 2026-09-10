@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-
 /**
  * Creates a new bundle from a bundle configuration and some case json.
  */

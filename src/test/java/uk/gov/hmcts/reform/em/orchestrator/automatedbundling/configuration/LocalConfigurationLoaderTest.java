@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class LocalConfigurationLoaderTest {
     private final LocalConfigurationLoader loader =
             new LocalConfigurationLoader(JacksonMapperFactory.createYamlMapper());

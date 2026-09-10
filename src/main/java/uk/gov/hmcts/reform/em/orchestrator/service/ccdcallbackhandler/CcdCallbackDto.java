@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.em.orchestrator.config.Constants;
 
 import java.util.Optional;
 
-
 public class CcdCallbackDto {
 
     private Optional<String> propertyName = Optional.empty();

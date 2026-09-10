@@ -9,7 +9,6 @@ import tools.jackson.databind.JsonNode;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class CcdCallbackResponseDto {
 
     @JsonIgnore

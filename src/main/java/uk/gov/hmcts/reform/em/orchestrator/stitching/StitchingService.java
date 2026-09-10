@@ -29,7 +29,6 @@ import java.io.IOException;
 
 import static uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities.ensurePdfExtension;
 
-
 /**
  * Communicates with the Stitching API in order to turn a bundle into a stitched document.
  */

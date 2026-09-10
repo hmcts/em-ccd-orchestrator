@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 
 import static pl.touk.throwing.ThrowingSupplier.unchecked;
 
-
 @Service
 public class CcdCallbackDtoCreator {
 

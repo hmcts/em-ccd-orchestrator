@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CcdBundleDTO implements Serializable {
 

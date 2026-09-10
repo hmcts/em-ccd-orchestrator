@@ -22,7 +22,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 @ExtendWith(MockitoExtension.class)
 class AsyncCcdBundleStitchingServiceTest {
 

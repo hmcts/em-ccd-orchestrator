@@ -16,7 +16,6 @@ import java.util.stream.StreamSupport;
 
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
-
 public abstract class UpdateCase implements CcdCaseUpdater {
 
     private final ObjectMapper objectMapper;

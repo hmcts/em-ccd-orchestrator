@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 import java.util.Set;
 
-
 @Service
 public class AsyncCcdBundleStitchingService extends UpdateCase {
 
