@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 import uk.gov.hmcts.reform.em.test.retry.RetryExtension;
 
-
 @SpringBootTest(classes = {TestUtil.class, EmTestConfig.class, ExtendedCcdHelper.class, TestConfig.class})
 @TestPropertySource(value = "classpath:application.yml")
 @ExtendWith({SerenityJUnit5Extension.class, SpringExtension.class})

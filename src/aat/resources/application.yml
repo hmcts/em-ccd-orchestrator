@@ -2,9 +2,6 @@
 spring:
   main:
     allow-bean-definition-overriding: true
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
   security:
     oauth2:
       client:

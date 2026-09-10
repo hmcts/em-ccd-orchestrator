@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * This class will update add a new bundle to case based on some predefined configuration.
  */

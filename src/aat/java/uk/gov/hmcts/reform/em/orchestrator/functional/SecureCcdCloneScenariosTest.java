@@ -21,7 +21,6 @@ import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_ELIGIBLE_FOR_CLONING;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DATA_CASE_BUNDLES_1_VALUE_TITLE;
 
-
 class SecureCcdCloneScenariosTest extends BaseTest {
 
     @Autowired

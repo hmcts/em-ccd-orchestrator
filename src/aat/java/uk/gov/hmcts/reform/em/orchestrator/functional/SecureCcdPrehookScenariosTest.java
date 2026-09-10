@@ -14,7 +14,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
 class SecureCcdPrehookScenariosTest extends BaseTest {
 
     private final File jsonFile = new File(ClassLoader.getSystemResource("prehook-case-cdam.json").getPath());

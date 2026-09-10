@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createAsyncStitchResponse;
 import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createSyncStitchResponse;
 
-
 @Provider("em_orchestrator_stitch_provider")
 @WebMvcTest(value = CcdStitchBundleCallbackController.class, excludeAutoConfiguration = {
     SecurityAutoConfiguration.class,

@@ -19,7 +19,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.em.orchestrator.provider.ProviderTestUtil.createCloneBundleResponse;
 
-
 @Provider("em_orchestrator_clone_bundle_provider")
 @WebMvcTest(value = CcdCloneBundleController.class, excludeAutoConfiguration = {
     SecurityAutoConfiguration.class,

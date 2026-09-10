@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.STITCH_STATUS;
 
-
 class AutomatedBundlingWithCallbacksTest extends BaseTest {
 
     private static final int WAIT_SECONDS = 60;
@@ -56,6 +55,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
             fail("Status was not retrieved.");
         }
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
+        // Jackson 3 MissingNode.asText() returns "" (Jackson 2 returned "null")
         assertEquals("", caseJson.findPath("stitchingFailureMessage").asText());
     }
 
@@ -103,6 +103,7 @@ class AutomatedBundlingWithCallbacksTest extends BaseTest {
         }
 
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
+        // Jackson 3 MissingNode.asText() returns "" (Jackson 2 returned "null")
         assertEquals("", caseJson.findPath("stitchingFailureMessage").asText());
 
         assertEquals("Yes", caseJson.findPath("hasDocumentSubtitles").asText());

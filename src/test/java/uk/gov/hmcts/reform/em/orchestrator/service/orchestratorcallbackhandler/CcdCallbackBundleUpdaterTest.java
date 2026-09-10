@@ -91,6 +91,7 @@ class CcdCallbackBundleUpdaterTest {
             .get(0).findValue("stitchStatus").asText());
         assertEquals("err", ccdCallbackDto.getCaseData().findPath("caseBundles")
             .get(0).findValue("stitchingFailureMessage").asText());
+        // Jackson 3 MissingNode.asText() returns "" (Jackson 2 returned "null")
         assertEquals("", ccdCallbackDto.getCaseData().findPath("caseBundles")
             .get(0).findValue("stitchedDocument").asText());
     }

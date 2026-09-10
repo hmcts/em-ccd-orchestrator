@@ -35,7 +35,6 @@ import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.DOCUMENT_T
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.ERRORS;
 import static uk.gov.hmcts.reform.em.orchestrator.testutil.TestConsts.SRC_AAT_RESOURCES_DOCUMENTS_CASE_JSON_FILE_PATH;
 
-
 class AutomatedBundlingScenariosTest extends BaseTest {
 
     public static final String SINGLE_DOC_1 = "Single doc 1";

@@ -14,7 +14,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
 class StitchingCompleteScenariosTest extends BaseTest {
     JsonNode jsonNode;
 

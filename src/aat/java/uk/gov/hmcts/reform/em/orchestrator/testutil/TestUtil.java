@@ -55,7 +55,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static pl.touk.throwing.ThrowingFunction.unchecked;
 
-
 @Service
 public class TestUtil {
 

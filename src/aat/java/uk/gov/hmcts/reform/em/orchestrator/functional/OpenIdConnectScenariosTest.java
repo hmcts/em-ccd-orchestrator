@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
 public class OpenIdConnectScenariosTest extends BaseTest {
 
     public static final String API_STITCH_CCD_BUNDLES = "/api/stitch-ccd-bundles";

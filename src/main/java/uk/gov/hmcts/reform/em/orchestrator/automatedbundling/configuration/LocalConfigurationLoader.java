@@ -5,7 +5,6 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 
-
 /**
  * This loading strategy takes a file from the local filesystem and converts it to a BundleConfiguration object.
  * The local configuration file can be any format that Jackson will support (e.g. JSON or YAML).

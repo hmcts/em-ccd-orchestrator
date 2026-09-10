@@ -8,7 +8,6 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 
 import java.util.UUID;
 
-
 public final class ProviderTestUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
