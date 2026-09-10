@@ -29,7 +29,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 
-
 @ExtendWith(MockitoExtension.class)
 class CcdBundleCloningServiceTest {
 
