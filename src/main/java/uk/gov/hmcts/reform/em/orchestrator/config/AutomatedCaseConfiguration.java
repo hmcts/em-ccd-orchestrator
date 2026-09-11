@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.AutomatedCaseUpdater;
@@ -16,7 +14,7 @@ public class AutomatedCaseConfiguration {
     AutomatedCaseUpdater automatedCaseUpdater(AutomatedStitchingExecutor automatedStitchingExecutor) {
         return new AutomatedCaseUpdater(
                 localConfigurationLoader(),
-                new ObjectMapper(),
+                JacksonMapperFactory.createJsonMapper(),
                 new BundleFactory(),
                 automatedStitchingExecutor
         );
@@ -24,6 +22,6 @@ public class AutomatedCaseConfiguration {
 
     @Bean
     LocalConfigurationLoader localConfigurationLoader() {
-        return new LocalConfigurationLoader(new ObjectMapper(new YAMLFactory()));
+        return new LocalConfigurationLoader(JacksonMapperFactory.createYamlMapper());
     }
 }

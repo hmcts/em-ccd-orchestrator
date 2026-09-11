@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
 
@@ -47,7 +47,7 @@ class SecureCcdPrehookScenariosTest extends BaseTest {
     }
 
     @Test
-    void testEndToEnd() throws JsonProcessingException {
+    void testEndToEnd() throws JacksonException {
         final HashMap<String, String> caseData =
                 testUtil
                         .cdamAuthRequest()
