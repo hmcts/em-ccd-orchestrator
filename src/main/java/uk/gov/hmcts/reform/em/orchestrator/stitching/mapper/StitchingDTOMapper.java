@@ -26,14 +26,16 @@ public class StitchingDTOMapper {
         bundle.setHasCoversheets(bundleDTO.getHasCoversheets() == CcdBoolean.Yes);
         bundle.setHasFolderCoversheets(bundleDTO.getHasFolderCoversheets() == CcdBoolean.Yes);
         bundle.setHasDocumentSubtitles(bundleDTO.getHasDocumentSubtitles() == CcdBoolean.Yes);
+        bundle.setHasDocumentOutlineSubtitles(bundleDTO.getHasDocumentOutlineSubtitles() == CcdBoolean.Yes);
+        bundle.setHasTableOfContentsSubtitles(bundleDTO.getHasTableOfContentsSubtitles() == CcdBoolean.Yes);
         bundle.setPageNumberFormat(bundleDTO.getPageNumberFormat());
         bundle.setDocuments(getDocuments(bundleDTO.getDocuments()));
         bundle.setFolders(getFolders(bundleDTO.getFolders()));
         bundle.setPaginationStyle(bundleDTO.getPaginationStyle());
         bundle.setEnableEmailNotification(
-                bundleDTO.getEnableEmailNotification() != null
-                        ? bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes
-                        : null
+            bundleDTO.getEnableEmailNotification() != null
+                ? bundleDTO.getEnableEmailNotification() == CcdBoolean.Yes
+                : null
         );
         bundle.setDocumentImage(bundleDTO.getDocumentImage());
 
@@ -42,9 +44,9 @@ public class StitchingDTOMapper {
 
     private List<StitchingBundleFolderDTO> getFolders(List<CcdValue<CcdBundleFolderDTO>> folders) {
         return folders
-                .stream()
-                .map(this::getFolder)
-                .toList();
+            .stream()
+            .map(this::getFolder)
+            .toList();
     }
 
     private StitchingBundleFolderDTO getFolder(CcdValue<CcdBundleFolderDTO> folderDto) {
@@ -59,9 +61,9 @@ public class StitchingDTOMapper {
 
     private List<StitchingBundleDocumentDTO> getDocuments(List<CcdValue<CcdBundleDocumentDTO>> bundleDocument) {
         return bundleDocument
-                .stream()
-                .map(this::getDocument)
-                .toList();
+            .stream()
+            .map(this::getDocument)
+            .toList();
     }
 
     private StitchingBundleDocumentDTO getDocument(CcdValue<CcdBundleDocumentDTO> bundleDocument) {

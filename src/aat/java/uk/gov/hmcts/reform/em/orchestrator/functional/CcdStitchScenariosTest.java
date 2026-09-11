@@ -29,8 +29,8 @@ class CcdStitchScenariosTest extends BaseTest {
 
     @Autowired
     protected CcdStitchScenariosTest(
-            TestUtil testUtil,
-            ExtendedCcdHelper extendedCcdHelper
+        TestUtil testUtil,
+        ExtendedCcdHelper extendedCcdHelper
     ) {
         super(testUtil, extendedCcdHelper);
     }
@@ -49,10 +49,10 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
     }
 
     @Test
@@ -65,10 +65,10 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
     }
 
     @Test
@@ -80,10 +80,10 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
     }
 
     @Test
@@ -97,11 +97,11 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("my-file-name.pdf"))
-                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("my-file-name.pdf"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
 
     }
 
@@ -116,10 +116,10 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("doc-file-name.pdf"))
-                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("doc-file-name"));
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("doc-file-name.pdf"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("doc-file-name"));
     }
 
     @Test
@@ -133,9 +133,9 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
@@ -149,9 +149,9 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
@@ -164,10 +164,10 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("Bundle title.pdf"));
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body("data.caseBundles[0].value.stitchedDocument.document_filename", equalTo("Bundle title.pdf"));
     }
 
     @Test
@@ -181,11 +181,11 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("1234567890123456789012345678901%.pdf"))
-                .body(ERRORS_0, notNullValue());
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body(DATA_CASE_BUNDLES_0_VALUE_FILE_NAME, equalTo("1234567890123456789012345678901%.pdf"))
+            .body(ERRORS_0, notNullValue());
     }
 
     @Test
@@ -198,9 +198,9 @@ class CcdStitchScenariosTest extends BaseTest {
 
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(ERRORS_0, notNullValue());
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(ERRORS_0, notNullValue());
     }
 
     @Test
@@ -214,11 +214,11 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
-                .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
-                .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body("data.caseBundles[0].value.hasCoversheets", equalTo("No"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
     }
 
     @Test
@@ -232,13 +232,13 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("schmcts.png"))
-                .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("firstPage"))
-                .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("translucent"))
-                .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
-                .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("data.caseBundles[0].value.documentImage.docmosisAssetId", equalTo("schmcts.png"))
+            .body("data.caseBundles[0].value.documentImage.imageRenderingLocation", equalTo("firstPage"))
+            .body("data.caseBundles[0].value.documentImage.imageRendering", equalTo("translucent"))
+            .body("data.caseBundles[0].value.documentImage.coordinateX", equalTo(50))
+            .body("data.caseBundles[0].value.documentImage.coordinateY", equalTo(50));
     }
 
     @Test
@@ -251,10 +251,10 @@ class CcdStitchScenariosTest extends BaseTest {
         long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
         response = testUtil.poll(documentTaskId);
         response
-                .assertThat().log().all()
-                .statusCode(200)
-                .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
-                .body("bundle.stitchedDocumentURI", notNullValue());
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
+            .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
     @Test
@@ -268,9 +268,9 @@ class CcdStitchScenariosTest extends BaseTest {
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
 
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(ERRORS_0, equalTo(Constants.STITCHED_FILE_NAME_FIELD_LENGTH_ERROR_MSG));
     }
 
     @Test
@@ -283,9 +283,9 @@ class CcdStitchScenariosTest extends BaseTest {
 
         ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
         response
-                .assertThat().log().all()
-                .statusCode(400)
-                .body(ERRORS_0, notNullValue());
+            .assertThat().log().all()
+            .statusCode(400)
+            .body(ERRORS_0, notNullValue());
     }
 
     @Test
@@ -327,23 +327,101 @@ class CcdStitchScenariosTest extends BaseTest {
             .body("bundle.stitchedDocumentURI", notNullValue());
     }
 
+    @Test
+    void testWithDocumentOutlineSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasDocumentOutlineSubtitles(CcdBoolean.Yes);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postStitchCCDBundle(wrappedJson);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body("data.caseBundles[0].value.hasDocumentOutlineSubtitles", equalTo("Yes"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+    }
+
+    @Test
+    void testPostAsyncBundleStitchWithDocumentOutlineSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasDocumentOutlineSubtitles(CcdBoolean.Yes);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+
+        response = testUtil.poll(documentTaskId);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
+            .body("bundle.hasDocumentOutlineSubtitles", equalTo(true))
+            .body("bundle.stitchedDocumentURI", notNullValue());
+    }
+
+    @Test
+    void testWithTableOfContentsSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasTableOfContentsSubtitles(CcdBoolean.Yes);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postStitchCCDBundle(wrappedJson);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body(DATA_CASE_BUNDLES_0_VALUE_TITLE, equalTo(BUNDLE_TITLE))
+            .body("data.caseBundles[0].value.hasTableOfContentsSubtitles", equalTo("Yes"))
+            .body(DATA_CASE_BUNDLES_0_VALUE_STITCHED_DOCUMENT_DOCUMENT_URL, notNullValue());
+    }
+
+    @Test
+    void testPostAsyncBundleStitchWithTableOfContentsSubtitles() throws IOException {
+        CcdBundleDTO bundle = testUtil.getTestBundle();
+        bundle.setHasTableOfContentsSubtitles(CcdBoolean.Yes);
+
+        String json = mapper.writeValueAsString(new CcdValue<>(bundle));
+        String wrappedJson = String.format(CASE_DETAILS_CASE_DATA_CASE_BUNDLES_S, json);
+
+        ValidatableResponse response = postAsyncStitchCCDBundle(wrappedJson);
+        long documentTaskId = response.extract().body().jsonPath().getLong("documentTaskId");
+
+        response = testUtil.poll(documentTaskId);
+
+        response
+            .assertThat().log().all()
+            .statusCode(200)
+            .body("bundle.bundleTitle", equalTo(BUNDLE_TITLE))
+            .body("bundle.hasTableOfContentsSubtitles", equalTo(true))
+            .body("bundle.stitchedDocumentURI", notNullValue());
+    }
+
     private ValidatableResponse postStitchCCDBundle(String wrappedJson) {
         return testUtil
-                .authRequest()
-                .baseUri(testUtil.getTestUrl())
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(wrappedJson)
-                .post("/api/stitch-ccd-bundles")
-                .then();
+            .authRequest()
+            .baseUri(testUtil.getTestUrl())
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(wrappedJson)
+            .post("/api/stitch-ccd-bundles")
+            .then();
     }
 
     private ValidatableResponse postAsyncStitchCCDBundle(String wrappedJson) {
         return testUtil
-                .authRequest()
-                .baseUri(testUtil.getTestUrl())
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(wrappedJson)
-                .post("/api/async-stitch-ccd-bundles")
-                .then();
+            .authRequest()
+            .baseUri(testUtil.getTestUrl())
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(wrappedJson)
+            .post("/api/async-stitch-ccd-bundles")
+            .then();
     }
 }
