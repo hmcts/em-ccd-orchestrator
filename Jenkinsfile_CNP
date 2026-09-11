@@ -63,6 +63,7 @@ def vaultOverrides = [
 ]
 
 withPipeline(type , product, component) {
+    enableBuildCache()
     overrideVaultEnvironments(vaultOverrides)
     loadVaultSecrets(secrets)
     enableAksStagingDeployment()
