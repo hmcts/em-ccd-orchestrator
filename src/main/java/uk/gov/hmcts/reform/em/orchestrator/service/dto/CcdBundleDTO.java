@@ -38,8 +38,14 @@ public class CcdBundleDTO implements Serializable {
     private CcdBoolean hasTableOfContents;
     private CcdBoolean hasCoversheets;
     private CcdBoolean hasFolderCoversheets;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private CcdBoolean hasDocumentSubtitles;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private CcdBoolean hasDocumentOutlineSubtitles;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private CcdBoolean hasTableOfContentsSubtitles;
+
     private String stitchStatus;
     private CcdBundlePaginationStyle paginationStyle = CcdBundlePaginationStyle.off;
     private PageNumberFormat pageNumberFormat = PageNumberFormat.numberOfPages;
@@ -236,6 +242,49 @@ public class CcdBundleDTO implements Serializable {
         return hasDocumentSubtitles != null ? hasDocumentSubtitles == CcdBoolean.Yes : null;
     }
 
+    public CcdBoolean getHasDocumentOutlineSubtitles() {
+        return hasDocumentOutlineSubtitles;
+    }
+
+    public void setHasDocumentOutlineSubtitles(CcdBoolean hasDocumentOutlineSubtitles) {
+        this.hasDocumentOutlineSubtitles = hasDocumentOutlineSubtitles;
+    }
+
+    @JsonIgnore
+    public void setHasDocumentOutlineSubtitlesAsBoolean(Boolean hasDocumentOutlineSubtitles) {
+        if (hasDocumentOutlineSubtitles == null) {
+            this.hasDocumentOutlineSubtitles = null;
+        } else {
+            this.hasDocumentOutlineSubtitles = hasDocumentOutlineSubtitles ? CcdBoolean.Yes : CcdBoolean.No;
+        }
+    }
+
+    @JsonIgnore
+    public Boolean getHasDocumentOutlineSubtitlesAsBoolean() {
+        return hasDocumentOutlineSubtitles != null ? hasDocumentOutlineSubtitles == CcdBoolean.Yes : null;
+    }
+
+    public CcdBoolean getHasTableOfContentsSubtitles() {
+        return hasTableOfContentsSubtitles;
+    }
+
+    public void setHasTableOfContentsSubtitles(CcdBoolean hasTableOfContentsSubtitles) {
+        this.hasTableOfContentsSubtitles = hasTableOfContentsSubtitles;
+    }
+
+    @JsonIgnore
+    public void setHasTableOfContentsSubtitlesAsBoolean(Boolean hasTableOfContentsSubtitles) {
+        if (hasTableOfContentsSubtitles == null) {
+            this.hasTableOfContentsSubtitles = null;
+        } else {
+            this.hasTableOfContentsSubtitles = hasTableOfContentsSubtitles ? CcdBoolean.Yes : CcdBoolean.No;
+        }
+    }
+
+    @JsonIgnore
+    public Boolean getHasTableOfContentsSubtitlesAsBoolean() {
+        return hasTableOfContentsSubtitles != null ? hasTableOfContentsSubtitles == CcdBoolean.Yes : null;
+    }
 
     public CcdBundlePaginationStyle getPaginationStyle() {
         return paginationStyle;
