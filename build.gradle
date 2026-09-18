@@ -6,8 +6,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.springframework.boot' version '4.0.8'
     id 'uk.gov.hmcts.java' version '0.12.70'
-    id 'com.github.ben-manes.versions' version '0.61.0'
-    id 'org.sonarqube' version '7.4.0.8496'
+    id 'com.github.ben-manes.versions' version '0.63.1'
+    id 'org.sonarqube' version '7.5.0.8588'
     id 'jacoco'
     id 'checkstyle'
     id 'au.com.dius.pact' version '4.7.5'
@@ -45,7 +45,7 @@ def versions = [
 ]
 
 // Boot 4.0.8 BOM still manages Tomcat 11.0.24; override until Boot picks up 11.0.25 (Aug 2026 CVE batch).
-ext['tomcat.version'] = '11.0.25'
+ext['tomcat.version'] = '11.0.26'
 sourceSets {
     aat {
         java {
@@ -438,6 +438,8 @@ tasks.register('providerContractTests', Test) {
     include '**/provider/**'
 }
 
+import java.time.LocalDate
+
 // Centralized Pact system property setup for all Test tasks
 tasks.withType(Test).configureEach { t ->
     // Logging setup
@@ -463,6 +465,13 @@ tasks.withType(Test).configureEach { t ->
         systemProperty 'pact.provider.branch', project.property('pact.provider.branch')
     } else {
         systemProperty 'pact.provider.branch', System.getenv("PACT_BRANCH_NAME") ?: "Dev"
+    }
+
+    // Dynamic 6-month look back for WIP pacts
+    if (project.hasProperty('pactbroker.includeWipPactsSince')) {
+        systemProperty 'pactbroker.includeWipPactsSince', project.property('pactbroker.includeWipPactsSince')
+    } else {
+        systemProperty 'pactbroker.includeWipPactsSince', LocalDate.now().minusMonths(6).toString()
     }
 
     doFirst {
