@@ -20,5 +20,5 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <!-- Tomcat CVE-2026-66299 and Spring Framework 6.2.x suppressions removed after Boot 4.0.8 + Tomcat 11.0.25. -->
+    <!-- Tomcat CVE suppressions removed after Tomcat 11.0.26 override under Boot 4.1.1. -->
 </suppressions>
