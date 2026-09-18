@@ -36,6 +36,8 @@ public class BundleConfiguration {
     public final boolean customDocument;
     public final String customDocumentLinkValue;
     public final Boolean hasDocumentSubtitles;
+    public final Boolean hasDocumentOutlineSubtitles;
+    public final Boolean hasTableOfContentsSubtitles;
 
     public BundleConfiguration(@JsonProperty("title") String title,
                                @JsonProperty("filename") String filename,
@@ -55,7 +57,9 @@ public class BundleConfiguration {
                                @JsonProperty("documentLinkValue") String documentLinkValue,
                                @JsonProperty("customDocument") boolean customDocument,
                                @JsonProperty("customDocumentLinkValue") String customDocumentLinkValue,
-                               @JsonProperty("hasDocumentSubtitles") Boolean hasDocumentSubtitles) {
+                               @JsonProperty("hasDocumentSubtitles") Boolean hasDocumentSubtitles,
+                               @JsonProperty("hasDocumentOutlineSubtitles") Boolean hasDocumentOutlineSubtitles,
+                               @JsonProperty("hasTableOfContentsSubtitles") Boolean hasTableOfContentsSubtitles) {
 
         this.title = title;
         this.filename = ensurePdfExtension(filename);
@@ -76,6 +80,8 @@ public class BundleConfiguration {
         this.customDocument = customDocument;
         this.customDocumentLinkValue = customDocumentLinkValue;
         this.hasDocumentSubtitles = hasDocumentSubtitles;
+        this.hasDocumentOutlineSubtitles = hasDocumentOutlineSubtitles;
+        this.hasTableOfContentsSubtitles = hasTableOfContentsSubtitles;
     }
 
     public boolean validate (){
