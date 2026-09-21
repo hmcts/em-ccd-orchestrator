@@ -122,3 +122,6 @@ cdam:
     enabled: ${ENABLE_CDAM_VALIDATION:false}
 
 max-retry-to-poll-stitching:  ${MAX_RETRY_TO_POLL_STITCHING:7}
+
+toggle:
+  includeidamhealth: ${ENABLE_IDAM_HEALTH_CHECK:false}

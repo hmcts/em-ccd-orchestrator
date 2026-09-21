@@ -29,8 +29,8 @@ folders:
       - type: documentSet
         property: /hearingDocuments
         filters:
-          - property : /tag
-            value : caseSummary
+          - property: /tag
+            value: caseSummary
       - type: documentSet
         property: /hearingDocuments
         filters:
