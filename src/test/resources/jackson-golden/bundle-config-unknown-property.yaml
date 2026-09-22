@@ -1,0 +1,5 @@
+title: Broken config
+filename: broken.pdf
+hasCoversheets: true
+hasTableOfContents: true
+notARealBundleConfigurationField: true
