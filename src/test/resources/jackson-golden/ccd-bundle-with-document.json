@@ -1,0 +1,25 @@
+{
+  "value": {
+    "id": "922639a4-9b06-4574-b329-ce7ecf845d6b",
+    "title": "Golden Bundle",
+    "description": "Jackson golden fixture",
+    "eligibleForStitching": "yes",
+    "fileName": "golden-bundle.pdf",
+    "documents": [
+      {
+        "value": {
+          "name": "Evidence doc",
+          "description": "Primary evidence",
+          "sortIndex": 1,
+          "sourceDocument": {
+            "document_url": "http://dm-store/documents/22222222-2222-2222-2222-222222222222",
+            "document_filename": "evidence.pdf",
+            "document_binary_url": "http://dm-store/documents/22222222-2222-2222-2222-222222222222/binary",
+            "document_hash": "sha256-cafebabe"
+          }
+        }
+      }
+    ],
+    "unknownFutureCcdField": "must-be-ignored"
+  }
+}

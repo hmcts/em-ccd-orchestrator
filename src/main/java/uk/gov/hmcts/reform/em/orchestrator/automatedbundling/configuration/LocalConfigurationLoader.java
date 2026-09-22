@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 

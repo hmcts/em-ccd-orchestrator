@@ -1,14 +1,13 @@
 package uk.gov.hmcts.reform.em.orchestrator.service.caseupdater;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
 import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbackDto;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -52,7 +51,7 @@ public abstract class UpdateCase implements CcdCaseUpdater {
     abstract CcdValue<CcdBundleDTO> stitchBundle(CcdValue<CcdBundleDTO> bundle,
                                                  CcdCallbackDto ccdCallbackDto);
 
-    private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) throws IOException {
+    private CcdValue<CcdBundleDTO> bundleJsonToBundleValue(JsonNode jsonNode) {
         return objectMapper.readValue(objectMapper.treeAsTokens(jsonNode), type);
     }
 }

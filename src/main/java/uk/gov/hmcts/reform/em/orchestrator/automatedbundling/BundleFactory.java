@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfiguration;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocument;
 import uk.gov.hmcts.reform.em.orchestrator.automatedbundling.configuration.BundleConfigurationDocumentSelector;
@@ -178,7 +178,7 @@ public class BundleFactory {
         JsonNode innerNode = outerNode.at(path);
         if (innerNode.isMissingNode()) {
             throw new DocumentSelectorException("Could not find the property "
-                + path + " in the node: " + outerNode.asText());
+                    + path + " in the node: " + outerNode);
         }
         return innerNode;
     }

@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdBundleDTO;
 import uk.gov.hmcts.reform.em.orchestrator.service.dto.CcdValue;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
@@ -37,7 +37,7 @@ class SecureCcdCloneScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSingleBundleClone() throws JsonProcessingException {
+    void testSingleBundleClone() throws JacksonException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
@@ -58,7 +58,7 @@ class SecureCcdCloneScenariosTest extends BaseTest {
     }
 
     @Test
-    void testSingleBundleCloneWithCaseId() throws JsonProcessingException {
+    void testSingleBundleCloneWithCaseId() throws JacksonException {
         CcdBundleDTO bundle = testUtil.getCdamTestBundle(extendedCcdHelper.getBundleTesterUser());
         bundle.setEligibleForCloningAsBoolean(true);
         List<CcdValue<CcdBundleDTO>> list = new ArrayList<>();
