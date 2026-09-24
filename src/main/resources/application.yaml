@@ -47,14 +47,6 @@ info:
     name: ${PACKAGES_NAME:cor}
 #    version: ${PACKAGES_VERSION:unknown}
 
-auth:
-  idam:
-    client:
-      baseUrl: ${IDAM_WEB_API_BASE_URI:http://localhost:5062}
-  provider:
-    service:
-      client:
-        baseUrl: ${S2S_BASE_URI:http://localhost:8489}
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:true}
