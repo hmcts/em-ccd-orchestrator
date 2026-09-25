@@ -1,8 +1,8 @@
-title: Functional tests bundle 14
+title: Functional tests bundle 16
 hasTableOfContents: true
 hasCoversheets: true
 hasFolderCoversheets: false
-hasDocumentSubtitles: true
+hasTableOfContentsSubtitles: true
 documents:
   - type: documentSet
     property: /caseDocuments
