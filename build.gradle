@@ -42,7 +42,7 @@ def versions = [
         poi                : '5.5.1',
         springSecurity     : '6.5.11',
         okhttp3            : '5.5.0',
-        fasterXmlJackson   : '2.22.2'
+        fasterXmlJackson   : '2.22.3'
 ]
 sourceSets {
     aat {
@@ -143,7 +143,7 @@ dependencies {
     }
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', withoutStuff
-    testImplementation group: 'com.github.gmazzo', name:'okhttp-mock', version:'2.1.0'
+    testImplementation group: 'com.github.gmazzo', name:'okhttp-mock', version:'2.2.0'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: versions.mockito
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: versions.mockito
 

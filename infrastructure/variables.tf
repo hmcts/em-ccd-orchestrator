@@ -96,25 +96,6 @@ variable "show_sql" {
   default = "true"
 }
 
-variable "endpoints_health_sensitive" {
-  default = "true"
-}
-
-variable "endpoints_info_sensitive" {
-  default = "true"
-}
-
-////////////////////////////////////////////////
-// Toggle Features
-////////////////////////////////////////////////
-variable "enable_idam_healthcheck" {
-  default = "false"
-}
-
-variable "enable_s2s_healthcheck" {
-  default = "false"
-}
-
 ////////////////////////////////////////////////
 // Toggleable Endpoints
 ////////////////////////////////////////////////
