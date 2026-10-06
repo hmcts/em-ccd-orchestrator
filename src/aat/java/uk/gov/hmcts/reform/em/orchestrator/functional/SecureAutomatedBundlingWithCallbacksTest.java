@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.Pair;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;
@@ -59,7 +59,8 @@ class SecureAutomatedBundlingWithCallbacksTest extends BaseTest {
             fail("Status was not retrieved.");
         }
         assertEquals("DONE", caseJson.findPath(STITCH_STATUS).asText());
-        assertEquals("null", caseJson.findPath("stitchingFailureMessage").asText());
+        // Jackson 3 MissingNode.asText() returns "" (Jackson 2 returned "null")
+        assertEquals("", caseJson.findPath("stitchingFailureMessage").asText());
     }
 
     @Test

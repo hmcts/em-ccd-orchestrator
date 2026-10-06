@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: EM CCD Orchestrator
+  jackson:
+    # Preserve Boot 3 / Jackson 2 null-primitive and related defaults for CCD JSON payloads.
+    use-jackson2-defaults: true
   config:
     import: "optional:configtree:/mnt/secrets/em-ccdorc/"
   batch:

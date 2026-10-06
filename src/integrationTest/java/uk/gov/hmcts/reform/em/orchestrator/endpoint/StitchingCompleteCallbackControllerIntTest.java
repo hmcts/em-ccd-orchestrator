@@ -1,16 +1,17 @@
 package uk.gov.hmcts.reform.em.orchestrator.endpoint;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.json.JsonMapper;
 import uk.gov.hmcts.reform.em.orchestrator.Application;
 import uk.gov.hmcts.reform.em.orchestrator.service.notification.NotificationService;
 import uk.gov.hmcts.reform.em.orchestrator.service.orchestratorcallbackhandler.CallbackException;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest(classes = {Application.class})
+@SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
 @AutoConfigureMockMvc
 class StitchingCompleteCallbackControllerIntTest extends BaseTest {
 
@@ -42,6 +43,9 @@ class StitchingCompleteCallbackControllerIntTest extends BaseTest {
 
     @MockitoBean
     private NotificationService notificationService;
+
+    @Autowired
+    private JsonMapper jsonMapper;
 
     private String requestBody;
 
@@ -59,9 +63,12 @@ class StitchingCompleteCallbackControllerIntTest extends BaseTest {
         stitchingBundleDTO.setEnableEmailNotification(true);
         documentTaskDTO.setTaskState(TaskState.DONE);
         documentTaskDTO.setBundle(stitchingBundleDTO);
+        documentTaskDTO.setJwt("must-not-appear-in-request-json");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        requestBody = objectMapper.writeValueAsString(documentTaskDTO);
+        // Boot Jackson 3 mapper — proves @JsonIgnore jwt is honoured on the HTTP path
+        requestBody = jsonMapper.writeValueAsString(documentTaskDTO);
+        org.assertj.core.api.Assertions.assertThat(requestBody).doesNotContain("must-not-appear-in-request-json");
+        org.assertj.core.api.Assertions.assertThat(requestBody).doesNotContain("\"jwt\"");
     }
 
     @Test
@@ -99,7 +106,12 @@ class StitchingCompleteCallbackControllerIntTest extends BaseTest {
             .andDo(print())
             .andExpect(status().is(456))
             .andExpect(jsonPath("$.message", Matchers.is("error message")))
-            .andExpect(jsonPath("$.httpResponseBody", Matchers.is("error")));
+            .andExpect(jsonPath("$.httpResponseBody", Matchers.is("error")))
+            .andExpect(jsonPath("$.jwt").doesNotExist())
+            .andExpect(result -> org.assertj.core.api.Assertions
+                .assertThat(result.getResponse().getContentAsString())
+                .doesNotContain("\"jwt\"")
+                .doesNotContain("must-not-appear-in-request-json"));
 
     }
 

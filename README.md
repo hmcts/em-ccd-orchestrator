@@ -9,7 +9,7 @@ CCD Orchestrator is a backend service that facilitates interactions between CCD,
 
 Before setting up the project, ensure you have the following installed:
 
-- **Java 21** - Required for building and running the application
+- **Java 25** - Required for building and running the application (Gradle toolchain)
 - **jq** - JSON processor for command-line
   - Linux: `sudo apt-get install jq`
   - Mac: `brew install jq`
@@ -97,13 +97,15 @@ You should get a response similar to this:
 
 It uses:
 
-* Java 21
-* Spring Boot 3.5.10
+* Java 25
+* Spring Boot 4.1.1
+* Spring Cloud 2025.1.3 (OpenFeign)
+* Jackson 3 (`tools.jackson`) for JSON/YAML — Boot temporarily sets `spring.jackson.use-jackson2-defaults=true` for CCD payload compatibility
 * JUnit 5 (Jupiter), Mockito, and Spring Boot Test
-* Gradle
+* Gradle 9.x
 * [Lombok](https://projectlombok.org/) - Reduces boilerplate code
 * Serenity BDD - For functional testing
-* Pact - For contract testing
+* Pact JVM (`provider:spring7`) - For contract testing on Spring Framework 7
 
 ### Plugins
 * [lombok plugin](https://plugins.jetbrains.com/idea/plugin/6317-lombok-plugin) - Lombok IDEA plugin
@@ -239,7 +241,7 @@ The template contains the following plugins:
 
     Provides monitoring of the project's dependent libraries and creating a report
     of known vulnerable components that are included in the build. To run it
-    execute `gradle dependencyCheck` command.
+    execute `./gradlew dependencyCheckAnalyze` (requires a valid `NVD_API_KEY` for NVD updates).
 
   * com.github.ben-manes.versions
 
@@ -266,6 +268,12 @@ The template contains the following plugins:
 
 **Issue**: Port 8080 already in use
 - **Solution**: Check if another instance is running: `lsof -i :8080` and kill the process if needed
+
+**Issue**: Functional / Feign failures deserialising IDAM or CCD health JSON after Boot 4
+- **Solution**: Ensure compatible client versions (`idam-java-client` 4.0.2-rc2+, `core-case-data-store-client` 6.2.0-rc1+). Jackson 3 with `use-jackson2-defaults` needs `@JsonProperty` / Jackson 3 `@Jacksonized` (`lombok.config` `jacksonVersion += 3`) on those DTOs.
+
+**Issue**: Pact provider MockMvc tests fail with `NoSuchMethodError` on Spring 7
+- **Solution**: Provider contract tests use Pact `spring7` / `Spring7MockMvcTestTarget` (not the older `junit5spring` target).
 
 ## License
 

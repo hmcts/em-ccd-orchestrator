@@ -60,7 +60,7 @@ public class AutomatedStitchingExecutor {
             final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
             return createdDocumentTaskDTO.getId();
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             throw new StartStitchingException(String.format("Could not start stitching: %s for caseId: %s ",
                 e.getMessage(), cdamDto.getCaseId()), e);
         }
