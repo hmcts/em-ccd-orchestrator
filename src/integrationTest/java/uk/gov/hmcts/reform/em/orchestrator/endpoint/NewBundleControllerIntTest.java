@@ -15,12 +15,15 @@ import uk.gov.hmcts.reform.em.orchestrator.service.ccdcallbackhandler.CcdCallbac
 
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = {Application.class})
+@SpringBootTest(classes = {Application.class, TestSecurityConfiguration.class})
 @AutoConfigureMockMvc
 class NewBundleControllerIntTest extends BaseTest {
 
@@ -40,7 +43,19 @@ class NewBundleControllerIntTest extends BaseTest {
             .perform(post("/api/new-bundle")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "xxx"))
-            .andDo(print()).andExpect(status().isOk());
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors", empty()))
+            .andExpect(jsonPath("$.warnings", empty()))
+            .andExpect(jsonPath("$.data", nullValue()))
+            .andExpect(jsonPath("$.copyOfCcdData").doesNotExist())
+            .andExpect(jsonPath("$.jwt").doesNotExist())
+            .andExpect(result -> {
+                String body = result.getResponse().getContentAsString();
+                org.assertj.core.api.Assertions.assertThat(body)
+                    .doesNotContain("\"copyOfCcdData\"")
+                    .doesNotContain("\"jwt\"");
+            });
 
         Mockito
             .verify(defaultUpdateCaller, Mockito.times(1))
