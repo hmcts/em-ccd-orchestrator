@@ -382,9 +382,12 @@ project.ext {
 }
 
 static def getCheckedOutGitCommitHash() {
-    'git rev-parse --verify --short HEAD'.execute().text.trim()
+    providers.exec {
+        commandLine 'git', 'rev-parse', '--verify', '--short', 'HEAD'
+        // Jenkins stages may not have a checked-out HEAD.
+        ignoreExitValue = true
+    }.standardOutput.asText.map { it.trim() }.get()
 }
-
 
 tasks.register('contract', Test) {
     group = 'Delivery pipeline'
