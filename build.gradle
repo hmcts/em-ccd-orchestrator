@@ -381,7 +381,7 @@ project.ext {
     pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
-static def getCheckedOutGitCommitHash() {
+def getCheckedOutGitCommitHash() {
     providers.exec {
         commandLine 'git', 'rev-parse', '--verify', '--short', 'HEAD'
         // Jenkins stages may not have a checked-out HEAD.
