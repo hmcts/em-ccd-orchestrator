@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.em.orchestrator.functional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.serenitybdd.annotations.WithTag;
 import net.serenitybdd.annotations.WithTags;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.reform.em.EmTestConfig;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.ExtendedCcdHelper;
 import uk.gov.hmcts.reform.em.orchestrator.testutil.TestUtil;

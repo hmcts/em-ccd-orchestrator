@@ -1,8 +1,9 @@
 package uk.gov.hmcts.reform.em.orchestrator.automatedbundling;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
+
 
 public class BundleException extends RuntimeException {
 
