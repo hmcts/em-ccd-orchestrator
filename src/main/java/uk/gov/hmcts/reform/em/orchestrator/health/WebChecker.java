@@ -37,7 +37,7 @@ public class WebChecker {
             }
             return false;
         } catch (Exception ex) {
-            log.error(name + " " + url + "/health Failed", ex);
+            log.error("{} {}/health Failed", name, url, ex);
             return false;
         }
     }
