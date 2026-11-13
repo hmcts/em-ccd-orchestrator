@@ -6,6 +6,8 @@ import uk.gov.hmcts.reform.em.orchestrator.util.StringUtilities;
 
 public class StitchingServiceException extends RuntimeException {
 
+    private static final Logger logger = LoggerFactory.getLogger(StitchingServiceException.class);
+
     public StitchingServiceException(String message) {
         super(message);
     }
@@ -17,11 +19,8 @@ public class StitchingServiceException extends RuntimeException {
     public StitchingServiceException(String caseId, String message, Throwable cause) {
         super(message, cause);
 
-        String errorLog = String.format("Stitching Failed for caseId : %s with issue : %s ",
+        logger.error("Stitching Failed for caseId : {} with issue : {} ",
                 StringUtilities.convertValidLog(caseId),
                 StringUtilities.convertValidLog(message));
-
-        Logger logger = LoggerFactory.getLogger(StitchingServiceException.class);
-        logger.error(errorLog);
     }
 }

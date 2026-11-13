@@ -46,19 +46,19 @@ public class CcdCallbackBundleUpdater {
                         String.format("Bundle#%s could not be found",
                                 stitchingCompleteCallbackDto.getCcdBundleId())));
 
-        if (log.isDebugEnabled()) {
-            log.debug("Updated ccdBundle: {}", StringUtilities.convertValidLog(ccdBundle.toString()));
-        }
+        log.atDebug()
+                .log("Updated ccdBundle: {}", StringUtilities.convertValidLog(ccdBundle.toString()));
     }
 
     private JsonNode updateCcdBundle(JsonNode ccdBundle, StitchingCompleteCallbackDto stitchingCompleteCallbackDto) {
         try {
             CcdBundleDTO ccdBundleDTO = this.objectMapper.treeToValue(ccdBundle, CcdBundleDTO.class);
-            if (log.isInfoEnabled()) {
-                log.info("Updating bundle with Id {} with caseId {}",
-                        StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
-                        StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().getCaseId()));
-            }
+            log.atInfo()
+                    .log("Updating bundle with Id {} with caseId {}",
+                            StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
+                            StringUtilities.convertValidLog(
+                                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getCaseId()));
+
             ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()
