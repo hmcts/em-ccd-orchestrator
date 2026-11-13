@@ -56,7 +56,9 @@ public class CcdCallbackBundleUpdater {
             log.atInfo()
                     .log("Updating bundle with Id {} with caseId {}",
                             StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getCcdBundleId()),
-                            StringUtilities.convertValidLog(stitchingCompleteCallbackDto.getDocumentTaskDTO().getCaseId()));
+                            StringUtilities.convertValidLog(
+                                    stitchingCompleteCallbackDto.getDocumentTaskDTO().getCaseId()));
+
             ccdBundleDTO.setStitchStatus(stitchingCompleteCallbackDto.getDocumentTaskDTO().getTaskState().toString());
             ccdBundleDTO.setEligibleForCloningAsBoolean(false);
             ccdBundleDTO.setStitchingFailureMessage(stitchingCompleteCallbackDto.getDocumentTaskDTO()
