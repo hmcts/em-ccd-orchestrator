@@ -94,12 +94,10 @@ public class StitchingCompleteCallbackController {
 
             stitchingCompleteCallbackService.handleCallback(stitchingCompleteCallbackDto);
 
-            if (log.isInfoEnabled()) {
-                log.info("Successful callback for caseId: {} and triggerId {}",
-                        StringUtilities.convertValidLog(caseId),
-                        StringUtilities.convertValidLog(triggerId)
-                );
-            }
+            log.atInfo()
+                    .log("Successful callback for caseId: {} and triggerId {}",
+                            StringUtilities.convertValidLog(caseId),
+                            StringUtilities.convertValidLog(triggerId));
             if ((documentTaskDTO.getBundle().getEnableEmailNotification() != null
                 && documentTaskDTO.getBundle().getEnableEmailNotification())
                 && (taskState.equals(TaskState.DONE) || taskState.equals(TaskState.FAILED))) {
@@ -115,7 +113,7 @@ public class StitchingCompleteCallbackController {
             return ResponseEntity.ok().build();
 
         } catch (CallbackException e) {
-            log.error(String.format("Unsuccessful callback: %s", e.toString()));
+            log.error("Unsuccessful callback: {}", e.getMessage(), e);
             return ResponseEntity.status(e.getHttpStatus()).body(e);
         }
     }

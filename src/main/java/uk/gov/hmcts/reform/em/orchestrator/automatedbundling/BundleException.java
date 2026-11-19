@@ -6,6 +6,7 @@ import tools.jackson.databind.JsonNode;
 
 
 public class BundleException extends RuntimeException {
+    final Logger logger = LoggerFactory.getLogger(BundleException.class);
 
     public BundleException(JsonNode list,
                            String documentSelectorProperty,
@@ -15,8 +16,6 @@ public class BundleException extends RuntimeException {
                            boolean customDocument,
                            Exception ex) {
         super(ex);
-
-        final Logger logger = LoggerFactory.getLogger(BundleFactory.class);
 
         logger.error("addDocumentSet failed,"
                         + "list:{},"

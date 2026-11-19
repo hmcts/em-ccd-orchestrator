@@ -55,7 +55,6 @@ public class AutomatedStitchingExecutor {
         documentTask.setJurisdictionId(cdamDto.getJurisdictionId());
         documentTask.setServiceAuth(cdamDto.getServiceAuth());
 
-        logger.debug("CallBackUrl is {}", callbackDto.getCallbackUrl());
         try {
             final DocumentTaskDTO createdDocumentTaskDTO = stitchingService.startStitchingTask(documentTask);
             ccdBundleDTO.setStitchStatus(createdDocumentTaskDTO.getTaskState().toString());
